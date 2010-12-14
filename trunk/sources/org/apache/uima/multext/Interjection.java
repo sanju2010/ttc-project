@@ -1,7 +1,7 @@
 
 
-/* First created by JCasGen Thu Dec 02 15:48:29 CET 2010 */
-package org.apache.uima.muLtext;
+/* First created by JCasGen Tue Dec 14 21:11:21 CET 2010 */
+package org.apache.uima.multext;
 
 import org.apache.uima.jcas.JCas; 
 import org.apache.uima.jcas.JCasRegistry;
@@ -11,14 +11,14 @@ import org.apache.uima.MultextAnnotation;
 
 
 /** 
- * Updated by JCasGen Thu Dec 02 15:52:07 CET 2010
- * XML source: /home/rocheteau-j/Repositories/SourceSup/uima-bundle/trunk/sandbox/ttc-project/resources/fr/univnantes/lina/uima/types/TTC Type System.xml
+ * Updated by JCasGen Tue Dec 14 21:12:06 CET 2010
+ * XML source: /home/rocheteau-j/Repositories/GoogleCode/ttc-project/trunk/resources/eu/project/ttc/TTC Type System.xml
  * @generated */
-public class Article extends MultextAnnotation {
+public class Interjection extends MultextAnnotation {
   /** @generated
    * @ordered 
    */
-  public final static int typeIndexID = JCasRegistry.register(Article.class);
+  public final static int typeIndexID = JCasRegistry.register(Interjection.class);
   /** @generated
    * @ordered 
    */
@@ -28,23 +28,23 @@ public class Article extends MultextAnnotation {
  
   /** Never called.  Disable default constructor
    * @generated */
-  protected Article() {}
+  protected Interjection() {}
     
   /** Internal - constructor used by generator 
    * @generated */
-  public Article(int addr, TOP_Type type) {
+  public Interjection(int addr, TOP_Type type) {
     super(addr, type);
     readObject();
   }
   
   /** @generated */
-  public Article(JCas jcas) {
+  public Interjection(JCas jcas) {
     super(jcas);
     readObject();   
   } 
 
   /** @generated */  
-  public Article(JCas jcas, int begin, int end) {
+  public Interjection(JCas jcas, int begin, int end) {
     super(jcas);
     setBegin(begin);
     setEnd(end);

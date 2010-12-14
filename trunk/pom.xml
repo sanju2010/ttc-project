@@ -16,23 +16,40 @@
       <groupId>fr.univnantes.lina.uima</groupId>
       <artifactId>uima-common-library</artifactId>
       <version>10-11-12</version>
-      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>fr.univnantes.lina.uima</groupId>
+      <artifactId>uima-dublin-core-library</artifactId>
+      <version>10-11-12</version>
+    </dependency>
+    <dependency>
+      <groupId>fr.univnantes.lina.uima</groupId>
+      <artifactId>uima-find-library</artifactId>
+      <version>10-11-12</version>
+    </dependency>
+    <dependency>
+      <groupId>fr.univnantes.lina.uima</groupId>
+      <artifactId>uima-text-extractor</artifactId>
+      <version>10-11-12</version>
+    </dependency>
+    <dependency>
+      <groupId>fr.univnantes.lina.uima</groupId>
+      <artifactId>uima-language-detector</artifactId>
+      <version>10-11-12</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.uima</groupId>
+      <artifactId>WhitespaceTokenizer</artifactId>
+      <version>2.3.0-incubating</version>
     </dependency>
     <dependency>
     	<groupId>fr.univnantes.lina.uima</groupId>
     	<artifactId>uima-tree-tagger-wrapper</artifactId>
     	<version>10-11-12</version>
-    	<scope>provided</scope>
     </dependency>
     <dependency>
     	<groupId>fr.univnantes.lina.uima</groupId>
     	<artifactId>uima-multext-annotator</artifactId>
-    	<version>10-11-12</version>
-    	<scope>provided</scope>
-    </dependency>
-    <dependency>
-    	<groupId>fr.univnantes.lina.uima</groupId>
-    	<artifactId>uima-neighbour-annotator</artifactId>
     	<version>10-11-12</version>
     </dependency>
   </dependencies>

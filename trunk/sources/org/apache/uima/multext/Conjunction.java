@@ -1,7 +1,7 @@
 
 
-/* First created by JCasGen Thu Dec 02 15:48:29 CET 2010 */
-package org.apache.uima.muLtext;
+/* First created by JCasGen Tue Dec 14 21:11:21 CET 2010 */
+package org.apache.uima.multext;
 
 import org.apache.uima.jcas.JCas; 
 import org.apache.uima.jcas.JCasRegistry;
@@ -11,8 +11,8 @@ import org.apache.uima.MultextAnnotation;
 
 
 /** 
- * Updated by JCasGen Thu Dec 02 15:52:07 CET 2010
- * XML source: /home/rocheteau-j/Repositories/SourceSup/uima-bundle/trunk/sandbox/ttc-project/resources/fr/univnantes/lina/uima/types/TTC Type System.xml
+ * Updated by JCasGen Tue Dec 14 21:12:06 CET 2010
+ * XML source: /home/rocheteau-j/Repositories/GoogleCode/ttc-project/trunk/resources/eu/project/ttc/TTC Type System.xml
  * @generated */
 public class Conjunction extends MultextAnnotation {
   /** @generated
@@ -57,6 +57,24 @@ public class Conjunction extends MultextAnnotation {
   @generated modifiable */
   private void readObject() {}
      
-}
+ 
+    
+  //*--------------*
+  //* Feature: conjunctionType
+
+  /** getter for conjunctionType - gets 
+   * @generated */
+  public String getConjunctionType() {
+    if (Conjunction_Type.featOkTst && ((Conjunction_Type)jcasType).casFeat_conjunctionType == null)
+      jcasType.jcas.throwFeatMissing("conjunctionType", "org.apache.uima.multext.Conjunction");
+    return jcasType.ll_cas.ll_getStringValue(addr, ((Conjunction_Type)jcasType).casFeatCode_conjunctionType);}
+    
+  /** setter for conjunctionType - sets  
+   * @generated */
+  public void setConjunctionType(String v) {
+    if (Conjunction_Type.featOkTst && ((Conjunction_Type)jcasType).casFeat_conjunctionType == null)
+      jcasType.jcas.throwFeatMissing("conjunctionType", "org.apache.uima.multext.Conjunction");
+    jcasType.ll_cas.ll_setStringValue(addr, ((Conjunction_Type)jcasType).casFeatCode_conjunctionType, v);}    
+  }
 
     

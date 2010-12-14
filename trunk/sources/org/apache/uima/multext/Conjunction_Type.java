@@ -1,6 +1,6 @@
 
-/* First created by JCasGen Thu Dec 02 15:48:29 CET 2010 */
-package org.apache.uima.muLtext;
+/* First created by JCasGen Tue Dec 14 21:11:21 CET 2010 */
+package org.apache.uima.multext;
 
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.JCasRegistry;
@@ -9,10 +9,12 @@ import org.apache.uima.cas.impl.FSGenerator;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.impl.TypeImpl;
 import org.apache.uima.cas.Type;
+import org.apache.uima.cas.impl.FeatureImpl;
+import org.apache.uima.cas.Feature;
 import org.apache.uima.MultextAnnotation_Type;
 
 /** 
- * Updated by JCasGen Thu Dec 02 15:52:07 CET 2010
+ * Updated by JCasGen Tue Dec 14 21:12:06 CET 2010
  * @generated */
 public class Conjunction_Type extends MultextAnnotation_Type {
   /** @generated */
@@ -37,7 +39,25 @@ public class Conjunction_Type extends MultextAnnotation_Type {
   public final static int typeIndexID = Conjunction.typeIndexID;
   /** @generated 
      @modifiable */
-  public final static boolean featOkTst = JCasRegistry.getFeatOkTst("org.apache.uima.mutext.Conjunction");
+  public final static boolean featOkTst = JCasRegistry.getFeatOkTst("org.apache.uima.multext.Conjunction");
+ 
+  /** @generated */
+  final Feature casFeat_conjunctionType;
+  /** @generated */
+  final int     casFeatCode_conjunctionType;
+  /** @generated */ 
+  public String getConjunctionType(int addr) {
+        if (featOkTst && casFeat_conjunctionType == null)
+      jcas.throwFeatMissing("conjunctionType", "org.apache.uima.multext.Conjunction");
+    return ll_cas.ll_getStringValue(addr, casFeatCode_conjunctionType);
+  }
+  /** @generated */    
+  public void setConjunctionType(int addr, String v) {
+        if (featOkTst && casFeat_conjunctionType == null)
+      jcas.throwFeatMissing("conjunctionType", "org.apache.uima.multext.Conjunction");
+    ll_cas.ll_setStringValue(addr, casFeatCode_conjunctionType, v);}
+    
+  
 
 
 
@@ -46,6 +66,10 @@ public class Conjunction_Type extends MultextAnnotation_Type {
   public Conjunction_Type(JCas jcas, Type casType) {
     super(jcas, casType);
     casImpl.getFSClassRegistry().addGeneratorForType((TypeImpl)this.casType, getFSGenerator());
+
+ 
+    casFeat_conjunctionType = jcas.getRequiredFeatureDE(casType, "conjunctionType", "uima.cas.String", featOkTst);
+    casFeatCode_conjunctionType  = (null == casFeat_conjunctionType) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_conjunctionType).getCode();
 
   }
 }

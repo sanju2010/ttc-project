@@ -1,6 +1,6 @@
 
-/* First created by JCasGen Thu Dec 02 15:48:29 CET 2010 */
-package org.apache.uima.muLtext;
+/* First created by JCasGen Tue Dec 14 21:11:21 CET 2010 */
+package org.apache.uima.multext;
 
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.JCasRegistry;
@@ -12,38 +12,38 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.MultextAnnotation_Type;
 
 /** 
- * Updated by JCasGen Thu Dec 02 15:52:07 CET 2010
+ * Updated by JCasGen Tue Dec 14 21:12:06 CET 2010
  * @generated */
-public class Pronoun_Type extends MultextAnnotation_Type {
+public class Unique_Type extends MultextAnnotation_Type {
   /** @generated */
   protected FSGenerator getFSGenerator() {return fsGenerator;}
   /** @generated */
   private final FSGenerator fsGenerator = 
     new FSGenerator() {
       public FeatureStructure createFS(int addr, CASImpl cas) {
-  			 if (Pronoun_Type.this.useExistingInstance) {
+  			 if (Unique_Type.this.useExistingInstance) {
   			   // Return eq fs instance if already created
-  		     FeatureStructure fs = Pronoun_Type.this.jcas.getJfsFromCaddr(addr);
+  		     FeatureStructure fs = Unique_Type.this.jcas.getJfsFromCaddr(addr);
   		     if (null == fs) {
-  		       fs = new Pronoun(addr, Pronoun_Type.this);
-  			   Pronoun_Type.this.jcas.putJfsFromCaddr(addr, fs);
+  		       fs = new Unique(addr, Unique_Type.this);
+  			   Unique_Type.this.jcas.putJfsFromCaddr(addr, fs);
   			   return fs;
   		     }
   		     return fs;
-        } else return new Pronoun(addr, Pronoun_Type.this);
+        } else return new Unique(addr, Unique_Type.this);
   	  }
     };
   /** @generated */
-  public final static int typeIndexID = Pronoun.typeIndexID;
+  public final static int typeIndexID = Unique.typeIndexID;
   /** @generated 
      @modifiable */
-  public final static boolean featOkTst = JCasRegistry.getFeatOkTst("org.apache.uima.mutext.Pronoun");
+  public final static boolean featOkTst = JCasRegistry.getFeatOkTst("org.apache.uima.multext.Unique");
 
 
 
   /** initialize variables to correspond with Cas Type and Features
 	* @generated */
-  public Pronoun_Type(JCas jcas, Type casType) {
+  public Unique_Type(JCas jcas, Type casType) {
     super(jcas, casType);
     casImpl.getFSClassRegistry().addGeneratorForType((TypeImpl)this.casType, getFSGenerator());
 
