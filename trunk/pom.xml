@@ -29,18 +29,8 @@
     </dependency>
     <dependency>
       <groupId>fr.univnantes.lina.uima</groupId>
-      <artifactId>uima-text-extractor</artifactId>
+      <artifactId>uima-word-tokenizer</artifactId>
       <version>10-11-12</version>
-    </dependency>
-    <dependency>
-      <groupId>fr.univnantes.lina.uima</groupId>
-      <artifactId>uima-language-detector</artifactId>
-      <version>10-11-12</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.uima</groupId>
-      <artifactId>WhitespaceTokenizer</artifactId>
-      <version>2.3.0-incubating</version>
     </dependency>
     <dependency>
     	<groupId>fr.univnantes.lina.uima</groupId>
@@ -75,6 +65,25 @@
       </resource>
     </resources>
     <plugins>
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <configuration>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+          <appendAssemblyId>false</appendAssemblyId>
+	      <excludeScope>provided</excludeScope>
+        </configuration>
+        <executions>
+          <execution>
+            <id>simple-command</id>
+            <phase>package</phase>
+            <goals>
+              <goal>attached</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>

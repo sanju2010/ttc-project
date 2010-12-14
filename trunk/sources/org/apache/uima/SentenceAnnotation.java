@@ -1,24 +1,24 @@
 
 
-/* First created by JCasGen Tue Dec 14 21:11:21 CET 2010 */
-package org.apache.uima.multext;
+/* First created by JCasGen Tue Dec 14 21:31:06 CET 2010 */
+package org.apache.uima;
 
 import org.apache.uima.jcas.JCas; 
 import org.apache.uima.jcas.JCasRegistry;
 import org.apache.uima.jcas.cas.TOP_Type;
 
-import org.apache.uima.MultextAnnotation;
+import org.apache.uima.jcas.tcas.Annotation;
 
 
-/** 
+/** sentence annotation
  * Updated by JCasGen Tue Dec 14 21:42:40 CET 2010
  * XML source: /home/rocheteau-j/Repositories/GoogleCode/ttc-project/trunk/resources/eu/project/ttc/TTC Preliminary Linguistic Analysis.xml
  * @generated */
-public class Unique extends MultextAnnotation {
+public class SentenceAnnotation extends Annotation {
   /** @generated
    * @ordered 
    */
-  public final static int typeIndexID = JCasRegistry.register(Unique.class);
+  public final static int typeIndexID = JCasRegistry.register(SentenceAnnotation.class);
   /** @generated
    * @ordered 
    */
@@ -28,23 +28,23 @@ public class Unique extends MultextAnnotation {
  
   /** Never called.  Disable default constructor
    * @generated */
-  protected Unique() {}
+  protected SentenceAnnotation() {}
     
   /** Internal - constructor used by generator 
    * @generated */
-  public Unique(int addr, TOP_Type type) {
+  public SentenceAnnotation(int addr, TOP_Type type) {
     super(addr, type);
     readObject();
   }
   
   /** @generated */
-  public Unique(JCas jcas) {
+  public SentenceAnnotation(JCas jcas) {
     super(jcas);
     readObject();   
   } 
 
   /** @generated */  
-  public Unique(JCas jcas, int begin, int end) {
+  public SentenceAnnotation(JCas jcas, int begin, int end) {
     super(jcas);
     setBegin(begin);
     setEnd(end);

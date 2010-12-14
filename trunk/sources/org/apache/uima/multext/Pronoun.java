@@ -11,8 +11,8 @@ import org.apache.uima.MultextAnnotation;
 
 
 /** 
- * Updated by JCasGen Tue Dec 14 21:12:06 CET 2010
- * XML source: /home/rocheteau-j/Repositories/GoogleCode/ttc-project/trunk/resources/eu/project/ttc/TTC Type System.xml
+ * Updated by JCasGen Tue Dec 14 21:42:40 CET 2010
+ * XML source: /home/rocheteau-j/Repositories/GoogleCode/ttc-project/trunk/resources/eu/project/ttc/TTC Preliminary Linguistic Analysis.xml
  * @generated */
 public class Pronoun extends MultextAnnotation {
   /** @generated

@@ -6,14 +6,8 @@
   <vendor/>
   <imports>
     <import name="fr.univnantes.lina.uima.types.DublinCore"/>
+    <import name="fr.univnantes.lina.uima.types.TokenAnnotation"/>
     <import name="fr.univnantes.lina.uima.types.TreeTaggerAnnotation"/>
     <import name="fr.univnantes.lina.uima.types.Multext"/>
   </imports>
-  <types>
-    <typeDescription>
-      <name>org.apache.uima.TokenAnnotation</name>
-      <description/>
-      <supertypeName>uima.tcas.Annotation</supertypeName>
-    </typeDescription>
-  </types>
 </typeSystemDescription>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
+  <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
+  <primitive>false</primitive>
+  <delegateAnalysisEngineSpecifiers>
+    <delegateAnalysisEngine key="TreeTagger">
+      <import name="fr.univnantes.lina.uima.engines.TreeTagger"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="TreeTaggerMultextAnnotator">
+      <import name="fr.univnantes.lina.uima.engines.TreeTaggerMultextAnnotator"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="WhitespaceTokenizer">
+      <import name="WhitespaceTokenizer"/>
+    </delegateAnalysisEngine>
+  </delegateAnalysisEngineSpecifiers>
+  <analysisEngineMetaData>
+    <name>TTC Preliminary Linguistic Analysis</name>
+    <description/>
+    <version>1.0</version>
+    <vendor/>
+    <configurationParameters searchStrategy="language_fallback">
+      <configurationParameter>
+        <name>SofaNames</name>
+        <type>String</type>
+        <multiValued>true</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>TreeTagger/SofaNames</parameter>
+          <parameter>TreeTaggerMultextAnnotator/SofaNames</parameter>
+          <parameter>WhitespaceTokenizer/SofaNames</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>TreeTaggerHomeDirectory</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>TreeTagger/TreeTaggerHomeDirectory</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>AnnotationType</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>TreeTaggerMultextAnnotator/AnnotationType</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>ExpandPartOfSpeech</name>
+        <type>Boolean</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>TreeTaggerMultextAnnotator/ExpandPartOfSpeech</parameter>
+        </overrides>
+      </configurationParameter>
+    </configurationParameters>
+    <configurationParameterSettings>
+      <nameValuePair>
+        <name>AnnotationType</name>
+        <value>
+          <string>org.apache.uima.treeTaggerAnnotation</string>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>ExpandPartOfSpeech</name>
+        <value>
+          <boolean>true</boolean>
+        </value>
+      </nameValuePair>
+    </configurationParameterSettings>
+    <flowConstraints>
+      <fixedFlow>
+        <node>WhitespaceTokenizer</node>
+        <node>TreeTagger</node>
+        <node>TreeTaggerMultextAnnotator</node>
+      </fixedFlow>
+    </flowConstraints>
+    <fsIndexCollection/>
+    <capabilities>
+      <capability>
+        <inputs/>
+        <outputs>
+          <type allAnnotatorFeatures="true">org.apache.uima.TreeTaggerAnnotation</type>
+          <type allAnnotatorFeatures="true">org.apache.uima.TokenAnnotation</type>
+          <type allAnnotatorFeatures="true">org.apache.uima.MultextAnnotation</type>
+        </outputs>
+        <languagesSupported>
+          <language>en</language>
+          <language>fr</language>
+          <language>de</language>
+        </languagesSupported>
+      </capability>
+    </capabilities>
+    <operationalProperties>
+      <modifiesCas>true</modifiesCas>
+      <multipleDeploymentAllowed>true</multipleDeploymentAllowed>
+      <outputsNewCASes>false</outputsNewCASes>
+    </operationalProperties>
+  </analysisEngineMetaData>
+  <resourceManagerConfiguration/>
+</analysisEngineDescription>

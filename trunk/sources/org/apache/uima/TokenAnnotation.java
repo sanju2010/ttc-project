@@ -1,6 +1,6 @@
 
 
-/* First created by JCasGen Thu Dec 02 15:42:08 CET 2010 */
+/* First created by JCasGen Tue Dec 14 21:28:54 CET 2010 */
 package org.apache.uima;
 
 import org.apache.uima.jcas.JCas; 
@@ -11,8 +11,8 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
- * Updated by JCasGen Tue Dec 14 21:12:06 CET 2010
- * XML source: /home/rocheteau-j/Repositories/GoogleCode/ttc-project/trunk/resources/eu/project/ttc/TTC Type System.xml
+ * Updated by JCasGen Tue Dec 14 21:42:40 CET 2010
+ * XML source: /home/rocheteau-j/Repositories/GoogleCode/ttc-project/trunk/resources/eu/project/ttc/TTC Preliminary Linguistic Analysis.xml
  * @generated */
 public class TokenAnnotation extends Annotation {
   /** @generated
@@ -57,6 +57,24 @@ public class TokenAnnotation extends Annotation {
   @generated modifiable */
   private void readObject() {}
      
-}
+ 
+    
+  //*--------------*
+  //* Feature: tokenType
+
+  /** getter for tokenType - gets 
+   * @generated */
+  public String getTokenType() {
+    if (TokenAnnotation_Type.featOkTst && ((TokenAnnotation_Type)jcasType).casFeat_tokenType == null)
+      jcasType.jcas.throwFeatMissing("tokenType", "org.apache.uima.TokenAnnotation");
+    return jcasType.ll_cas.ll_getStringValue(addr, ((TokenAnnotation_Type)jcasType).casFeatCode_tokenType);}
+    
+  /** setter for tokenType - sets  
+   * @generated */
+  public void setTokenType(String v) {
+    if (TokenAnnotation_Type.featOkTst && ((TokenAnnotation_Type)jcasType).casFeat_tokenType == null)
+      jcasType.jcas.throwFeatMissing("tokenType", "org.apache.uima.TokenAnnotation");
+    jcasType.ll_cas.ll_setStringValue(addr, ((TokenAnnotation_Type)jcasType).casFeatCode_tokenType, v);}    
+  }
 
     

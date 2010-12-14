@@ -12,7 +12,7 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.MultextAnnotation_Type;
 
 /** 
- * Updated by JCasGen Tue Dec 14 21:12:06 CET 2010
+ * Updated by JCasGen Tue Dec 14 21:42:40 CET 2010
  * @generated */
 public class Abbreviation_Type extends MultextAnnotation_Type {
   /** @generated */

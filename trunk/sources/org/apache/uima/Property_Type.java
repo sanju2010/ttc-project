@@ -14,7 +14,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.cas.AnnotationBase_Type;
 
 /** 
- * Updated by JCasGen Tue Dec 14 21:12:06 CET 2010
+ * Updated by JCasGen Tue Dec 14 21:29:34 CET 2010
  * @generated */
 public class Property_Type extends AnnotationBase_Type {
   /** @generated */
