@@ -1,7 +1,7 @@
 
 
 /* First created by JCasGen Thu Dec 02 15:48:29 CET 2010 */
-package org.apache.uima.mutext;
+package org.apache.uima.muLtext;
 
 import org.apache.uima.jcas.JCas; 
 import org.apache.uima.jcas.JCasRegistry;

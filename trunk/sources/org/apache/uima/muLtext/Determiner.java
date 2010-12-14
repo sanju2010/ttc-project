@@ -1,7 +1,7 @@
 
 
 /* First created by JCasGen Thu Dec 02 15:48:29 CET 2010 */
-package org.apache.uima.mutext;
+package org.apache.uima.muLtext;
 
 import org.apache.uima.jcas.JCas; 
 import org.apache.uima.jcas.JCasRegistry;
@@ -14,11 +14,11 @@ import org.apache.uima.MultextAnnotation;
  * Updated by JCasGen Thu Dec 02 15:52:07 CET 2010
  * XML source: /home/rocheteau-j/Repositories/SourceSup/uima-bundle/trunk/sandbox/ttc-project/resources/fr/univnantes/lina/uima/types/TTC Type System.xml
  * @generated */
-public class Adjective extends MultextAnnotation {
+public class Determiner extends MultextAnnotation {
   /** @generated
    * @ordered 
    */
-  public final static int typeIndexID = JCasRegistry.register(Adjective.class);
+  public final static int typeIndexID = JCasRegistry.register(Determiner.class);
   /** @generated
    * @ordered 
    */
@@ -28,23 +28,23 @@ public class Adjective extends MultextAnnotation {
  
   /** Never called.  Disable default constructor
    * @generated */
-  protected Adjective() {}
+  protected Determiner() {}
     
   /** Internal - constructor used by generator 
    * @generated */
-  public Adjective(int addr, TOP_Type type) {
+  public Determiner(int addr, TOP_Type type) {
     super(addr, type);
     readObject();
   }
   
   /** @generated */
-  public Adjective(JCas jcas) {
+  public Determiner(JCas jcas) {
     super(jcas);
     readObject();   
   } 
 
   /** @generated */  
-  public Adjective(JCas jcas, int begin, int end) {
+  public Determiner(JCas jcas, int begin, int end) {
     super(jcas);
     setBegin(begin);
     setEnd(end);

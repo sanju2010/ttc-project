@@ -1,6 +1,6 @@
 
 /* First created by JCasGen Thu Dec 02 15:48:29 CET 2010 */
-package org.apache.uima.mutext;
+package org.apache.uima.muLtext;
 
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.JCasRegistry;
@@ -14,36 +14,36 @@ import org.apache.uima.MultextAnnotation_Type;
 /** 
  * Updated by JCasGen Thu Dec 02 15:52:07 CET 2010
  * @generated */
-public class Article_Type extends MultextAnnotation_Type {
+public class Unique_Type extends MultextAnnotation_Type {
   /** @generated */
   protected FSGenerator getFSGenerator() {return fsGenerator;}
   /** @generated */
   private final FSGenerator fsGenerator = 
     new FSGenerator() {
       public FeatureStructure createFS(int addr, CASImpl cas) {
-  			 if (Article_Type.this.useExistingInstance) {
+  			 if (Unique_Type.this.useExistingInstance) {
   			   // Return eq fs instance if already created
-  		     FeatureStructure fs = Article_Type.this.jcas.getJfsFromCaddr(addr);
+  		     FeatureStructure fs = Unique_Type.this.jcas.getJfsFromCaddr(addr);
   		     if (null == fs) {
-  		       fs = new Article(addr, Article_Type.this);
-  			   Article_Type.this.jcas.putJfsFromCaddr(addr, fs);
+  		       fs = new Unique(addr, Unique_Type.this);
+  			   Unique_Type.this.jcas.putJfsFromCaddr(addr, fs);
   			   return fs;
   		     }
   		     return fs;
-        } else return new Article(addr, Article_Type.this);
+        } else return new Unique(addr, Unique_Type.this);
   	  }
     };
   /** @generated */
-  public final static int typeIndexID = Article.typeIndexID;
+  public final static int typeIndexID = Unique.typeIndexID;
   /** @generated 
      @modifiable */
-  public final static boolean featOkTst = JCasRegistry.getFeatOkTst("org.apache.uima.mutext.Article");
+  public final static boolean featOkTst = JCasRegistry.getFeatOkTst("org.apache.uima.mutext.Unique");
 
 
 
   /** initialize variables to correspond with Cas Type and Features
 	* @generated */
-  public Article_Type(JCas jcas, Type casType) {
+  public Unique_Type(JCas jcas, Type casType) {
     super(jcas, casType);
     casImpl.getFSClassRegistry().addGeneratorForType((TypeImpl)this.casType, getFSGenerator());
 
