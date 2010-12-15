@@ -11,8 +11,8 @@ import org.apache.uima.MultextAnnotation;
 
 
 /** 
- * Updated by JCasGen Tue Dec 14 21:42:40 CET 2010
- * XML source: /home/rocheteau-j/Repositories/GoogleCode/ttc-project/trunk/resources/eu/project/ttc/TTC Preliminary Linguistic Analysis.xml
+ * Updated by JCasGen Wed Dec 15 10:23:54 CET 2010
+ * XML source: /home/rocheteau-j/Repositories/GoogleCode/ttc-project/trunk/resources/eu/project/ttc/models/TTC Document Processor.xml
  * @generated */
 public class Unique extends MultextAnnotation {
   /** @generated

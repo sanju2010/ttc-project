@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
+  <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
+  <primitive>true</primitive>
+  <annotatorImplementationName>eu.project.ttc.models.DocumentProcessor</annotatorImplementationName>
+  <analysisEngineMetaData>
+    <name>TTC Document Processor</name>
+    <description/>
+    <version>1.0</version>
+    <vendor/>
+    <configurationParameters>
+      <configurationParameter>
+        <name>SofaNames</name>
+        <type>String</type>
+        <multiValued>true</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
+      <configurationParameter>
+        <name>CommandLine</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
+    </configurationParameters>
+    <configurationParameterSettings/>
+    <typeSystemDescription>
+      <imports>
+        <import name="eu.project.ttc.TTC Type System"/>
+      </imports>
+    </typeSystemDescription>
+    <typePriorities/>
+    <fsIndexCollection/>
+    <capabilities>
+      <capability>
+        <inputs>
+          <type allAnnotatorFeatures="true">org.apache.uima.TokenAnnotation</type>
+        </inputs>
+        <outputs>
+          <type allAnnotatorFeatures="true">org.apache.uima.TreeTaggerAnnotation</type>
+          <type allAnnotatorFeatures="true">org.apache.uima.MultextAnnotation</type>
+        </outputs>
+        <languagesSupported>
+          <language>en</language>
+          <language>fr</language>
+          <language>de</language>
+          <language>es</language>
+          <language>ru</language>
+          <language>lv</language>
+          <language>zh</language>
+        </languagesSupported>
+      </capability>
+    </capabilities>
+    <operationalProperties>
+      <modifiesCas>true</modifiesCas>
+      <multipleDeploymentAllowed>true</multipleDeploymentAllowed>
+      <outputsNewCASes>false</outputsNewCASes>
+    </operationalProperties>
+  </analysisEngineMetaData>
+  <resourceManagerConfiguration/>
+</analysisEngineDescription>

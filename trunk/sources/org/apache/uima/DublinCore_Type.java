@@ -14,7 +14,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.cas.AnnotationBase_Type;
 
 /** 
- * Updated by JCasGen Tue Dec 14 21:29:34 CET 2010
+ * Updated by JCasGen Wed Dec 15 10:23:54 CET 2010
  * @generated */
 public class DublinCore_Type extends AnnotationBase_Type {
   /** @generated */

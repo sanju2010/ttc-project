@@ -12,8 +12,8 @@ import org.apache.uima.jcas.cas.AnnotationBase;
 
 
 /** 
- * Updated by JCasGen Tue Dec 14 21:29:34 CET 2010
- * XML source: /home/rocheteau-j/Repositories/GoogleCode/ttc-project/trunk/resources/eu/project/ttc/TTC Type System.xml
+ * Updated by JCasGen Wed Dec 15 10:23:54 CET 2010
+ * XML source: /home/rocheteau-j/Repositories/GoogleCode/ttc-project/trunk/resources/eu/project/ttc/models/TTC Document Processor.xml
  * @generated */
 public class DublinCore extends AnnotationBase {
   /** @generated

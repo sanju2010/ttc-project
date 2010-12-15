@@ -14,7 +14,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.MultextAnnotation_Type;
 
 /** 
- * Updated by JCasGen Tue Dec 14 21:42:40 CET 2010
+ * Updated by JCasGen Wed Dec 15 10:23:54 CET 2010
  * @generated */
 public class Adverb_Type extends MultextAnnotation_Type {
   /** @generated */
