@@ -9,5 +9,6 @@
     <import name="fr.univnantes.lina.uima.types.TokenAnnotation"/>
     <import name="fr.univnantes.lina.uima.types.TreeTaggerAnnotation"/>
     <import name="fr.univnantes.lina.uima.types.Multext"/>
+    <import name="fr.univnantes.lina.uima.types.AcabitTypeSystem"/>
   </imports>
 </typeSystemDescription>

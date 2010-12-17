@@ -21,13 +21,16 @@
     <configurationParameters searchStrategy="language_fallback">
       <configurationParameter>
         <name>SofaNames</name>
+        <description>The Sofa names the annotator should work on. If no
+					names are specified, the annotator works on the
+					default sofa.</description>
         <type>String</type>
         <multiValued>true</multiValued>
         <mandatory>false</mandatory>
         <overrides>
-          <parameter>TreeTagger/SofaNames</parameter>
-          <parameter>TreeTaggerMultextAnnotator/SofaNames</parameter>
           <parameter>WhitespaceTokenizer/SofaNames</parameter>
+          <parameter>TreeTaggerMultextAnnotator/SofaNames</parameter>
+          <parameter>TreeTagger/SofaNames</parameter>
         </overrides>
       </configurationParameter>
       <configurationParameter>
@@ -39,36 +42,14 @@
           <parameter>TreeTagger/TreeTaggerHomeDirectory</parameter>
         </overrides>
       </configurationParameter>
-      <configurationParameter>
-        <name>AnnotationType</name>
-        <type>String</type>
-        <multiValued>false</multiValued>
-        <mandatory>true</mandatory>
-        <overrides>
-          <parameter>TreeTaggerMultextAnnotator/AnnotationType</parameter>
-        </overrides>
-      </configurationParameter>
-      <configurationParameter>
-        <name>ExpandPartOfSpeech</name>
-        <type>Boolean</type>
-        <multiValued>false</multiValued>
-        <mandatory>false</mandatory>
-        <overrides>
-          <parameter>TreeTaggerMultextAnnotator/ExpandPartOfSpeech</parameter>
-        </overrides>
-      </configurationParameter>
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
-        <name>AnnotationType</name>
+        <name>SofaNames</name>
         <value>
-          <string>org.apache.uima.treeTaggerAnnotation</string>
-        </value>
-      </nameValuePair>
-      <nameValuePair>
-        <name>ExpandPartOfSpeech</name>
-        <value>
-          <boolean>true</boolean>
+          <array>
+            <string>_InitialView</string>
+          </array>
         </value>
       </nameValuePair>
     </configurationParameterSettings>
@@ -92,6 +73,10 @@
           <language>en</language>
           <language>fr</language>
           <language>de</language>
+          <language>es</language>
+          <language>ru</language>
+          <language>lv</language>
+          <language>zh</language>
         </languagesSupported>
       </capability>
     </capabilities>

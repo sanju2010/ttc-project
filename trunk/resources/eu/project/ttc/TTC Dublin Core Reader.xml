@@ -3,20 +3,56 @@
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <implementationName>eu.project.ttc.engines.DublinCoreReader</implementationName>
   <processingResourceMetaData>
-    <name>TTC Text PreProcessing</name>
+    <name>TTC Dublin Core Reader</name>
     <description/>
     <version>1.0</version>
     <vendor/>
-    <configurationParameters/>
-    <configurationParameterSettings/>
-    <typeSystemDescription/>
+    <configurationParameters>
+      <configurationParameter>
+        <name>SofaName</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
+      <configurationParameter>
+        <name>Directory</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
+    </configurationParameters>
+    <configurationParameterSettings>
+      <nameValuePair>
+        <name>SofaName</name>
+        <value>
+          <string>_InitialView</string>
+        </value>
+      </nameValuePair>
+    </configurationParameterSettings>
+    <typeSystemDescription>
+      <imports>
+        <import name="eu.project.ttc.TTC Type System"/>
+      </imports>
+    </typeSystemDescription>
     <typePriorities/>
     <fsIndexCollection/>
     <capabilities>
       <capability>
         <inputs/>
-        <outputs/>
-        <languagesSupported/>
+        <outputs>
+          <type allAnnotatorFeatures="true">org.apache.uima.Property</type>
+          <type allAnnotatorFeatures="true">org.apache.uima.DublinCore</type>
+          <type allAnnotatorFeatures="true">uima.tcas.DocumentAnnotation</type>
+        </outputs>
+        <languagesSupported>
+          <language>en</language>
+          <language>fr</language>
+          <language>de</language>
+          <language>es</language>
+          <language>ru</language>
+          <language>lv</language>
+          <language>zh</language>
+        </languagesSupported>
       </capability>
     </capabilities>
     <operationalProperties>

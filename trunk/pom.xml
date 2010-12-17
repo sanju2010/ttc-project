@@ -42,6 +42,11 @@
     	<artifactId>uima-multext-annotator</artifactId>
     	<version>10-11-12</version>
     </dependency>
+    <dependency>
+    	<groupId>fr.univnantes.lina.uima</groupId>
+    	<artifactId>uima-acabit</artifactId>
+    	<version>10-11-12</version>
+    </dependency>
   </dependencies>
   <licenses>
     <license>
@@ -141,6 +146,11 @@
       <id>taln</id>
       <name>TALN</name>
       <url>http://www.lina.univ-nantes.fr/taln/maven</url>
+    </repository>
+    <repository>
+    	<id>annolab</id>
+    	<name>AnnoLab</name>
+    	<url>http://annolab.org/m2/releases/</url>
     </repository>
   </repositories>
 </project>

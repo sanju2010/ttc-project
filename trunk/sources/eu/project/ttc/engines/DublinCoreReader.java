@@ -6,6 +6,7 @@ import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -20,10 +21,28 @@ import fr.univnantes.lina.uima.models.DublinCore;
 import fr.univnantes.lina.uima.models.Property;
 
 public class DublinCoreReader extends Collector {
+
+	private Map<String,String> languages;
+	
+	private void setLanguages() {
+		this.languages = new HashMap<String, String>();
+		this.languages.put("en","en");
+		this.languages.put("english","en");
+		this.languages.put("English","en");
+		this.languages.put("fr","fr");
+		this.languages.put("french","fr");
+		this.languages.put("French","fr");
+		this.languages.put("français","fr");
+	}
+	
+	private Map<String,String> getLanguages() {
+		return this.languages;
+	}
 	
 	@Override
 	public void doInitialize() throws ResourceInitializationException {
 		this.doCollect();
+		this.setLanguages();
 	}
 
 	@Override
@@ -65,7 +84,8 @@ public class DublinCoreReader extends Collector {
 			throw new NullPointerException();
 		} else {
 			Property property = dc.getProperty("dc:language");
-			return property.getValue();
+			String language = property.getValue();
+			return this.getLanguages().get(language);
 		}
 	}
 	
@@ -85,7 +105,7 @@ public class DublinCoreReader extends Collector {
 	private String getCrawledDocument(String name) {
 		if (name.endsWith(".xml")) {
 			int len = name.length() - 4;
-			return name.substring(0,len);
+			return name.substring(0,len) + ".txt";
 		} else {
 			return null;
 		}
