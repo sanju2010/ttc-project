@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>eu.project.ttc</groupId>
   <artifactId>ttc-project</artifactId>
-  <version>0.1</version>
+  <version>11-02-11</version>
   <packaging>jar</packaging>
   <name>TTC Project</name>
   <dependencies>
@@ -10,42 +10,71 @@
       <groupId>org.apache.uima</groupId>
       <artifactId>uimaj-core</artifactId>
       <version>2.3.1</version>
-      <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>fr.univnantes.lina.uima</groupId>
+      <groupId>fr.univnantes.lina</groupId>
       <artifactId>uima-common-library</artifactId>
-      <version>10-11-12</version>
+      <version>11-01-11</version>
     </dependency>
     <dependency>
-      <groupId>fr.univnantes.lina.uima</groupId>
+      <groupId>fr.univnantes.lina</groupId>
       <artifactId>uima-dublin-core-library</artifactId>
-      <version>10-11-12</version>
+      <version>11-01-11</version>
     </dependency>
     <dependency>
-      <groupId>fr.univnantes.lina.uima</groupId>
+      <groupId>fr.univnantes.lina</groupId>
       <artifactId>uima-find-library</artifactId>
-      <version>10-11-12</version>
+      <version>11-01-11</version>
     </dependency>
     <dependency>
-      <groupId>fr.univnantes.lina.uima</groupId>
+      <groupId>fr.univnantes.lina</groupId>
       <artifactId>uima-word-tokenizer</artifactId>
-      <version>10-11-12</version>
+      <version>11-01-11</version>
     </dependency>
     <dependency>
-    	<groupId>fr.univnantes.lina.uima</groupId>
+      <groupId>fr.univnantes.lina</groupId>
+      <artifactId>uima-sentence-splitter</artifactId>
+      <version>11-01-11</version>
+    </dependency>
+    <dependency>
+    	<groupId>fr.univnantes.lina</groupId>
     	<artifactId>uima-tree-tagger-wrapper</artifactId>
-    	<version>10-11-12</version>
+    	<version>11-01-11</version>
     </dependency>
     <dependency>
-    	<groupId>fr.univnantes.lina.uima</groupId>
+    	<groupId>fr.univnantes.lina</groupId>
+    	<artifactId>uima-rule-based-tagger</artifactId>
+    	<version>11-01-11</version>
+    </dependency>
+    <dependency>
+    	<groupId>fr.univnantes.lina</groupId>
     	<artifactId>uima-multext-annotator</artifactId>
-    	<version>10-11-12</version>
+    	<version>11-01-11</version>
     </dependency>
     <dependency>
-    	<groupId>fr.univnantes.lina.uima</groupId>
+    	<groupId>fr.univnantes.lina</groupId>
     	<artifactId>uima-acabit</artifactId>
-    	<version>10-11-12</version>
+    	<version>11-01-11</version>
+    </dependency>
+    <dependency>
+    	<groupId>fr.univnantes.lina</groupId>
+    	<artifactId>uima-stemmer</artifactId>
+    	<version>11-01-11</version>
+    </dependency>
+    <dependency>
+    	<groupId>fr.univnantes.lina</groupId>
+    	<artifactId>uima-term-base-exchange</artifactId>
+    	<version>11-01-11</version>
+    </dependency>
+    <dependency>
+    	<groupId>fr.univnantes.lina</groupId>
+    	<artifactId>uima-stop-word-eraser</artifactId>
+    	<version>11-01-11</version>
+    </dependency>
+    <dependency>
+    	<groupId>fr.univnantes.lina</groupId>
+    	<artifactId>uima-lemmatizer</artifactId>
+    	<version>11-01-11</version>
     </dependency>
   </dependencies>
   <licenses>
@@ -56,13 +85,13 @@
     </license>
   </licenses>
   <organization>
-    <name>LINA TALN CNRS UMR 6241 - Université de Nantes</name>
   </organization>
   <properties> 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding> 
     
   </properties>
   <build>
+  	<defaultGoal>package</defaultGoal>
     <sourceDirectory>sources</sourceDirectory>
     <resources>
       <resource>
@@ -70,7 +99,7 @@
       </resource>
     </resources>
     <plugins>
-      <plugin>
+  	  <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
         <configuration>
           <descriptorRefs>
@@ -78,6 +107,11 @@
           </descriptorRefs>
           <appendAssemblyId>false</appendAssemblyId>
 	      <excludeScope>provided</excludeScope>
+          <archive>
+            <manifest>
+              <mainClass>fr.univnantes.lina.uima.utils.CollectionProcessor</mainClass>
+            </manifest>
+          </archive>
         </configuration>
         <executions>
           <execution>

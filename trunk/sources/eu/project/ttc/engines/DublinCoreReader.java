@@ -26,13 +26,47 @@ public class DublinCoreReader extends Collector {
 	
 	private void setLanguages() {
 		this.languages = new HashMap<String, String>();
+
 		this.languages.put("en","en");
 		this.languages.put("english","en");
 		this.languages.put("English","en");
+		
 		this.languages.put("fr","fr");
 		this.languages.put("french","fr");
 		this.languages.put("French","fr");
 		this.languages.put("français","fr");
+		this.languages.put("Français","fr");
+		
+		this.languages.put("de","de");
+		this.languages.put("deutsch","de");
+		this.languages.put("Deutsch","de");
+		this.languages.put("german","de");
+		this.languages.put("German","de");
+		
+		this.languages.put("es","es");
+		this.languages.put("español","es");
+		this.languages.put("Español","es");
+		this.languages.put("spanish","es");
+		this.languages.put("Spanish","es");
+		
+		this.languages.put("ru","ru");
+		this.languages.put("русский","ru");
+		this.languages.put("Русский","ru");
+		this.languages.put("russian","ru");
+		this.languages.put("Russian","ru");
+
+		this.languages.put("lv","lv");
+		this.languages.put("latviešu","lv");
+		this.languages.put("Latviešu","lv");
+		this.languages.put("latvian","lv");
+		this.languages.put("Latvian","lv");
+
+		this.languages.put("zh","zh");
+		this.languages.put("chinese","zh");
+		this.languages.put("Chinese","zh");
+		this.languages.put("中文","zh");
+		this.languages.put("漢語","zh");
+		
 	}
 	
 	private Map<String,String> getLanguages() {

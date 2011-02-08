@@ -2,13 +2,13 @@
 <typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <name>TTC Type System</name>
   <description/>
-  <version>0.1</version>
+  <version>1.0</version>
   <vendor/>
   <imports>
     <import name="fr.univnantes.lina.uima.types.DublinCore"/>
     <import name="fr.univnantes.lina.uima.types.TokenAnnotation"/>
     <import name="fr.univnantes.lina.uima.types.TreeTaggerAnnotation"/>
     <import name="fr.univnantes.lina.uima.types.Multext"/>
-    <import name="fr.univnantes.lina.uima.types.AcabitTypeSystem"/>
+    <import name="fr.univnantes.lina.uima.types.TermAnnotation"/>
   </imports>
 </typeSystemDescription>

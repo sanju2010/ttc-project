@@ -3,7 +3,7 @@
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <implementationName>eu.project.ttc.engines.DublinCoreReader</implementationName>
   <processingResourceMetaData>
-    <name>TTC Dublin Core Reader</name>
+    <name>TTC Text PreProcessing</name>
     <description/>
     <version>1.0</version>
     <vendor/>

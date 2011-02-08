@@ -3,14 +3,11 @@
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>false</primitive>
   <delegateAnalysisEngineSpecifiers>
+    <delegateAnalysisEngine key="WordTokenizer">
+      <import name="fr.univnantes.lina.uima.engines.WordTokenizer"/>
+    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="TreeTagger">
       <import name="fr.univnantes.lina.uima.engines.TreeTagger"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="TreeTaggerMultextAnnotator">
-      <import name="fr.univnantes.lina.uima.engines.TreeTaggerMultextAnnotator"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="WhitespaceTokenizer">
-      <import name="WhitespaceTokenizer"/>
     </delegateAnalysisEngine>
   </delegateAnalysisEngineSpecifiers>
   <analysisEngineMetaData>
@@ -28,8 +25,7 @@
         <multiValued>true</multiValued>
         <mandatory>false</mandatory>
         <overrides>
-          <parameter>WhitespaceTokenizer/SofaNames</parameter>
-          <parameter>TreeTaggerMultextAnnotator/SofaNames</parameter>
+          <parameter>WordTokenizer/SofaNames</parameter>
           <parameter>TreeTagger/SofaNames</parameter>
         </overrides>
       </configurationParameter>
@@ -55,9 +51,8 @@
     </configurationParameterSettings>
     <flowConstraints>
       <fixedFlow>
-        <node>WhitespaceTokenizer</node>
+        <node>WordTokenizer</node>
         <node>TreeTagger</node>
-        <node>TreeTaggerMultextAnnotator</node>
       </fixedFlow>
     </flowConstraints>
     <fsIndexCollection/>
@@ -65,9 +60,9 @@
       <capability>
         <inputs/>
         <outputs>
-          <type allAnnotatorFeatures="true">org.apache.uima.TreeTaggerAnnotation</type>
           <type allAnnotatorFeatures="true">org.apache.uima.TokenAnnotation</type>
-          <type allAnnotatorFeatures="true">org.apache.uima.MultextAnnotation</type>
+          <type allAnnotatorFeatures="true">org.apache.uima.SentenceAnnotation</type>
+          <type allAnnotatorFeatures="true">org.apache.uima.TaggerAnnotation</type>
         </outputs>
         <languagesSupported>
           <language>en</language>
