@@ -9,6 +9,12 @@
     <delegateAnalysisEngine key="TreeTagger">
       <import name="fr.univnantes.lina.uima.engines.TreeTagger"/>
     </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="TreeTaggerMultextAnnotator">
+      <import name="fr.univnantes.lina.uima.engines.TreeTaggerMultextAnnotator"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="StopWordEraser">
+      <import name="fr.univnantes.lina.uima.engines.StopWordEraser"/>
+    </delegateAnalysisEngine>
   </delegateAnalysisEngineSpecifiers>
   <analysisEngineMetaData>
     <name>TTC Preliminary Linguistic Analysis</name>
@@ -27,6 +33,8 @@
         <overrides>
           <parameter>WordTokenizer/SofaNames</parameter>
           <parameter>TreeTagger/SofaNames</parameter>
+          <parameter>StopWordEraser/SofaNames</parameter>
+          <parameter>TreeTaggerMultextAnnotator/SofaNames</parameter>
         </overrides>
       </configurationParameter>
       <configurationParameter>
@@ -36,6 +44,33 @@
         <mandatory>false</mandatory>
         <overrides>
           <parameter>TreeTagger/TreeTaggerHomeDirectory</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>TaggerAnnotationType</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>TreeTaggerMultextAnnotator/AnnotationType</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>ExpandPartOfSpeech</name>
+        <type>Boolean</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>TreeTaggerMultextAnnotator/ExpandPartOfSpeech</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>PartOfSpeechAnnotationType</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>StopWordEraser/AnnotationType</parameter>
         </overrides>
       </configurationParameter>
     </configurationParameters>
@@ -48,11 +83,31 @@
           </array>
         </value>
       </nameValuePair>
+      <nameValuePair>
+        <name>TaggerAnnotationType</name>
+        <value>
+          <string>org.apache.uima.TreeTaggerAnnotation</string>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>PartOfSpeechAnnotationType</name>
+        <value>
+          <string>org.apache.uima.MultextAnnotation</string>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>ExpandPartOfSpeech</name>
+        <value>
+          <boolean>true</boolean>
+        </value>
+      </nameValuePair>
     </configurationParameterSettings>
     <flowConstraints>
       <fixedFlow>
         <node>WordTokenizer</node>
         <node>TreeTagger</node>
+        <node>TreeTaggerMultextAnnotator</node>
+        <node>StopWordEraser</node>
       </fixedFlow>
     </flowConstraints>
     <fsIndexCollection/>
