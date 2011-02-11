@@ -20,7 +20,7 @@ import fr.univnantes.lina.uima.engines.Collector;
 import fr.univnantes.lina.uima.models.DublinCore;
 import fr.univnantes.lina.uima.models.Property;
 
-public class DublinCoreReader extends Collector {
+public class BaboukCollector extends Collector {
 
 	private Map<String,String> languages;
 	
