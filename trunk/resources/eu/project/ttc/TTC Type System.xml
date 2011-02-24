@@ -10,5 +10,6 @@
     <import name="fr.univnantes.lina.uima.types.TreeTaggerAnnotation"/>
     <import name="fr.univnantes.lina.uima.types.Multext"/>
     <import name="fr.univnantes.lina.uima.types.TermAnnotation"/>
+    <import name="org.apache.uima.examples.SourceDocumentInformation"/>
   </imports>
 </typeSystemDescription>

@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.apache.uima.collection.CollectionException;
+import org.apache.uima.examples.SourceDocumentInformation;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.resource.ResourceInitializationException;
@@ -88,7 +89,7 @@ public class BaboukCollector extends Collector {
         	String language = this.getCrawledDocumentLanguage(file);
         	cas.setDocumentText(text);
         	cas.setDocumentLanguage(language);
-        	this.doAnnotate(cas,file);
+        	this.doAnnotate(cas,file,text);
         } catch (Exception e) { 
         	this.getLogger().log(Level.WARNING,e.getMessage());
         	throw new CollectionException(e); 
@@ -145,7 +146,13 @@ public class BaboukCollector extends Collector {
 		}
 	}
 	
-	public void doAnnotate(JCas cas,File file) throws Exception {
+	public void doAnnotate(JCas cas,File file,String text) throws Exception {
+		SourceDocumentInformation info = new SourceDocumentInformation(cas);
+		info.setBegin(0);
+		info.setEnd(text.length());
+		info.setDocumentSize(text.length());
+		info.setUri(file.toURI().toString());
+		info.addToIndexes();
 		DublinCore dc = this.map.get(file);
 		if (dc == null) {
 			String msg = "No Dublin Core found for " + file;

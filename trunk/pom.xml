@@ -76,6 +76,22 @@
     	<artifactId>uima-lemmatizer</artifactId>
     	<version>11-01-11</version>
     </dependency>
+    <dependency>
+    	<groupId>fr.univnantes.lina</groupId>
+    	<artifactId>uima-neighbour-annotator</artifactId>
+    	<version>11-01-11</version>
+    </dependency>
+    <dependency>
+    	<groupId>fr.univnantes.lina</groupId>
+    	<artifactId>uima-ziggurat</artifactId>
+    	<version>11-01-11</version>
+    </dependency>
+    <dependency>
+    	<groupId>fr.univnantes.lina</groupId>
+    	<artifactId>term-base-exchange-library</artifactId>
+    	<version>11-01-11</version>
+    	<type>jar</type>
+    </dependency>
   </dependencies>
   <licenses>
     <license>
