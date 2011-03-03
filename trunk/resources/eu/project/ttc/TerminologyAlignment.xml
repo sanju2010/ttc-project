@@ -3,12 +3,12 @@
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>false</primitive>
   <delegateAnalysisEngineSpecifiers>
-    <delegateAnalysisEngine key="Acabit">
-      <import name="fr.univnantes.lina.uima.engines.Acabit"/>
+    <delegateAnalysisEngine key="NeighbourAnnotator">
+      <import name="fr.univnantes.lina.uima.engines.NeighbourAnnotator"/>
     </delegateAnalysisEngine>
   </delegateAnalysisEngineSpecifiers>
   <analysisEngineMetaData>
-    <name>TTC Terminology Extraction</name>
+    <name>Terminology Alignment</name>
     <description/>
     <version>1.0</version>
     <vendor/>
@@ -19,16 +19,25 @@
         <multiValued>true</multiValued>
         <mandatory>false</mandatory>
         <overrides>
-          <parameter>Acabit/SofaNames</parameter>
+          <parameter>NeighbourAnnotator/SofaNames</parameter>
         </overrides>
       </configurationParameter>
       <configurationParameter>
-        <name>TermBaseFile</name>
+        <name>AnnotationType</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
         <overrides>
-          <parameter>Acabit/TermBaseFile</parameter>
+          <parameter>NeighbourAnnotator/AnnotationType</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>NeighbourSize</name>
+        <type>Integer</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>NeighbourAnnotator/NeighbourSize</parameter>
         </overrides>
       </configurationParameter>
     </configurationParameters>
@@ -42,24 +51,32 @@
         </value>
       </nameValuePair>
       <nameValuePair>
-        <name>TermBaseFile</name>
+        <name>AnnotationType</name>
         <value>
-          <string>ttc-term-base.xml</string>
+          <string>org.apache.uima.TermAnnotation</string>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>NeighbourSize</name>
+        <value>
+          <integer>5</integer>
         </value>
       </nameValuePair>
     </configurationParameterSettings>
     <flowConstraints>
       <fixedFlow>
-        <node>Acabit</node>
+        <node>NeighbourAnnotator</node>
       </fixedFlow>
     </flowConstraints>
     <typePriorities/>
     <fsIndexCollection/>
     <capabilities>
       <capability>
-        <inputs/>
+        <inputs>
+          <type allAnnotatorFeatures="true">uima.tcas.Annotation</type>
+        </inputs>
         <outputs>
-          <type allAnnotatorFeatures="true">org.apache.uima.SingleWordTermAnnotation</type>
+          <type allAnnotatorFeatures="true">fr.univnantes.lina.uima.types.NeighbourAnnotation</type>
         </outputs>
         <languagesSupported>
           <language>en</language>

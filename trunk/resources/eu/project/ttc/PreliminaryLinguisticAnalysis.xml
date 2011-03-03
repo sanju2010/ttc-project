@@ -6,6 +6,9 @@
     <delegateAnalysisEngine key="WordTokenizer">
       <import name="fr.univnantes.lina.uima.engines.WordTokenizer"/>
     </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="TreeTaggerLemmaAnnotator">
+      <import name="eu.project.ttc.engines.TreeTaggerLemmaAnnotator"/>
+    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="TreeTagger">
       <import name="fr.univnantes.lina.uima.engines.TreeTagger"/>
     </delegateAnalysisEngine>
@@ -15,9 +18,12 @@
     <delegateAnalysisEngine key="StopWordEraser">
       <import name="fr.univnantes.lina.uima.engines.StopWordEraser"/>
     </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="Stemmer">
+      <import name="fr.univnantes.lina.uima.engines.Stemmer"/>
+    </delegateAnalysisEngine>
   </delegateAnalysisEngineSpecifiers>
   <analysisEngineMetaData>
-    <name>TTC Preliminary Linguistic Analysis</name>
+    <name>Preliminary Linguistic Analysis</name>
     <description/>
     <version>1.0</version>
     <vendor/>
@@ -35,6 +41,8 @@
           <parameter>TreeTagger/SofaNames</parameter>
           <parameter>StopWordEraser/SofaNames</parameter>
           <parameter>TreeTaggerMultextAnnotator/SofaNames</parameter>
+          <parameter>TreeTaggerLemmaAnnotator/SofaNames</parameter>
+          <parameter>Stemmer/SofaNames</parameter>
         </overrides>
       </configurationParameter>
       <configurationParameter>
@@ -107,6 +115,8 @@
         <node>WordTokenizer</node>
         <node>TreeTagger</node>
         <node>TreeTaggerMultextAnnotator</node>
+        <node>TreeTaggerLemmaAnnotator</node>
+        <node>Stemmer</node>
         <node>StopWordEraser</node>
       </fixedFlow>
     </flowConstraints>
@@ -117,7 +127,9 @@
         <outputs>
           <type allAnnotatorFeatures="true">org.apache.uima.TokenAnnotation</type>
           <type allAnnotatorFeatures="true">org.apache.uima.SentenceAnnotation</type>
-          <type allAnnotatorFeatures="true">org.apache.uima.TaggerAnnotation</type>
+          <type allAnnotatorFeatures="true">org.apache.uima.TreeTaggerAnnotation</type>
+          <type allAnnotatorFeatures="true">org.apache.uima.MultextAnnotation</type>
+          <type allAnnotatorFeatures="true">org.apache.uima.LemmaAnnotation</type>
         </outputs>
         <languagesSupported>
           <language>en</language>

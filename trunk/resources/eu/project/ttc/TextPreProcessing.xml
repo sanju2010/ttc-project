@@ -3,7 +3,7 @@
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <implementationName>eu.project.ttc.engines.BaboukCollector</implementationName>
   <processingResourceMetaData>
-    <name>TTC Text PreProcessing</name>
+    <name>Text PreProcessing</name>
     <description/>
     <version>1.0</version>
     <vendor/>
@@ -31,7 +31,7 @@
     </configurationParameterSettings>
     <typeSystemDescription>
       <imports>
-        <import name="eu.project.ttc.TTC Type System"/>
+        <import name="eu.project.ttc.TypeSystem"/>
       </imports>
     </typeSystemDescription>
     <typePriorities/>
