@@ -95,6 +95,6 @@ The menu *Option > Find* makes you possible to filter Common Analysis Structures
 === Getting Started ===
 
  * Select the Collection Reader called *Text PreProcessing*. 
- * Select a first Analysis Engine called *Preliminary Linguitic Analysis* and set the parameter called _Tree Tagger Home Diretory_. 
+ * Select a first Analysis Engine called *Preliminary Linguistic Analysis* and set the parameter called _Tree Tagger Home Directory_. 
  * Select the second Analysis Engine called *Terminology Extraction*.
  * Select the last Analysis Engine called *Terminology Alignment*.
