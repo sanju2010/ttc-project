@@ -91,3 +91,10 @@ The menu *Options > Packages* makes you possible to select a Java archive on the
 The menu *Option > Find* makes you possible to filter Common Analysis Structures that satisfy a given constraint. 
 
 == TTC Features ==
+
+=== Getting Started ===
+
+ * Select the Collection Reader called *Text PreProcessing*. 
+ * Select a first Analysis Engine called *Preliminary Linguitic Analysis* and set the parameter called _Tree Tagger Home Diretory_. 
+ * Select the second Analysis Engine called *Terminology Extraction*.
+ * Select the last Analysis Engine called *Terminology Alignment*.
