@@ -1,9 +1,13 @@
-#summary help
+#summary This is the help page of the tool TTC Dunamis
 #labels Featured
 
 = Help =
 
-== What is TTC Dunamis? ==
+This help is divided into 3 sections: the first corresponds to the TTC Dunamis requirements, the second to the UIMA features of this tool and the last to the special TTC feature for terminology management.
+
+== Synopsis ==
+
+=== What is TTC Dunamis? ===
 
 The name _TTC Dunamis_ comes from the UIMA Dunamis UIMA Collection Processing Engine editor (see http://code.google.com/p/uima-dunamis/) and the UIMA components provided by the European project TTC (see http://www.ttc-project.eu/).
 
@@ -13,12 +17,12 @@ _TTC Dunamis_ is an OpenSource tool as it is distributed under the Apache Licens
 
 *Warning*: _TTC Dunamis_ has only been tested under Linux!
 
-== How to install TTC Dunamis? ==
+=== How to install TTC Dunamis? ===
 
 It's easy: just download the following Java archive: 
 http://ttc-project.googlecode.com/files/ttc-dunamis-11-03-03.jar
 
-== How to launch TTC Dunamis? ==
+=== How to launch TTC Dunamis? ===
 
 It's easy too: just open the _TTC Dunamis_ Java archive within 
 a Runtime Environment for Java 6. (either Sun Java 6 Runtime or OpenJDK Java 6 Runtime). A right-click on the __TTC Dunamis_ Java archive should display the different ways to open such a file.
@@ -28,56 +32,62 @@ The following command line also launches _TTC Dunamis_:
   java -jar ttc-dunamis-11-03-03.jar
 }}}
 
-== How to create a Collection Processing Engine? ==
+== UIMA Features ==
+
+=== How to create a Collection Processing Engine? ===
 
 The menu *File > New* makes you possible to create such an engine. A file chooser asks you for a file name. Then your Collection Processing Engine appears among the available Collection Processing Engines.
 
-== How to open a Collection Processing Engine? ==
+=== How to open a Collection Processing Engine? ===
 
 The menu *File > Open* makes you possible to open an engine. A file chooser asks you for an existing file. Then your Collection Processing Engine appears among the available Collection Processing Engines.
 
-== How to select a Collection Reader? ==
+=== How to select a Collection Reader? ===
 
 Just drag a Collection Reader from the available Collection Readers and drop it in the selected Collection Readers!
 
-== How to set the parameters of the Collection Reader? ==
+=== How to set the parameters of the Collection Reader? ===
 
 Just double click on your selected Collection Reader. A window then displays the parameters and makes you possible to modify them.
 
-== How to select an Analysis Engine? ==
+=== How to select an Analysis Engine? ===
 
 Just drag a Analysis Engine from the available Analysis Engines and drop it in the selected Analysis Engines! You can drag either Aggregate or Primitive Analysis Engines from the available ones.
 
-== How to set the parameters of an Analysis Engine? ==
+=== How to set the parameters of an Analysis Engine? ===
 
 Just double click on your selected Analysis Engine as the same way as for Collection Reader. A window then displays the parameters and makes you possible to modify them.
 
-== How to execute a Collection Processing Engine? ==
+=== How to execute a Collection Processing Engine? ===
 
-== How to view the processing results of a Collection Processing Engine? ==
+The menu *Edit > Processing* displays a window that allows you to build and run the selected Collection Pocessing Engine.
+
+=== How to view the processing results of a Collection Processing Engine? ===
 
 Select the tab called *Processing Results* and double-click on an item in the Common Analysis Structures list. A window then displays the text content and the annotations provided by the Collection Reader and the Analysis Engines over the text content. 
 
-== How to view the information about a Collection Reader or Analysis Engine? ==
+=== How to view the information about a Collection Reader or Analysis Engine? ===
 
 Just double-click on an available Collection Reader or an available Analysis Engine.  
 
-== How to view the Type System of a Collection Processing Engine? ==
+=== How to view the Type System of a Collection Processing Engine? ===
 
 The menu *Edit > Type System* makes you possible to view and export the Type System of the selected Collection Processing Engine. It consists in the merge of the Analysis Engine Type Systems and the Collection Reader one.
 
-== How to get status and/or processing informations? ==
+=== How to get status and/or processing informations? ===
 
 The menu *Help > Console* displays a log window. 
 
-== How to get status and/or processing informations? ==
+=== How to get status and/or processing informations? ===
 
 The menu *Help > Help* opens this page through out a web browser. 
 
-== How to integrate my own UIMA components? ==
+=== How to integrate my own UIMA components? ===
 
 The menu *Options > Packages* makes you possible to select a Java archive on the local file system. Just drag and drop it into the package list and restart _TTC Dunamis_.
 
-== How to search annotations among processing results? ==
+=== How to search annotations among processing results? ===
 
 The menu *Option > Find* makes you possible to filter Common Analysis Structures that satisfy a given constraint. 
+
+== TTC Features ==
