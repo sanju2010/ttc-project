@@ -5,7 +5,7 @@
 
 == What is TTC Dunamis? ==
 
-The name _TTC Dunamis_ comes from the UIMA Dunamis UIMA Collection Processing Engine editor (see http://google.code.com/p/uima-dunamis/) and the UIMA components provided by the European project TTC (see http://www.ttc-project.eu/).
+The name _TTC Dunamis_ comes from the UIMA Dunamis UIMA Collection Processing Engine editor (see http://code.google.com/p/uima-dunamis/) and the UIMA components provided by the European project TTC (see http://www.ttc-project.eu/).
 
 Then _TTC Dunamis_ makes you possible to create your own tool chains or Collection Processing Engines for terminology extraction and terminology alignment for the 7 languages: Englsih, German, French, Spanish, Latvian, Russian and Chinese.
 
