@@ -22,6 +22,10 @@ _TTC Dunamis_ is an OpenSource tool as it is distributed under the Apache Licens
 It's easy: just download the following Java archive: 
 http://ttc-project.googlecode.com/files/ttc-dunamis-11-03-03.jar
 
+=== Take a look at TTC Dunamis! ===
+
+<wiki:video url="http://www.youtube.com/watch?v=Vi6yoXaFZ44"/>
+
 === How to launch TTC Dunamis? ===
 
 It's easy too: just open the _TTC Dunamis_ Java archive within 
