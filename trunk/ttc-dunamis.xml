@@ -4,105 +4,12 @@
   <artifactId>ttc-dunamis</artifactId>
   <version>11-03-03</version>
   <packaging>jar</packaging>
-  <name>TTC Tool</name>
+  <name>TTC Project's UIMA Dunamis</name>
   <dependencies>
     <dependency>
-      <groupId>org.apache.uima</groupId>
-      <artifactId>uimaj-core</artifactId>
-      <version>2.3.1</version>
-    </dependency>
-    <dependency>
-      <groupId>fr.univnantes.lina</groupId>
-      <artifactId>uima-common-library</artifactId>
-      <version>11-01-11</version>
-    </dependency>
-    <dependency>
-      <groupId>fr.univnantes.lina</groupId>
-      <artifactId>uima-dublin-core-library</artifactId>
-      <version>11-01-11</version>
-    </dependency>
-    <dependency>
-      <groupId>fr.univnantes.lina</groupId>
-      <artifactId>uima-find-library</artifactId>
-      <version>11-01-11</version>
-    </dependency>
-    <dependency>
-      <groupId>fr.univnantes.lina</groupId>
-      <artifactId>uima-word-tokenizer</artifactId>
-      <version>11-01-11</version>
-    </dependency>
-    <dependency>
-      <groupId>fr.univnantes.lina</groupId>
-      <artifactId>uima-sentence-splitter</artifactId>
-      <version>11-01-11</version>
-    </dependency>
-    <dependency>
-    	<groupId>fr.univnantes.lina</groupId>
-    	<artifactId>uima-tree-tagger-wrapper</artifactId>
-    	<version>11-01-11</version>
-    </dependency>
-    <dependency>
-    	<groupId>fr.univnantes.lina</groupId>
-    	<artifactId>uima-rule-based-tagger</artifactId>
-    	<version>11-01-11</version>
-    </dependency>
-    <dependency>
-    	<groupId>fr.univnantes.lina</groupId>
-    	<artifactId>uima-multext-annotator</artifactId>
-    	<version>11-01-11</version>
-    </dependency>
-    <dependency>
-    	<groupId>fr.univnantes.lina</groupId>
-    	<artifactId>uima-acabit</artifactId>
-    	<version>11-01-11</version>
-    </dependency>
-    <dependency>
-    	<groupId>fr.univnantes.lina</groupId>
-    	<artifactId>uima-stemmer</artifactId>
-    	<version>11-01-11</version>
-    </dependency>
-    <dependency>
-    	<groupId>fr.univnantes.lina</groupId>
-    	<artifactId>uima-term-base-exchange</artifactId>
-    	<version>11-01-11</version>
-    </dependency>
-    <dependency>
-    	<groupId>fr.univnantes.lina</groupId>
-    	<artifactId>uima-stop-word-eraser</artifactId>
-    	<version>11-01-11</version>
-    </dependency>
-    <dependency>
-    	<groupId>fr.univnantes.lina</groupId>
-    	<artifactId>uima-lemmatizer</artifactId>
-    	<version>11-01-11</version>
-    </dependency>
-    <dependency>
-    	<groupId>fr.univnantes.lina</groupId>
-    	<artifactId>uima-neighbour-annotator</artifactId>
-    	<version>11-01-11</version>
-    </dependency>
-    <dependency>
-    	<groupId>fr.univnantes.lina</groupId>
-    	<artifactId>uima-ziggurat</artifactId>
-    	<version>11-01-11</version>
-    </dependency>
-    <dependency>
-    	<groupId>fr.univnantes.lina</groupId>
-    	<artifactId>term-base-exchange-library</artifactId>
-    	<version>11-01-11</version>
-    	<type>jar</type>
-    </dependency>
-    <dependency>
-    	<groupId>fr.univnantes.lina</groupId>
-    	<artifactId>uima-find-library</artifactId>
-    	<version>11-01-11</version>
-    	<type>jar</type>
-    	<scope>compile</scope>
-    </dependency>
-    <dependency>
-    	<groupId>org.antlr</groupId>
-    	<artifactId>antlr-runtime</artifactId>
-    	<version>3.2</version>
+    	<groupId>eu.project.ttc</groupId>
+    	<artifactId>ttc-components</artifactId>
+    	<version>11-03-03</version>
     	<type>jar</type>
     	<scope>compile</scope>
     </dependency>
@@ -134,14 +41,15 @@
       </resource>
     </resources>
     <plugins>
-  	  <plugin>
+     <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
+        <version>2.2-beta-2</version>
         <configuration>
           <descriptorRefs>
             <descriptorRef>jar-with-dependencies</descriptorRef>
           </descriptorRefs>
           <appendAssemblyId>false</appendAssemblyId>
-	      <excludeScope>provided</excludeScope>
+	  <excludeScope>provided</excludeScope>
           <archive>
             <manifest>
               <mainClass>fr.univnantes.lina.uima.tools.dunamis.Dunamis</mainClass>
@@ -153,7 +61,7 @@
             <id>simple-command</id>
             <phase>package</phase>
             <goals>
-              <goal>attached</goal>
+              <goal>single</goal>
             </goals>
           </execution>
         </executions>
