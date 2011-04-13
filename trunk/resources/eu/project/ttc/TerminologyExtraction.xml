@@ -3,11 +3,14 @@
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>false</primitive>
   <delegateAnalysisEngineSpecifiers>
+    <delegateAnalysisEngine key="RuleBasedTermDetector">
+      <import name="fr.univnantes.lina.uima.engines.RuleBasedTermDetector"/>
+    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="TermBaseIndexer">
       <import name="fr.univnantes.lina.uima.engines.TermBaseIndexer"/>
     </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="TermDetector">
-      <import name="fr.univnantes.lina.uima.engines.TermDetector"/>
+    <delegateAnalysisEngine key="TermBaseWriter">
+      <import name="fr.univnantes.lina.uima.engines.TermBaseWriter"/>
     </delegateAnalysisEngine>
   </delegateAnalysisEngineSpecifiers>
   <analysisEngineMetaData>
@@ -22,8 +25,9 @@
         <multiValued>true</multiValued>
         <mandatory>false</mandatory>
         <overrides>
-          <parameter>TermDetector/SofaNames</parameter>
+          <parameter>RuleBasedTermDetector/SofaNames</parameter>
           <parameter>TermBaseIndexer/SofaNames</parameter>
+          <parameter>TermBaseWriter/SofaNames</parameter>
         </overrides>
       </configurationParameter>
       <configurationParameter>
@@ -32,7 +36,7 @@
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
         <overrides>
-          <parameter>TermBaseIndexer/TermBaseFile</parameter>
+          <parameter>TermBaseWriter/TermBaseFile</parameter>
         </overrides>
       </configurationParameter>
       <configurationParameter>
@@ -114,8 +118,9 @@
     </configurationParameterSettings>
     <flowConstraints>
       <fixedFlow>
-        <node>TermDetector</node>
+        <node>RuleBasedTermDetector</node>
         <node>TermBaseIndexer</node>
+        <node>TermBaseWriter</node>
       </fixedFlow>
     </flowConstraints>
     <typePriorities/>

@@ -4,9 +4,19 @@
   <implementationName>eu.project.ttc.engines.BaboukCollector</implementationName>
   <processingResourceMetaData>
     <name>Text PreProcessing</name>
-    <description/>
-    <version>1.0</version>
-    <vendor/>
+    <description>This is the Babouk Collection Reader fro UIMA: it populates corpora provided by Babouk into UIMA Collection Propcessing Engines. 
+
+Babouk is a web crawler that provides both a Dublin Core XML file with the metadata of the crawled remote resource and a file with the extracted text from this crawled remote resource.
+
+This Babouk Collection Reader requires two parameters: 
+  * a single-valued String parameter SofaName for setting the Sofe name;
+  * a single-valued String parameter Directory: for setting the crawled corpora directory.
+
+It provides a Sofa which name is defined by the SofaName parameter, which document text is given by the remote resource extracted text content and which document language is given by the Dublin Core language property value.
+
+This Babouk Collection Reader is called Text PreProcessing as it stands for the so-called 1st step of the TTC functional architecture.</description>
+    <version>11-03-03</version>
+    <vendor>LINA</vendor>
     <configurationParameters>
       <configurationParameter>
         <name>SofaName</name>
@@ -31,7 +41,8 @@
     </configurationParameterSettings>
     <typeSystemDescription>
       <imports>
-        <import name="eu.project.ttc.TypeSystem"/>
+        <import name="fr.univnantes.lina.uima.types.DublinCore"/>
+        <import name="org.apache.uima.examples.SourceDocumentInformation"/>
       </imports>
     </typeSystemDescription>
     <typePriorities/>
@@ -43,6 +54,7 @@
           <type allAnnotatorFeatures="true">org.apache.uima.Property</type>
           <type allAnnotatorFeatures="true">org.apache.uima.DublinCore</type>
           <type allAnnotatorFeatures="true">uima.tcas.DocumentAnnotation</type>
+          <type allAnnotatorFeatures="true">org.apache.uima.examples.SourceDocumentInformation</type>
         </outputs>
         <languagesSupported>
           <language>en</language>
