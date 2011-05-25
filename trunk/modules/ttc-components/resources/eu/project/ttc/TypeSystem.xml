@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
+  <name>Type System</name>
+  <description>This Type System gathers Type Systems required by every UIMA CAS processors used within the TTC project.</description>
+  <version>11-06-06</version>
+  <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
+  <imports>
+    <import name="fr.univnantes.lina.uima.types.DublinCore"/>
+    <import name="fr.univnantes.lina.uima.types.TokenAnnotation"/>
+    <import name="fr.univnantes.lina.uima.types.TreeTaggerAnnotation"/>
+    <import name="fr.univnantes.lina.uima.types.Multext"/>
+    <import name="fr.univnantes.lina.uima.types.TermAnnotation"/>
+    <import name="org.apache.uima.examples.SourceDocumentInformation"/>
+  </imports>
+</typeSystemDescription>

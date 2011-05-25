@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
+  <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
+  <primitive>true</primitive>
+  <annotatorImplementationName>fr.univnantes.lina.uima.engines.XmiFileWriter</annotatorImplementationName>
+  <analysisEngineMetaData>
+    <name>Xmi Generator</name>
+    <description>This Analysis Engine produces XMI files from CAS. 
+
+It outputs XMI files int the directory set by the single-valued String parameter called 'Directory'.
+
+The multi-valued String parameter can be ignore.</description>
+    <version>11-06-06</version>
+    <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
+    <configurationParameters>
+      <configurationParameter>
+        <name>SofaNames</name>
+        <type>String</type>
+        <multiValued>true</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
+      <configurationParameter>
+        <name>Directory</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
+    </configurationParameters>
+    <configurationParameterSettings>
+      <nameValuePair>
+        <name>SofaNames</name>
+        <value>
+          <array>
+            <string>_InitialView</string>
+          </array>
+        </value>
+      </nameValuePair>
+    </configurationParameterSettings>
+    <typeSystemDescription>
+      <imports>
+        <import name="org.apache.uima.examples.SourceDocumentInformation"/>
+        <import name="fr.univnantes.lina.uima.types.DublinCore"/>
+        <import name="fr.univnantes.lina.uima.types.TokenAnnotation"/>
+        <import name="fr.univnantes.lina.uima.types.SentenceAnnotation"/>
+        <import name="fr.univnantes.lina.uima.types.TreeTaggerAnnotation"/>
+        <import name="fr.univnantes.lina.uima.types.Multext"/>
+        <import name="fr.univnantes.lina.uima.types.LemmaAnnotation"/>
+        <import name="fr.univnantes.lina.uima.types.StemAnnotation"/>
+        <import name="fr.univnantes.lina.uima.types.TermAnnotation"/>
+        <import name="fr.univnantes.lina.uima.types.NeoClassicalCompoundAnnotation"/>
+        <import name="fr.univnantes.lina.uima.types.NeighbourAnnotation"/>
+      </imports>
+    </typeSystemDescription>
+    <typePriorities/>
+    <fsIndexCollection/>
+    <capabilities>
+      <capability>
+        <inputs/>
+        <outputs/>
+        <languagesSupported/>
+      </capability>
+    </capabilities>
+    <operationalProperties>
+      <modifiesCas>true</modifiesCas>
+      <multipleDeploymentAllowed>true</multipleDeploymentAllowed>
+      <outputsNewCASes>false</outputsNewCASes>
+    </operationalProperties>
+  </analysisEngineMetaData>
+  <resourceManagerConfiguration/>
+</analysisEngineDescription>

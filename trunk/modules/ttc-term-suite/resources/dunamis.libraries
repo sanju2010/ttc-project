@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+
+  <entry key="ttc-project-01">eu.project.ttc.TextPreProcessing</entry>
+  <entry key="ttc-project-02">eu.project.ttc.LinguisticAnalysis</entry>
+  <entry key="ttc-project-03">eu.project.ttc.TerminologyExtraction</entry>
+  <entry key="ttc-project-04">eu.project.ttc.TerminologyAlignment</entry>
+  <entry key="ttc-project-05">eu.project.ttc.TypeSystem</entry>
+  <entry key="ttc-project-06">eu.project.ttc.engines.TermExtractorWrapper</entry>
+  <entry key="ttc-project-07">eu.project.ttc.engines.XmiCollector</entry>
+  <entry key="ttc-project-09">eu.project.ttc.engines.XmiGenerator</entry>
+  <entry key="ttc-project-10">eu.project.ttc.engines.TreeTaggerLemmaAnnotator</entry>
+  <entry key="ttc-project-11">eu.project.ttc.engines.EnglishTreeTaggerLemmaAnnotator</entry>
+  <entry key="ttc-project-12">eu.project.ttc.engines.FrenchTreeTaggerLemmaAnnotator</entry>
+  <entry key="ttc-project-13">eu.project.ttc.engines.GermanTreeTaggerLemmaAnnotator</entry>
+  <entry key="ttc-project-14">eu.project.ttc.engines.RussianTreeTaggerLemmaAnnotator</entry>
+  <entry key="ttc-project-15">eu.project.ttc.engines.SpanishTreeTaggerLemmaAnnotator</entry>
+  <entry key="ttc-project-20">eu.project.ttc.MuleLinguisticAnalysis</entry>
+  <entry key="ttc-project-21">eu.project.ttc.engines.EnglishLinguisticAnalysis</entry>
+  <entry key="ttc-project-22">eu.project.ttc.engines.FrenchLinguisticAnalysis</entry>
+  <entry key="ttc-project-23">eu.project.ttc.engines.GermanLinguisticAnalysis</entry>
+  <entry key="ttc-project-24">eu.project.ttc.engines.RussianLinguisticAnalysis</entry>
+  <entry key="ttc-project-25">eu.project.ttc.engines.SpanishLinguisticAnalysis</entry>
+  <entry key="ttc-project-26">eu.project.ttc.engines.ChineseLinguisticAnalysis</entry>
+
+  <entry key="uima-word-tokenizer-01">fr.univnantes.lina.uima.engines.WordTokenizer</entry>
+  <entry key="uima-word-tokenizer-02">fr.univnantes.lina.uima.engines.SimpleWordTokenizer</entry>
+  <entry key="uima-word-tokenizer-03">fr.univnantes.lina.uima.engines.FrenchWordTokenizer</entry>
+  <entry key="uima-word-tokenizer-04">fr.univnantes.lina.uima.engines.FrenchCompoundWordTokenizer</entry>
+  <entry key="uima-word-tokenizer-05">fr.univnantes.lina.uima.engines.EnglishWordTokenizer</entry>
+  <entry key="uima-word-tokenizer-06">fr.univnantes.lina.uima.engines.GermanWordTokenizer</entry>
+  <entry key="uima-word-tokenizer-07">fr.univnantes.lina.uima.engines.SpanishWordTokenizer</entry>
+  <entry key="uima-word-tokenizer-08">fr.univnantes.lina.uima.engines.RussianWordTokenizer</entry>
+  <entry key="uima-word-tokenizer-09">fr.univnantes.lina.uima.engines.ChineseWordTokenizer</entry>
+
+  <entry key="uima-sentence-splitter-01">fr.univnantes.lina.uima.engines.SentenceSplitter</entry>
+  <entry key="uima-sentence-splitter-02">fr.univnantes.lina.uima.engines.FrenchSentenceSplitter</entry>
+  <entry key="uima-sentence-splitter-03">fr.univnantes.lina.uima.engines.EnglishSentenceSplitter</entry>
+  <entry key="uima-sentence-splitter-04">fr.univnantes.lina.uima.engines.GermanSentenceSplitter</entry>
+
+  <entry key="uima-tree-tagger-wrapper-01">fr.univnantes.lina.uima.engines.TreeTaggerWrapper</entry>
+  <entry key="uima-tree-tagger-wrapper-02">fr.univnantes.lina.uima.engines.FrenchTreeTaggerWrapper</entry>
+  <entry key="uima-tree-tagger-wrapper-03">fr.univnantes.lina.uima.engines.EnglishTreeTaggerWrapper</entry>
+  <entry key="uima-tree-tagger-wrapper-04">fr.univnantes.lina.uima.engines.GermanTreeTaggerWrapper</entry>
+  <entry key="uima-tree-tagger-wrapper-05">fr.univnantes.lina.uima.engines.SpanishTreeTaggerWrapper</entry>
+  <entry key="uima-tree-tagger-wrapper-06">fr.univnantes.lina.uima.engines.RussianTreeTaggerWrapper</entry>
+  <entry key="uima-tree-tagger-wrapper-07">fr.univnantes.lina.uima.engines.ChineseTreeTaggerWrapper</entry>
+
+  <entry key="uima-multext-annotator-01">fr.univnantes.lina.uima.engines.TreeTaggerMultextAnnotator</entry>
+  <entry key="uima-multext-annotator-02">fr.univnantes.lina.uima.engines.FrenchTreeTaggerMultextAnnotator</entry>
+  <entry key="uima-multext-annotator-03">fr.univnantes.lina.uima.engines.EnglishTreeTaggerMultextAnnotator</entry>
+  <entry key="uima-multext-annotator-04">fr.univnantes.lina.uima.engines.GermanTreeTaggerMultextAnnotator</entry>
+  <entry key="uima-multext-annotator-05">fr.univnantes.lina.uima.engines.SpanishTreeTaggerMultextAnnotator</entry>
+  <entry key="uima-multext-annotator-06">fr.univnantes.lina.uima.engines.RussianTreeTaggerMultextAnnotator</entry>
+  <entry key="uima-multext-annotator-07">fr.univnantes.lina.uima.engines.ChineseTreeTaggerMultextAnnotator</entry>
+
+  <entry key="uima-lemmatizer-01">fr.univnantes.lina.uima.engines.Lemmatizer</entry>
+  <entry key="uima-lemmatizer-02">fr.univnantes.lina.uima.engines.FrenchLemmatizer</entry>
+  <entry key="uima-lemmatizer-03">fr.univnantes.lina.uima.engines.EnglishLemmatizer</entry>
+
+  <entry key="uima-stemmer-01">fr.univnantes.lina.uima.engines.Stemmer</entry>
+  <entry key="uima-stemmer-02">fr.univnantes.lina.uima.engines.FrenchStemmer</entry>
+  <entry key="uima-stemmer-03">fr.univnantes.lina.uima.engines.EnglishStemmer</entry>
+  <entry key="uima-stemmer-04">fr.univnantes.lina.uima.engines.GermanStemmer</entry>
+  <entry key="uima-stemmer-05">fr.univnantes.lina.uima.engines.SoanishStemmer</entry>
+  <entry key="uima-stemmer-06">fr.univnantes.lina.uima.engines.RussianStemmer</entry>
+
+  <entry key="uima-stop-word-eraser-01">fr.univnantes.lina.uima.engines.StopWordEraser</entry>
+  <entry key="uima-stop-word-eraser-02">fr.univnantes.lina.uima.engines.FrenchStopWordEraser</entry>
+  <entry key="uima-stop-word-eraser-03">fr.univnantes.lina.uima.engines.EnglishStopWordEraser</entry>
+  <entry key="uima-stop-word-eraser-04">fr.univnantes.lina.uima.engines.GermanStopWordEraser</entry>
+  <entry key="uima-stop-word-eraser-05">fr.univnantes.lina.uima.engines.SoanishStopWordEraser</entry>
+  <entry key="uima-stop-word-eraser-06">fr.univnantes.lina.uima.engines.RussianStopWordEraser</entry>
+
+  <entry key="uima-acabit-00">fr.univnantes.lina.uima.engines.Acabit</entry>
+  <entry key="uima-acabit-01">fr.univnantes.lina.uima.engines.RuleBasedTermDetector</entry>
+  <entry key="uima-acabit-02">fr.univnantes.lina.uima.engines.DefaultRuleBasedTermDetector</entry>
+  <entry key="uima-acabit-03">fr.univnantes.lina.uima.engines.EnglishRuleBasedTermDetector</entry>
+  <entry key="uima-acabit-04">fr.univnantes.lina.uima.engines.FrenchRuleBasedTermDetector</entry>
+
+  <entry key="uima-neighbour-annotator-01">fr.univnantes.lina.uima.engines.NeighbourAnnotator</entry>
+
+  <entry key="uima-term-base-exchange-01">fr.univnantes.lina.uima.engines.TermBaseIndexer</entry>
+  <entry key="uima-term-base-exchange-02">fr.univnantes.lina.uima.engines.TermBaseWriter</entry>
+  
+  <entry key="uima-neo-classical-compound-detector-01">fr.univnantes.lina.uima.engines.NeoClassicalCompoundDetector</entry>
+  <entry key="uima-neo-classical-compound-detector-02">fr.univnantes.lina.uima.engines.FrenchNeoClassicalCompoundDetector</entry>
+  <entry key="uima-neo-classical-compound-detector-03">fr.univnantes.lina.uima.engines.FrenchNeoClassicalCompoundNounDetector</entry>
+  <entry key="uima-neo-classical-compound-detector-04">fr.univnantes.lina.uima.engines.FrenchNeoClassicalCompoundAdjectiveDetector</entry>
+  
+  <entry key="uima-ziggurat-00">fr.univnantes.lina.uima.engines.Ziggurat</entry>
+  <entry key="uima-ziggurat-01">fr.univnantes.lina.uima.engines.TermContextIndexer</entry>
+  <entry key="uima-ziggurat-02">fr.univnantes.lina.uima.engines.TermContextWriter</entry>
+  
+</properties>

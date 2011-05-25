@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
+  <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
+  <primitive>false</primitive>
+  <delegateAnalysisEngineSpecifiers>
+    <delegateAnalysisEngine key="RuleBasedTermDetector">
+      <import name="fr.univnantes.lina.uima.engines.RuleBasedTermDetector"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="TermBaseWriter">
+      <import name="fr.univnantes.lina.uima.engines.TermBaseWriter"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="TermBaseIndexer">
+      <import name="fr.univnantes.lina.uima.engines.TermBaseIndexer"/>
+    </delegateAnalysisEngine>
+  </delegateAnalysisEngineSpecifiers>
+  <analysisEngineMetaData>
+    <name>Terminology Extraction</name>
+    <description>To do</description>
+    <version>11-06-06</version>
+    <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
+    <configurationParameters searchStrategy="language_fallback">
+      <configurationParameter>
+        <name>SofaNames</name>
+        <type>String</type>
+        <multiValued>true</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>RuleBasedTermDetector/SofaNames</parameter>
+          <parameter>TermBaseIndexer/SofaNames</parameter>
+          <parameter>TermBaseWriter/SofaNames</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>TermBaseFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>TermBaseWriter/TermBaseFile</parameter>
+        </overrides>
+      </configurationParameter>
+    </configurationParameters>
+    <configurationParameterSettings>
+      <nameValuePair>
+        <name>SofaNames</name>
+        <value>
+          <array>
+            <string>_InitialView</string>
+          </array>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>TermBaseFile</name>
+        <value>
+          <string>ttc-term-suite-output.tbx</string>
+        </value>
+      </nameValuePair>
+    </configurationParameterSettings>
+    <flowConstraints>
+      <fixedFlow>
+        <node>RuleBasedTermDetector</node>
+        <node>TermBaseIndexer</node>
+        <node>TermBaseWriter</node>
+      </fixedFlow>
+    </flowConstraints>
+    <typePriorities/>
+    <fsIndexCollection/>
+    <capabilities>
+      <capability>
+        <inputs>
+          <type allAnnotatorFeatures="true">org.apache.uima.MultextAnnotation</type>
+        </inputs>
+        <outputs>
+          <type allAnnotatorFeatures="true">org.apache.uima.TermAnnotation</type>
+        </outputs>
+        <languagesSupported>
+          <language>en</language>
+          <language>fr</language>
+          <language>de</language>
+          <language>es</language>
+          <language>ru</language>
+          <language>lv</language>
+          <language>zh</language>
+        </languagesSupported>
+      </capability>
+    </capabilities>
+    <operationalProperties>
+      <modifiesCas>true</modifiesCas>
+      <multipleDeploymentAllowed>true</multipleDeploymentAllowed>
+      <outputsNewCASes>false</outputsNewCASes>
+    </operationalProperties>
+  </analysisEngineMetaData>
+  <resourceManagerConfiguration/>
+</analysisEngineDescription>

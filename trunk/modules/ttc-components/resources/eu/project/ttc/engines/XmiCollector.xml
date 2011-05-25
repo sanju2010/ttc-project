@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<collectionReaderDescription xmlns="http://uima.apache.org/resourceSpecifier">
+  <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
+  <implementationName>fr.univnantes.lina.uima.engines.XmiFileCollector</implementationName>
+  <processingResourceMetaData>
+    <name>Xmi Collector</name>
+    <description>This Collection Reader creates CAS from XMI files. Annotations which type is declared within the TTC Type System would be indexed into these CAS.
+
+The directory containing the XMI files can be specify by the means of the single-valued String parameter 'Directory'. 
+
+The Boolean parameter 'BrowseSubDirectories' enables to scan the sub directories of the previous one.</description>
+    <version>11-06-06</version>
+    <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
+    <configurationParameters>
+      <configurationParameter>
+        <name>Directory</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
+      <configurationParameter>
+        <name>BrowseSubDirectories</name>
+        <type>Boolean</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
+    </configurationParameters>
+    <configurationParameterSettings>
+      <nameValuePair>
+        <name>BrowseSubDirectories</name>
+        <value>
+          <boolean>false</boolean>
+        </value>
+      </nameValuePair>
+    </configurationParameterSettings>
+    <typeSystemDescription>
+      <imports>
+        <import name="org.apache.uima.examples.SourceDocumentInformation"/>
+        <import name="fr.univnantes.lina.uima.types.DublinCore"/>
+        <import name="fr.univnantes.lina.uima.types.TokenAnnotation"/>
+        <import name="fr.univnantes.lina.uima.types.SentenceAnnotation"/>
+        <import name="fr.univnantes.lina.uima.types.TreeTaggerAnnotation"/>
+        <import name="fr.univnantes.lina.uima.types.Multext"/>
+        <import name="fr.univnantes.lina.uima.types.LemmaAnnotation"/>
+        <import name="fr.univnantes.lina.uima.types.StemAnnotation"/>
+        <import name="fr.univnantes.lina.uima.types.TermAnnotation"/>
+        <import name="fr.univnantes.lina.uima.types.NeoClassicalCompoundAnnotation"/>
+        <import name="fr.univnantes.lina.uima.types.NeighbourAnnotation"/>
+      </imports>
+    </typeSystemDescription>
+    <typePriorities/>
+    <fsIndexCollection/>
+    <capabilities>
+      <capability>
+        <inputs/>
+        <outputs/>
+        <languagesSupported/>
+      </capability>
+    </capabilities>
+    <operationalProperties>
+      <modifiesCas>true</modifiesCas>
+      <multipleDeploymentAllowed>false</multipleDeploymentAllowed>
+      <outputsNewCASes>true</outputsNewCASes>
+    </operationalProperties>
+  </processingResourceMetaData>
+  <resourceManagerConfiguration/>
+</collectionReaderDescription>

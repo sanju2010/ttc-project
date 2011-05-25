@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<collectionReaderDescription xmlns="http://uima.apache.org/resourceSpecifier">
+  <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
+  <implementationName>eu.project.ttc.engines.TextPreProcessing</implementationName>
+  <processingResourceMetaData>
+    <name>Text PreProcessing</name>
+    <description>This is Collection Reader creates CAS from corpora made of document pairs consisting in a Dublin Core XML metadata and a text file. WARNING: it assumes that the Dublin Core metadata applies to the text file and that both files have the same name (without their own suffixes).
+
+This Collection Reader requires two parameter settings. 
+The first single-valued String parameter 'SofaName' defines the name of the Subject of Analysis (Sofa). The second single-valued String parameter 'Directory' specifies where to find the corpora.
+
+It provides a Sofa which document text is given by the text file and which document language is given by the Dublin Core language property value.</description>
+    <version>11-03-03</version>
+    <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
+    <configurationParameters>
+      <configurationParameter>
+        <name>SofaName</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
+      <configurationParameter>
+        <name>Directory</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
+    </configurationParameters>
+    <configurationParameterSettings>
+      <nameValuePair>
+        <name>SofaName</name>
+        <value>
+          <string>_InitialView</string>
+        </value>
+      </nameValuePair>
+    </configurationParameterSettings>
+    <typeSystemDescription>
+      <imports>
+        <import name="fr.univnantes.lina.uima.types.DublinCore"/>
+        <import name="org.apache.uima.examples.SourceDocumentInformation"/>
+      </imports>
+    </typeSystemDescription>
+    <typePriorities/>
+    <fsIndexCollection/>
+    <capabilities>
+      <capability>
+        <inputs/>
+        <outputs>
+          <type allAnnotatorFeatures="true">org.apache.uima.Property</type>
+          <type allAnnotatorFeatures="true">org.apache.uima.DublinCore</type>
+          <type allAnnotatorFeatures="true">uima.tcas.DocumentAnnotation</type>
+          <type allAnnotatorFeatures="true">org.apache.uima.examples.SourceDocumentInformation</type>
+        </outputs>
+        <languagesSupported>
+          <language>en</language>
+          <language>fr</language>
+          <language>de</language>
+          <language>es</language>
+          <language>ru</language>
+          <language>lv</language>
+          <language>zh</language>
+        </languagesSupported>
+      </capability>
+    </capabilities>
+    <operationalProperties>
+      <modifiesCas>true</modifiesCas>
+      <multipleDeploymentAllowed>false</multipleDeploymentAllowed>
+      <outputsNewCASes>true</outputsNewCASes>
+    </operationalProperties>
+  </processingResourceMetaData>
+  <resourceManagerConfiguration/>
+</collectionReaderDescription>
