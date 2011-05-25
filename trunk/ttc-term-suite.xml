@@ -1,14 +1,25 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>eu.project.ttc</groupId>
-  <artifactId>ttc-project</artifactId>
-  <version>11-06-06</version>
-  <packaging>pom</packaging>
-  <name>TTC Project'S UIMA Components and Tools</name>
-  <modules>
-    <module>modules/ttc-components</module>
-    <module>modules/ttc-term-suite</module>
-  </modules>
+  <artifactId>ttc-dunamis</artifactId>
+  <version>11-03-03</version>
+  <packaging>jar</packaging>
+  <name>TTC Project's UIMA Dunamis</name>
+  <dependencies>
+    <dependency>
+    	<groupId>eu.project.ttc</groupId>
+    	<artifactId>ttc-components</artifactId>
+    	<version>11-03-03</version>
+    	<type>jar</type>
+    	<scope>compile</scope>
+    </dependency>
+    <dependency>
+    	<groupId>fr.univnantes.lina</groupId>
+    	<artifactId>uima-dunamis</artifactId>
+    	<version>11-01-11</version>
+    	<scope>compile</scope>
+    </dependency>
+  </dependencies>
   <licenses>
     <license>
       <name>Apache 2</name>
@@ -22,7 +33,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding> 
   </properties>
   <build>
-    <defaultGoal>package</defaultGoal>
+  	<defaultGoal>package</defaultGoal>
     <sourceDirectory>sources</sourceDirectory>
     <resources>
       <resource>
@@ -30,6 +41,31 @@
       </resource>
     </resources>
     <plugins>
+     <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>2.2-beta-2</version>
+        <configuration>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+          <appendAssemblyId>false</appendAssemblyId>
+	  <excludeScope>provided</excludeScope>
+          <archive>
+            <manifest>
+              <mainClass>fr.univnantes.lina.uima.tools.dunamis.Dunamis</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+        <executions>
+          <execution>
+            <id>simple-command</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -37,32 +73,8 @@
           <source>1.6</source>
           <target>1.6</target>
 	</configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-source-plugin</artifactId>
-        <executions>
-          <execution>
-            <phase>verify</phase>
-            <goals>
-              <goal>jar</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <executions>
-          <execution>
-            <phase>verify</phase>
-            <goals>
-              <goal>jar</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
+   </plugin>
+  </plugins>
     <extensions>
       <extension>
         <groupId>org.apache.maven.wagon</groupId>
@@ -71,7 +83,6 @@
       </extension>
     </extensions>
   </build>
-  <dependencies/>
   <distributionManagement>
     <repository>
       <id>taln-maven-repository</id>
