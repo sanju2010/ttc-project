@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
+  <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
+  <primitive>true</primitive>
+  <annotatorImplementationName>eu.project.ttc.engines.TreeTaggerLemmaAnnotator</annotatorImplementationName>
+  <analysisEngineMetaData>
+    <name>Latvian TreeTagger Lemma Annotator</name>
+    <description>This Analysis Engine maps the feature 'lemma' of annotations which type is 'org.apache.uima.TreeTaggerAnnotation' into the feature 'value' of annotations which type is 'org.apache.uima.LemmaAnnotation'.
+
+This Analysis Engine is devoted to German processing.
+
+Subjects of Analysis to process can be defined by the multi-valued String parameter 'SofaNames' set to the single value '_InitialView' by default.</description>
+    <version>11-06-06</version>
+    <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
+    <configurationParameters>
+      <configurationParameter>
+        <name>SofaNames</name>
+        <type>String</type>
+        <multiValued>true</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
+    </configurationParameters>
+    <configurationParameterSettings>
+      <nameValuePair>
+        <name>SofaNames</name>
+        <value>
+          <array>
+            <string>_InitialView</string>
+          </array>
+        </value>
+      </nameValuePair>
+    </configurationParameterSettings>
+    <typeSystemDescription>
+      <imports>
+        <import name="fr.univnantes.lina.uima.types.LemmaAnnotation"/>
+        <import name="fr.univnantes.lina.uima.types.TreeTaggerAnnotation"/>
+      </imports>
+    </typeSystemDescription>
+    <typePriorities/>
+    <fsIndexCollection/>
+    <capabilities>
+      <capability>
+        <inputs>
+          <type allAnnotatorFeatures="true">org.apache.uima.TreeTaggerAnnotation</type>
+        </inputs>
+        <outputs>
+          <type allAnnotatorFeatures="true">org.apache.uima.LemmaAnnotation</type>
+        </outputs>
+        <languagesSupported>
+          <language>lv</language>
+        </languagesSupported>
+      </capability>
+    </capabilities>
+    <operationalProperties>
+      <modifiesCas>true</modifiesCas>
+      <multipleDeploymentAllowed>true</multipleDeploymentAllowed>
+      <outputsNewCASes>false</outputsNewCASes>
+    </operationalProperties>
+  </analysisEngineMetaData>
+  <externalResourceDependencies>
+    <externalResourceDependency>
+      <key>Lexicon</key>
+      <description/>
+      <interfaceName>fr.univnantes.lina.uima.models.Lexicon</interfaceName>
+      <optional>false</optional>
+    </externalResourceDependency>
+  </externalResourceDependencies>
+  <resourceManagerConfiguration>
+    <externalResources>
+      <externalResource>
+        <name>FrenchLexicon</name>
+        <description/>
+        <fileResourceSpecifier>
+          <fileUrl>fr/univnantes/lina/uima/resources/lexicons/french.txt</fileUrl>
+        </fileResourceSpecifier>
+        <implementationName>fr.univnantes.lina.uima.models.Lexicon</implementationName>
+      </externalResource>
+    </externalResources>
+    <externalResourceBindings>
+      <externalResourceBinding>
+        <key>Lexicon</key>
+        <resourceName>FrenchLexicon</resourceName>
+      </externalResourceBinding>
+    </externalResourceBindings>
+  </resourceManagerConfiguration>
+</analysisEngineDescription>

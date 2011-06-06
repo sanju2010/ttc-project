@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
+  <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
+  <primitive>false</primitive>
+  <delegateAnalysisEngineSpecifiers>
+    <delegateAnalysisEngine key="LatvianTreeTaggerMultextAnnotator">
+      <import name="eu.project.ttc.engines.LatvianTreeTaggerMultextAnnotator"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="LatvianTildeTagger">
+      <import name="eu.project.ttc.engines.LatvianTildeTagger"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="LatvianTreeTaggerLemmaAnnotator">
+      <import name="eu.project.ttc.engines.LatvianTreeTaggerLemmaAnnotator"/>
+    </delegateAnalysisEngine>
+  </delegateAnalysisEngineSpecifiers>
+  <analysisEngineMetaData>
+    <name>Latvian Linguistic Analysis</name>
+    <description>This is Analysis Engine performs linguitic analysis for Latvian. It processes word tokenization, part-of-speech tagging, lemmatization and stemming. Both part-of-speech tagging and lemmatization are delegated to the external program TreeTagger. The stemming is based on the Java version of the Porter's algorithm.
+
+The single-valued String parameter 'TreeTaggerHomeDirectory' specifies where TreeTagger is installed on yorr local system.  WARNING: it assumes to find the executable program 'tree-tagger' in the bin/ sub-directory and the language-parameter files in the lib/ one.
+
+The Boolean parameter 'ExpandPartOfSpeech' enables Multext annotations refinment. For example, it produces an annotation NuonAnnotation instead of its parent one MultextAnnotation[catgegory=noun].
+
+The multi-valued String parameter 'SofaNames' enables processing on the so-called Subjects of Analysis. Default is set to the single value '_InitialView'.</description>
+    <version>11-06-06</version>
+    <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
+    <configurationParameters searchStrategy="language_fallback">
+      <configurationParameter>
+        <name>SofaNames</name>
+        <type>String</type>
+        <multiValued>true</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>LatvianTildeTagger/SofaNames</parameter>
+          <parameter>LatvianTreeTaggerLemmaAnnotator/SofaNames</parameter>
+          <parameter>LatvianTreeTaggerMultextAnnotator/SofaNames</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>TaggerFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>LatvianTildeTagger/TaggerFile</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>ExpandPartOfSpeech</name>
+        <type>Boolean</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>LatvianTreeTaggerMultextAnnotator/ExpandPartOfSpeech</parameter>
+        </overrides>
+      </configurationParameter>
+    </configurationParameters>
+    <configurationParameterSettings>
+      <nameValuePair>
+        <name>SofaNames</name>
+        <value>
+          <array>
+            <string>_InitialView</string>
+          </array>
+        </value>
+      </nameValuePair>
+    </configurationParameterSettings>
+    <flowConstraints>
+      <fixedFlow>
+        <node>LatvianTildeTagger</node>
+        <node>LatvianTreeTaggerMultextAnnotator</node>
+        <node>LatvianTreeTaggerLemmaAnnotator</node>
+      </fixedFlow>
+    </flowConstraints>
+    <typePriorities/>
+    <fsIndexCollection/>
+    <capabilities>
+      <capability>
+        <inputs/>
+        <outputs>
+          <type allAnnotatorFeatures="true">org.apache.uima.TreeTaggerAnnotation</type>
+        </outputs>
+        <languagesSupported>
+          <language>lv</language>
+        </languagesSupported>
+      </capability>
+    </capabilities>
+    <operationalProperties>
+      <modifiesCas>true</modifiesCas>
+      <multipleDeploymentAllowed>true</multipleDeploymentAllowed>
+      <outputsNewCASes>false</outputsNewCASes>
+    </operationalProperties>
+  </analysisEngineMetaData>
+  <resourceManagerConfiguration/>
+</analysisEngineDescription>
