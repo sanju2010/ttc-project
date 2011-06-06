@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
 
@@ -16,13 +16,16 @@
   <entry key="ttc-project-13">eu.project.ttc.engines.GermanTreeTaggerLemmaAnnotator</entry>
   <entry key="ttc-project-14">eu.project.ttc.engines.RussianTreeTaggerLemmaAnnotator</entry>
   <entry key="ttc-project-15">eu.project.ttc.engines.SpanishTreeTaggerLemmaAnnotator</entry>
-  <entry key="ttc-project-20">eu.project.ttc.MuleLinguisticAnalysis</entry>
   <entry key="ttc-project-21">eu.project.ttc.engines.EnglishLinguisticAnalysis</entry>
   <entry key="ttc-project-22">eu.project.ttc.engines.FrenchLinguisticAnalysis</entry>
   <entry key="ttc-project-23">eu.project.ttc.engines.GermanLinguisticAnalysis</entry>
   <entry key="ttc-project-24">eu.project.ttc.engines.RussianLinguisticAnalysis</entry>
   <entry key="ttc-project-25">eu.project.ttc.engines.SpanishLinguisticAnalysis</entry>
   <entry key="ttc-project-26">eu.project.ttc.engines.ChineseLinguisticAnalysis</entry>
+  <entry key="ttc-project-27">eu.project.ttc.engines.LatvianLinguisticAnalysis</entry>
+  <entry key="ttc-project-30">eu.project.ttc.engines.LatvianTildeTagger</entry>
+  <entry key="ttc-project-31">eu.project.ttc.engines.LatvianTreeTaggerMultextAnnotator</entry>
+  <entry key="ttc-project-32">eu.project.ttc.engines.LatvianTreeTaggerLemmaAnnotator</entry>
 
   <entry key="uima-word-tokenizer-01">fr.univnantes.lina.uima.engines.WordTokenizer</entry>
   <entry key="uima-word-tokenizer-02">fr.univnantes.lina.uima.engines.SimpleWordTokenizer</entry>
@@ -78,6 +81,9 @@
   <entry key="uima-acabit-02">fr.univnantes.lina.uima.engines.DefaultRuleBasedTermDetector</entry>
   <entry key="uima-acabit-03">fr.univnantes.lina.uima.engines.EnglishRuleBasedTermDetector</entry>
   <entry key="uima-acabit-04">fr.univnantes.lina.uima.engines.FrenchRuleBasedTermDetector</entry>
+  <entry key="uima-acabit-05">fr.univnantes.lina.uima.engines.TermFeatureDetector</entry>
+  <entry key="uima-acabit-06">fr.univnantes.lina.uima.engines.TermPartOfSpeechDetector</entry>
+  <entry key="uima-acabit-07">fr.univnantes.lina.uima.engines.TermLemmaDetector</entry>
 
   <entry key="uima-neighbour-annotator-01">fr.univnantes.lina.uima.engines.NeighbourAnnotator</entry>
 
@@ -91,6 +97,8 @@
   
   <entry key="uima-ziggurat-00">fr.univnantes.lina.uima.engines.Ziggurat</entry>
   <entry key="uima-ziggurat-01">fr.univnantes.lina.uima.engines.TermContextIndexer</entry>
-  <entry key="uima-ziggurat-02">fr.univnantes.lina.uima.engines.TermContextWriter</entry>
+  <entry key="uima-ziggurat-02">fr.univnantes.lina.uima.engines.TermContextTransferer</entry>
+  <entry key="uima-ziggurat-03">fr.univnantes.lina.uima.engines.TermContextAligner</entry>
+  <entry key="uima-ziggurat-04">fr.univnantes.lina.uima.engines.TermContextWriter</entry>
   
 </properties>

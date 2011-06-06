@@ -6,7 +6,11 @@ import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -218,8 +222,10 @@ public class TextPreProcessing extends Collector {
 	
 	private void doCollect(File directory) {
 		if (directory.exists()) {
-			if (directory.isDirectory()) {
-				File[] files = directory.listFiles(this.filter);
+			if (directory.isDirectory()) {				
+				List<File> files = new ArrayList<File>();
+				files.addAll(Arrays.asList(directory.listFiles(this.filter)));
+				Collections.sort(files);
 				for (File file : files) {
 					if (file.isDirectory()) {
 						this.doCollect(file);

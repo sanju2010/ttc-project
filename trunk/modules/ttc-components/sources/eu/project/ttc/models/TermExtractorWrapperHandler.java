@@ -53,9 +53,11 @@ public class TermExtractorWrapperHandler extends DefaultWrapperHandler {
 				String id = elements[5];
 				TermAnnotation termAnnotation = new TermAnnotation(cas,begin.intValue(),end.intValue());
 				termAnnotation.setId(id);
+				/*
 				termAnnotation.setDocument(this.getDocument(cas));
 				termAnnotation.setPartOfSpeech(pattern);
 				termAnnotation.setLemma(lemma);
+				*/
 				if (!termAnnotation.getCoveredText().equals(coveredText)) {
 					System.out.println(coveredText + " != " + termAnnotation.getCoveredText());
 				}

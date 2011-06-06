@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8" ?>
+  <!DOCTYPE TBXXCS SYSTEM "tbxxcsdtd.dtd">
+  <TBXXCS id="TTC-XCS" version="1.0" lang="en">
+    <header>
+      <title>XCS file for the TTC Euorpean Project</title>
+    </header>
+    <languages>
+      <langInfo>
+	<langCode>de</langCode>
+	<langName>German</langName>
+      </langInfo>
+      <langInfo>
+	<langCode>en</langCode>
+	<langName>English</langName>
+      </langInfo>
+      <langInfo>
+	<langCode>es</langCode>
+	<langName>Spanish</langName>
+      </langInfo>
+      <langInfo>
+	<langCode>fr</langCode>
+	<langName>French</langName>
+      </langInfo>
+      <langInfo>
+	<langCode>lv</langCode>
+	<langName>Latvian</langName>
+      </langInfo>
+      <langInfo>
+	<langCode>ru</langCode>
+	<langName>Russian</langName>
+      </langInfo>
+      <langInfo>
+	<langCode>zh</langCode>
+	<langName>Chinese</langName>
+      </langInfo>
+    </languages>
+    <datCatSet>
+
+      <termNoteSpec name="partOfSpeech" datcatId="ISO12620A-TTC-01">
+        <contents datatype="picklist" targetType="term" forTermComp="yes">
+          noun adjective verb adverb determiner article adposition conjunction interjection numeral residual abbreviation
+        </contents>
+      </termNoteSpec>
+
+      <termNoteSpec name="grammaticalGender" datcatId="ISO12620A-TTC-02">
+        <contents datatype="picklist" targetType="term" forTermComp="yes">
+          masculine feminine neuter otherGender
+        </contents>
+      </termNoteSpec>
+
+      <termNoteSpec name="grammaticalNumber" datcatId="ISO12620A-TTC-03">
+        <contents datatype="picklist" targetType="term" forTermComp="yes">
+          singular plural dual mass otherNumber
+        </contents>
+      </termNoteSpec>
+
+      <termNoteSpec id="lemma" datcatId="ISO12620A-TTC-04">
+	<contents datatype="basicText" targetType="term" forTermComp="yes"/>
+      </termNoteSpec>
+
+      <termNoteSpec id="stem" datcatId="ISO12620A-TTC-05">
+	<contents datatype="basicText" targetType="term" forTermComp="yes"/>
+      </termNoteSpec>
+
+      <termNoteSpec id="category" datcatId="ISO12620A-TTC-06">
+	<contents datatype="picklist" targetType="term" forTermComp="no">N A V NA</contents>
+      </termNoteSpec>
+
+      <termNoteSpec id="complexity" datcatId="ISO12620A-TTC-07">
+	<contents datatype="picklist" targetType="term" forTermComp="no">
+	  single-word, multi-word
+	</contents>
+      </termNoteSpec>
+
+      <termNoteSpec id="translationCandidate" datcatId="ISO12620A-TTC-07">
+	<contents datatype="basicText" targetType="term" forTermComp="no"/>
+      </termNoteSpec>
+
+      <termCompListSpec name="termElement" datcatId="ISO12620A-TTC-09">
+        <contents forTermComp="yes" />
+      </termCompListSpec>
+
+    </datCatSet>
+  </TBXXCS>
