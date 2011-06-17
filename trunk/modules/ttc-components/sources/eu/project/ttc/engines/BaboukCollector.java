@@ -6,7 +6,11 @@ import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -92,7 +96,7 @@ public class BaboukCollector extends Collector {
         	File document = this.getCrawledDocument(file);
         	String text = this.getCrawledDocumentText(document);
         	String language = this.getCrawledDocumentLanguage(file);
-        	cas.setDocumentText(text);
+        	cas.setDocumentText(this.doClean(text));
         	cas.setDocumentLanguage(language);
         	this.doAnnotate(cas,file,text);
         } catch (Exception e) { 
@@ -218,8 +222,10 @@ public class BaboukCollector extends Collector {
 	
 	private void doCollect(File directory) {
 		if (directory.exists()) {
-			if (directory.isDirectory()) {
-				File[] files = directory.listFiles(this.filter);
+			if (directory.isDirectory()) {				
+				List<File> files = new ArrayList<File>();
+				files.addAll(Arrays.asList(directory.listFiles(this.filter)));
+				Collections.sort(files);
 				for (File file : files) {
 					if (file.isDirectory()) {
 						this.doCollect(file);
@@ -236,20 +242,27 @@ public class BaboukCollector extends Collector {
 		this.doCollect(directory);
 	}
 	
-	private void doCollect(String[] directories) {
-		for (String directory : directories) {
-			this.doCollect(directory);
+	private String doClean(String l) {
+		final StringBuffer sb = new StringBuffer();
+		for (int i = 0; i < l.length(); i++) {
+			char c = l.charAt(i);
+			if (c == '’') {
+				sb.append("'");
+			} else {
+				sb.append(c);
+			}
 		}
+		return sb.toString();
 	}
 	
 	public void doCollect() throws ResourceInitializationException {
-		String[] directories = ((String[]) this.getParameter("Directories"));
-		if (directories == null) {
-			String msg = "The parameter 'Directories' must be set.";
+		String directory = ((String) this.getParameter("Directory"));
+		if (directory == null || directory.isEmpty()) {
+			String msg = "The parameter 'Directory' must be set.";
 			Exception e = new Exception(msg);
 			throw new ResourceInitializationException(e);
 		}
-		this.doCollect(directories);
+		this.doCollect(directory);
 	}
 	
 }
