@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://www.tilde.com/tagger/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="http://www.tilde.com/tagger/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://www.tilde.com/tagger/">
+      <s:element name="Tokenize">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="text" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="lang" type="s:string" />
+          </s:sequence>
+
+        </s:complexType>
+      </s:element>
+      <s:element name="TokenizeResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="TokenizeResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+
+      <s:element name="BreakSentences">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="text" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="lang" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="BreakSentencesResponse">
+
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="BreakSentencesResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="PosTagger">
+        <s:complexType>
+          <s:sequence>
+
+            <s:element minOccurs="0" maxOccurs="1" name="text" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="outputFormat" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="lang" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="PosTaggerResponse">
+        <s:complexType>
+          <s:sequence>
+
+            <s:element minOccurs="0" maxOccurs="1" name="PosTaggerResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="string" nillable="true" type="s:string" />
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="TokenizeSoapIn">
+    <wsdl:part name="parameters" element="tns:Tokenize" />
+
+  </wsdl:message>
+  <wsdl:message name="TokenizeSoapOut">
+    <wsdl:part name="parameters" element="tns:TokenizeResponse" />
+  </wsdl:message>
+  <wsdl:message name="BreakSentencesSoapIn">
+    <wsdl:part name="parameters" element="tns:BreakSentences" />
+  </wsdl:message>
+  <wsdl:message name="BreakSentencesSoapOut">
+    <wsdl:part name="parameters" element="tns:BreakSentencesResponse" />
+
+  </wsdl:message>
+  <wsdl:message name="PosTaggerSoapIn">
+    <wsdl:part name="parameters" element="tns:PosTagger" />
+  </wsdl:message>
+  <wsdl:message name="PosTaggerSoapOut">
+    <wsdl:part name="parameters" element="tns:PosTaggerResponse" />
+  </wsdl:message>
+  <wsdl:message name="TokenizeHttpGetIn">
+    <wsdl:part name="text" type="s:string" />
+
+    <wsdl:part name="lang" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="TokenizeHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="BreakSentencesHttpGetIn">
+    <wsdl:part name="text" type="s:string" />
+    <wsdl:part name="lang" type="s:string" />
+  </wsdl:message>
+
+  <wsdl:message name="BreakSentencesHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="PosTaggerHttpGetIn">
+    <wsdl:part name="text" type="s:string" />
+    <wsdl:part name="outputFormat" type="s:string" />
+    <wsdl:part name="lang" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="PosTaggerHttpGetOut">
+
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="TokenizeHttpPostIn">
+    <wsdl:part name="text" type="s:string" />
+    <wsdl:part name="lang" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="TokenizeHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+
+  <wsdl:message name="BreakSentencesHttpPostIn">
+    <wsdl:part name="text" type="s:string" />
+    <wsdl:part name="lang" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="BreakSentencesHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="PosTaggerHttpPostIn">
+    <wsdl:part name="text" type="s:string" />
+
+    <wsdl:part name="outputFormat" type="s:string" />
+    <wsdl:part name="lang" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="PosTaggerHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:portType name="TaggerServiceSoap">
+    <wsdl:operation name="Tokenize">
+      <wsdl:input message="tns:TokenizeSoapIn" />
+
+      <wsdl:output message="tns:TokenizeSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="BreakSentences">
+      <wsdl:input message="tns:BreakSentencesSoapIn" />
+      <wsdl:output message="tns:BreakSentencesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="PosTagger">
+      <wsdl:input message="tns:PosTaggerSoapIn" />
+      <wsdl:output message="tns:PosTaggerSoapOut" />
+
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="TaggerServiceHttpGet">
+    <wsdl:operation name="Tokenize">
+      <wsdl:input message="tns:TokenizeHttpGetIn" />
+      <wsdl:output message="tns:TokenizeHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="BreakSentences">
+      <wsdl:input message="tns:BreakSentencesHttpGetIn" />
+
+      <wsdl:output message="tns:BreakSentencesHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="PosTagger">
+      <wsdl:input message="tns:PosTaggerHttpGetIn" />
+      <wsdl:output message="tns:PosTaggerHttpGetOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="TaggerServiceHttpPost">
+    <wsdl:operation name="Tokenize">
+
+      <wsdl:input message="tns:TokenizeHttpPostIn" />
+      <wsdl:output message="tns:TokenizeHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="BreakSentences">
+      <wsdl:input message="tns:BreakSentencesHttpPostIn" />
+      <wsdl:output message="tns:BreakSentencesHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="PosTagger">
+      <wsdl:input message="tns:PosTaggerHttpPostIn" />
+
+      <wsdl:output message="tns:PosTaggerHttpPostOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="TaggerServiceSoap" type="tns:TaggerServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="Tokenize">
+      <soap:operation soapAction="http://www.tilde.com/tagger/Tokenize" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="BreakSentences">
+      <soap:operation soapAction="http://www.tilde.com/tagger/BreakSentences" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PosTagger">
+      <soap:operation soapAction="http://www.tilde.com/tagger/PosTagger" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="TaggerServiceSoap12" type="tns:TaggerServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="Tokenize">
+
+      <soap12:operation soapAction="http://www.tilde.com/tagger/Tokenize" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="BreakSentences">
+
+      <soap12:operation soapAction="http://www.tilde.com/tagger/BreakSentences" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PosTagger">
+
+      <soap12:operation soapAction="http://www.tilde.com/tagger/PosTagger" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+
+  <wsdl:binding name="TaggerServiceHttpGet" type="tns:TaggerServiceHttpGet">
+    <http:binding verb="GET" />
+    <wsdl:operation name="Tokenize">
+      <http:operation location="/Tokenize" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="BreakSentences">
+      <http:operation location="/BreakSentences" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PosTagger">
+      <http:operation location="/PosTagger" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="TaggerServiceHttpPost" type="tns:TaggerServiceHttpPost">
+    <http:binding verb="POST" />
+    <wsdl:operation name="Tokenize">
+      <http:operation location="/Tokenize" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="BreakSentences">
+      <http:operation location="/BreakSentences" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PosTagger">
+      <http:operation location="/PosTagger" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="TaggerService">
+    <wsdl:port name="TaggerServiceSoap" binding="tns:TaggerServiceSoap">
+      <soap:address location="https://www.tilde.com/tagger/service.asmx" />
+
+    </wsdl:port>
+    <wsdl:port name="TaggerServiceSoap12" binding="tns:TaggerServiceSoap12">
+      <soap12:address location="https://www.tilde.com/tagger/service.asmx" />
+    </wsdl:port>
+    <wsdl:port name="TaggerServiceHttpGet" binding="tns:TaggerServiceHttpGet">
+      <http:address location="https://www.tilde.com/tagger/service.asmx" />
+    </wsdl:port>
+    <wsdl:port name="TaggerServiceHttpPost" binding="tns:TaggerServiceHttpPost">
+      <http:address location="https://www.tilde.com/tagger/service.asmx" />
+
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

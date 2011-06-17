@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <collectionReaderDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
-  <implementationName>eu.project.ttc.engines.BaboukCollector</implementationName>
+  <implementationName>eu.project.ttc.engines.TermSuiteCollector</implementationName>
   <processingResourceMetaData>
-    <name>Babouk Collector</name>
+    <name>Term Suite Collector</name>
     <description>This is Collection Reader creates CAS from corpora made of document pairs consisting in a Dublin Core XML metadata and a text file. WARNING: it assumes that the Dublin Core metadata applies to the text file and that both files have the same name (without their own suffixes).
 
 This Collection Reader requires two parameter settings. 

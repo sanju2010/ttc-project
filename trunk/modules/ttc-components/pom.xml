@@ -14,8 +14,15 @@
     </dependency>
     <dependency>
       <groupId>org.apache.uima</groupId>
+      <artifactId>uimaj-cpe</artifactId>
+      <version>2.3.1</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.uima</groupId>
       <artifactId>uimaj-document-annotation</artifactId>
       <version>2.3.1</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>fr.univnantes.lina</groupId>
@@ -29,27 +36,12 @@
     </dependency>
     <dependency>
       <groupId>fr.univnantes.lina</groupId>
-      <artifactId>uima-find-library</artifactId>
-      <version>11-06-06</version>
-    </dependency>
-    <dependency>
-      <groupId>fr.univnantes.lina</groupId>
       <artifactId>uima-word-tokenizer</artifactId>
-      <version>11-06-06</version>
-    </dependency>
-    <dependency>
-      <groupId>fr.univnantes.lina</groupId>
-      <artifactId>uima-sentence-splitter</artifactId>
       <version>11-06-06</version>
     </dependency>
     <dependency>
     	<groupId>fr.univnantes.lina</groupId>
     	<artifactId>uima-tree-tagger-wrapper</artifactId>
-    	<version>11-06-06</version>
-    </dependency>
-    <dependency>
-    	<groupId>fr.univnantes.lina</groupId>
-    	<artifactId>uima-rule-based-tagger</artifactId>
     	<version>11-06-06</version>
     </dependency>
     <dependency>
@@ -87,26 +79,40 @@
     	<artifactId>uima-neighbour-annotator</artifactId>
     	<version>11-06-06</version>
     </dependency>
-    <dependency>
+    <!-- dependency>
     	<groupId>fr.univnantes.lina</groupId>
     	<artifactId>uima-neo-classical-compound-detector</artifactId>
     	<version>11-06-06</version>
-    </dependency>
+    </dependency-->
     <dependency>
     	<groupId>fr.univnantes.lina</groupId>
     	<artifactId>uima-ziggurat</artifactId>
     	<version>11-06-06</version>
     </dependency>
     <dependency>
+    	<groupId>commons-codec</groupId>
+    	<artifactId>commons-codec</artifactId>
+    	<version>1.5</version>
+    	<type>jar</type>
+    	<scope>compile</scope>
+    </dependency>
+    <dependency>
     	<groupId>fr.univnantes.lina</groupId>
-    	<artifactId>term-base-exchange-library</artifactId>
+    	<artifactId>uima-language-detector</artifactId>
     	<version>11-06-06</version>
     	<type>jar</type>
     </dependency>
     <dependency>
-    	<groupId>commons-codec</groupId>
-    	<artifactId>commons-codec</artifactId>
-    	<version>1.5</version>
+    	<groupId>org.apache.lucene</groupId>
+    	<artifactId>lucene-analyzers</artifactId>
+    	<version>3.2.0</version>
+    	<type>jar</type>
+    	<scope>compile</scope>
+    </dependency>
+    <dependency>
+    	<groupId>org.apache.lucene</groupId>
+    	<artifactId>lucene-core</artifactId>
+    	<version>3.2.0</version>
     	<type>jar</type>
     	<scope>compile</scope>
     </dependency>
