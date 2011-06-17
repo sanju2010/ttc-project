@@ -39,46 +39,6 @@
       <artifactId>uima-word-tokenizer</artifactId>
       <version>11-06-06</version>
     </dependency>
-    <dependency>
-    	<groupId>fr.univnantes.lina</groupId>
-    	<artifactId>uima-tree-tagger-wrapper</artifactId>
-    	<version>11-06-06</version>
-    </dependency>
-    <dependency>
-    	<groupId>fr.univnantes.lina</groupId>
-    	<artifactId>uima-multext-annotator</artifactId>
-    	<version>11-06-06</version>
-    </dependency>
-    <dependency>
-    	<groupId>fr.univnantes.lina</groupId>
-    	<artifactId>uima-acabit</artifactId>
-    	<version>11-06-06</version>
-    </dependency>
-    <dependency>
-    	<groupId>fr.univnantes.lina</groupId>
-    	<artifactId>uima-stemmer</artifactId>
-    	<version>11-06-06</version>
-    </dependency>
-    <dependency>
-    	<groupId>fr.univnantes.lina</groupId>
-    	<artifactId>uima-term-base-exchange</artifactId>
-    	<version>11-06-06</version>
-    </dependency>
-    <dependency>
-    	<groupId>fr.univnantes.lina</groupId>
-    	<artifactId>uima-stop-word-eraser</artifactId>
-    	<version>11-06-06</version>
-    </dependency>
-    <dependency>
-    	<groupId>fr.univnantes.lina</groupId>
-    	<artifactId>uima-lemmatizer</artifactId>
-    	<version>11-06-06</version>
-    </dependency>
-    <dependency>
-    	<groupId>fr.univnantes.lina</groupId>
-    	<artifactId>uima-neighbour-annotator</artifactId>
-    	<version>11-06-06</version>
-    </dependency>
     <!-- dependency>
     	<groupId>fr.univnantes.lina</groupId>
     	<artifactId>uima-neo-classical-compound-detector</artifactId>
@@ -86,35 +46,9 @@
     </dependency-->
     <dependency>
     	<groupId>fr.univnantes.lina</groupId>
-    	<artifactId>uima-ziggurat</artifactId>
-    	<version>11-06-06</version>
-    </dependency>
-    <dependency>
-    	<groupId>commons-codec</groupId>
-    	<artifactId>commons-codec</artifactId>
-    	<version>1.5</version>
-    	<type>jar</type>
-    	<scope>compile</scope>
-    </dependency>
-    <dependency>
-    	<groupId>fr.univnantes.lina</groupId>
     	<artifactId>uima-language-detector</artifactId>
     	<version>11-06-06</version>
     	<type>jar</type>
-    </dependency>
-    <dependency>
-    	<groupId>org.apache.lucene</groupId>
-    	<artifactId>lucene-analyzers</artifactId>
-    	<version>3.2.0</version>
-    	<type>jar</type>
-    	<scope>compile</scope>
-    </dependency>
-    <dependency>
-    	<groupId>org.apache.lucene</groupId>
-    	<artifactId>lucene-core</artifactId>
-    	<version>3.2.0</version>
-    	<type>jar</type>
-    	<scope>compile</scope>
     </dependency>
   </dependencies>
   <licenses>
