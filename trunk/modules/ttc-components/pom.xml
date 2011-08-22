@@ -26,11 +26,6 @@
     </dependency>
     <dependency>
       <groupId>fr.univnantes.lina</groupId>
-      <artifactId>uima-dublin-core-library</artifactId>
-      <version>11-07-07</version>
-    </dependency>
-    <dependency>
-      <groupId>fr.univnantes.lina</groupId>
       <artifactId>uima-word-tokenizer</artifactId>
       <version>11-06-06</version>
     </dependency>
@@ -41,12 +36,6 @@
     </dependency-->
     <dependency>
     	<groupId>fr.univnantes.lina</groupId>
-    	<artifactId>uima-language-detector</artifactId>
-    	<version>11-07-07</version>
-    	<type>jar</type>
-    </dependency>
-    <dependency>
-    	<groupId>fr.univnantes.lina</groupId>
     	<artifactId>uima-tree-tagger-wrapper</artifactId>
     	<version>11-06-06</version>
     	<type>jar</type>
@@ -54,7 +43,7 @@
     </dependency>
     <dependency>
     	<groupId>fr.univnantes.lina</groupId>
-    	<artifactId>uima-multext-annotator</artifactId>
+    	<artifactId>uima-multext-mapper</artifactId>
     	<version>11-06-06</version>
     	<type>jar</type>
     	<scope>compile</scope>

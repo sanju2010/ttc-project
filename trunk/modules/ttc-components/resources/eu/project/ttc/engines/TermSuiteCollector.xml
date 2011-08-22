@@ -54,7 +54,6 @@ It provides a Sofa which document text is given by the text file and which docum
     </configurationParameterSettings>
     <typeSystemDescription>
       <imports>
-        <import name="fr.univnantes.lina.uima.types.DublinCoreAnnotation"/>
         <import name="org.apache.uima.examples.SourceDocumentInformation"/>
       </imports>
     </typeSystemDescription>
@@ -66,8 +65,6 @@ It provides a Sofa which document text is given by the text file and which docum
         <outputs>
           <type allAnnotatorFeatures="true">uima.tcas.DocumentAnnotation</type>
           <type allAnnotatorFeatures="true">org.apache.uima.examples.SourceDocumentInformation</type>
-          <type allAnnotatorFeatures="true">org.apache.uima.DublinCorePropertyAnnotation</type>
-          <type allAnnotatorFeatures="true">org.apache.uima.DublinCoreDocumentAnnotation</type>
         </outputs>
         <languagesSupported>
           <language>en</language>

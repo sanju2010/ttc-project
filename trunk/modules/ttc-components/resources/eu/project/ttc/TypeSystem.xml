@@ -5,7 +5,6 @@
   <version>11-06-06</version>
   <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
   <imports>
-    <import name="fr.univnantes.lina.uima.types.DublinCoreAnnotation"/>
     <import name="fr.univnantes.lina.uima.types.WordAnnotation"/>
     <import name="fr.univnantes.lina.uima.types.TreeTaggerAnnotation"/>
     <import name="fr.univnantes.lina.uima.types.MultextAnnotation"/>
