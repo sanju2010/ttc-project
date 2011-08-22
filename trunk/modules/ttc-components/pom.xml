@@ -1,10 +1,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>eu.project.ttc</groupId>
-  <artifactId>ttc-components</artifactId>
+  <artifactId>ttc-term-suite</artifactId>
   <version>11-06-06</version>
   <packaging>jar</packaging>
-  <name>TTC Project's UIMA Components</name>
+  <name>TTC TermSuite</name>
   <dependencies>
     <dependency>
       <groupId>org.apache.uima</groupId>
@@ -26,13 +26,8 @@
     </dependency>
     <dependency>
       <groupId>fr.univnantes.lina</groupId>
-      <artifactId>uima-common-library</artifactId>
-      <version>11-06-06</version>
-    </dependency>
-    <dependency>
-      <groupId>fr.univnantes.lina</groupId>
       <artifactId>uima-dublin-core-library</artifactId>
-      <version>11-06-06</version>
+      <version>11-07-07</version>
     </dependency>
     <dependency>
       <groupId>fr.univnantes.lina</groupId>
@@ -47,8 +42,36 @@
     <dependency>
     	<groupId>fr.univnantes.lina</groupId>
     	<artifactId>uima-language-detector</artifactId>
+    	<version>11-07-07</version>
+    	<type>jar</type>
+    </dependency>
+    <dependency>
+    	<groupId>fr.univnantes.lina</groupId>
+    	<artifactId>uima-tree-tagger-wrapper</artifactId>
     	<version>11-06-06</version>
     	<type>jar</type>
+    	<scope>compile</scope>
+    </dependency>
+    <dependency>
+    	<groupId>fr.univnantes.lina</groupId>
+    	<artifactId>uima-multext-annotator</artifactId>
+    	<version>11-06-06</version>
+    	<type>jar</type>
+    	<scope>compile</scope>
+    </dependency>
+    <dependency>
+    	<groupId>fr.univnantes.lina</groupId>
+    	<artifactId>uima-rule-based-term-detector</artifactId>
+    	<version>11-06-06</version>
+    	<type>jar</type>
+    	<scope>compile</scope>
+    </dependency>
+    <dependency>
+    	<groupId>fr.univnantes.lina</groupId>
+    	<artifactId>uima-term-base-library</artifactId>
+    	<version>11-08-08</version>
+    	<type>jar</type>
+    	<scope>compile</scope>
     </dependency>
   </dependencies>
   <licenses>
