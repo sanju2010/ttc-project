@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
+  <esameworkImplementation>org.apache.uima.java</frameworkImplementation>
+  <primitive>false</primitive>
+  <delegateAnalysisEngineSpecifiers>
+    <delegateAnalysisEngine key="SpanishTreeTaggerMultextMapper">
+      <import name="eu.project.ttc.engines.esench.SpanishTreeTaggerMultextMapper"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="SpanishWordTokenizer">
+      <import name="eu.project.ttc.engines.esench.SpanishWordTokenizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="SpanishRuleBasedTermDetector">
+      <import name="eu.project.ttc.engines.esench.SpanishRuleBasedTermDetector"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="SpanishTreeTaggerWrapper">
+      <import name="eu.project.ttc.engines.esench.SpanishTreeTaggerWrapper"/>
+    </delegateAnalysisEngine>
+  </delegateAnalysisEngineSpecifiers>
+  <analysisEngineMetaData>
+    <name>Spanish Linguistic Analysis</name>
+    <description/>
+    <version>1.0</version>
+    <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
+    <configurationParameters searchStrategy="language_fallback">
+      <configurationParameter>
+        <name>TreeTaggerHomeDirectory</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>SpanishTreeTaggerWrapper/TreeTaggerHomeDirectory</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>AnnotationType</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>SpanishRuleBasedTermDetector/AnnotationType</parameter>
+        </overrides>
+      </configurationParameter>
+    </configurationParameters>
+    <configurationParameterSettings>
+      <nameValuePair>
+        <name>AnnotationType</name>
+        <value>
+          <string>org.apache.uima.MultextAnnotation</string>
+        </value>
+      </nameValuePair>
+    </configurationParameterSettings>
+    <flowConstraints>
+      <fixedFlow>
+        <node>SpanishWordTokenizer</node>
+        <node>SpanishTreeTaggerWrapper</node>
+        <node>SpanishTreeTaggerMultextMapper</node>
+        <node>SpanishRuleBasedTermDetector</node>
+      </fixedFlow>
+    </flowConstraints>
+    <typePriorities/>
+    <fsIndexCollection/>
+    <capabilities>
+      <capability>
+        <inputs/>
+        <outputs>
+          <type allAnnotatorFeatures="true">org.apache.uima.WordAnnotation</type>
+          <type allAnnotatorFeatures="true">org.apache.uima.TreeTaggerAnnotation</type>
+          <type allAnnotatorFeatures="true">org.apache.uima.MultextAnnotation</type>
+          <type allAnnotatorFeatures="true">org.apache.uima.TermAnnotation</type>
+        </outputs>
+        <languagesSupported>
+          <language>es</language>
+        </languagesSupported>
+      </capability>
+    </capabilities>
+    <operationalProperties>
+      <modifiesCas>true</modifiesCas>
+      <multipleDeploymentAllowed>true</multipleDeploymentAllowed>
+      <outputsNewCASes>false</outputsNewCASes>
+    </operationalProperties>
+  </analysisEngineMetaData>
+  <resourceManagerConfiguration/>
+</analysisEngineDescription>

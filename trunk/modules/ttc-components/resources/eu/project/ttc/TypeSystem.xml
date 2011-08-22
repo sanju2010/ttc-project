@@ -5,10 +5,10 @@
   <version>11-06-06</version>
   <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
   <imports>
-    <import name="fr.univnantes.lina.uima.types.DublinCore"/>
-    <import name="fr.univnantes.lina.uima.types.TokenAnnotation"/>
+    <import name="fr.univnantes.lina.uima.types.DublinCoreAnnotation"/>
+    <import name="fr.univnantes.lina.uima.types.WordAnnotation"/>
     <import name="fr.univnantes.lina.uima.types.TreeTaggerAnnotation"/>
-    <import name="fr.univnantes.lina.uima.types.Multext"/>
+    <import name="fr.univnantes.lina.uima.types.MultextAnnotation"/>
     <import name="fr.univnantes.lina.uima.types.TermAnnotation"/>
     <import name="org.apache.uima.examples.SourceDocumentInformation"/>
   </imports>

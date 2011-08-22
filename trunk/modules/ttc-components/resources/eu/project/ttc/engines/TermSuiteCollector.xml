@@ -7,36 +7,54 @@
     <description>This is Collection Reader creates CAS from corpora made of document pairs consisting in a Dublin Core XML metadata and a text file. WARNING: it assumes that the Dublin Core metadata applies to the text file and that both files have the same name (without their own suffixes).
 
 This Collection Reader requires two parameter settings. 
-The first single-valued String parameter 'SofaName' defines the name of the Subject of Analysis (Sofa). The second multi-valued String parameter 'Directories' specifies where to find the corpora.
+The first single-valued String parameter 'SourceCorpusDirectory' specifies the path of the source corpus whereas the second single-valued String parameter 'TargetCorpusDirectory' specifies that of the target one.
 
 It provides a Sofa which document text is given by the text file and which document language is given by the Dublin Core language property value.</description>
     <version>11-03-03</version>
     <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
     <configurationParameters>
       <configurationParameter>
-        <name>SofaName</name>
+        <name>SourceLanguage</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>Directories</name>
+        <name>SourceDirectories</name>
         <type>String</type>
         <multiValued>true</multiValued>
         <mandatory>false</mandatory>
       </configurationParameter>
+      <configurationParameter>
+        <name>TargetLanguage</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
+      <configurationParameter>
+        <name>TargetDirectories</name>
+        <type>String</type>
+        <multiValued>true</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
+      <configurationParameter>
+        <name>BrowseSubDirectories</name>
+        <type>Boolean</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+      </configurationParameter>
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
-        <name>SofaName</name>
+        <name>BrowseSubDirectories</name>
         <value>
-          <string>_InitialView</string>
+          <boolean>false</boolean>
         </value>
       </nameValuePair>
     </configurationParameterSettings>
     <typeSystemDescription>
       <imports>
-        <import name="fr.univnantes.lina.uima.types.DublinCore"/>
+        <import name="fr.univnantes.lina.uima.types.DublinCoreAnnotation"/>
         <import name="org.apache.uima.examples.SourceDocumentInformation"/>
       </imports>
     </typeSystemDescription>
@@ -46,10 +64,10 @@ It provides a Sofa which document text is given by the text file and which docum
       <capability>
         <inputs/>
         <outputs>
-          <type allAnnotatorFeatures="true">org.apache.uima.Property</type>
-          <type allAnnotatorFeatures="true">org.apache.uima.DublinCore</type>
           <type allAnnotatorFeatures="true">uima.tcas.DocumentAnnotation</type>
           <type allAnnotatorFeatures="true">org.apache.uima.examples.SourceDocumentInformation</type>
+          <type allAnnotatorFeatures="true">org.apache.uima.DublinCorePropertyAnnotation</type>
+          <type allAnnotatorFeatures="true">org.apache.uima.DublinCoreDocumentAnnotation</type>
         </outputs>
         <languagesSupported>
           <language>en</language>
