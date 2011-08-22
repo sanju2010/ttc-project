@@ -3,10 +3,10 @@ package eu.project.ttc.tools;
 import java.awt.Component;
 import java.awt.Desktop;
 import java.awt.Dimension;
-import java.awt.SplashScreen;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -14,6 +14,9 @@ import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+
+import org.apache.uima.UIMAFramework;
+import org.apache.uima.util.Level;
 
 public class TermSuite implements Runnable {
 
@@ -42,6 +45,16 @@ public class TermSuite implements Runnable {
 	
 	public Desktop getDesktop() {
 		return this.desktop;
+	}
+
+	private Parameters parameters;
+	
+	private void setParameters() {
+		this.parameters = new Parameters();
+	}
+	
+	public Parameters getParameters() {
+		return this.parameters;
 	}
 	
 	private Preferences preferences;
@@ -80,24 +93,24 @@ public class TermSuite implements Runnable {
 		return this.toolBar;
 	}
 	
-	private Corpora corpora;
+	private Corpora sourceCorpora;
 	
-	private void setCorpora() {
-		this.corpora = new Corpora();
+	private void setSourceCorpora() {
+		this.sourceCorpora = new Corpora();
 	}
 	
-	public Corpora getCorpora() {
-		return this.corpora;
+	public Corpora getSourceCorpora() {
+		return this.sourceCorpora;
+	}
+
+	private Corpora targetCorpora;
+	
+	private void setTargetCorpora() {
+		this.targetCorpora = new Corpora();
 	}
 	
-	private Languages languages;
-	
-	private void setLanguages() {
-		this.languages = new Languages();
-	}
-	
-	public Languages getLanguges() {
-		return this.languages;
+	public Corpora getTargetCorpora() {
+		return this.targetCorpora;
 	}
 	
 	private Terms terms;
@@ -106,7 +119,7 @@ public class TermSuite implements Runnable {
 		this.terms = new Terms();
 	}
 	
-	private Terms getTerms() {
+	public Terms getTerms() {
 		return this.terms;
 	}
 	
@@ -114,8 +127,8 @@ public class TermSuite implements Runnable {
 	
 	private void setContent() {
 		JTabbedPane tabs = new JTabbedPane();
-		tabs.addTab(" Corpora ",this.getCorpora().getComponent());
-		tabs.addTab("Languages",this.getLanguges().getComponent());
+		tabs.addTab(" Source ",this.getSourceCorpora().getComponent());
+		tabs.addTab(" Target ",this.getTargetCorpora().getComponent());
 		JSplitPane inner = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 		inner.setLeftComponent(tabs);
 		inner.setRightComponent(this.getTerms().getComponent());
@@ -171,11 +184,12 @@ public class TermSuite implements Runnable {
 	
 	public TermSuite() {
 		this.setDesktop();
+		this.setParameters();
 		this.setPreferences();
 		this.setAbout();
 		this.setToolBar();
-		this.setCorpora();
-		this.setLanguages();
+		this.setSourceCorpora();
+		this.setTargetCorpora();
 		this.setTerms();
 		this.setContent();
 		this.setFrame();
@@ -191,6 +205,19 @@ public class TermSuite implements Runnable {
 		this.getFrame().addWindowListener(windowListener);
 	}
 	
+	public void prepare() {
+		this.getParameters().setSourceLanguage(this.getSourceCorpora().getLanguage());
+		this.getParameters().setTargetLanguage(this.getTargetCorpora().getLanguage());
+		this.getParameters().setSourceDirectories(this.getSourceCorpora().getDirectories());
+		this.getParameters().setTargetDirectories(this.getTargetCorpora().getDirectories());
+	}
+	
+	public void process() {
+		Fire fire = new Fire();
+		fire.setTermSuite(this);
+		fire.doProcess();
+	}
+	
 	public void run() {
 		this.show();
 	}
@@ -201,18 +228,30 @@ public class TermSuite implements Runnable {
 		System.exit(0);
 	}
 	
+	public void quit(Exception e) {
+		UIMAFramework.getLogger().log(Level.SEVERE,e.getMessage());
+		e.printStackTrace();
+		this.hide();
+		this.getFrame().dispose();
+		System.exit(1);
+	}
+	
 	public static void main(String[] args) {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (Exception e) {
-			
-		}
-		try {
-			// SplashScreen splash = SplashScreen.getSplashScreen();
-			TermSuite app = new TermSuite();
-			SwingUtilities.invokeLater(app);
-			// splash.close();
-		} catch (Exception e) {
+		} catch (Exception e) { }
+		TermSuite termSuite = new TermSuite();
+		if (args.length == 0) {
+			SwingUtilities.invokeLater(termSuite);
+		} else {
+			for (String arg : args) {
+				try {
+					termSuite.getParameters().doLoad(arg);
+				} catch (IOException e) { 
+					termSuite.quit(e);
+				}
+			}
+			termSuite.process();
 		}
     }
 	

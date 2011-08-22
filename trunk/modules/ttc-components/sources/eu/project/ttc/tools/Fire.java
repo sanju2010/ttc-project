@@ -6,7 +6,6 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import javax.swing.JButton;
@@ -22,8 +21,8 @@ import org.apache.uima.collection.metadata.CpeDescription;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Progress;
 
-import eu.project.ttc.tools.Corpora.Corpus;
-import eu.project.ttc.tools.Languages.Language;
+import fr.univnantes.lina.uima.models.TermBase;
+import fr.univnantes.lina.uima.models.TermBaseResource;
 
 public class Fire implements ActionListener, StatusCallbackListener {
 
@@ -43,7 +42,7 @@ public class Fire implements ActionListener, StatusCallbackListener {
 	}
 	
 	private void doQuit() {
-		String message = "Do you really want to quit TTC TermSuite?";
+		String message = "Do you really want to quit " + this.getTermSuite().getPreferences().getTitle() + "?";
 		String title = "Quit";
 		int response = JOptionPane.showConfirmDialog(this.getTermSuite().getFrame(),message,title,JOptionPane.YES_NO_OPTION);
 		if (response == 0) {
@@ -64,41 +63,56 @@ public class Fire implements ActionListener, StatusCallbackListener {
 	}
 	
 	private void doRun() {
-		List<Corpus> directories = this.getTermSuite().getCorpora().getSelection();
-		if (directories.isEmpty()) {
-			String message = "There is no corpus selected!\n.";
+		this.getTermSuite().prepare();
+		String[] sourceCorpora = this.getTermSuite().getParameters().getSourceDirectories();
+		if (sourceCorpora == null || sourceCorpora.length == 0) {
+			String message = "There is no source corpus selected!\n.";
 			message += "You should select some corpus by drag and droping directories into corpora.";
 			String title = "Warning";
 			JOptionPane.showMessageDialog(this.getTermSuite().getFrame(),message,title,JOptionPane.WARNING_MESSAGE);
 		} else {
-			List<Language> languages = this.getTermSuite().getLanguges().getSelection();
-			if (languages.isEmpty()) {
-				String message = "There is no language selected!\n.";
-				message += "You should select some languages by clicking on items of languages.";
+			String[] targetCorpora = this.getTermSuite().getParameters().getTargetDirectories();
+			if (targetCorpora == null || targetCorpora.length == 0) {
+				String message = "There is no target corpus selected!\n.";
+				message += "You should select some corpus by drag and droping directories into corpora.";
 				String title = "Warning";
 				JOptionPane.showMessageDialog(this.getTermSuite().getFrame(),message,title,JOptionPane.WARNING_MESSAGE);
 			} else {
-				Processor proc = new Processor(directories,languages);
-				proc.execute();
-				try {
-					CpeDescription desc = proc.get();
-					this.setTimer();
-					this.getTermSuite().getToolBar().getRun().setEnabled(false);
-					this.getTermSuite().getToolBar().getPause().setEnabled(true);
-					this.getTermSuite().getToolBar().getStop().setEnabled(true);
-					this.setEngine(desc);
-				} catch (InterruptedException e) {
-					JOptionPane.showMessageDialog(this.getTermSuite().getFrame(),e.getMessage(),"Interrupted Exception",JOptionPane.ERROR_MESSAGE);
-					e.printStackTrace();
-				} catch (ExecutionException e) {
-					JOptionPane.showMessageDialog(this.getTermSuite().getFrame(),e.getMessage(),"Execution Exception",JOptionPane.ERROR_MESSAGE);
-					e.printStackTrace();
-				} catch (ResourceInitializationException e) {
-					JOptionPane.showMessageDialog(this.getTermSuite().getFrame(),e.getMessage(),"Resource Initialization Exception",JOptionPane.ERROR_MESSAGE);
-					e.printStackTrace();
-				} 
+				String source = this.getTermSuite().getParameters().getSourceLanguage();
+				String target = this.getTermSuite().getParameters().getTargetLanguage();
+				if (source.equals(target)) {
+					String message = "The source language is the same as that of the target one!\n.";
+					message += "You should select different languages in Source and Target tabs.";
+					String title = "Warning";
+					JOptionPane.showMessageDialog(this.getTermSuite().getFrame(),message,title,JOptionPane.WARNING_MESSAGE);
+				} else {
+					this.doProcess();
+				}
 			}
 		}
+	}
+
+	public void doProcess() {
+		Processor proc = new Processor();
+		proc.setTermSuite(this.getTermSuite());
+		proc.execute();
+		try {
+			CpeDescription desc = proc.get();
+			this.setTimer();
+			this.getTermSuite().getToolBar().getRun().setEnabled(false);
+			this.getTermSuite().getToolBar().getPause().setEnabled(true);
+			this.getTermSuite().getToolBar().getStop().setEnabled(true);
+			this.setEngine(desc);
+		} catch (InterruptedException e) {
+			JOptionPane.showMessageDialog(this.getTermSuite().getFrame(),e.getMessage(),"Interrupted Exception",JOptionPane.ERROR_MESSAGE);
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			JOptionPane.showMessageDialog(this.getTermSuite().getFrame(),e.getMessage(),"Execution Exception",JOptionPane.ERROR_MESSAGE);
+			e.printStackTrace();
+		} catch (ResourceInitializationException e) {
+			JOptionPane.showMessageDialog(this.getTermSuite().getFrame(),e.getMessage(),"Resource Initialization Exception",JOptionPane.ERROR_MESSAGE);
+			e.printStackTrace();
+		} 
 	}
 	
 	private void doStart() {
@@ -151,6 +165,8 @@ public class Fire implements ActionListener, StatusCallbackListener {
 		this.getTermSuite().getToolBar().getRun().setEnabled(true);
 		this.getTermSuite().getToolBar().getPause().setEnabled(false);
 		this.getTermSuite().getToolBar().getStop().setEnabled(false);
+		System.out.println(this.getEngine().getPerformanceReport().toString());
+		System.out.flush();
 	}
 	
 	private void doTime() {
@@ -191,6 +207,12 @@ public class Fire implements ActionListener, StatusCallbackListener {
 		this.engine.process();
 	}
 	
+	private void doHook() {
+		TermBase termBase = TermBaseResource.getInstance();
+		System.out.println("Hooking " + termBase);
+		this.getTermSuite().getTerms().setModel(termBase.getListModel());
+	}
+	
 	private CollectionProcessingEngine getEngine() {
 		return this.engine;
 	}
@@ -223,44 +245,29 @@ public class Fire implements ActionListener, StatusCallbackListener {
 
 	@Override
 	public void initializationComplete() {
-		// TODO Auto-generated method stub
 		this.doStart();
+		this.doHook();
 	}
 
 	@Override
-	public void batchProcessComplete() {
-		// TODO Auto-generated method stub
-		
-	}
+	public void batchProcessComplete() { }
 
 	@Override
 	public void collectionProcessComplete() {
-		// TODO Auto-generated method stub
 		this.doStop();
 	}
 
 	@Override
-	public void paused() {
-		// TODO Auto-generated method stub
-		
-	}
+	public void paused() { }
 
 	@Override
-	public void resumed() {
-		// TODO Auto-generated method stub
-		
-	}
+	public void resumed() { }
 
 	@Override
-	public void aborted() {
-		// TODO Auto-generated method stub
-		
-	}
+	public void aborted() { }
 
 	@Override
 	public void entityProcessComplete(CAS aCas, EntityProcessStatus aStatus) {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

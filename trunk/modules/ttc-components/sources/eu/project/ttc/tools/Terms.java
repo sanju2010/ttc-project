@@ -2,9 +2,9 @@ package eu.project.ttc.tools;
 
 import java.awt.Dimension;
 
-import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
+import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionListener;
 
@@ -13,22 +13,15 @@ public class Terms {
 	private Dimension getDimension() {
 		return new Dimension(600,400);
 	}
-	
-	private DefaultListModel model;
-	
-	private void setModel() {
-		this.model = new DefaultListModel();
+		
+	public void setModel(ListModel model) {
+ 		this.list.setModel(model);
 	}
-	
-	public DefaultListModel getModel() {
-		return this.model;
-	}
-	
+		
 	private JList list;
 	
 	private void setList() {
 		this.list = new JList();
-		this.list.setModel(this.getModel());
 		this.list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		// TODO this.list.setCellRenderer(new Renderer());
 	}
@@ -54,7 +47,6 @@ public class Terms {
 	}
 		
 	public Terms() {
-		this.setModel();
 		this.setList();
 		this.setScroll();
 	}

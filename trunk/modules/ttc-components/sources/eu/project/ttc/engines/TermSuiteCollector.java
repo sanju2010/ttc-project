@@ -5,113 +5,188 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
-import org.apache.uima.DublinCoreDocumentAnnotation;
-import org.apache.uima.DublinCorePropertyAnnotation;
+import org.apache.uima.UIMAFramework;
+import org.apache.uima.cas.CAS;
 import org.apache.uima.collection.CollectionException;
+import org.apache.uima.collection.CollectionReader_ImplBase;
 import org.apache.uima.examples.SourceDocumentInformation;
 import org.apache.uima.jcas.JCas;
-import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Level;
+import org.apache.uima.util.Progress;
+import org.apache.uima.util.ProgressImpl;
 
-import fr.univnantes.lina.uima.engines.Collector;
-import fr.univnantes.lina.uima.models.DublinCore;
-import fr.univnantes.lina.uima.models.DublinCoreProperty;
-
-public class TermSuiteCollector extends Collector {
-
-	private Map<String,String> languages;
+public class TermSuiteCollector extends CollectionReader_ImplBase {
 	
-	private void setLanguages() {
-		this.languages = new HashMap<String, String>();
-
-		this.languages.put("en","en");
-		this.languages.put("english","en");
-		this.languages.put("English","en");
-		
-		this.languages.put("fr","fr");
-		this.languages.put("french","fr");
-		this.languages.put("French","fr");
-		this.languages.put("français","fr");
-		this.languages.put("Français","fr");
-		
-		this.languages.put("de","de");
-		this.languages.put("deutsch","de");
-		this.languages.put("Deutsch","de");
-		this.languages.put("german","de");
-		this.languages.put("German","de");
-		
-		this.languages.put("es","es");
-		this.languages.put("español","es");
-		this.languages.put("Español","es");
-		this.languages.put("spanish","es");
-		this.languages.put("Spanish","es");
-		
-		this.languages.put("ru","ru");
-		this.languages.put("русский","ru");
-		this.languages.put("Русский","ru");
-		this.languages.put("russian","ru");
-		this.languages.put("Russian","ru");
-
-		this.languages.put("lv","lv");
-		this.languages.put("latviešu","lv");
-		this.languages.put("Latviešu","lv");
-		this.languages.put("latvian","lv");
-		this.languages.put("Latvian","lv");
-
-		this.languages.put("zh","zh");
-		this.languages.put("chinese","zh");
-		this.languages.put("Chinese","zh");
-		this.languages.put("中文","zh");
-		this.languages.put("漢語","zh");
-		
+	private int index;
+	
+	private void setIndex() {
+		this.index = 0;
 	}
 	
-	private Map<String,String> getLanguages() {
-		return this.languages;
+	private void addIndex() {
+		this.index++;
+	}
+	
+	private int getIndex() {
+		return this.index;
+	}
+	
+	private int size;
+	
+	private void setSize() {
+		this.size = this.getSourceCorpus().size() + this.getTargetCorpus().size();
+	}
+	
+	private int getSize() {
+		return this.size;
+	}
+
+	protected File getDocument() {
+		int index = this.getIndex();
+		this.addIndex();
+		int source = this.getSourceCorpus().size();
+		if (index < source) {
+			return this.getSourceCorpus().get(index);
+		} else {
+			index = index - source;
+			return this.getTargetCorpus().get(index);
+		}
+	}
+	
+	private List<File> sourceCorpus;
+	
+	private void setSourceCorpus() {
+		this.sourceCorpus = new ArrayList<File>();
+	}
+		
+	private List<File> getSourceCorpus() {
+		return this.sourceCorpus;
+	}
+
+	private List<File> targetCorpus;
+	
+	private void setTargetCorpus() {
+		this.targetCorpus = new ArrayList<File>();
+	}
+		
+	private List<File> getTargetCorpus() {
+		return this.targetCorpus;
+	}
+
+	private void setSourceCorpus(File file) throws IOException {
+		this.getLogger().log(Level.INFO,"Scanning Source Corpus " + file.getAbsolutePath());
+		this.doCollect(file,true);
+	}
+	
+	private void setTargetCorpus(File file) throws IOException {
+		this.getLogger().log(Level.INFO,"Scanning Target Corpus " + file.getAbsolutePath());
+		this.doCollect(file,false);
+	}
+	
+	private void setSourceCorpus(String[] directories) throws IOException {
+		for (String directory : directories) {
+			File file = new File(directory);
+			this.setSourceCorpus(file);			
+		}
+	}
+	
+	private void setTargetCorpus(String[] directories) throws IOException {
+		for (String directory : directories) {
+			File file = new File(directory);
+			this.setTargetCorpus(file);	
+		}
+	}
+
+	private String sourceLanguage;
+	
+	private void setSourceLanguage(String language) {
+		this.getLogger().log(Level.INFO,"Setting Source Language " + language);
+		this.sourceLanguage = language;
+	}
+	
+	private String targetLanguage;
+	
+	private void setTargetLanguage(String language) {
+		this.getLogger().log(Level.INFO,"Setting Target Language " + language);
+		this.targetLanguage = language;
+	}
+	
+	private String getDocumentLanguage() {
+		int index = this.getIndex();
+		int source = this.getSourceCorpus().size();
+		if (index < source) {
+			return this.sourceLanguage;
+		} else {
+			return this.targetLanguage;
+		}
+	}
+	
+	private boolean browseSubDirectories;
+	
+	private void enableBrowseSubDirectories(boolean enabled) {
+		this.browseSubDirectories = enabled;
+	}
+	
+	private boolean doBrowseSubDirectories() {
+		return this.browseSubDirectories;
 	}
 	
 	@Override
-	public void doInitialize() throws ResourceInitializationException {
-		this.doCollect();
-		this.setLanguages();
-		this.setMap();
+	public void initialize() throws ResourceInitializationException {
+		try {
+			this.setIndex();
+			this.setSourceCorpus();
+			this.setTargetCorpus();
+			Boolean enabled = (Boolean) this.getConfigParameterValue("BrowseSubDirectories");
+			this.enableBrowseSubDirectories(enabled.booleanValue());
+			String sourceLanguage = (String) this.getConfigParameterValue("SourceLanguage");
+			this.setSourceLanguage(sourceLanguage);
+			String targetLanguage = (String) this.getConfigParameterValue("TargetLanguage");
+			this.setTargetLanguage(targetLanguage);
+			String[] sourceCorpus = (String[]) this.getConfigParameterValue("SourceDirectories");
+			this.setSourceCorpus(sourceCorpus);
+			String[] targetCorpus = (String[]) this.getConfigParameterValue("TargetDirectories");
+			this.setTargetCorpus(targetCorpus);
+			this.setSize();
+		} catch (Exception e) { 
+			throw new ResourceInitializationException (e); 
+		}
 	}
 
 	@Override
-	public void doProcess(JCas cas) throws Exception {
+	public void getNext(CAS cas) throws CollectionException {
         try {
         	File file = (File) this.getDocument();
-        	this.getLogger().log(Level.INFO,"Processing " + file.getAbsolutePath());
-        	this.addDublinCore(file);
-        	File document = this.getCrawledDocument(file);
-        	String text = this.getCrawledDocumentText(document);
-        	String language = this.getCrawledDocumentLanguage(file);
-        	cas.setDocumentText(text);
+        	UIMAFramework.getLogger().log(Level.INFO,"Processing " + file.getAbsolutePath());
+        	File document = this.getFile(file);
+        	String text = this.getDocumentText(document);
+        	String language = this.getDocumentLanguage(); // this.getCrawledDocumentLanguage(dc);
+        	cas.setDocumentText(this.doClean(text));
         	cas.setDocumentLanguage(language);
-        	this.doAnnotate(cas,file,text);
+        	// DublinCore dc = this.getDublinCore(file);
+        	this.doAnnotate(cas.getJCas(),file,/*dc,*/text);
         } catch (Exception e) { 
         	throw new CollectionException(e); 
         } 
 	}
-
-	@Override
-	public void doFinalize() {
-	}
-
-	private void addDublinCore(File file) throws Exception { 
+	
+	/*
+	private DublinCore getDublinCore(File file) throws Exception { 
 		DublinCore dc = new DublinCore(file);
 		dc.load();
-		this.map.put(file,dc);
+		return dc;
 	}
-
+	*/
 	
-	private String getCrawledDocumentText(File file) throws Exception {
+	private String getDocumentText(File file) throws Exception {
 		StringBuffer text = new StringBuffer(1048576);
 		FileInputStream stream = new FileInputStream(file);
 		InputStreamReader reader = new InputStreamReader(stream);
@@ -124,8 +199,8 @@ public class TermSuiteCollector extends Collector {
 		return text.toString();
 	}
 	
-	private String getCrawledDocumentLanguage(File file) throws Exception {
-		DublinCore dc = this.map.get(file);
+	/*
+	private String getCrawledDocumentLanguage(DublinCore dc) throws Exception {
 		if (dc == null) {
 			throw new NullPointerException();
 		} else {
@@ -134,8 +209,9 @@ public class TermSuiteCollector extends Collector {
 			return this.getLanguages().get(language);
 		}
 	}
+	*/
 	
-	private File getCrawledDocument(File file) throws NullPointerException, FileNotFoundException {
+	private File getFile(File file) throws NullPointerException, FileNotFoundException {
 		File parent = file.getParentFile();
 		String name = this.getCrawledDocument(file.getName());
 		if (name == null) {
@@ -157,14 +233,14 @@ public class TermSuiteCollector extends Collector {
 		}
 	}
 	
-	public void doAnnotate(JCas cas,File file,String text) throws Exception {
+	public void doAnnotate(JCas cas,File file,/*DublinCore dc,*/String text) throws Exception {
 		SourceDocumentInformation info = new SourceDocumentInformation(cas);
 		info.setBegin(0);
 		info.setEnd(text.length());
 		info.setDocumentSize(text.length());
 		info.setUri(file.toURI().toString());
 		info.addToIndexes();
-		DublinCore dc = this.map.get(file);
+		/*
 		if (dc == null) {
 			String msg = "No Dublin Core found for " + file;
 			throw new Exception(msg);
@@ -186,23 +262,13 @@ public class TermSuiteCollector extends Collector {
 					property.setLang(prop.getLanguage());
 					property.addToIndexes();
 					dublinCore.setMetadata(index,property);
-					if (prop.getName().equals("dc:language")) {
-						String language = prop.getValue();
-						String lang = this.getLanguages().get(language);
-						dublinCore.setLanguage(lang);
-					}
 				}
 			}
 			dublinCore.addToIndexes();
 		}
+		*/
 	}
-	
-	private Map<File,DublinCore> map;
-	
-	private void setMap() {
-		this.map = new TreeMap<File,DublinCore>();
-	}
-	
+		
 	private FileFilter filter = new FileFilter() {
 		
 		@Override
@@ -216,40 +282,69 @@ public class TermSuiteCollector extends Collector {
 		
 	};
 	
-	private void doCollect(File directory) {
+	private void doCollect(File directory,boolean source) {
 		if (directory.exists()) {
-			if (directory.isDirectory()) {
-				File[] files = directory.listFiles(this.filter);
+			if (directory.isDirectory()) {				
+				List<File> files = new ArrayList<File>();
+				files.addAll(Arrays.asList(directory.listFiles(this.filter)));
+				Collections.sort(files);
 				for (File file : files) {
 					if (file.isDirectory()) {
-						this.doCollect(file);
+						if (this.doBrowseSubDirectories()) {
+							this.doCollect(file,source);							
+						}
 					} else {
-						this.addDocument(file);
+						if (source) {
+							// this.getLogger().log(Level.INFO,"Adding Source Document " + file.getName());
+							this.getSourceCorpus().add(file);
+						} else {
+							// this.getLogger().log(Level.INFO,"Adding Target Document " + file.getName());
+							this.getTargetCorpus().add(file);
+						}
 					}
 				}
 			}
 		}
 	}
-	
-	private void doCollect(String path) {
-		File directory = new File(path);
-		this.doCollect(directory);
-	}
-	
-	private void doCollect(String[] directories) {
-		for (String directory : directories) {
-			this.doCollect(directory);
+		
+	private String doClean(String l) {
+		final StringBuffer sb = new StringBuffer();
+		for (int i = 0; i < l.length(); i++) {
+			char c = l.charAt(i);
+			if (c == '’') {
+				sb.append("'");
+			} else {
+				sb.append(c);
+			}
 		}
+		return sb.toString();
 	}
-	
-	public void doCollect() throws ResourceInitializationException {
-		String[] directories = ((String[]) this.getParameter("Directories"));
-		if (directories == null) {
-			String msg = "The parameter 'Directories' must be set.";
-			Exception e = new Exception(msg);
-			throw new ResourceInitializationException(e);
-		}
-		this.doCollect(directories);
+		
+	/**
+	 * This method returns a boolean value that is true if and only if their still have a resource 
+	 * to populate as CAS in the collection.
+	 * 
+	 * @return true if all resources are not populated into CAS. 
+	 */
+	@Override
+	public boolean hasNext() {
+		return this.getIndex() < this.getSize();
 	}
+
+	/**
+	 * This method returns the state of the CAS populate process from collection resources   
+	 * as a progress array. 
+	 * 
+	 * @return a progress array of CAS populate process among the collection resources.  
+	 */
+	@Override
+	public Progress[] getProgress() {
+		Progress progress = new ProgressImpl(this.getIndex(),this.getSize(),Progress.ENTITIES);
+		Progress[] result = { progress } ;
+		return result ;
+	}
+
+	@Override
+	public void close() throws IOException { }
 	
 }

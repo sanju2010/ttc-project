@@ -11,12 +11,20 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
 
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.DropMode;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JList;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.TransferHandler;
@@ -26,6 +34,39 @@ public class Corpora {
 	private Dimension getDimension() {
 		return new Dimension(240,480);
 	}	
+	
+	private static Map<String,Locale> languages;
+	
+	static {
+		languages = new HashMap<String,Locale>();
+		languages.put(Locale.ENGLISH.getDisplayName(Locale.ENGLISH),Locale.ENGLISH);
+		languages.put(Locale.FRENCH.getDisplayName(Locale.ENGLISH),Locale.FRENCH);
+	}
+	
+	private static Set<String> getLanguages() {
+		return languages.keySet();
+	}
+	
+	private ComboBoxModel comboBoxModel;
+	
+	private void setComboBoxModel() {
+		this.comboBoxModel = new DefaultComboBoxModel(getLanguages().toArray()); 
+	}	
+	
+	private ComboBoxModel getComboBoxModel() {
+		return this.comboBoxModel;
+	}
+	
+	private JComboBox comboBox;
+	
+	private void setComboBox() {
+		this.comboBox = new JComboBox(this.getComboBoxModel());
+	}
+	
+	private JComboBox getComboBox() {
+		return this.comboBox;
+	}
+	
 	private DefaultListModel model;
 	
 	private void setModel() {
@@ -36,11 +77,17 @@ public class Corpora {
 		return this.model;
 	}
 	
-	public List<Corpus> getSelection() {
-		List<Corpus> corpora = new ArrayList<Corpus>();
-		for (int index = 0; index < this.getModel().size(); index++) {
+	public String getLanguage() {
+		String key = (String) this.getComboBox().getSelectedItem();
+		return languages.get(key).getLanguage();
+	}
+	
+	public String[] getDirectories() {
+		int size = this.getModel().size();
+		String[] corpora = new String[size];
+		for (int index = 0; index < size; index++) {
 			Corpus corpus = (Corpus) this.getModel().getElementAt(index);
-			corpora.add(corpus);
+			corpora[index] = corpus.getFile().getAbsolutePath();
 		}
 		return corpora;
 	}
@@ -71,17 +118,32 @@ public class Corpora {
 		this.scroll.setPreferredSize(this.getDimension());
 	}
 	
-	public JScrollPane getComponent() {
+	private JScrollPane getScroll() {
 		return this.scroll;
+	}
+	
+	private JPanel component;
+	
+	private void setComponent() {
+		this.component = new JPanel();
+		this.component.add(this.getComboBox());
+		this.component.add(this.getScroll());
+	}
+	
+	public JPanel getComponent() {
+		return this.component;
 	}
 		
 	public Corpora() {
+		this.setComboBoxModel();
+		this.setComboBox();
 		this.setModel();
 		this.setList();
 		this.setScroll();
+		this.setComponent();
 	}
 	
-	public class Corpus implements Transferable, Comparable<Corpus> {
+	private class Corpus implements Transferable, Comparable<Corpus> {
 		
 		private String name;
 		
@@ -168,7 +230,6 @@ public class Corpora {
 			} else {
 				return null;
 			}
-
 		}
 
 		@Override
