@@ -1,14 +1,88 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>eu.project.ttc</groupId>
-  <artifactId>ttc-project</artifactId>
+  <artifactId>ttc-term-suite</artifactId>
   <version>11-06-06</version>
-  <packaging>pom</packaging>
-  <name>TTC Project'S UIMA Components and Tools</name>
-  <modules>
-    <module>modules/ttc-components</module>
-    <module>modules/ttc-term-suite</module>
-  </modules>
+  <packaging>jar</packaging>
+  <name>TTC TermSuite</name>
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.uima</groupId>
+      <artifactId>uimaj-core</artifactId>
+      <version>2.3.1</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.uima</groupId>
+      <artifactId>uimaj-cpe</artifactId>
+      <version>2.3.1</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.uima</groupId>
+      <artifactId>uimaj-document-annotation</artifactId>
+      <version>2.3.1</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>fr.univnantes.lina</groupId>
+      <artifactId>uima-word-tokenizer</artifactId>
+      <version>11-06-06</version>
+    </dependency>
+    <!-- dependency>
+    	<groupId>fr.univnantes.lina</groupId>
+    	<artifactId>uima-neo-classical-compound-detector</artifactId>
+    	<version>11-06-06</version>
+    </dependency-->
+    <dependency>
+    	<groupId>fr.univnantes.lina</groupId>
+    	<artifactId>uima-tree-tagger-wrapper</artifactId>
+    	<version>11-06-06</version>
+    	<type>jar</type>
+    	<scope>compile</scope>
+    </dependency>
+    <dependency>
+    	<groupId>fr.univnantes.lina</groupId>
+    	<artifactId>uima-multext-mapper</artifactId>
+    	<version>11-06-06</version>
+    	<type>jar</type>
+    	<scope>compile</scope>
+    </dependency>
+    <dependency>
+    	<groupId>fr.univnantes.lina</groupId>
+    	<artifactId>uima-rule-based-term-detector</artifactId>
+    	<version>11-06-06</version>
+    	<type>jar</type>
+    	<scope>compile</scope>
+    </dependency>
+    <dependency>
+    	<groupId>fr.univnantes.lina</groupId>
+    	<artifactId>uima-term-base-library</artifactId>
+    	<version>11-08-08</version>
+    	<type>jar</type>
+    	<scope>compile</scope>
+    </dependency>
+    <dependency>
+    	<groupId>fr.univnantes.lina</groupId>
+    	<artifactId>uima-dunamis</artifactId>
+    	<version>11-07-07</version>
+    	<scope>compile</scope>
+    </dependency>
+    <dependency>
+    	<groupId>fr.univnantes.lina</groupId>
+    	<artifactId>uima-stop-word-eraser</artifactId>
+    	<version>11-06-06</version>
+    	<type>jar</type>
+    	<scope>compile</scope>
+    </dependency>
+    <dependency>
+    	<groupId>fr.univnantes.lina</groupId>
+    	<artifactId>uima-lemmatizer</artifactId>
+    	<version>11-06-06</version>
+    	<type>jar</type>
+    	<scope>compile</scope>
+    </dependency>
+  </dependencies>
   <licenses>
     <license>
       <name>Apache 2</name>
@@ -30,6 +104,26 @@
       </resource>
     </resources>
     <plugins>
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>2.2-beta-2</version>
+        <configuration>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+          <appendAssemblyId>false</appendAssemblyId>
+          <excludeScope>provided</excludeScope>
+        </configuration>
+        <executions>
+          <execution>
+            <id>simple-command</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -71,7 +165,6 @@
       </extension>
     </extensions>
   </build>
-  <dependencies/>
   <distributionManagement>
     <repository>
       <id>taln-maven-repository</id>
