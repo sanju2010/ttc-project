@@ -1,6 +1,0 @@
-# This is the patterns for term detection in German
-N	org.apache.uima.multext.NounAnnotation[subCategory=common]
-NA	org.apache.uima.multext.AdjectiveAnnotation	org.apache.uima.multext.NounAnnotation[subCategory=common]
-NN	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.ArticleAnnotation	org.apache.uima.multext.NounAnnotation[subCategory=common]
-NN	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdpositionAnnotation	org.apache.uima.multext.NounAnnotation[subCategory=common]
-NPV	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdpositionAnnotation	org.apache.uima.multext.AdjectiveAnnotation	org.apache.uima.multext.NounAnnotation[subCategory=common]

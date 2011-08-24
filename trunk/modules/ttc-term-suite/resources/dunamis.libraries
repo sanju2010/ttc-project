@@ -2,14 +2,20 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
 
+  <entry key="ttc-project-00">eu.project.ttc.BaboukCollector</entry>
   <entry key="ttc-project-01">eu.project.ttc.TextPreProcessing</entry>
+<!--
   <entry key="ttc-project-02">eu.project.ttc.LinguisticAnalysis</entry>
   <entry key="ttc-project-03">eu.project.ttc.TerminologyExtraction</entry>
   <entry key="ttc-project-04">eu.project.ttc.TerminologyAlignment</entry>
+-->
   <entry key="ttc-project-05">eu.project.ttc.TypeSystem</entry>
+<!--
   <entry key="ttc-project-06">eu.project.ttc.engines.TermExtractorWrapper</entry>
+-->
   <entry key="ttc-project-07">eu.project.ttc.engines.XmiCollector</entry>
   <entry key="ttc-project-09">eu.project.ttc.engines.XmiGenerator</entry>
+<!--
   <entry key="ttc-project-10">eu.project.ttc.engines.TreeTaggerLemmaAnnotator</entry>
   <entry key="ttc-project-11">eu.project.ttc.engines.EnglishTreeTaggerLemmaAnnotator</entry>
   <entry key="ttc-project-12">eu.project.ttc.engines.FrenchTreeTaggerLemmaAnnotator</entry>
@@ -26,9 +32,12 @@
   <entry key="ttc-project-30">eu.project.ttc.engines.LatvianTildeTagger</entry>
   <entry key="ttc-project-31">eu.project.ttc.engines.LatvianTreeTaggerMultextAnnotator</entry>
   <entry key="ttc-project-32">eu.project.ttc.engines.LatvianTreeTaggerLemmaAnnotator</entry>
+-->
 
-  <entry key="uima-word-tokenizer-01">fr.univnantes.lina.uima.engines.WordTokenizer</entry>
-  <entry key="uima-word-tokenizer-02">fr.univnantes.lina.uima.engines.SimpleWordTokenizer</entry>
+  <entry key="uima-word-tokenizer-00">fr.univnantes.lina.uima.engines.WordTokenizer</entry>
+  <entry key="uima-word-tokenizer-01">fr.univnantes.lina.uima.engines.SimpleWordTokenizer</entry>
+  <entry key="uima-word-tokenizer-02">fr.univnantes.lina.uima.engines.CompoundWordTokenizer</entry>
+<!--
   <entry key="uima-word-tokenizer-03">fr.univnantes.lina.uima.engines.FrenchWordTokenizer</entry>
   <entry key="uima-word-tokenizer-04">fr.univnantes.lina.uima.engines.FrenchCompoundWordTokenizer</entry>
   <entry key="uima-word-tokenizer-05">fr.univnantes.lina.uima.engines.EnglishWordTokenizer</entry>
@@ -87,6 +96,8 @@
 
   <entry key="uima-neighbour-annotator-01">fr.univnantes.lina.uima.engines.NeighbourAnnotator</entry>
 
+  <entry key="uima-language-detector-01">fr.univnantes.lina.uima.engines.LanguageDetector</entry>
+
   <entry key="uima-term-base-exchange-01">fr.univnantes.lina.uima.engines.TermBaseIndexer</entry>
   <entry key="uima-term-base-exchange-02">fr.univnantes.lina.uima.engines.TermBaseWriter</entry>
   
@@ -100,5 +111,7 @@
   <entry key="uima-ziggurat-02">fr.univnantes.lina.uima.engines.TermContextTransferer</entry>
   <entry key="uima-ziggurat-03">fr.univnantes.lina.uima.engines.TermContextAligner</entry>
   <entry key="uima-ziggurat-04">fr.univnantes.lina.uima.engines.TermContextWriter</entry>
-  
+
+-->
+
 </properties>

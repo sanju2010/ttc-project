@@ -62,6 +62,26 @@
     	<type>jar</type>
     	<scope>compile</scope>
     </dependency>
+    <dependency>
+    	<groupId>fr.univnantes.lina</groupId>
+    	<artifactId>uima-dunamis</artifactId>
+    	<version>11-07-07</version>
+    	<scope>compile</scope>
+    </dependency>
+    <dependency>
+    	<groupId>fr.univnantes.lina</groupId>
+    	<artifactId>uima-stop-word-eraser</artifactId>
+    	<version>11-06-06</version>
+    	<type>jar</type>
+    	<scope>compile</scope>
+    </dependency>
+    <dependency>
+    	<groupId>fr.univnantes.lina</groupId>
+    	<artifactId>uima-lemmatizer</artifactId>
+    	<version>11-06-06</version>
+    	<type>jar</type>
+    	<scope>compile</scope>
+    </dependency>
   </dependencies>
   <licenses>
     <license>
