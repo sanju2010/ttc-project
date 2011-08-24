@@ -1,0 +1,3 @@
+# This is the patterns for term detection in Chinese
+
+NN	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.NounAnnotation[subCategory=common]
