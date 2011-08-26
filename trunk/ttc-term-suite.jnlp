@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.5+" codebase="http://ttc-project.googlecode.com/">
+  <information>
+    <title>TTC TermSuite Demo Application</title>
+    <vendor>The TTC Project's Consortium.</vendor>
+    <description>TTC TermSuite Demo Application</description>
+    <offline-allowed/> 
+  </information>
+  <security>
+      <all-permissions/>
+  </security>
+  <resources>
+    <j2se version="1.5+" java-vm-args=""/>
+    <jar href="files/ttc-term-suite-0.8.0.jar"/>
+  </resources>
+  <application-desc main-class="eu.project.ttc.Tools.TermSuite"/>
+</jnlp> 
