@@ -1,0 +1,5 @@
+# Default Wrapper Configuration
+pre-process = 
+process = 
+post-process = 
+handler-class-name = eu.project.ttc.models.DefaultWrapperHandler

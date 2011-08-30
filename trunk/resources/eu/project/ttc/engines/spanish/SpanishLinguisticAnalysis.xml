@@ -3,20 +3,20 @@
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>false</primitive>
   <delegateAnalysisEngineSpecifiers>
+    <delegateAnalysisEngine key="SpanishTermDetector">
+      <import name="eu.project.ttc.engines.spanish.SpanishTermDetector"/>
+    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="TreeTaggerLemmaAnnotator">
       <import name="eu.project.ttc.engines.TreeTaggerLemmaAnnotator"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="SpanishTreeTaggerWrapper">
       <import name="eu.project.ttc.engines.spanish.SpanishTreeTaggerWrapper"/>
     </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="SpanishRuleBasedTermDetector">
-      <import name="eu.project.ttc.engines.spanish.SpanishRuleBasedTermDetector"/>
+    <delegateAnalysisEngine key="SpanishWordTokenizer">
+      <import name="eu.project.ttc.engines.spanish.SpanishWordTokenizer"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="SpanishTreeTaggerMultextMapper">
       <import name="eu.project.ttc.engines.spanish.SpanishTreeTaggerMultextMapper"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="SpanishWordTokenizer">
-      <import name="eu.project.ttc.engines.spanish.SpanishWordTokenizer"/>
     </delegateAnalysisEngine>
   </delegateAnalysisEngineSpecifiers>
   <analysisEngineMetaData>
@@ -34,42 +34,29 @@
           <parameter>SpanishTreeTaggerWrapper/TreeTaggerHomeDirectory</parameter>
         </overrides>
       </configurationParameter>
-      <configurationParameter>
-        <name>AnnotationType</name>
-        <type>String</type>
-        <multiValued>false</multiValued>
-        <mandatory>true</mandatory>
-        <overrides>
-          <parameter>SpanishRuleBasedTermDetector/AnnotationType</parameter>
-        </overrides>
-      </configurationParameter>
     </configurationParameters>
-    <configurationParameterSettings>
-      <nameValuePair>
-        <name>AnnotationType</name>
-        <value>
-          <string>org.apache.uima.MultextAnnotation</string>
-        </value>
-      </nameValuePair>
-    </configurationParameterSettings>
+    <configurationParameterSettings/>
     <flowConstraints>
       <fixedFlow>
         <node>SpanishWordTokenizer</node>
         <node>SpanishTreeTaggerWrapper</node>
         <node>SpanishTreeTaggerMultextMapper</node>
         <node>TreeTaggerLemmaAnnotator</node>
-        <node>SpanishRuleBasedTermDetector</node>
+        <node>SpanishTermDetector</node>
       </fixedFlow>
     </flowConstraints>
     <typePriorities/>
     <fsIndexCollection/>
     <capabilities>
       <capability>
-        <inputs/>
+        <inputs>
+          <type allAnnotatorFeatures="true">org.apache.uima.examples.SourceDocumentInformation</type>
+        </inputs>
         <outputs>
           <type allAnnotatorFeatures="true">org.apache.uima.WordAnnotation</type>
           <type allAnnotatorFeatures="true">org.apache.uima.TreeTaggerAnnotation</type>
           <type allAnnotatorFeatures="true">org.apache.uima.MultextAnnotation</type>
+          <type allAnnotatorFeatures="true">org.apache.uima.LemmaAnnotation</type>
           <type allAnnotatorFeatures="true">org.apache.uima.TermAnnotation</type>
         </outputs>
         <languagesSupported>

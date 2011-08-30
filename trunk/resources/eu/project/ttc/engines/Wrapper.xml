@@ -2,50 +2,26 @@
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>true</primitive>
-  <annotatorImplementationName>fr.univnantes.lina.uima.engines.RuleBasedTermDetector</annotatorImplementationName>
+  <annotatorImplementationName>eu.project.ttc.engines.Wrapper</annotatorImplementationName>
   <analysisEngineMetaData>
-    <name>French Rule Based Term Detector</name>
+    <name>Wrapper</name>
     <description/>
     <version>1.0</version>
     <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
     <configurationParameters>
       <configurationParameter>
-        <name>AnnotationType</name>
-        <type>String</type>
-        <multiValued>false</multiValued>
-        <mandatory>true</mandatory>
-      </configurationParameter>
-      <configurationParameter>
-        <name>RuleSystemFile</name>
+        <name>WrapperConfigurationFile</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
       </configurationParameter>
-      <configurationParameter>
-        <name>OverrideRuleSystem</name>
-        <type>Boolean</type>
-        <multiValued>false</multiValued>
-        <mandatory>true</mandatory>
-      </configurationParameter>
     </configurationParameters>
-    <configurationParameterSettings>
-      <nameValuePair>
-        <name>AnnotationType</name>
-        <value>
-          <string>org.apache.uima.MultextAnnotation</string>
-        </value>
-      </nameValuePair>
-      <nameValuePair>
-        <name>OverrideRuleSystem</name>
-        <value>
-          <boolean>false</boolean>
-        </value>
-      </nameValuePair>
-    </configurationParameterSettings>
+    <configurationParameterSettings/>
     <typeSystemDescription>
       <imports>
-        <import name="fr.univnantes.lina.uima.types.TermAnnotation"/>
         <import name="fr.univnantes.lina.uima.types.MultextAnnotation"/>
+        <import name="fr.univnantes.lina.uima.types.LemmaAnnotation"/>
+        <import name="fr.univnantes.lina.uima.types.TermAnnotation"/>
         <import name="org.apache.uima.examples.SourceDocumentInformation"/>
       </imports>
     </typeSystemDescription>
@@ -54,15 +30,14 @@
     <capabilities>
       <capability>
         <inputs>
-          <type allAnnotatorFeatures="true">org.apache.uima.MultextAnnotation</type>
           <type allAnnotatorFeatures="true">org.apache.uima.examples.SourceDocumentInformation</type>
+          <type allAnnotatorFeatures="true">org.apache.uima.MultextAnnotation</type>
+          <type allAnnotatorFeatures="true">org.apache.uima.LemmaAnnotation</type>
         </inputs>
         <outputs>
           <type allAnnotatorFeatures="true">org.apache.uima.TermAnnotation</type>
         </outputs>
-        <languagesSupported>
-          <language>fr</language>
-        </languagesSupported>
+        <languagesSupported/>
       </capability>
     </capabilities>
     <operationalProperties>
@@ -73,27 +48,27 @@
   </analysisEngineMetaData>
   <externalResourceDependencies>
     <externalResourceDependency>
-      <key>RuleSystem</key>
+      <key>WrapperConfiguration</key>
       <description/>
-      <interfaceName>fr.univnantes.lina.uima.models.RuleSystem</interfaceName>
+      <interfaceName>eu.project.ttc.models.WrapperConfiguration</interfaceName>
       <optional>false</optional>
     </externalResourceDependency>
   </externalResourceDependencies>
   <resourceManagerConfiguration>
     <externalResources>
       <externalResource>
-        <name>FrenchRuleSystem</name>
+        <name>DefaultWrapperConfiguration</name>
         <description/>
         <fileResourceSpecifier>
-          <fileUrl>eu/project/ttc/resources/RuleSystem.French</fileUrl>
+          <fileUrl>eu/project/ttc/resources/WrapperConfiguration.Default</fileUrl>
         </fileResourceSpecifier>
-        <implementationName>fr.univnantes.lina.uima.models.RuleSystemResource</implementationName>
+        <implementationName>eu.project.ttc.models.WrapperConfiguration</implementationName>
       </externalResource>
     </externalResources>
     <externalResourceBindings>
       <externalResourceBinding>
-        <key>RuleSystem</key>
-        <resourceName>FrenchRuleSystem</resourceName>
+        <key>WrapperConfiguration</key>
+        <resourceName>DefaultWrapperConfiguration</resourceName>
       </externalResourceBinding>
     </externalResourceBindings>
   </resourceManagerConfiguration>

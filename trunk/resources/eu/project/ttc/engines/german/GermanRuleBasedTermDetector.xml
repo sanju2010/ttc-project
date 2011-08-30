@@ -45,6 +45,7 @@
     <typeSystemDescription>
       <imports>
         <import name="fr.univnantes.lina.uima.types.TermAnnotation"/>
+        <import name="org.apache.uima.examples.SourceDocumentInformation"/>
       </imports>
     </typeSystemDescription>
     <typePriorities/>
@@ -53,6 +54,7 @@
       <capability>
         <inputs>
           <type allAnnotatorFeatures="true">uima.tcas.Annotation</type>
+          <type allAnnotatorFeatures="true">org.apache.uima.examples.SourceDocumentInformation</type>
         </inputs>
         <outputs>
           <type allAnnotatorFeatures="true">org.apache.uima.TermAnnotation</type>

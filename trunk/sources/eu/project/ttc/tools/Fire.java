@@ -23,6 +23,7 @@ import org.apache.uima.util.Progress;
 
 import fr.univnantes.lina.uima.models.TermBase;
 import fr.univnantes.lina.uima.models.TermBaseResource;
+import fr.univnantes.lina.uima.tools.dunamis.models.ProcessingResult;
 
 public class Fire implements ActionListener, StatusCallbackListener {
 
@@ -212,7 +213,7 @@ public class Fire implements ActionListener, StatusCallbackListener {
 	private void doHook() {
 		TermBase termBase = TermBaseResource.getInstance();
 		System.out.println("Hooking " + termBase);
-		this.getTermSuite().getTerms().setModel(termBase.getListModel());
+		this.getTermSuite().getTerms().setModel(termBase.getTreeModel());
 	}
 	
 	private CollectionProcessingEngine getEngine() {
@@ -269,7 +270,25 @@ public class Fire implements ActionListener, StatusCallbackListener {
 	public void aborted() { }
 
 	@Override
-	public void entityProcessComplete(CAS aCas, EntityProcessStatus aStatus) {
+	public void entityProcessComplete(CAS cas, EntityProcessStatus status) {
+		if (status.isException()) {
+			String message = status.getStatusMessage();
+			this.getTermSuite().warning(message);
+			for (Exception e : status.getExceptions()) {
+				this.getTermSuite().error(e);
+			}
+		} else if (status.isEntitySkipped()) {
+			String message = status.getStatusMessage();
+			this.getTermSuite().warning(message);
+		} else {
+			try {
+				ProcessingResult result = new ProcessingResult();
+				result.setCas(cas);
+				this.getTermSuite().getDocuments().getResultModel().addElement(result);
+			} catch (Exception e) {
+				this.getTermSuite().error(e);
+			}
+		}
 	}
 
 }

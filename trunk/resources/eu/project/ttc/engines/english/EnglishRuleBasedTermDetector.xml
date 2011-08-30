@@ -32,7 +32,7 @@
       <nameValuePair>
         <name>AnnotationType</name>
         <value>
-          <string>uima.tcas.Annotation</string>
+          <string>org.apache.uima.MultextAnnotation</string>
         </value>
       </nameValuePair>
       <nameValuePair>
@@ -45,6 +45,8 @@
     <typeSystemDescription>
       <imports>
         <import name="fr.univnantes.lina.uima.types.TermAnnotation"/>
+        <import name="fr.univnantes.lina.uima.types.MultextAnnotation"/>
+        <import name="org.apache.uima.examples.SourceDocumentInformation"/>
       </imports>
     </typeSystemDescription>
     <typePriorities/>
@@ -52,7 +54,8 @@
     <capabilities>
       <capability>
         <inputs>
-          <type allAnnotatorFeatures="true">uima.tcas.Annotation</type>
+          <type allAnnotatorFeatures="true">org.apache.uima.MultextAnnotation</type>
+          <type allAnnotatorFeatures="true">org.apache.uima.examples.SourceDocumentInformation</type>
         </inputs>
         <outputs>
           <type allAnnotatorFeatures="true">org.apache.uima.TermAnnotation</type>

@@ -6,17 +6,20 @@
     <delegateAnalysisEngine key="EnglishWordTokenizer">
       <import name="eu.project.ttc.engines.english.EnglishWordTokenizer"/>
     </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="EnglishTermNoteAnnotator">
+      <import name="eu.project.ttc.engines.english.EnglishTermNoteAnnotator"/>
+    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="TreeTaggerLemmaAnnotator">
       <import name="eu.project.ttc.engines.TreeTaggerLemmaAnnotator"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="EnglishTreeTaggerWrapper">
       <import name="eu.project.ttc.engines.english.EnglishTreeTaggerWrapper"/>
     </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="EnglishTermDetector">
+      <import name="eu.project.ttc.engines.english.EnglishTermDetector"/>
+    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="EnglishTreeTaggerMultextMapper">
       <import name="eu.project.ttc.engines.english.EnglishTreeTaggerMultextMapper"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="EnglishRuleBasedTermDetector">
-      <import name="eu.project.ttc.engines.english.EnglishRuleBasedTermDetector"/>
     </delegateAnalysisEngine>
   </delegateAnalysisEngineSpecifiers>
   <analysisEngineMetaData>
@@ -34,41 +37,30 @@
           <parameter>EnglishTreeTaggerWrapper/TreeTaggerHomeDirectory</parameter>
         </overrides>
       </configurationParameter>
-      <configurationParameter>
-        <name>AnnotationType</name>
-        <type>String</type>
-        <multiValued>false</multiValued>
-        <mandatory>true</mandatory>
-        <overrides>
-          <parameter>EnglishRuleBasedTermDetector/AnnotationType</parameter>
-        </overrides>
-      </configurationParameter>
     </configurationParameters>
-    <configurationParameterSettings>
-      <nameValuePair>
-        <name>AnnotationType</name>
-        <value>
-          <string>org.apache.uima.MultextAnnotation</string>
-        </value>
-      </nameValuePair>
-    </configurationParameterSettings>
+    <configurationParameterSettings/>
     <flowConstraints>
       <fixedFlow>
         <node>EnglishWordTokenizer</node>
         <node>EnglishTreeTaggerWrapper</node>
         <node>EnglishTreeTaggerMultextMapper</node>
         <node>TreeTaggerLemmaAnnotator</node>
-        <node>EnglishRuleBasedTermDetector</node>
+        <node>EnglishTermDetector</node>
+        <node>EnglishTermNoteAnnotator</node>
       </fixedFlow>
     </flowConstraints>
     <typePriorities/>
     <fsIndexCollection/>
     <capabilities>
       <capability>
-        <inputs/>
+        <inputs>
+          <type allAnnotatorFeatures="true">org.apache.uima.examples.SourceDocumentInformation</type>
+        </inputs>
         <outputs>
           <type allAnnotatorFeatures="true">org.apache.uima.WordAnnotation</type>
           <type allAnnotatorFeatures="true">org.apache.uima.TreeTaggerAnnotation</type>
+          <type allAnnotatorFeatures="true">org.apache.uima.MultextAnnotation</type>
+          <type allAnnotatorFeatures="true">org.apache.uima.LemmaAnnotation</type>
           <type allAnnotatorFeatures="true">org.apache.uima.TermAnnotation</type>
         </outputs>
         <languagesSupported>

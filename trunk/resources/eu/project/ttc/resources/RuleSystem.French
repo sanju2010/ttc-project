@@ -8,9 +8,9 @@ NN	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.mu
 NPN	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdpositionAnnotation[coveredText=de]	org.apache.uima.multext.NounAnnotation[subCategory=common]
 NPN	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdpositionAnnotation[coveredText=d']	org.apache.uima.multext.ArticleAnnotation[coveredText=un]	org.apache.uima.multext.NounAnnotation[subCategory=common]
 NPN	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdpositionAnnotation[coveredText=d']	org.apache.uima.multext.ArticleAnnotation[coveredText=une]	org.apache.uima.multext.NounAnnotation[subCategory=common]
-NPN	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdpositionAnnotation[coveredText=de]	org.apache.uima.multext.NounAnnotation[subCategory=common]
 NPN	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdpositionAnnotation[coveredText=de]	org.apache.uima.multext.ArticleAnnotation[coveredText=la]	org.apache.uima.multext.NounAnnotation[subCategory=common]
 NPN	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdpositionAnnotation[coveredText=des]	org.apache.uima.multext.NounAnnotation[subCategory=common]
+
 NPN	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdpositionAnnotation[coveredText=à]	org.apache.uima.multext.NounAnnotation[subCategory=common]
 NPN	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdpositionAnnotation[coveredText=au]	org.apache.uima.multext.NounAnnotation[subCategory=common]
 NPN	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdpositionAnnotation[coveredText=à]	org.apache.uima.multext.ArticleAnnotation[coveredText=la]	org.apache.uima.multext.NounAnnotation[subCategory=common]

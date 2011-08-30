@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>eu.project.ttc</groupId>
   <artifactId>ttc-term-suite</artifactId>
-  <version>11-06-06</version>
+  <version>0.8.0</version>
   <packaging>jar</packaging>
   <name>TTC TermSuite</name>
   <dependencies>
@@ -10,75 +10,81 @@
       <groupId>org.apache.uima</groupId>
       <artifactId>uimaj-core</artifactId>
       <version>2.3.1</version>
-      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.uima</groupId>
       <artifactId>uimaj-cpe</artifactId>
       <version>2.3.1</version>
-      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.uima</groupId>
       <artifactId>uimaj-document-annotation</artifactId>
       <version>2.3.1</version>
-      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>fr.univnantes.lina</groupId>
       <artifactId>uima-word-tokenizer</artifactId>
-      <version>11-06-06</version>
+      <version>0.8.0</version>
     </dependency>
-    <!-- dependency>
-    	<groupId>fr.univnantes.lina</groupId>
-    	<artifactId>uima-neo-classical-compound-detector</artifactId>
-    	<version>11-06-06</version>
-    </dependency-->
     <dependency>
     	<groupId>fr.univnantes.lina</groupId>
     	<artifactId>uima-tree-tagger-wrapper</artifactId>
-    	<version>11-06-06</version>
+    	<version>0.8.0</version>
     	<type>jar</type>
     	<scope>compile</scope>
     </dependency>
     <dependency>
     	<groupId>fr.univnantes.lina</groupId>
     	<artifactId>uima-multext-mapper</artifactId>
-    	<version>11-06-06</version>
+    	<version>0.8.0</version>
     	<type>jar</type>
     	<scope>compile</scope>
     </dependency>
     <dependency>
     	<groupId>fr.univnantes.lina</groupId>
     	<artifactId>uima-rule-based-term-detector</artifactId>
-    	<version>11-06-06</version>
+    	<version>0.8.0</version>
     	<type>jar</type>
     	<scope>compile</scope>
     </dependency>
     <dependency>
     	<groupId>fr.univnantes.lina</groupId>
     	<artifactId>uima-term-base-library</artifactId>
-    	<version>11-08-08</version>
+    	<version>0.8.0</version>
     	<type>jar</type>
     	<scope>compile</scope>
     </dependency>
     <dependency>
     	<groupId>fr.univnantes.lina</groupId>
     	<artifactId>uima-dunamis</artifactId>
-    	<version>11-07-07</version>
+    	<version>0.8.0</version>
     	<scope>compile</scope>
     </dependency>
     <dependency>
     	<groupId>fr.univnantes.lina</groupId>
     	<artifactId>uima-stop-word-eraser</artifactId>
-    	<version>11-06-06</version>
+    	<version>0.8.0</version>
     	<type>jar</type>
     	<scope>compile</scope>
     </dependency>
     <dependency>
     	<groupId>fr.univnantes.lina</groupId>
     	<artifactId>uima-lemmatizer</artifactId>
-    	<version>11-06-06</version>
+    	<version>0.8.0</version>
+    	<type>jar</type>
+    	<scope>compile</scope>
+    </dependency>
+    <dependency>
+    	<groupId>fr.univnantes.lina</groupId>
+    	<artifactId>uima-neo-classical-term-detector</artifactId>
+    	<version>0.8.0</version>
+    	<type>jar</type>
+    	<scope>compile</scope>
+    </dependency>
+    <dependency>
+    	<groupId>fr.univnantes.lina</groupId>
+    	<artifactId>uima-neighbour-annotator</artifactId>
+    	<version>0.8.0</version>
     	<type>jar</type>
     	<scope>compile</scope>
     </dependency>
@@ -92,11 +98,10 @@
   </licenses>
   <organization>
   </organization>
-  <properties> 
+  <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding> 
   </properties>
   <build>
-    <defaultGoal>package</defaultGoal>
     <sourceDirectory>sources</sourceDirectory>
     <resources>
       <resource>
@@ -105,32 +110,12 @@
     </resources>
     <plugins>
       <plugin>
-        <artifactId>maven-assembly-plugin</artifactId>
-        <version>2.2-beta-2</version>
-        <configuration>
-          <descriptorRefs>
-            <descriptorRef>jar-with-dependencies</descriptorRef>
-          </descriptorRefs>
-          <appendAssemblyId>false</appendAssemblyId>
-          <excludeScope>provided</excludeScope>
-        </configuration>
-        <executions>
-          <execution>
-            <id>simple-command</id>
-            <phase>package</phase>
-            <goals>
-              <goal>single</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
           <source>1.6</source>
           <target>1.6</target>
-	</configuration>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

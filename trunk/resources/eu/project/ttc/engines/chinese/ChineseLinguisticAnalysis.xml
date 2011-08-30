@@ -12,11 +12,14 @@
     <delegateAnalysisEngine key="ChineseTreeTaggerWrapper">
       <import name="eu.project.ttc.engines.chinese.ChineseTreeTaggerWrapper"/>
     </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="ChineseRuleBasedTermDetector">
-      <import name="eu.project.ttc.engines.chinese.ChineseRuleBasedTermDetector"/>
-    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="ChineseTreeTaggerMultextMapper">
       <import name="eu.project.ttc.engines.chinese.ChineseTreeTaggerMultextMapper"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="ChineseTermNoteAnnotator">
+      <import name="eu.project.ttc.engines.chinese.ChineseTermNoteAnnotator"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="ChineseTermDetector">
+      <import name="eu.project.ttc.engines.chinese.ChineseTermDetector"/>
     </delegateAnalysisEngine>
   </delegateAnalysisEngineSpecifiers>
   <analysisEngineMetaData>
@@ -34,31 +37,16 @@
           <parameter>ChineseTreeTaggerWrapper/TreeTaggerHomeDirectory</parameter>
         </overrides>
       </configurationParameter>
-      <configurationParameter>
-        <name>AnnotationType</name>
-        <type>String</type>
-        <multiValued>false</multiValued>
-        <mandatory>true</mandatory>
-        <overrides>
-          <parameter>ChineseRuleBasedTermDetector/AnnotationType</parameter>
-        </overrides>
-      </configurationParameter>
     </configurationParameters>
-    <configurationParameterSettings>
-      <nameValuePair>
-        <name>AnnotationType</name>
-        <value>
-          <string>org.apache.uima.MultextAnnotation</string>
-        </value>
-      </nameValuePair>
-    </configurationParameterSettings>
+    <configurationParameterSettings/>
     <flowConstraints>
       <fixedFlow>
         <node>ChineseWordTokenizer</node>
         <node>ChineseTreeTaggerWrapper</node>
         <node>ChineseTreeTaggerMultextMapper</node>
         <node>TreeTaggerLemmaAnnotator</node>
-        <node>ChineseRuleBasedTermDetector</node>
+        <node>ChineseTermDetector</node>
+        <node>ChineseTermNoteAnnotator</node>
       </fixedFlow>
     </flowConstraints>
     <typePriorities/>
@@ -69,6 +57,7 @@
         <outputs>
           <type allAnnotatorFeatures="true">org.apache.uima.WordAnnotation</type>
           <type allAnnotatorFeatures="true">org.apache.uima.TreeTaggerAnnotation</type>
+          <type allAnnotatorFeatures="true">org.apache.uima.LemmaAnnotation</type>
           <type allAnnotatorFeatures="true">org.apache.uima.TermAnnotation</type>
         </outputs>
         <languagesSupported>

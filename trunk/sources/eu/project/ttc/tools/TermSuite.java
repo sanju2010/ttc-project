@@ -17,6 +17,9 @@ import javax.swing.UIManager;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.util.Level;
 
+import fr.univnantes.lina.uima.tools.dunamis.listeners.ProcessingResultListener;
+import fr.univnantes.lina.uima.tools.dunamis.viewers.ProcessingResultViewer;
+
 public class TermSuite implements Runnable {
 
 	public void error(Exception e) {
@@ -102,12 +105,24 @@ public class TermSuite implements Runnable {
 		return this.terms;
 	}
 	
+	private ProcessingResultViewer resultViewer;
+	
+	private void setDocuments() {
+		this.resultViewer = new ProcessingResultViewer();
+	}
+	
+	public ProcessingResultViewer getDocuments() {
+		return this.resultViewer;
+	}
+	
 	private Component content;
 	
 	private void setContent() {		
 		JTabbedPane inner = new JTabbedPane();
+		inner.setTabPlacement(JTabbedPane.LEFT);
 		inner.addTab("Edit",this.getParameters().getComponent());
 		inner.addTab("View",this.getTerms().getComponent());
+		inner.addTab("Show",this.getDocuments().getComponent());
 		JSplitPane outter = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 		outter.setTopComponent(this.getToolBar().getComponent());
 		outter.setBottomComponent(inner);
@@ -122,8 +137,8 @@ public class TermSuite implements Runnable {
 	
 	private Dimension getDimension() {
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-		int width = (2 * screen.width) / 3;
-		int height = (2 * screen.height) / 3;
+		int width = (4 * screen.width) / 5;
+		int height = (4 * screen.height) / 5;
 		Dimension dimension = new Dimension(width,height);
 		return dimension;
 	}
@@ -139,6 +154,7 @@ public class TermSuite implements Runnable {
 		this.frame.setJMenuBar(null);
 		this.frame.pack();
 		this.frame.setLocationRelativeTo(null);
+		this.frame.setResizable(false);
 	}
 
 	private void hide() {
@@ -160,6 +176,7 @@ public class TermSuite implements Runnable {
 		this.setAbout();
 		this.setToolBar();
 		this.setTerms();
+		this.setDocuments();
 		this.setContent();
 		this.setFrame();
 		this.enableListeners();
@@ -169,6 +186,9 @@ public class TermSuite implements Runnable {
 		Fire fire = new Fire();
 		fire.setTermSuite(this);
 		this.getToolBar().enableListeners(fire);
+		ProcessingResultListener resultListener = new ProcessingResultListener();
+		resultListener.setViewer(this.getDocuments());
+		this.getDocuments().enableListeners(resultListener);
 		WindowListener windowListener = new WindowListener();
 		windowListener.setTermSuite(this);
 		this.getFrame().addWindowListener(windowListener);

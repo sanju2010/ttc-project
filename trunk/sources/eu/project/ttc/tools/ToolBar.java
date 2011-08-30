@@ -122,7 +122,7 @@ public class ToolBar {
 	
 	private void setProgressBar() {
 		this.progressBar = new JProgressBar();
-		this.progressBar.setPreferredSize(new Dimension(432,33));
+		this.progressBar.setPreferredSize(new Dimension(600,33));
 		this.progressBar.setStringPainted(true);
 	}
 

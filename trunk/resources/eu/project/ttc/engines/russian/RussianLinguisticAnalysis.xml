@@ -9,11 +9,11 @@
     <delegateAnalysisEngine key="RussianTreeTaggerMultextMapper">
       <import name="eu.project.ttc.engines.russian.RussianTreeTaggerMultextMapper"/>
     </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="RussianTermDetector">
+      <import name="eu.project.ttc.engines.russian.RussianTermDetector"/>
+    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="RussianTreeTaggerWrapper">
       <import name="eu.project.ttc.engines.russian.RussianTreeTaggerWrapper"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="RussianRuleBasedTermDetector">
-      <import name="eu.project.ttc.engines.russian.RussianRuleBasedTermDetector"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="RussianWordTokenizer">
       <import name="eu.project.ttc.engines.russian.RussianWordTokenizer"/>
@@ -34,42 +34,29 @@
           <parameter>RussianTreeTaggerWrapper/TreeTaggerHomeDirectory</parameter>
         </overrides>
       </configurationParameter>
-      <configurationParameter>
-        <name>AnnotationType</name>
-        <type>String</type>
-        <multiValued>false</multiValued>
-        <mandatory>true</mandatory>
-        <overrides>
-          <parameter>RussianRuleBasedTermDetector/AnnotationType</parameter>
-        </overrides>
-      </configurationParameter>
     </configurationParameters>
-    <configurationParameterSettings>
-      <nameValuePair>
-        <name>AnnotationType</name>
-        <value>
-          <string>org.apache.uima.MultextAnnotation</string>
-        </value>
-      </nameValuePair>
-    </configurationParameterSettings>
+    <configurationParameterSettings/>
     <flowConstraints>
       <fixedFlow>
         <node>RussianWordTokenizer</node>
         <node>RussianTreeTaggerWrapper</node>
         <node>RussianTreeTaggerMultextMapper</node>
         <node>TreeTaggerLemmaAnnotator</node>
-        <node>RussianRuleBasedTermDetector</node>
+        <node>RussianTermDetector</node>
       </fixedFlow>
     </flowConstraints>
     <typePriorities/>
     <fsIndexCollection/>
     <capabilities>
       <capability>
-        <inputs/>
+        <inputs>
+          <type allAnnotatorFeatures="true">org.apache.uima.examples.SourceDocumentInformation</type>
+        </inputs>
         <outputs>
           <type allAnnotatorFeatures="true">org.apache.uima.WordAnnotation</type>
           <type allAnnotatorFeatures="true">org.apache.uima.TreeTaggerAnnotation</type>
           <type allAnnotatorFeatures="true">org.apache.uima.MultextAnnotation</type>
+          <type allAnnotatorFeatures="true">org.apache.uima.LemmaAnnotation</type>
           <type allAnnotatorFeatures="true">org.apache.uima.TermAnnotation</type>
         </outputs>
         <languagesSupported>

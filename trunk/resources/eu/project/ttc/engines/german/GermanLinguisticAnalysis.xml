@@ -3,17 +3,17 @@
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>false</primitive>
   <delegateAnalysisEngineSpecifiers>
-    <delegateAnalysisEngine key="TreeTaggerLemmaAnnotator">
-      <import name="eu.project.ttc.engines.TreeTaggerLemmaAnnotator"/>
+    <delegateAnalysisEngine key="GermanTermDetector">
+      <import name="eu.project.ttc.engines.german.GermanTermDetector"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="GermanWordTokenizer">
       <import name="eu.project.ttc.engines.german.GermanWordTokenizer"/>
     </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="TreeTaggerLemmaAnnotator">
+      <import name="eu.project.ttc.engines.TreeTaggerLemmaAnnotator"/>
+    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="GermanTreeTaggerMultextMapper">
       <import name="eu.project.ttc.engines.german.GermanTreeTaggerMultextMapper"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="GermanRuleBasedTermDetector">
-      <import name="eu.project.ttc.engines.german.GermanRuleBasedTermDetector"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="GermanTreeTaggerWrapper">
       <import name="eu.project.ttc.engines.german.GermanTreeTaggerWrapper"/>
@@ -34,42 +34,29 @@
           <parameter>GermanTreeTaggerWrapper/TreeTaggerHomeDirectory</parameter>
         </overrides>
       </configurationParameter>
-      <configurationParameter>
-        <name>AnnotationType</name>
-        <type>String</type>
-        <multiValued>false</multiValued>
-        <mandatory>true</mandatory>
-        <overrides>
-          <parameter>GermanRuleBasedTermDetector/AnnotationType</parameter>
-        </overrides>
-      </configurationParameter>
     </configurationParameters>
-    <configurationParameterSettings>
-      <nameValuePair>
-        <name>AnnotationType</name>
-        <value>
-          <string>org.apache.uima.MultextAnnotation</string>
-        </value>
-      </nameValuePair>
-    </configurationParameterSettings>
+    <configurationParameterSettings/>
     <flowConstraints>
       <fixedFlow>
         <node>GermanWordTokenizer</node>
         <node>GermanTreeTaggerWrapper</node>
         <node>GermanTreeTaggerMultextMapper</node>
         <node>TreeTaggerLemmaAnnotator</node>
-        <node>GermanRuleBasedTermDetector</node>
+        <node>GermanTermDetector</node>
       </fixedFlow>
     </flowConstraints>
     <typePriorities/>
     <fsIndexCollection/>
     <capabilities>
       <capability>
-        <inputs/>
+        <inputs>
+          <type allAnnotatorFeatures="true">org.apache.uima.examples.SourceDocumentInformation</type>
+        </inputs>
         <outputs>
           <type allAnnotatorFeatures="true">org.apache.uima.WordAnnotation</type>
           <type allAnnotatorFeatures="true">org.apache.uima.TreeTaggerAnnotation</type>
           <type allAnnotatorFeatures="true">org.apache.uima.MultextAnnotation</type>
+          <type allAnnotatorFeatures="true">org.apache.uima.LemmaAnnotation</type>
           <type allAnnotatorFeatures="true">org.apache.uima.TermAnnotation</type>
         </outputs>
         <languagesSupported>

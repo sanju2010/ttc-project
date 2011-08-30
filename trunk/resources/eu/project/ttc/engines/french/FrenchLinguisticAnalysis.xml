@@ -3,6 +3,12 @@
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>false</primitive>
   <delegateAnalysisEngineSpecifiers>
+    <delegateAnalysisEngine key="FrenchTermNoteAnnotator">
+      <import name="eu.project.ttc.engines.french.FrenchTermNoteAnnotator"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="FrenchTermDetector">
+      <import name="eu.project.ttc.engines.french.FrenchTermDetector"/>
+    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="FrenchTreeTaggerMultextMapper">
       <import name="eu.project.ttc.engines.french.FrenchTreeTaggerMultextMapper"/>
     </delegateAnalysisEngine>
@@ -11,9 +17,6 @@
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="FrenchWordTokenizer">
       <import name="eu.project.ttc.engines.french.FrenchWordTokenizer"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="FrenchRuleBasedTermDetector">
-      <import name="eu.project.ttc.engines.french.FrenchRuleBasedTermDetector"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="FrenchTreeTaggerWrapper">
       <import name="eu.project.ttc.engines.french.FrenchTreeTaggerWrapper"/>
@@ -34,42 +37,30 @@
           <parameter>FrenchTreeTaggerWrapper/TreeTaggerHomeDirectory</parameter>
         </overrides>
       </configurationParameter>
-      <configurationParameter>
-        <name>AnnotationType</name>
-        <type>String</type>
-        <multiValued>false</multiValued>
-        <mandatory>true</mandatory>
-        <overrides>
-          <parameter>FrenchRuleBasedTermDetector/AnnotationType</parameter>
-        </overrides>
-      </configurationParameter>
     </configurationParameters>
-    <configurationParameterSettings>
-      <nameValuePair>
-        <name>AnnotationType</name>
-        <value>
-          <string>org.apache.uima.MultextAnnotation</string>
-        </value>
-      </nameValuePair>
-    </configurationParameterSettings>
+    <configurationParameterSettings/>
     <flowConstraints>
       <fixedFlow>
         <node>FrenchWordTokenizer</node>
         <node>FrenchTreeTaggerWrapper</node>
         <node>FrenchTreeTaggerMultextMapper</node>
         <node>TreeTaggerLemmaAnnotator</node>
-        <node>FrenchRuleBasedTermDetector</node>
+        <node>FrenchTermDetector</node>
+        <node>FrenchTermNoteAnnotator</node>
       </fixedFlow>
     </flowConstraints>
     <typePriorities/>
     <fsIndexCollection/>
     <capabilities>
       <capability>
-        <inputs/>
+        <inputs>
+          <type allAnnotatorFeatures="true">org.apache.uima.examples.SourceDocumentInformation</type>
+        </inputs>
         <outputs>
           <type allAnnotatorFeatures="true">org.apache.uima.WordAnnotation</type>
           <type allAnnotatorFeatures="true">org.apache.uima.TreeTaggerAnnotation</type>
           <type allAnnotatorFeatures="true">org.apache.uima.MultextAnnotation</type>
+          <type allAnnotatorFeatures="true">org.apache.uima.LemmaAnnotation</type>
           <type allAnnotatorFeatures="true">org.apache.uima.TermAnnotation</type>
         </outputs>
         <languagesSupported>

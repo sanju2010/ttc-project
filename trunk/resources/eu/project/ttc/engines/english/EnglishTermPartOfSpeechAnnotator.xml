@@ -2,9 +2,9 @@
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>true</primitive>
-  <annotatorImplementationName>fr.univnantes.lina.uima.engines.RuleBasedTermDetector</annotatorImplementationName>
+  <annotatorImplementationName>fr.univnantes.lina.uima.engines.TermNoteAnnotator</annotatorImplementationName>
   <analysisEngineMetaData>
-    <name>French Rule Based Term Detector</name>
+    <name>English Term Component Part Of Speech Annotator</name>
     <description/>
     <version>1.0</version>
     <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
@@ -16,14 +16,8 @@
         <mandatory>true</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>RuleSystemFile</name>
+        <name>NoteName</name>
         <type>String</type>
-        <multiValued>false</multiValued>
-        <mandatory>false</mandatory>
-      </configurationParameter>
-      <configurationParameter>
-        <name>OverrideRuleSystem</name>
-        <type>Boolean</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
@@ -32,13 +26,13 @@
       <nameValuePair>
         <name>AnnotationType</name>
         <value>
-          <string>org.apache.uima.MultextAnnotation</string>
+          <string>org.apache.uima.MultextAnnotation:category</string>
         </value>
       </nameValuePair>
       <nameValuePair>
-        <name>OverrideRuleSystem</name>
+        <name>NoteName</name>
         <value>
-          <boolean>false</boolean>
+          <string>partOfSpeech</string>
         </value>
       </nameValuePair>
     </configurationParameterSettings>
@@ -46,22 +40,26 @@
       <imports>
         <import name="fr.univnantes.lina.uima.types.TermAnnotation"/>
         <import name="fr.univnantes.lina.uima.types.MultextAnnotation"/>
-        <import name="org.apache.uima.examples.SourceDocumentInformation"/>
       </imports>
     </typeSystemDescription>
-    <typePriorities/>
+    <typePriorities>
+      <priorityList>
+        <type>org.apache.uima.TermAnnotation</type>
+        <type>org.apache.uima.TermComponentAnnotation</type>
+        <type>org.apache.uima.MultextAnnotation</type>
+      </priorityList>
+    </typePriorities>
     <fsIndexCollection/>
     <capabilities>
       <capability>
         <inputs>
           <type allAnnotatorFeatures="true">org.apache.uima.MultextAnnotation</type>
-          <type allAnnotatorFeatures="true">org.apache.uima.examples.SourceDocumentInformation</type>
         </inputs>
         <outputs>
-          <type allAnnotatorFeatures="true">org.apache.uima.TermAnnotation</type>
+          <type allAnnotatorFeatures="true">org.apache.uima.TermNoteAnnotation</type>
         </outputs>
         <languagesSupported>
-          <language>fr</language>
+          <language>en</language>
         </languagesSupported>
       </capability>
     </capabilities>
@@ -71,30 +69,5 @@
       <outputsNewCASes>false</outputsNewCASes>
     </operationalProperties>
   </analysisEngineMetaData>
-  <externalResourceDependencies>
-    <externalResourceDependency>
-      <key>RuleSystem</key>
-      <description/>
-      <interfaceName>fr.univnantes.lina.uima.models.RuleSystem</interfaceName>
-      <optional>false</optional>
-    </externalResourceDependency>
-  </externalResourceDependencies>
-  <resourceManagerConfiguration>
-    <externalResources>
-      <externalResource>
-        <name>FrenchRuleSystem</name>
-        <description/>
-        <fileResourceSpecifier>
-          <fileUrl>eu/project/ttc/resources/RuleSystem.French</fileUrl>
-        </fileResourceSpecifier>
-        <implementationName>fr.univnantes.lina.uima.models.RuleSystemResource</implementationName>
-      </externalResource>
-    </externalResources>
-    <externalResourceBindings>
-      <externalResourceBinding>
-        <key>RuleSystem</key>
-        <resourceName>FrenchRuleSystem</resourceName>
-      </externalResourceBinding>
-    </externalResourceBindings>
-  </resourceManagerConfiguration>
+  <resourceManagerConfiguration/>
 </analysisEngineDescription>
