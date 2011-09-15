@@ -2,11 +2,4 @@
 
 = Launch It! =
 
-It is really simple to run TTCTermSuite.
-
-= Details =
-
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+It should be really simple to run TTCTermSuite.
