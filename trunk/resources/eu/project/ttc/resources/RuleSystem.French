@@ -1,23 +1,23 @@
 # This is the patterns for term detection in French
 
-NA	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdjectiveAnnotation
-NA	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdjectiveAnnotation	org.apache.uima.multext.AdjectiveAnnotation
+NA	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdjectiveAnnotation+
+# NA	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdjectiveAnnotation	org.apache.uima.multext.AdjectiveAnnotation
 
-NN	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.NounAnnotation[subCategory=common]
+# NN	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.NounAnnotation[subCategory=common]
 
-NPN	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdpositionAnnotation[coveredText=de]	org.apache.uima.multext.NounAnnotation[subCategory=common]
-NPN	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdpositionAnnotation[coveredText=d']	org.apache.uima.multext.ArticleAnnotation[coveredText=un]	org.apache.uima.multext.NounAnnotation[subCategory=common]
-NPN	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdpositionAnnotation[coveredText=d']	org.apache.uima.multext.ArticleAnnotation[coveredText=une]	org.apache.uima.multext.NounAnnotation[subCategory=common]
-NPN	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdpositionAnnotation[coveredText=de]	org.apache.uima.multext.ArticleAnnotation[coveredText=la]	org.apache.uima.multext.NounAnnotation[subCategory=common]
-NPN	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdpositionAnnotation[coveredText=des]	org.apache.uima.multext.NounAnnotation[subCategory=common]
+# NPN	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdpositionAnnotation[coveredText=de]	org.apache.uima.multext.NounAnnotation[subCategory=common]
+NPN	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdpositionAnnotation[coveredText=d']	org.apache.uima.multext.ArticleAnnotation[coveredText=un | une]	org.apache.uima.multext.NounAnnotation[subCategory=common]
+# NPN	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdpositionAnnotation[coveredText=d']	org.apache.uima.multext.ArticleAnnotation[coveredText=une]	org.apache.uima.multext.NounAnnotation[subCategory=common]
+NPN	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdpositionAnnotation[coveredText=de]	org.apache.uima.multext.ArticleAnnotation[coveredText=la]?	org.apache.uima.multext.NounAnnotation[subCategory=common]
+# NPN	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdpositionAnnotation[coveredText=des]	org.apache.uima.multext.NounAnnotation[subCategory=common]
 
-NPN	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdpositionAnnotation[coveredText=à]	org.apache.uima.multext.NounAnnotation[subCategory=common]
-NPN	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdpositionAnnotation[coveredText=au]	org.apache.uima.multext.NounAnnotation[subCategory=common]
-NPN	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdpositionAnnotation[coveredText=à]	org.apache.uima.multext.ArticleAnnotation[coveredText=la]	org.apache.uima.multext.NounAnnotation[subCategory=common]
-NPN	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdpositionAnnotation[coveredText=aux]	org.apache.uima.multext.NounAnnotation[subCategory=common]
+# NPN	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdpositionAnnotation[coveredText=à]	org.apache.uima.multext.NounAnnotation[subCategory=common]
+# NPN	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdpositionAnnotation[coveredText=au]	org.apache.uima.multext.NounAnnotation[subCategory=common]
+# NPN	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdpositionAnnotation[coveredText=à]	org.apache.uima.multext.ArticleAnnotation[coveredText=la]	org.apache.uima.multext.NounAnnotation[subCategory=common]
+# NPN	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdpositionAnnotation[coveredText=aux]	org.apache.uima.multext.NounAnnotation[subCategory=common]
 
-NPNA	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdpositionAnnotation	org.apache.uima.multext.NounAnnotation	org.apache.uima.multext.AdjectiveAnnotation
-NPNA	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdpositionAnnotation	org.apache.uima.multext.ArticleAnnotation	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdjectiveAnnotation
-NPNA	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdpositionAnnotation	org.apache.uima.multext.DeterminerAnnotation	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdjectiveAnnotation
+# NPNA	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdpositionAnnotation	org.apache.uima.multext.NounAnnotation	org.apache.uima.multext.AdjectiveAnnotation
+# NPNA	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdpositionAnnotation	org.apache.uima.multext.ArticleAnnotation	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdjectiveAnnotation
+# NPNA	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdpositionAnnotation	org.apache.uima.multext.DeterminerAnnotation	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdjectiveAnnotation
 
-NV	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdpositionAnnotation[coveredText=à]	org.apache.uima.multext.VerbAnnotation
+# NV	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdpositionAnnotation[coveredText=à]	org.apache.uima.multext.VerbAnnotation

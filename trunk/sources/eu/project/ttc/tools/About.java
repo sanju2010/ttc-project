@@ -54,7 +54,8 @@ public class About {
 	private URL url;
 	
 	private void setUrl() {
-		this.url = ClassLoader.getSystemResource(this.getIconUrl());
+		// this.url = ClassLoader.getSystemResource(this.getIconUrl());
+		this.url = this.getClass().getClassLoader().getResource(this.getIconUrl());
 	}
 	
 	private URL getUrl() {

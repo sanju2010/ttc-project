@@ -21,8 +21,8 @@ import org.apache.uima.collection.metadata.CpeDescription;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Progress;
 
-import fr.univnantes.lina.uima.models.TermBase;
-import fr.univnantes.lina.uima.models.TermBaseResource;
+import fr.univnantes.lina.uima.models.TermBank;
+import fr.univnantes.lina.uima.models.TermBankResource;
 import fr.univnantes.lina.uima.tools.dunamis.models.ProcessingResult;
 
 public class Fire implements ActionListener, StatusCallbackListener {
@@ -211,7 +211,7 @@ public class Fire implements ActionListener, StatusCallbackListener {
 	}
 	
 	private void doHook() {
-		TermBase termBase = TermBaseResource.getInstance();
+		TermBank termBase = TermBankResource.getInstance();
 		System.out.println("Hooking " + termBase);
 		this.getTermSuite().getTerms().setModel(termBase.getTreeModel());
 	}

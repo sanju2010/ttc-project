@@ -80,9 +80,9 @@ public class WrapperConfiguration implements SharedResourceObject {
 			return this.process;
 		} else {
 			String process = this.process;
-			process = process.replaceFirst(Language,language);
-			process = process.replaceFirst(Input,input);
-			process = process.replaceFirst(Output,output);
+			process = process.replaceAll(Language,language);
+			process = process.replaceAll(Input,input);
+			process = process.replaceAll(Output,output);
 			return process;
 		}
 	}

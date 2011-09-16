@@ -2,16 +2,10 @@ package eu.project.ttc.tools;
 
 import java.awt.Dimension;
 
-import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
-import javax.swing.ListModel;
-import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
-import javax.swing.tree.TreeSelectionModel;
 
 public class Terms {
 

@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.uima.ResourceSpecifierFactory;
@@ -22,6 +23,7 @@ import org.apache.uima.resource.metadata.ConfigurationParameter;
 import org.apache.uima.resource.metadata.ConfigurationParameterDeclarations;
 import org.apache.uima.resource.metadata.ConfigurationParameterSettings;
 import org.apache.uima.resource.metadata.Import;
+import org.apache.uima.resource.metadata.MetaDataObject;
 import org.apache.uima.resource.metadata.NameValuePair;
 import org.apache.uima.resource.metadata.OperationalProperties;
 import org.apache.uima.util.InvalidXMLException;
@@ -69,12 +71,12 @@ public abstract class Annotator {
 		this.setMetaData();
 		this.setOperationalProperties();
 		this.setParameters();
-		this.setConfigurationParameterDeclarations();
-		this.setParameterSettings();
 		this.setCapabilities();
 		this.setFlowController();
 		this.setFlowConstraints();
 		this.setExternalResources();
+		this.setConfigurationParameterDeclarations();
+		this.setParameterSettings();
 		this.description.validate();
 		this.description.doFullValidation();
 		this.doStore();
@@ -113,22 +115,31 @@ public abstract class Annotator {
 	}
 	
 	protected void setParameter(String name, String type) {
+		
 		ConfigurationParameter parameter = this.getFactory().createConfigurationParameter();
 		parameter.setName(name);
 		parameter.setMultiValued(false);
 		parameter.setType(type);
-		Set<String> keys = this.getAnalysisEngineDescription().getDelegateAnalysisEngineSpecifiersWithImports().keySet();
+		Map<String, MetaDataObject> analysisEngines = this.getAnalysisEngineDescription().getDelegateAnalysisEngineSpecifiersWithImports();
+		Set<String> keys = analysisEngines.keySet();
+		System.out.println("Parameterizing " + keys.size() + " with " + name);
 		List<String> overrides = new ArrayList<String>();
 		Iterator<String> iterator = keys.iterator();
 		while (iterator.hasNext()) {
 			String key = iterator.next();
+			System.out.println("Parameterizing " + key + " with " + name);
 			try {
-				AnalysisEngineDescription ae = (AnalysisEngineDescription) this.getAnalysisEngineDescription().getDelegateAnalysisEngineSpecifiers().get(key);
+				AnalysisEngineDescription ae = (AnalysisEngineDescription) analysisEngines.get(key);
 				ConfigurationParameterDeclarations decl = ae.getAnalysisEngineMetaData().getConfigurationParameterDeclarations();
 				if (decl.getConfigurationParameter(null, name) != null) {
 					overrides.add( key + "/" + name);
+					System.out.println(name + " parameter exists for " + key);
+				} else {
+					System.out.println(name + " parameter doesn't exist for " + key);
 				}
-			} catch (Exception e) { }
+			} catch (Exception e) { 
+				System.out.println(e.getMessage());
+			}
 		}
 		String[] overRides = new String[overrides.size()];
 		overrides.toArray(overRides);

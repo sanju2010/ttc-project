@@ -2,11 +2,11 @@
 
 AN	org.apache.uima.multext.AdjectiveAnnotation	org.apache.uima.multext.NounAnnotation[subCategory=common]
 
-AAN	org.apache.uima.multext.AdjectiveAnnotation	org.apache.uima.multext.AdjectiveAnnotation	org.apache.uima.multext.NounAnnotation[subCategory=common]
-AAN	org.apache.uima.multext.AdjectiveAnnotation	org.apache.uima.multext.ConjunctionAnnotation	org.apache.uima.multext.AdjectiveAnnotation	org.apache.uima.multext.NounAnnotation[subCategory=common]
+# AAN	org.apache.uima.multext.AdjectiveAnnotation	org.apache.uima.multext.AdjectiveAnnotation	org.apache.uima.multext.NounAnnotation[subCategory=common]
+# AAN	org.apache.uima.multext.AdjectiveAnnotation	org.apache.uima.multext.ConjunctionAnnotation	org.apache.uima.multext.AdjectiveAnnotation	org.apache.uima.multext.NounAnnotation[subCategory=common]
 
 NN	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.NounAnnotation[subCategory=common]
 
-NPN	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdpositionAnnotation[coveredText=of]	org.apache.uima.multext.NounAnnotation[subCategory=common]
-NPN	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdpositionAnnotation[coveredText=of]	org.apache.uima.multext.AdjectiveAnnotation	org.apache.uima.multext.NounAnnotation[subCategory=common]
-NPN	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdpositionAnnotation[coveredText=of]	org.apache.uima.multext.AdjectiveAnnotation	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.ConjunctionAnnotation	org.apache.uima.multext.NounAnnotation[subCategory=common]
+# NPN	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdpositionAnnotation[coveredText=of]	org.apache.uima.multext.NounAnnotation[subCategory=common]
+# NPN	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdpositionAnnotation[coveredText=of]	org.apache.uima.multext.AdjectiveAnnotation	org.apache.uima.multext.NounAnnotation[subCategory=common]
+# NPN	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdpositionAnnotation[coveredText=of]	org.apache.uima.multext.AdjectiveAnnotation	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.ConjunctionAnnotation	org.apache.uima.multext.NounAnnotation[subCategory=common]

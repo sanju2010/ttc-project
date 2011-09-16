@@ -28,10 +28,10 @@ import org.apache.uima.resource.metadata.NameValuePair;
 import org.apache.uima.resource.metadata.ResourceManagerConfiguration;
 
 import fr.univnantes.lina.uima.engines.NeighbourAnnotator;
-import fr.univnantes.lina.uima.engines.TermBaseIndexer;
-import fr.univnantes.lina.uima.engines.TermBaseWriter;
-import fr.univnantes.lina.uima.models.TermBase;
-import fr.univnantes.lina.uima.models.TermBaseResource;
+import fr.univnantes.lina.uima.engines.TermBankIndexer;
+import fr.univnantes.lina.uima.engines.TermBankWriter;
+import fr.univnantes.lina.uima.models.TermBank;
+import fr.univnantes.lina.uima.models.TermBankResource;
 
 public class Processor extends SwingWorker<CpeDescription,Void> {
 
@@ -160,21 +160,21 @@ public class Processor extends SwingWorker<CpeDescription,Void> {
 		@Override
 		protected void setExternalResources() {
 			ExternalResourceDescription resource = this.getFactory().createExternalResourceDescription();
-			resource.setName(TermBaseResource.class.getSimpleName());
-			resource.setImplementationName(TermBaseResource.class.getCanonicalName());
+			resource.setName(TermBankResource.class.getSimpleName());
+			resource.setImplementationName(TermBankResource.class.getCanonicalName());
 			FileResourceSpecifier specifier = this.getFactory().createFileResourceSpecifier();
-			String path = TermBaseResource.class.getCanonicalName().replaceAll("\\.","/") + ".class";
+			String path = TermBankResource.class.getCanonicalName().replaceAll("\\.","/") + ".class";
 			URL url = this.getClass().getClassLoader().getResource(path);
 			specifier.setFileUrl(url.toString());
 			resource.setResourceSpecifier(specifier);
 			ExternalResourceDescription[] resources = new ExternalResourceDescription[] { resource };
 			ExternalResourceDependency dependency = this.getFactory().createExternalResourceDependency();
-			dependency.setKey(TermBase.class.getSimpleName());
-			dependency.setInterfaceName(TermBase.class.getCanonicalName());
+			dependency.setKey(TermBank.class.getSimpleName());
+			dependency.setInterfaceName(TermBank.class.getCanonicalName());
 			ExternalResourceDependency[] dependencies = new ExternalResourceDependency[] { dependency };
 			ExternalResourceBinding binding = this.getFactory().createExternalResourceBinding();
-			binding.setKey(TermBase.class.getSimpleName());
-			binding.setResourceName(TermBaseResource.class.getSimpleName());
+			binding.setKey(TermBank.class.getSimpleName());
+			binding.setResourceName(TermBankResource.class.getSimpleName());
 			ExternalResourceBinding[] bindings = new ExternalResourceBinding[] { binding };
 			this.getAnalysisEngineDescription().setExternalResourceDependencies(dependencies);
 			ResourceManagerConfiguration cfg = this.getFactory().createResourceManagerConfiguration();
@@ -185,6 +185,7 @@ public class Processor extends SwingWorker<CpeDescription,Void> {
 				
 		@Override
 		protected NameValuePair[] getNameValuePairs() {
+			/*
 			NameValuePair type = this.getFactory().createNameValuePair();
 			type.setName("AnnotationType");
 			type.setValue(TermAnnotation.class.getCanonicalName());
@@ -192,20 +193,22 @@ public class Processor extends SwingWorker<CpeDescription,Void> {
 			size.setName("NeighbourSize");
 			size.setValue(7);
 			return new NameValuePair[] { type , size };
+			*/
+			return new NameValuePair[0];
 		}
 
 		@Override
 		protected void setConfigurationParameterDeclarations() {
-			this.setParameter("AnnotationType", ConfigurationParameter.TYPE_STRING);
-			this.setParameter("NeighbourSize", ConfigurationParameter.TYPE_INTEGER);
+			// this.setParameter("AnnotationType", ConfigurationParameter.TYPE_STRING);
+			// this.setParameter("NeighbourSize", ConfigurationParameter.TYPE_INTEGER);
 		}
 				
 		@Override
 		protected String[] getFlow() {
-			String[] flows = new String[3];
-			flows[0] = NeighbourAnnotator.class.getCanonicalName();
-			flows[1] = TermBaseIndexer.class.getCanonicalName();
-			flows[2] = TermBaseWriter.class.getCanonicalName();
+			String[] flows = new String[2];
+			// flows[0] = NeighbourAnnotator.class.getCanonicalName();
+			flows[0] = TermBankIndexer.class.getCanonicalName();
+			flows[1] = TermBankWriter.class.getCanonicalName();
 			return flows;
 		}
 		
