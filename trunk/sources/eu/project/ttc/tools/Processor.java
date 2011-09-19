@@ -8,7 +8,6 @@ import java.util.Locale;
 
 import javax.swing.SwingWorker;
 
-import org.apache.uima.TermAnnotation;
 import org.apache.uima.analysis_engine.metadata.FlowControllerDeclaration;
 import org.apache.uima.collection.impl.metadata.cpe.CpeDescriptorFactory;
 import org.apache.uima.collection.metadata.CasProcessorConfigurationParameterSettings;
@@ -27,7 +26,6 @@ import org.apache.uima.resource.metadata.Import;
 import org.apache.uima.resource.metadata.NameValuePair;
 import org.apache.uima.resource.metadata.ResourceManagerConfiguration;
 
-import fr.univnantes.lina.uima.engines.NeighbourAnnotator;
 import fr.univnantes.lina.uima.engines.TermBankIndexer;
 import fr.univnantes.lina.uima.engines.TermBankWriter;
 import fr.univnantes.lina.uima.models.TermBank;
@@ -51,6 +49,8 @@ public class Processor extends SwingWorker<CpeDescription,Void> {
 		this.termSuiteProcessor = CpeDescriptorFactory.produceDescriptor();
 		Runtime runtime = Runtime.getRuntime();
         int threads = runtime.availableProcessors();
+        // FIXME TermBankResource.getInstance()
+        threads = 1;
 		this.termSuiteProcessor.setProcessingUnitThreadCount(threads);
 		this.termSuiteProcessor.getCpeCasProcessors().setPoolSize(threads);
 		this.termSuiteProcessor.getCpeCasProcessors().setConcurrentPUCount(threads);

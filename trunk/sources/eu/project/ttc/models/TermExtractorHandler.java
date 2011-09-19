@@ -97,8 +97,8 @@ public class TermExtractorHandler implements WrapperHandler {
 	}
 	
 	private void doAnnotate(JCas cas,TermAnnotation term) {
-		term.setLanguage(cas.getDocumentLanguage());
 		this.getNotes().clear();
+		this.getNotes().put("document",cas.getDocumentLanguage());
 		this.getNotes().put("document",this.getDocument(cas));
 		this.getNotes().put("begin",Integer.toString(term.getBegin()));
 		this.getNotes().put("end",Integer.toString(term.getEnd()));

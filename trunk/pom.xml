@@ -62,13 +62,6 @@
     </dependency>
     <dependency>
     	<groupId>fr.univnantes.lina</groupId>
-    	<artifactId>uima-stop-word-eraser</artifactId>
-    	<version>0.8.0</version>
-    	<type>jar</type>
-    	<scope>compile</scope>
-    </dependency>
-    <dependency>
-    	<groupId>fr.univnantes.lina</groupId>
     	<artifactId>uima-lemmatizer</artifactId>
     	<version>0.8.0</version>
     	<type>jar</type>
@@ -77,13 +70,6 @@
     <dependency>
     	<groupId>fr.univnantes.lina</groupId>
     	<artifactId>uima-neo-classical-term-detector</artifactId>
-    	<version>0.8.0</version>
-    	<type>jar</type>
-    	<scope>compile</scope>
-    </dependency>
-    <dependency>
-    	<groupId>fr.univnantes.lina</groupId>
-    	<artifactId>uima-neighbour-annotator</artifactId>
     	<version>0.8.0</version>
     	<type>jar</type>
     	<scope>compile</scope>

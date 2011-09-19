@@ -27,6 +27,7 @@ import org.apache.uima.resource.metadata.MetaDataObject;
 import org.apache.uima.resource.metadata.NameValuePair;
 import org.apache.uima.resource.metadata.OperationalProperties;
 import org.apache.uima.util.InvalidXMLException;
+import org.apache.uima.util.Level;
 import org.xml.sax.SAXException;
 
 public abstract class Annotator {
@@ -122,23 +123,18 @@ public abstract class Annotator {
 		parameter.setType(type);
 		Map<String, MetaDataObject> analysisEngines = this.getAnalysisEngineDescription().getDelegateAnalysisEngineSpecifiersWithImports();
 		Set<String> keys = analysisEngines.keySet();
-		System.out.println("Parameterizing " + keys.size() + " with " + name);
 		List<String> overrides = new ArrayList<String>();
 		Iterator<String> iterator = keys.iterator();
 		while (iterator.hasNext()) {
 			String key = iterator.next();
-			System.out.println("Parameterizing " + key + " with " + name);
 			try {
-				AnalysisEngineDescription ae = (AnalysisEngineDescription) analysisEngines.get(key);
+				AnalysisEngineDescription ae = (AnalysisEngineDescription) this.getAnalysisEngineDescription().getDelegateAnalysisEngineSpecifiers().get(key);
 				ConfigurationParameterDeclarations decl = ae.getAnalysisEngineMetaData().getConfigurationParameterDeclarations();
 				if (decl.getConfigurationParameter(null, name) != null) {
 					overrides.add( key + "/" + name);
-					System.out.println(name + " parameter exists for " + key);
-				} else {
-					System.out.println(name + " parameter doesn't exist for " + key);
 				}
-			} catch (Exception e) { 
-				System.out.println(e.getMessage());
+			} catch (InvalidXMLException e) {
+				UIMAFramework.getLogger().log(Level.WARNING,e.getMessage());
 			}
 		}
 		String[] overRides = new String[overrides.size()];
@@ -190,7 +186,7 @@ public abstract class Annotator {
 		if (index == -1) {
 			return name;
 		} else {
-			return name.substring(index);
+			return name.substring(index + 1);
 		}
 	}
 	

@@ -122,7 +122,7 @@ public class TermSuiteCollector extends CollectionReader_ImplBase {
 	private String getDocumentLanguage() {
 		int index = this.getIndex();
 		int source = this.getSourceCorpus().size();
-		if (index < source) {
+		if (index <= source) {
 			return this.sourceLanguage;
 		} else {
 			return this.targetLanguage;
