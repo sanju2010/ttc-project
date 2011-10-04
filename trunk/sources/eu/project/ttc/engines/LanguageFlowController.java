@@ -60,7 +60,7 @@ public class LanguageFlowController extends JCasFlowController_ImplBase {
 	private void addLanguage(String language,String id) {
 		this.getLanguageTable().put(language,id);
 		String msg = "Language mapping '" + language + " is associated with " + id;
-		UIMAFramework.getLogger().log(Level.INFO,msg);
+		UIMAFramework.getLogger().log(Level.CONFIG,msg);
 	}
 	
 	private void setLanguageTable(FlowControllerContext context) {
@@ -135,7 +135,7 @@ public class LanguageFlowController extends JCasFlowController_ImplBase {
 					return new FinalStep();
 				} else {
 					String msg = "Engine " + key + " for processing language code " + lang + ".";
-					UIMAFramework.getLogger().log(Level.INFO,msg);
+					UIMAFramework.getLogger().log(Level.CONFIG,msg);
 					return new SimpleStep(key);
 				}
 			}

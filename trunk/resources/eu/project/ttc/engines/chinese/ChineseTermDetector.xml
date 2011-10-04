@@ -6,24 +6,29 @@
     <delegateAnalysisEngine key="ChineseRuleBasedTermDetector">
       <import name="eu.project.ttc.engines.chinese.ChineseRuleBasedTermDetector"/>
     </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="SingleWordTermDetector">
+      <import name="eu.project.ttc.engines.SingleWordTermDetector"/>
+    </delegateAnalysisEngine>
   </delegateAnalysisEngineSpecifiers>
   <analysisEngineMetaData>
     <name>Chinese Term Detector</name>
     <description/>
     <version>1.0</version>
     <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
-    <configurationParameters/>
+    <configurationParameters searchStrategy="language_fallback"/>
     <configurationParameterSettings/>
     <flowConstraints>
       <fixedFlow>
         <node>ChineseRuleBasedTermDetector</node>
+        <node>SingleWordTermDetector</node>
       </fixedFlow>
     </flowConstraints>
+    <typePriorities/>
     <fsIndexCollection/>
     <capabilities>
       <capability>
         <inputs>
-          <type allAnnotatorFeatures="true">org.apache.uima.MultextAnnotation</type>
+          <type allAnnotatorFeatures="true">eu.project.ttc.types.WordAnnotation</type>
           <type allAnnotatorFeatures="true">org.apache.uima.examples.SourceDocumentInformation</type>
         </inputs>
         <outputs>

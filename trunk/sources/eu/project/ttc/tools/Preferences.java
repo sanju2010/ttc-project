@@ -5,6 +5,9 @@ import java.util.Properties;
 
 public class Preferences {
 	
+	protected String getResource() {
+		return "ttc-term-suite.properties";
+	}	
 	private Properties properties;
 	
 	private void setProperties() {
@@ -16,7 +19,7 @@ public class Preferences {
 	}
 	
 	public void load() throws Exception { 
-		InputStream in = this.getClass().getResourceAsStream("/ttc-term-suite.properties");
+		InputStream in = this.getClass().getResourceAsStream("/" + this.getResource());
 		this.properties.loadFromXML(in);
 		in.close();
 	}

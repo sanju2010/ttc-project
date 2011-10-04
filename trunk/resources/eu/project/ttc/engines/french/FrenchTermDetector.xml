@@ -6,8 +6,11 @@
     <delegateAnalysisEngine key="FrenchNeoClassicalTermDetector">
       <import name="eu.project.ttc.engines.french.FrenchNeoClassicalTermDetector"/>
     </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="FrenchRuleBasedTermDetector">
-      <import name="eu.project.ttc.engines.french.FrenchRuleBasedTermDetector"/>
+    <delegateAnalysisEngine key="FrenchMultiWordTermDetector">
+      <import name="eu.project.ttc.engines.french.FrenchMultiWordTermDetector"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="SingleWordTermDetector">
+      <import name="eu.project.ttc.engines.SingleWordTermDetector"/>
     </delegateAnalysisEngine>
   </delegateAnalysisEngineSpecifiers>
   <analysisEngineMetaData>
@@ -15,11 +18,12 @@
     <description/>
     <version>1.0</version>
     <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
-    <configurationParameters/>
+    <configurationParameters searchStrategy="language_fallback"/>
     <configurationParameterSettings/>
     <flowConstraints>
       <fixedFlow>
-        <node>FrenchRuleBasedTermDetector</node>
+        <node>SingleWordTermDetector</node>
+        <node>FrenchMultiWordTermDetector</node>
         <node>FrenchNeoClassicalTermDetector</node>
       </fixedFlow>
     </flowConstraints>
@@ -28,7 +32,7 @@
     <capabilities>
       <capability>
         <inputs>
-          <type allAnnotatorFeatures="true">org.apache.uima.MultextAnnotation</type>
+          <type allAnnotatorFeatures="true">eu.project.ttc.types.WordAnnotation</type>
           <type allAnnotatorFeatures="true">org.apache.uima.examples.SourceDocumentInformation</type>
         </inputs>
         <outputs>

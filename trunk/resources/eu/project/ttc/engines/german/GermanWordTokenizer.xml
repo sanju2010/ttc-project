@@ -10,16 +10,47 @@
     <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
     <configurationParameters>
       <configurationParameter>
-        <name>WordResourceFile</name>
+        <name>SimpleWordAnnotationType</name>
         <type>String</type>
         <multiValued>false</multiValued>
-        <mandatory>false</mandatory>
+        <mandatory>true</mandatory>
+      </configurationParameter>
+      <configurationParameter>
+        <name>CompoundWordAnnotationType</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+      </configurationParameter>
+      <configurationParameter>
+        <name>RemoveCoveredWordAnnotations</name>
+        <type>Boolean</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
       </configurationParameter>
     </configurationParameters>
-    <configurationParameterSettings/>
+    <configurationParameterSettings>
+      <nameValuePair>
+        <name>RemoveCoveredWordAnnotations</name>
+        <value>
+          <boolean>true</boolean>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>SimpleWordAnnotationType</name>
+        <value>
+          <string>eu.project.ttc.types.WordAnnotation</string>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>CompoundWordAnnotationType</name>
+        <value>
+          <string>eu.project.ttc.types.CompoundWordAnnotation</string>
+        </value>
+      </nameValuePair>
+    </configurationParameterSettings>
     <typeSystemDescription>
       <imports>
-        <import name="fr.univnantes.lina.uima.types.WordAnnotation"/>
+        <import name="eu.project.ttc.types.TermSuiteTypeSystem"/>
       </imports>
     </typeSystemDescription>
     <typePriorities/>
@@ -28,7 +59,7 @@
       <capability>
         <inputs/>
         <outputs>
-          <type allAnnotatorFeatures="true">org.apache.uima.WordAnnotation</type>
+          <type allAnnotatorFeatures="true">eu.project.ttc.types.WordAnnotation</type>
         </outputs>
         <languagesSupported>
           <language>de</language>
@@ -52,10 +83,10 @@
   <resourceManagerConfiguration>
     <externalResources>
       <externalResource>
-        <name>DefaultWordResource</name>
+        <name>GermanWordResource</name>
         <description/>
         <fileResourceSpecifier>
-          <fileUrl>fr/univnantes/lina/uima/resources/Default.Word</fileUrl>
+          <fileUrl>eu/project/ttc/resources/CompoundWords.German</fileUrl>
         </fileResourceSpecifier>
         <implementationName>fr.univnantes.lina.uima.models.WordResource</implementationName>
       </externalResource>
@@ -63,7 +94,7 @@
     <externalResourceBindings>
       <externalResourceBinding>
         <key>WordResource</key>
-        <resourceName>DefaultWordResource</resourceName>
+        <resourceName>GermanWordResource</resourceName>
       </externalResourceBinding>
     </externalResourceBindings>
   </resourceManagerConfiguration>

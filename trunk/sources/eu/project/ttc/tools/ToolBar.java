@@ -70,6 +70,22 @@ public class ToolBar {
 		return this.about;
 	}
 	
+	private JButton save;
+	
+	private void setSave() {
+		this.save = new JButton("Save");
+		this.save.setActionCommand("save");
+		this.save.setEnabled(false);
+		this.save.setPreferredSize(dimension);
+		this.save.setMargin(insets);
+		this.save.setBackground(color);
+		this.save.setBorderPainted(false);
+	}
+	
+	public JButton getSave() {
+		return this.save;
+	}
+	
 	private JButton run;
 	
 	private void setRun() {
@@ -122,7 +138,7 @@ public class ToolBar {
 	
 	private void setProgressBar() {
 		this.progressBar = new JProgressBar();
-		this.progressBar.setPreferredSize(new Dimension(600,33));
+		this.progressBar.setPreferredSize(new Dimension(546,33));
 		this.progressBar.setStringPainted(true);
 	}
 
@@ -139,6 +155,7 @@ public class ToolBar {
 		this.component.add(this.getPause());
 		this.component.add(this.getStop());
 		this.component.add(this.getProgressBar());
+		this.component.add(this.getSave());
 		this.component.add(this.getHelp());
 		this.component.add(this.getAbout());
 		this.component.add(this.getQuit());
@@ -152,6 +169,7 @@ public class ToolBar {
 		this.getQuit().addActionListener(listener);
 		this.getAbout().addActionListener(listener);
 		this.getHelp().addActionListener(listener);
+		this.getSave().addActionListener(listener);
 		this.getStop().addActionListener(listener);
 		this.getPause().addActionListener(listener);
 		this.getRun().addActionListener(listener);
@@ -161,6 +179,7 @@ public class ToolBar {
 		this.setQuit();
 		this.setHelp();
 		this.setAbout();
+		this.setSave();
 		this.setRun();
 		this.setPause();
 		this.setStop();

@@ -6,13 +6,14 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 
-import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.resource.metadata.ConfigurationParameter;
 import org.apache.uima.resource.metadata.ConfigurationParameterDeclarations;
 import org.apache.uima.resource.metadata.ConfigurationParameterSettings;
 import org.apache.uima.resource.metadata.ResourceMetaData;
+import org.apache.uima.util.Level;
 import org.apache.uima.util.XMLInputSource;
 import org.xml.sax.SAXException;
 
@@ -20,7 +21,6 @@ import fr.univnantes.lina.uima.tools.dunamis.fields.Field;
 import fr.univnantes.lina.uima.tools.dunamis.viewers.SettingViewer;
 
 public class Parameters {
-	
 	
 	private ConfigurationParameter sourceLanguage;
 	
@@ -86,7 +86,55 @@ public class Parameters {
 	private ConfigurationParameter getTreeTaggerHomeDirectory() {
 		return this.treeTaggerHomeDirectory;
 	}
-		
+	
+	private ConfigurationParameter termBankFile;
+	
+	private void setTermBankFile() {
+		this.termBankFile = UIMAFramework.getResourceSpecifierFactory().createConfigurationParameter();
+		this.termBankFile.setName("TermBankFile");
+		this.termBankFile.setType(ConfigurationParameter.TYPE_STRING);
+		this.termBankFile.setMultiValued(false);
+	}
+	
+	private ConfigurationParameter getTermBankFile() {
+		return this.termBankFile;
+	}
+	
+	private ConfigurationParameter termContextBenchFile;
+	
+	private void setTermContextBenchFile() {
+		this.termContextBenchFile = UIMAFramework.getResourceSpecifierFactory().createConfigurationParameter();
+		this.termContextBenchFile.setName("TermContextBenchFile");
+		this.termContextBenchFile.setType(ConfigurationParameter.TYPE_STRING);
+		this.termContextBenchFile.setMultiValued(false);
+	}
+	
+	private ConfigurationParameter getTermContextBenchFile() {
+		return this.termContextBenchFile;
+	}
+	
+	private ResourceMetaData hiddenMetaData;
+	
+	private void setHiddentMetaData() throws IOException {
+		ConfigurationParameterDeclarations declarations = UIMAFramework.getResourceSpecifierFactory().createConfigurationParameterDeclarations();
+		declarations.addConfigurationParameter(this.getTermBankFile());
+		declarations.addConfigurationParameter(this.getTermContextBenchFile());
+		this.hiddenMetaData = UIMAFramework.getResourceSpecifierFactory().createResourceMetaData();
+		this.hiddenMetaData.setConfigurationParameterDeclarations(declarations);
+		ConfigurationParameterSettings settings = UIMAFramework.getResourceSpecifierFactory().createConfigurationParameterSettings();
+		File termBankFile = File.createTempFile("term-bank-", ".obj");
+		termBankFile.deleteOnExit();
+		File termContextBenchFile = File.createTempFile("term-context-", ".xmi");
+		termContextBenchFile.deleteOnExit();
+		settings.setParameterValue("TermBankFile", termBankFile.getAbsolutePath());
+		settings.setParameterValue("TermContextBenchFile", termContextBenchFile.getAbsolutePath());
+		this.hiddenMetaData.setConfigurationParameterSettings(settings);
+	}
+	
+	public ResourceMetaData getHiddentMetaData() {
+		return this.hiddenMetaData;
+	}
+	
 	private ResourceMetaData metaData;
 	
 	private void setMetaData() {
@@ -106,15 +154,25 @@ public class Parameters {
 		return this.metaData;
 	}
 		
-	private SettingViewer component;
+	private SettingViewer viewer;
 	
-	private void setComponent() {
-		this.component = new SettingViewer();
-		this.component.update(this.getMetaData());
+	private void setViewer() {
+		this.viewer = new SettingViewer();
+		this.viewer.update(this.getMetaData());
 	}
 	
-	public JPanel getComponent() {
-		return this.component.getComponent();
+	private SettingViewer getViewer() {
+		return this.viewer;
+	}
+	
+	private JScrollPane component;
+	
+	private void setComponent() {
+		this.component = new JScrollPane(this.getViewer().getComponent());
+	}
+	
+	public JScrollPane getComponent() {
+		return this.component;
 	}
 	
 	public Parameters() {
@@ -123,20 +181,23 @@ public class Parameters {
 		this.setSourceDirectories();
 		this.setTargetDirectories();
 		this.setTreeTaggerHomeDirectory();
+		this.setTermBankFile();
+		this.setTermContextBenchFile();
 		this.doLoad();
+		this.setViewer();
 		this.setComponent();
 	}
 	
 	public void doSave() throws IOException, SAXException {
 		this.doUpdate();
-		String path = System.getProperty("user.home") + File.separator + ".TermSuite";
+		String path = System.getProperty("user.home") + File.separator + ".term-suite.settings";
 		OutputStream out = new FileOutputStream(path);
 		this.getMetaData().toXML(out);
 		out.close();
 	}
 	
 	private void doLoad() {
-		String path = System.getProperty("user.home") + File.separator + ".TermSuite";
+		String path = System.getProperty("user.home") + File.separator + ".term-suite.settings";
 		try {
 			File file = new File(path);
 			if (file.exists()) {
@@ -145,14 +206,15 @@ public class Parameters {
 			} else {
 				this.setMetaData();
 			}
+			this.setHiddentMetaData();
 		} catch (Exception e) {
-			
+			UIMAFramework.getLogger().log(Level.WARNING,e.getMessage());
 		}
 	}
 
 	public void doUpdate() {
 		ConfigurationParameterSettings settings = this.getMetaData().getConfigurationParameterSettings();
-		List<Field> fields = this.component.getFields();
+		List<Field> fields = this.getViewer().getFields();
 		for (Field field : fields) {
 			if (field.isModified()) {
 				String name = field.getName();

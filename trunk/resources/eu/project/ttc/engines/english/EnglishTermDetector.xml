@@ -3,11 +3,14 @@
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>false</primitive>
   <delegateAnalysisEngineSpecifiers>
+    <delegateAnalysisEngine key="SingleWordTermDetector">
+      <import name="eu.project.ttc.engines.SingleWordTermDetector"/>
+    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="EnglishNeoClassicalTermDetector">
       <import name="eu.project.ttc.engines.english.EnglishNeoClassicalTermDetector"/>
     </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="EnglishRuleBasedTermDetector">
-      <import name="eu.project.ttc.engines.english.EnglishRuleBasedTermDetector"/>
+    <delegateAnalysisEngine key="EnglishMultiWordTermDetector">
+      <import name="eu.project.ttc.engines.english.EnglishMultiWordTermDetector"/>
     </delegateAnalysisEngine>
   </delegateAnalysisEngineSpecifiers>
   <analysisEngineMetaData>
@@ -15,19 +18,21 @@
     <description/>
     <version>1.0</version>
     <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
-    <configurationParameters/>
+    <configurationParameters searchStrategy="language_fallback"/>
     <configurationParameterSettings/>
     <flowConstraints>
       <fixedFlow>
-        <node>EnglishRuleBasedTermDetector</node>
+        <node>SingleWordTermDetector</node>
+        <node>EnglishMultiWordTermDetector</node>
         <node>EnglishNeoClassicalTermDetector</node>
       </fixedFlow>
     </flowConstraints>
+    <typePriorities/>
     <fsIndexCollection/>
     <capabilities>
       <capability>
         <inputs>
-          <type allAnnotatorFeatures="true">org.apache.uima.MultextAnnotation</type>
+          <type allAnnotatorFeatures="true">eu.project.ttc.types.WordAnnotation</type>
           <type allAnnotatorFeatures="true">org.apache.uima.examples.SourceDocumentInformation</type>
         </inputs>
         <outputs>

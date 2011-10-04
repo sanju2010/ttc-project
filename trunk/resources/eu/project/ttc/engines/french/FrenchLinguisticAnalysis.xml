@@ -3,17 +3,14 @@
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>false</primitive>
   <delegateAnalysisEngineSpecifiers>
-    <delegateAnalysisEngine key="FrenchTermNoteAnnotator">
-      <import name="eu.project.ttc.engines.french.FrenchTermNoteAnnotator"/>
-    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="FrenchTermDetector">
       <import name="eu.project.ttc.engines.french.FrenchTermDetector"/>
     </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="FrenchTermFilter">
+      <import name="eu.project.ttc.engines.french.FrenchTermFilter"/>
+    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="FrenchTreeTaggerMultextMapper">
       <import name="eu.project.ttc.engines.french.FrenchTreeTaggerMultextMapper"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="TreeTaggerLemmaAnnotator">
-      <import name="eu.project.ttc.engines.TreeTaggerLemmaAnnotator"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="FrenchWordTokenizer">
       <import name="eu.project.ttc.engines.french.FrenchWordTokenizer"/>
@@ -44,9 +41,8 @@
         <node>FrenchWordTokenizer</node>
         <node>FrenchTreeTaggerWrapper</node>
         <node>FrenchTreeTaggerMultextMapper</node>
-        <node>TreeTaggerLemmaAnnotator</node>
         <node>FrenchTermDetector</node>
-        <node>FrenchTermNoteAnnotator</node>
+        <node>FrenchTermFilter</node>
       </fixedFlow>
     </flowConstraints>
     <typePriorities/>
@@ -57,10 +53,7 @@
           <type allAnnotatorFeatures="true">org.apache.uima.examples.SourceDocumentInformation</type>
         </inputs>
         <outputs>
-          <type allAnnotatorFeatures="true">org.apache.uima.WordAnnotation</type>
-          <type allAnnotatorFeatures="true">org.apache.uima.TreeTaggerAnnotation</type>
-          <type allAnnotatorFeatures="true">org.apache.uima.MultextAnnotation</type>
-          <type allAnnotatorFeatures="true">org.apache.uima.LemmaAnnotation</type>
+          <type allAnnotatorFeatures="true">eu.project.ttc.types.WordAnnotation</type>
           <type allAnnotatorFeatures="true">org.apache.uima.TermAnnotation</type>
         </outputs>
         <languagesSupported>

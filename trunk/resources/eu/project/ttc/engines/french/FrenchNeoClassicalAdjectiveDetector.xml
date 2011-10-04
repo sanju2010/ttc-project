@@ -10,7 +10,7 @@
     <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
     <configurationParameters>
       <configurationParameter>
-        <name>AnnotationType</name>
+        <name>Constraint</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
@@ -24,16 +24,16 @@
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
-        <name>AnnotationType</name>
+        <name>Constraint</name>
         <value>
-          <string>org.apache.uima.multext.AdjectiveAnnotation</string>
+          <string>eu.project.ttc.types.WordAnnotation[category=adjective]</string>
         </value>
       </nameValuePair>
     </configurationParameterSettings>
     <typeSystemDescription>
       <imports>
         <import name="fr.univnantes.lina.uima.types.TermAnnotation"/>
-        <import name="fr.univnantes.lina.uima.types.MultextAnnotation"/>
+        <import name="eu.project.ttc.types.TermSuiteTypeSystem"/>
         <import name="org.apache.uima.examples.SourceDocumentInformation"/>
       </imports>
     </typeSystemDescription>

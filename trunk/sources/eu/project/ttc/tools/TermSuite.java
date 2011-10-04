@@ -23,16 +23,15 @@ import fr.univnantes.lina.uima.tools.dunamis.viewers.ProcessingResultViewer;
 public class TermSuite implements Runnable {
 
 	public void error(Exception e) {
-		this.warning(e.getMessage());
-		e.printStackTrace();
+		UIMAFramework.getLogger().log(Level.SEVERE,e.getMessage());
 	}
 	
 	public void warning(String message) {
-		System.err.println(message);
+		UIMAFramework.getLogger().log(Level.WARNING,message);
 	}
 	
 	public void message(String message) {
-		System.out.println(message);
+		UIMAFramework.getLogger().log(Level.INFO,message);
 	}
 	
 	private Desktop desktop;

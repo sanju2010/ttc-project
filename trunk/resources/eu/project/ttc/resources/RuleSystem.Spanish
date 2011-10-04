@@ -1,3 +1,13 @@
 # This is the patterns for term detection in Spanish
 
-NN	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.NounAnnotation[subCategory=common]
+eu.project.ttc.types.WordAnnotation[category=adjective]	eu.project.ttc.types.WordAnnotation[category=noun]
+
+eu.project.ttc.types.WordAnnotation[category=noun]	eu.project.ttc.types.WordAnnotation[category=adjective]	eu.project.ttc.types.WordAnnotation[category=adjective]?
+
+eu.project.ttc.types.WordAnnotation[category=noun]	eu.project.ttc.types.WordAnnotation[category=preposition,coveredText="de"]	eu.project.ttc.types.WordAnnotation[category=adjective]
+eu.project.ttc.types.WordAnnotation[category=noun]	eu.project.ttc.types.WordAnnotation[category=preposition,coveredText="del"]	eu.project.ttc.types.WordAnnotation[category=adjective]
+eu.project.ttc.types.WordAnnotation[category=noun]	eu.project.ttc.types.WordAnnotation[category=adjective]	eu.project.ttc.types.WordAnnotation[category=preposition,coveredText="de"]	eu.project.ttc.types.WordAnnotation[category=adjective]
+eu.project.ttc.types.WordAnnotation[category=noun]	eu.project.ttc.types.WordAnnotation[category=preposition,coveredText="de"]	eu.project.ttc.types.WordAnnotation[category=adjective]	eu.project.ttc.types.WordAnnotation[category=adjective]
+
+eu.project.ttc.types.WordAnnotation[category=noun]	eu.project.ttc.types.WordAnnotation[category=preposition,coveredText="a"]	eu.project.ttc.types.WordAnnotation[category=adjective]
+eu.project.ttc.types.WordAnnotation[category=noun]	eu.project.ttc.types.WordAnnotation[category=preposition,coveredText="al"]	eu.project.ttc.types.WordAnnotation[category=adjective]

@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>eu.project.ttc</groupId>
   <artifactId>ttc-term-suite</artifactId>
-  <version>0.8.1</version>
+  <version>0.9.0</version>
   <packaging>jar</packaging>
   <name>TTC TermSuite</name>
   <dependencies>
@@ -35,24 +35,8 @@
     </dependency>
     <dependency>
     	<groupId>fr.univnantes.lina</groupId>
-    	<artifactId>uima-multext-mapper</artifactId>
-    	<version>0.8.0</version>
-    	<type>jar</type>
-    	<scope>compile</scope>
-    </dependency>
-    <dependency>
-    	<groupId>fr.univnantes.lina</groupId>
-    	<artifactId>uima-rule-based-term-detector</artifactId>
-    	<version>0.8.0</version>
-    	<type>jar</type>
-    	<scope>compile</scope>
-    </dependency>
-    <dependency>
-    	<groupId>fr.univnantes.lina</groupId>
     	<artifactId>uima-term-bank-handlers</artifactId>
-    	<version>0.8.0</version>
-    	<type>jar</type>
-    	<scope>compile</scope>
+    	<version>0.9.0</version>
     </dependency>
     <dependency>
     	<groupId>fr.univnantes.lina</groupId>
@@ -62,17 +46,40 @@
     </dependency>
     <dependency>
     	<groupId>fr.univnantes.lina</groupId>
-    	<artifactId>uima-lemmatizer</artifactId>
+    	<artifactId>uima-neo-classical-term-detector</artifactId>
     	<version>0.8.0</version>
     	<type>jar</type>
     	<scope>compile</scope>
     </dependency>
     <dependency>
+    	<groupId>fr.free.rocheteau.jerome</groupId>
+    	<artifactId>uima-annotation-pattern-matcher</artifactId>
+    	<version>1.0</version>
+    	<scope>provided</scope>
+    </dependency>
+    <dependency>
+    	<groupId>fr.free.rocheteau.jerome</groupId>
+    	<artifactId>uima-constraint-handlers</artifactId>
+    	<version>1.0</version>
+    	<scope>provided</scope>
+    </dependency>
+    <dependency>
     	<groupId>fr.univnantes.lina</groupId>
-    	<artifactId>uima-neo-classical-term-detector</artifactId>
+    	<artifactId>uima-dictionary-handlers</artifactId>
     	<version>0.8.0</version>
-    	<type>jar</type>
-    	<scope>compile</scope>
+    	<scope>provided</scope>
+    </dependency>
+    <dependency>
+    	<groupId>fr.univnantes.lina</groupId>
+    	<artifactId>uima-annotation-filter</artifactId>
+    	<version>0.8.0</version>
+    	<scope>provided</scope>
+    </dependency>
+    <dependency>
+    	<groupId>fr.univnantes.lina</groupId>
+    	<artifactId>uima-contextual-term-aligner</artifactId>
+    	<version>0.8.0</version>
+    	<scope>provided</scope>
     </dependency>
   </dependencies>
   <licenses>

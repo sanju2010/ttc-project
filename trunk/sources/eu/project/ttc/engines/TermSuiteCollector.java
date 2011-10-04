@@ -82,40 +82,44 @@ public class TermSuiteCollector extends CollectionReader_ImplBase {
 	}
 
 	private void setSourceCorpus(File file) throws IOException {
-		this.getLogger().log(Level.INFO,"Scanning Source Corpus " + file.getAbsolutePath());
+		this.getLogger().log(Level.CONFIG,"Scanning Source Corpus " + file.getAbsolutePath());
 		this.doCollect(file,true);
 	}
 	
 	private void setTargetCorpus(File file) throws IOException {
-		this.getLogger().log(Level.INFO,"Scanning Target Corpus " + file.getAbsolutePath());
+		this.getLogger().log(Level.CONFIG,"Scanning Target Corpus " + file.getAbsolutePath());
 		this.doCollect(file,false);
 	}
 	
 	private void setSourceCorpus(String[] directories) throws IOException {
-		for (String directory : directories) {
-			File file = new File(directory);
-			this.setSourceCorpus(file);			
+		if (directories != null) {
+			for (String directory : directories) {
+				File file = new File(directory);
+				this.setSourceCorpus(file);			
+			}			
 		}
 	}
 	
 	private void setTargetCorpus(String[] directories) throws IOException {
-		for (String directory : directories) {
-			File file = new File(directory);
-			this.setTargetCorpus(file);	
+		if (directories != null) {
+			for (String directory : directories) {
+				File file = new File(directory);
+				this.setTargetCorpus(file);	
+			}			
 		}
 	}
 
 	private String sourceLanguage;
 	
 	private void setSourceLanguage(String language) {
-		this.getLogger().log(Level.INFO,"Setting Source Language " + language);
+		this.getLogger().log(Level.CONFIG,"Setting Source Language " + language);
 		this.sourceLanguage = language;
 	}
 	
 	private String targetLanguage;
 	
 	private void setTargetLanguage(String language) {
-		this.getLogger().log(Level.INFO,"Setting Target Language " + language);
+		this.getLogger().log(Level.CONFIG,"Setting Target Language " + language);
 		this.targetLanguage = language;
 	}
 	

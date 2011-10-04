@@ -10,45 +10,30 @@
       <import name="eu.project.ttc.engines.french.FrenchNeoClassicalAdjectiveDetector"/>
     </delegateAnalysisEngine>
   </delegateAnalysisEngineSpecifiers>
-  <flowController key="AnnotationTypeFlowController">
-    <import name="eu.project.ttc.controllers.AnnotationTypeFlowController"/>
+  <flowController key="ConstraintFlowController">
+    <import name="fr.free.rocheteau.jerome.engines.constraints.ConstraintFlowController"/>
   </flowController>
   <analysisEngineMetaData>
     <name>French NeoClassical Term Detector</name>
     <description/>
     <version>1.0</version>
     <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
-    <configurationParameters>
-      <configurationParameter>
-        <name>ClassicalRootBankFile</name>
-        <type>String</type>
-        <multiValued>false</multiValued>
-        <mandatory>false</mandatory>
-        <overrides>
-          <parameter>FrenchNeoClassicalAdjectiveDetector/ClassicalRootBankFile</parameter>
-          <parameter>FrenchNeoClassicalNounDetector/ClassicalRootBankFile</parameter>
-        </overrides>
-      </configurationParameter>
-    </configurationParameters>
+    <configurationParameters/>
     <configurationParameterSettings/>
     <flowConstraints>
       <fixedFlow>
-        <node>FrenchNeoClassicalNounDetector</node>
         <node>FrenchNeoClassicalAdjectiveDetector</node>
+        <node>FrenchNeoClassicalNounDetector</node>
       </fixedFlow>
     </flowConstraints>
-    <typePriorities/>
     <fsIndexCollection/>
     <capabilities>
       <capability>
         <inputs>
-          <type allAnnotatorFeatures="true">org.apache.uima.multext.NounAnnotation</type>
-          <type allAnnotatorFeatures="true">org.apache.uima.multext.AdjectiveAnnotation</type>
-          <type allAnnotatorFeatures="true">org.apache.uima.examples.SourceDocumentInformation</type>
+          <type allAnnotatorFeatures="true">eu.project.ttc.types.WordAnnotation</type>
         </inputs>
         <outputs>
-          <type allAnnotatorFeatures="true">org.apache.uima.TermNoteAnnotation</type>
-          <type allAnnotatorFeatures="true">org.apache.uima.TermComponentAnnotation</type>
+          <type allAnnotatorFeatures="true">org.apache.uima.CompoundWordTermAnnotation</type>
         </outputs>
         <languagesSupported>
           <language>fr</language>
@@ -74,11 +59,11 @@
     </externalResources>
     <externalResourceBindings>
       <externalResourceBinding>
-        <key>FrenchNeoClassicalAdjectiveDetector/ClassicalRootBank</key>
+        <key>FrenchNeoClassicalNounDetector/ClassicalRootBank</key>
         <resourceName>FrenchClassicalRootBank</resourceName>
       </externalResourceBinding>
       <externalResourceBinding>
-        <key>FrenchNeoClassicalNounDetector/ClassicalRootBank</key>
+        <key>FrenchNeoClassicalAdjectiveDetector/ClassicalRootBank</key>
         <resourceName>FrenchClassicalRootBank</resourceName>
       </externalResourceBinding>
     </externalResourceBindings>

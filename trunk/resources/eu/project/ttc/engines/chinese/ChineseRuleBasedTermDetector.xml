@@ -2,7 +2,7 @@
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>true</primitive>
-  <annotatorImplementationName>fr.univnantes.lina.uima.engines.RuleBasedTermDetector</annotatorImplementationName>
+  <annotatorImplementationName>eu.project.ttc.engines.RuleBasedTermDetector</annotatorImplementationName>
   <analysisEngineMetaData>
     <name>Chinese Rule Based Term Detector</name>
     <description/>
@@ -10,7 +10,7 @@
     <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
     <configurationParameters>
       <configurationParameter>
-        <name>AnnotationType</name>
+        <name>Constraint</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
@@ -30,9 +30,9 @@
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
-        <name>AnnotationType</name>
+        <name>Constraint</name>
         <value>
-          <string>uima.tcas.Annotation</string>
+          <string>eu.project.ttc.types.WordAnnotation</string>
         </value>
       </nameValuePair>
       <nameValuePair>
@@ -44,7 +44,9 @@
     </configurationParameterSettings>
     <typeSystemDescription>
       <imports>
+        <import name="eu.project.ttc.types.TermSuiteTypeSystem"/>
         <import name="fr.univnantes.lina.uima.types.TermAnnotation"/>
+        <import name="org.apache.uima.examples.SourceDocumentInformation"/>
       </imports>
     </typeSystemDescription>
     <typePriorities/>
@@ -52,7 +54,8 @@
     <capabilities>
       <capability>
         <inputs>
-          <type allAnnotatorFeatures="true">uima.tcas.Annotation</type>
+          <type allAnnotatorFeatures="true">org.apache.uima.WordAnnotation</type>
+          <type allAnnotatorFeatures="true">org.apache.uima.examples.SourceDocumentInformation</type>
         </inputs>
         <outputs>
           <type allAnnotatorFeatures="true">org.apache.uima.TermAnnotation</type>
@@ -72,7 +75,7 @@
     <externalResourceDependency>
       <key>RuleSystem</key>
       <description/>
-      <interfaceName>fr.univnantes.lina.uima.models.RuleSystem</interfaceName>
+      <interfaceName>fr.free.rocheteau.jerome.models.RuleSystem</interfaceName>
       <optional>false</optional>
     </externalResourceDependency>
   </externalResourceDependencies>
@@ -84,7 +87,7 @@
         <fileResourceSpecifier>
           <fileUrl>eu/project/ttc/resources/RuleSystem.Chinese</fileUrl>
         </fileResourceSpecifier>
-        <implementationName>fr.univnantes.lina.uima.models.RuleSystemResource</implementationName>
+        <implementationName>fr.free.rocheteau.jerome.models.RuleSystemResource</implementationName>
       </externalResource>
     </externalResources>
     <externalResourceBindings>

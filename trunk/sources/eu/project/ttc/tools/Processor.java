@@ -26,8 +26,10 @@ import org.apache.uima.resource.metadata.Import;
 import org.apache.uima.resource.metadata.NameValuePair;
 import org.apache.uima.resource.metadata.ResourceManagerConfiguration;
 
+import fr.univnantes.lina.uima.engines.TermBankFilter;
 import fr.univnantes.lina.uima.engines.TermBankIndexer;
 import fr.univnantes.lina.uima.engines.TermBankWriter;
+import fr.univnantes.lina.uima.engines.TermContextIndexer;
 import fr.univnantes.lina.uima.models.TermBank;
 import fr.univnantes.lina.uima.models.TermBankResource;
 
@@ -49,8 +51,6 @@ public class Processor extends SwingWorker<CpeDescription,Void> {
 		this.termSuiteProcessor = CpeDescriptorFactory.produceDescriptor();
 		Runtime runtime = Runtime.getRuntime();
         int threads = runtime.availableProcessors();
-        // FIXME TermBankResource.getInstance()
-        threads = 1;
 		this.termSuiteProcessor.setProcessingUnitThreadCount(threads);
 		this.termSuiteProcessor.getCpeCasProcessors().setPoolSize(threads);
 		this.termSuiteProcessor.getCpeCasProcessors().setConcurrentPUCount(threads);
@@ -185,30 +185,30 @@ public class Processor extends SwingWorker<CpeDescription,Void> {
 				
 		@Override
 		protected NameValuePair[] getNameValuePairs() {
-			/*
-			NameValuePair type = this.getFactory().createNameValuePair();
-			type.setName("AnnotationType");
-			type.setValue(TermAnnotation.class.getCanonicalName());
-			NameValuePair size = this.getFactory().createNameValuePair();
-			size.setName("NeighbourSize");
-			size.setValue(7);
-			return new NameValuePair[] { type , size };
-			*/
-			return new NameValuePair[0];
+			ConfigurationParameterSettings settings = getTermSuite().getParameters().getHiddentMetaData().getConfigurationParameterSettings();
+			NameValuePair termBank = this.getFactory().createNameValuePair();
+			termBank.setName("TermBankFile");
+			termBank.setValue((String) settings.getParameterValue(termBank.getName()));
+			NameValuePair termContextBench = this.getFactory().createNameValuePair();
+			termContextBench.setName("TermContextBenchFile");
+			termContextBench.setValue((String) settings.getParameterValue(termContextBench.getName()));
+			return new NameValuePair[] { termBank, termContextBench };
+			
 		}
 
 		@Override
 		protected void setConfigurationParameterDeclarations() {
-			// this.setParameter("AnnotationType", ConfigurationParameter.TYPE_STRING);
-			// this.setParameter("NeighbourSize", ConfigurationParameter.TYPE_INTEGER);
+			this.setParameter("TermBankFile", ConfigurationParameter.TYPE_STRING);
+			this.setParameter("TermContextBenchFile", ConfigurationParameter.TYPE_STRING);
 		}
 				
 		@Override
 		protected String[] getFlow() {
-			String[] flows = new String[2];
-			// flows[0] = NeighbourAnnotator.class.getCanonicalName();
+			String[] flows = new String[4];
 			flows[0] = TermBankIndexer.class.getCanonicalName();
-			flows[1] = TermBankWriter.class.getCanonicalName();
+			flows[1] = TermBankFilter.class.getCanonicalName();
+			flows[2] = TermBankWriter.class.getCanonicalName();
+			flows[3] = TermContextIndexer.class.getCanonicalName();
 			return flows;
 		}
 		

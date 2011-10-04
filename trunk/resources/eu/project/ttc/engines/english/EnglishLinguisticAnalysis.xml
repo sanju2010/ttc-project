@@ -6,14 +6,11 @@
     <delegateAnalysisEngine key="EnglishWordTokenizer">
       <import name="eu.project.ttc.engines.english.EnglishWordTokenizer"/>
     </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="EnglishTermNoteAnnotator">
-      <import name="eu.project.ttc.engines.english.EnglishTermNoteAnnotator"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="TreeTaggerLemmaAnnotator">
-      <import name="eu.project.ttc.engines.TreeTaggerLemmaAnnotator"/>
-    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="EnglishTreeTaggerWrapper">
       <import name="eu.project.ttc.engines.english.EnglishTreeTaggerWrapper"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="EnglishTermFilter">
+      <import name="eu.project.ttc.engines.english.EnglishTermFilter"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="EnglishTermDetector">
       <import name="eu.project.ttc.engines.english.EnglishTermDetector"/>
@@ -44,9 +41,8 @@
         <node>EnglishWordTokenizer</node>
         <node>EnglishTreeTaggerWrapper</node>
         <node>EnglishTreeTaggerMultextMapper</node>
-        <node>TreeTaggerLemmaAnnotator</node>
         <node>EnglishTermDetector</node>
-        <node>EnglishTermNoteAnnotator</node>
+        <node>EnglishTermFilter</node>
       </fixedFlow>
     </flowConstraints>
     <typePriorities/>
@@ -57,10 +53,7 @@
           <type allAnnotatorFeatures="true">org.apache.uima.examples.SourceDocumentInformation</type>
         </inputs>
         <outputs>
-          <type allAnnotatorFeatures="true">org.apache.uima.WordAnnotation</type>
-          <type allAnnotatorFeatures="true">org.apache.uima.TreeTaggerAnnotation</type>
-          <type allAnnotatorFeatures="true">org.apache.uima.MultextAnnotation</type>
-          <type allAnnotatorFeatures="true">org.apache.uima.LemmaAnnotation</type>
+          <type allAnnotatorFeatures="true">eu.project.ttc.types.WordAnnotation</type>
           <type allAnnotatorFeatures="true">org.apache.uima.TermAnnotation</type>
         </outputs>
         <languagesSupported>

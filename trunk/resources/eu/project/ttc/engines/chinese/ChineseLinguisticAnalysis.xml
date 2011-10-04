@@ -3,23 +3,17 @@
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>false</primitive>
   <delegateAnalysisEngineSpecifiers>
-    <delegateAnalysisEngine key="ChineseWordTokenizer">
-      <import name="eu.project.ttc.engines.chinese.ChineseWordTokenizer"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="TreeTaggerLemmaAnnotator">
-      <import name="eu.project.ttc.engines.TreeTaggerLemmaAnnotator"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="ChineseTreeTaggerWrapper">
-      <import name="eu.project.ttc.engines.chinese.ChineseTreeTaggerWrapper"/>
+    <delegateAnalysisEngine key="ChineseTermDetector">
+      <import name="eu.project.ttc.engines.chinese.ChineseTermDetector"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="ChineseTreeTaggerMultextMapper">
       <import name="eu.project.ttc.engines.chinese.ChineseTreeTaggerMultextMapper"/>
     </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="ChineseTermNoteAnnotator">
-      <import name="eu.project.ttc.engines.chinese.ChineseTermNoteAnnotator"/>
+    <delegateAnalysisEngine key="ChineseWordTokenizer">
+      <import name="eu.project.ttc.engines.chinese.ChineseWordTokenizer"/>
     </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="ChineseTermDetector">
-      <import name="eu.project.ttc.engines.chinese.ChineseTermDetector"/>
+    <delegateAnalysisEngine key="ChineseTreeTaggerWrapper">
+      <import name="eu.project.ttc.engines.chinese.ChineseTreeTaggerWrapper"/>
     </delegateAnalysisEngine>
   </delegateAnalysisEngineSpecifiers>
   <analysisEngineMetaData>
@@ -44,20 +38,18 @@
         <node>ChineseWordTokenizer</node>
         <node>ChineseTreeTaggerWrapper</node>
         <node>ChineseTreeTaggerMultextMapper</node>
-        <node>TreeTaggerLemmaAnnotator</node>
         <node>ChineseTermDetector</node>
-        <node>ChineseTermNoteAnnotator</node>
       </fixedFlow>
     </flowConstraints>
     <typePriorities/>
     <fsIndexCollection/>
     <capabilities>
       <capability>
-        <inputs/>
+        <inputs>
+          <type allAnnotatorFeatures="true">org.apache.uima.examples.SourceDocumentInformation</type>
+        </inputs>
         <outputs>
-          <type allAnnotatorFeatures="true">org.apache.uima.WordAnnotation</type>
-          <type allAnnotatorFeatures="true">org.apache.uima.TreeTaggerAnnotation</type>
-          <type allAnnotatorFeatures="true">org.apache.uima.LemmaAnnotation</type>
+          <type allAnnotatorFeatures="true">eu.project.ttc.types.WordAnnotation</type>
           <type allAnnotatorFeatures="true">org.apache.uima.TermAnnotation</type>
         </outputs>
         <languagesSupported>

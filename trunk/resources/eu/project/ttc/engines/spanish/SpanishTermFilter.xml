@@ -2,9 +2,9 @@
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>true</primitive>
-  <annotatorImplementationName>fr.univnantes.lina.uima.engines.RuleBasedTermDetector</annotatorImplementationName>
+  <annotatorImplementationName>fr.univnantes.lina.uima.engines.AnnotationFilter</annotatorImplementationName>
   <analysisEngineMetaData>
-    <name>French Rule Based Term Detector</name>
+    <name>Spanish Term Filter</name>
     <description/>
     <version>1.0</version>
     <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
@@ -16,13 +16,13 @@
         <mandatory>true</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>RuleSystemFile</name>
-        <type>String</type>
+        <name>RemoveFilteredAnnotations</name>
+        <type>Boolean</type>
         <multiValued>false</multiValued>
-        <mandatory>false</mandatory>
+        <mandatory>true</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>OverrideRuleSystem</name>
+        <name>RetainFilteredAnnotations</name>
         <type>Boolean</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
@@ -32,11 +32,17 @@
       <nameValuePair>
         <name>AnnotationType</name>
         <value>
-          <string>org.apache.uima.MultextAnnotation</string>
+          <string>org.apache.uima.SingleWordTermAnnotation</string>
         </value>
       </nameValuePair>
       <nameValuePair>
-        <name>OverrideRuleSystem</name>
+        <name>RemoveFilteredAnnotations</name>
+        <value>
+          <boolean>true</boolean>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>RetainFilteredAnnotations</name>
         <value>
           <boolean>false</boolean>
         </value>
@@ -45,8 +51,6 @@
     <typeSystemDescription>
       <imports>
         <import name="fr.univnantes.lina.uima.types.TermAnnotation"/>
-        <import name="fr.univnantes.lina.uima.types.MultextAnnotation"/>
-        <import name="org.apache.uima.examples.SourceDocumentInformation"/>
       </imports>
     </typeSystemDescription>
     <typePriorities/>
@@ -54,14 +58,11 @@
     <capabilities>
       <capability>
         <inputs>
-          <type allAnnotatorFeatures="true">org.apache.uima.MultextAnnotation</type>
-          <type allAnnotatorFeatures="true">org.apache.uima.examples.SourceDocumentInformation</type>
-        </inputs>
-        <outputs>
           <type allAnnotatorFeatures="true">org.apache.uima.TermAnnotation</type>
-        </outputs>
+        </inputs>
+        <outputs/>
         <languagesSupported>
-          <language>fr</language>
+          <language>es</language>
         </languagesSupported>
       </capability>
     </capabilities>
@@ -73,27 +74,27 @@
   </analysisEngineMetaData>
   <externalResourceDependencies>
     <externalResourceDependency>
-      <key>RuleSystem</key>
+      <key>Filter</key>
       <description/>
-      <interfaceName>fr.univnantes.lina.uima.models.RuleSystem</interfaceName>
+      <interfaceName>fr.univnantes.lina.uima.models.Filter</interfaceName>
       <optional>false</optional>
     </externalResourceDependency>
   </externalResourceDependencies>
   <resourceManagerConfiguration>
     <externalResources>
       <externalResource>
-        <name>FrenchRuleSystem</name>
+        <name>SpanishFilter</name>
         <description/>
         <fileResourceSpecifier>
-          <fileUrl>eu/project/ttc/resources/RuleSystem.French</fileUrl>
+          <fileUrl>eu/project/ttc/resources/Filter.Spanish</fileUrl>
         </fileResourceSpecifier>
-        <implementationName>fr.univnantes.lina.uima.models.RuleSystemResource</implementationName>
+        <implementationName>fr.univnantes.lina.uima.models.FilterResource</implementationName>
       </externalResource>
     </externalResources>
     <externalResourceBindings>
       <externalResourceBinding>
-        <key>RuleSystem</key>
-        <resourceName>FrenchRuleSystem</resourceName>
+        <key>Filter</key>
+        <resourceName>SpanishFilter</resourceName>
       </externalResourceBinding>
     </externalResourceBindings>
   </resourceManagerConfiguration>

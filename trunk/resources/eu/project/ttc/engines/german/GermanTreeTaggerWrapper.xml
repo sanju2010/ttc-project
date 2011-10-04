@@ -21,19 +21,54 @@
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
+      <configurationParameter>
+        <name>TagFeature</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+      </configurationParameter>
+      <configurationParameter>
+        <name>LemmaFeature</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+      </configurationParameter>
+      <configurationParameter>
+        <name>UpdateAnnotationFeatures</name>
+        <type>Boolean</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+      </configurationParameter>
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
         <name>AnnotationType</name>
         <value>
-          <string>org.apache.uima.WordAnnotation</string>
+          <string>eu.project.ttc.types.WordAnnotation</string>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>TagFeature</name>
+        <value>
+          <string>category</string>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>LemmaFeature</name>
+        <value>
+          <string>lemma</string>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>UpdateAnnotationFeatures</name>
+        <value>
+          <boolean>true</boolean>
         </value>
       </nameValuePair>
     </configurationParameterSettings>
     <typeSystemDescription>
       <imports>
-        <import name="fr.univnantes.lina.uima.types.WordAnnotation"/>
-        <import name="fr.univnantes.lina.uima.types.TreeTaggerAnnotation"/>
+        <import name="eu.project.ttc.types.TermSuiteTypeSystem"/>
       </imports>
     </typeSystemDescription>
     <typePriorities/>
@@ -41,11 +76,9 @@
     <capabilities>
       <capability>
         <inputs>
-          <type allAnnotatorFeatures="true">org.apache.uima.WordAnnotation</type>
+          <type allAnnotatorFeatures="true">eu.project.ttc.types.WordAnnotation</type>
         </inputs>
-        <outputs>
-          <type allAnnotatorFeatures="true">org.apache.uima.TreeTaggerAnnotation</type>
-        </outputs>
+        <outputs/>
         <languagesSupported>
           <language>de</language>
         </languagesSupported>

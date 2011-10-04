@@ -1,23 +1,12 @@
 # This is the patterns for term detection in French
 
-NA	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdjectiveAnnotation+
-# NA	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdjectiveAnnotation	org.apache.uima.multext.AdjectiveAnnotation
+eu.project.ttc.types.WordAnnotation[category=noun]	eu.project.ttc.types.WordAnnotation[category=adjective]
 
-# NN	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.NounAnnotation[subCategory=common]
+eu.project.ttc.types.WordAnnotation[category=noun]	eu.project.ttc.types.WordAnnotation[category=preposition,coveredText=d']	eu.project.ttc.types.WordAnnotation[category=noun]
+eu.project.ttc.types.WordAnnotation[category=noun]	eu.project.ttc.types.WordAnnotation[category=preposition,coveredText=de]	eu.project.ttc.types.WordAnnotation[category=article,coveredText=la]?	eu.project.ttc.types.WordAnnotation[category=noun]
+eu.project.ttc.types.WordAnnotation[category=noun]	eu.project.ttc.types.WordAnnotation[category=preposition,coveredText=du]	eu.project.ttc.types.WordAnnotation[category=noun]
+eu.project.ttc.types.WordAnnotation[category=noun]	eu.project.ttc.types.WordAnnotation[category=preposition,coveredText=des]	eu.project.ttc.types.WordAnnotation[category=noun]
 
-# NPN	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdpositionAnnotation[coveredText=de]	org.apache.uima.multext.NounAnnotation[subCategory=common]
-NPN	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdpositionAnnotation[coveredText=d']	org.apache.uima.multext.ArticleAnnotation[coveredText=un | une]	org.apache.uima.multext.NounAnnotation[subCategory=common]
-# NPN	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdpositionAnnotation[coveredText=d']	org.apache.uima.multext.ArticleAnnotation[coveredText=une]	org.apache.uima.multext.NounAnnotation[subCategory=common]
-NPN	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdpositionAnnotation[coveredText=de]	org.apache.uima.multext.ArticleAnnotation[coveredText=la]?	org.apache.uima.multext.NounAnnotation[subCategory=common]
-# NPN	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdpositionAnnotation[coveredText=des]	org.apache.uima.multext.NounAnnotation[subCategory=common]
-
-# NPN	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdpositionAnnotation[coveredText=à]	org.apache.uima.multext.NounAnnotation[subCategory=common]
-# NPN	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdpositionAnnotation[coveredText=au]	org.apache.uima.multext.NounAnnotation[subCategory=common]
-# NPN	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdpositionAnnotation[coveredText=à]	org.apache.uima.multext.ArticleAnnotation[coveredText=la]	org.apache.uima.multext.NounAnnotation[subCategory=common]
-# NPN	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdpositionAnnotation[coveredText=aux]	org.apache.uima.multext.NounAnnotation[subCategory=common]
-
-# NPNA	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdpositionAnnotation	org.apache.uima.multext.NounAnnotation	org.apache.uima.multext.AdjectiveAnnotation
-# NPNA	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdpositionAnnotation	org.apache.uima.multext.ArticleAnnotation	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdjectiveAnnotation
-# NPNA	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdpositionAnnotation	org.apache.uima.multext.DeterminerAnnotation	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdjectiveAnnotation
-
-# NV	org.apache.uima.multext.NounAnnotation[subCategory=common]	org.apache.uima.multext.AdpositionAnnotation[coveredText=à]	org.apache.uima.multext.VerbAnnotation
+eu.project.ttc.types.WordAnnotation[category=noun]	eu.project.ttc.types.WordAnnotation[category=preposition,coveredText=à]	eu.project.ttc.types.WordAnnotation[category=noun]
+eu.project.ttc.types.WordAnnotation[category=noun]	eu.project.ttc.types.WordAnnotation[category=preposition,coveredText=au]	eu.project.ttc.types.WordAnnotation[category=noun]
+eu.project.ttc.types.WordAnnotation[category=noun]	eu.project.ttc.types.WordAnnotation[category=preposition,coveredText=à]	eu.project.ttc.types.WordAnnotation[category=article,coveredText=la]?	eu.project.ttc.types.WordAnnotation[category=noun]

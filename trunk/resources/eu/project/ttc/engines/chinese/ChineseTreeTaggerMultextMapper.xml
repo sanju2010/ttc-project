@@ -2,7 +2,7 @@
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>true</primitive>
-  <annotatorImplementationName>fr.univnantes.lina.uima.engines.MultextMapper</annotatorImplementationName>
+  <annotatorImplementationName>eu.project.ttc.engines.FeatureMapper</annotatorImplementationName>
   <analysisEngineMetaData>
     <name>Chinese TreeTagger Multext Mapper</name>
     <description/>
@@ -20,14 +20,13 @@
       <nameValuePair>
         <name>Feature</name>
         <value>
-          <string>org.apache.uima.TreeTaggerAnnotation:tag</string>
+          <string>eu.project.ttc.types.WordAnnotation:category</string>
         </value>
       </nameValuePair>
     </configurationParameterSettings>
     <typeSystemDescription>
       <imports>
-        <import name="fr.univnantes.lina.uima.types.TreeTaggerAnnotation"/>
-        <import name="fr.univnantes.lina.uima.types.MultextAnnotation"/>
+        <import name="eu.project.ttc.types.TermSuiteTypeSystem"/>
       </imports>
     </typeSystemDescription>
     <typePriorities/>
@@ -35,10 +34,10 @@
     <capabilities>
       <capability>
         <inputs>
-          <type allAnnotatorFeatures="true">org.apache.uima.TreeTaggerAnnotation</type>
+          <type allAnnotatorFeatures="true">org.apache.uima.WordAnnotation</type>
         </inputs>
         <outputs>
-          <type allAnnotatorFeatures="true">org.apache.uima.MultextAnnotation</type>
+          <type allAnnotatorFeatures="true">org.apache.uima.WordAnnotation</type>
         </outputs>
         <languagesSupported>
           <language>zh</language>
@@ -53,27 +52,27 @@
   </analysisEngineMetaData>
   <externalResourceDependencies>
     <externalResourceDependency>
-      <key>MultextMapping</key>
+      <key>Mapping</key>
       <description/>
-      <interfaceName>fr.univnantes.lina.uima.models.MultextMapping</interfaceName>
+      <interfaceName>eu.project.ttc.models.FeatureMapping</interfaceName>
       <optional>false</optional>
     </externalResourceDependency>
   </externalResourceDependencies>
   <resourceManagerConfiguration>
     <externalResources>
       <externalResource>
-        <name>ChineseTreeTaggerMultextMapping</name>
+        <name>ChineseFeatureMapping</name>
         <description/>
         <fileResourceSpecifier>
-          <fileUrl>eu/project/ttc/resources/TreeTaggerMultextMapping.Chinese</fileUrl>
+          <fileUrl>eu/project/ttc/resources/CategoryMapping.Chinese</fileUrl>
         </fileResourceSpecifier>
-        <implementationName>fr.univnantes.lina.uima.models.MultextMapping</implementationName>
+        <implementationName>eu.project.ttc.models.FeatureMapping</implementationName>
       </externalResource>
     </externalResources>
     <externalResourceBindings>
       <externalResourceBinding>
-        <key>MultextMapping</key>
-        <resourceName>ChineseTreeTaggerMultextMapping</resourceName>
+        <key>Mapping</key>
+        <resourceName>ChineseFeatureMapping</resourceName>
       </externalResourceBinding>
     </externalResourceBindings>
   </resourceManagerConfiguration>
