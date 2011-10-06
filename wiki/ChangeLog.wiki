@@ -1,0 +1,25 @@
+#summary the change log of TTC TermSuite.
+#labels Featured
+
+= Change Log =
+
+== Version 0.9.1 ==
+
+  * TBX export bug fix
+
+== Version 0.9.0 ==
+
+  * Term Bank XMI serialization and deserialization removed after a "out of memory" exception thrown.
+  * Term Bank binary serialization and deserialization added instead.
+
+== Version 0.8.2 ==
+
+  * Term Context Indexer added.
+
+== Version 0.8.1 ==
+
+  * multi-word rules for Spanish, Latvian and Russian added.
+
+== Version 0.8.0 ==
+
+  * initial release of the new TTC TermSuite GUI and CLI interfaces
