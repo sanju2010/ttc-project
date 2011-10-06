@@ -1,0 +1,36 @@
+#summary the RoadMap of the TTC TermSuite.
+#labels Featured,Phase-Requirements
+
+= Road Map =
+
+== Version 1.0 ==
+
+  * update of the GUI and CLI interfaces
+
+== Version 0.9.9 ==
+
+  * full terminology alignment integration within TTC TermSuite using a CAS multiplier
+
+== Version 0.9.9 ==
+
+  * term variation computing
+
+== Version 0.9.7 ==
+
+  * aggregation of the different term alignment methods using a specific Flow Controller
+
+== Version 0.9.6 ==
+
+  * multi-word term alignment based on a compositional method available (implemented and validated)
+
+== Version 0.9.5 ==
+
+  * neo-classical compound term alignment available (implemented and validated)
+
+== Version 0.9.4 ==
+
+  * term alignment based on interlingual similarity available (implemented and validated)
+
+== Version 0.9.3 ==
+
+  * term bank filtering
