@@ -1,12 +1,30 @@
-#summary the ReadMe page of the TTC TermSuite.
 #labels Phase-Support
+== Deescription ==
 
-= Requirements = 
+TTC TermSuite is a UIMA application for terminology extraction and alignment from comparable corpora. It process two corpora (a source corpus and a target one) that are comparable. It provides terminologies both in source and target languages. It should also make possible to compute translation candidates from the source language to the target one.
 
-= Install = 
+== Install ==
 
-= Synopsis = 
+=== Requirements ===
 
-= Inputs = 
+First, please check that are installed on your computer: 
+  * a Java 6 Runtime Environment ([http://www.java.com/fr/download/ Sun] or [http://openjdk.java.net/install/ OpenJDK]),
+  * the part-of-speech tagger and lemmatizer [http://www.ims.uni-stuttgart.de/projekte/corplex/TreeTagger/ TreeTagger].
 
-= Outputs = 
+=== Downloads ===
+
+Then, you may download this JNLP file and install it with a Java Web Start program:
+
+[http://ttc-project.googlecode.com/files/ttc-term-suite-0.9.1.jnlp TTC TermSuite 0.9.1]
+
+You also may directly download the [http://ttc-project.googlecode.com/files/ttc-term-suite-0.9.1.jar TTC TermSuite 0.9.1] executable Java archive and save it on your computer.
+
+== Synopsis ==
+
+First, you have to run the Graphical User Interface (GUI) of TTC TermSuite in order to specify the source and target corpora and languages as well as the TreeTagger home directory on your computer by opening the Java executable archive within a Java 6 Runtime Environment or by it by the help of this command line:
+
+  java -jar ttc-term-suite-0.9.1.jar
+
+Once these parameters have been specified, either you may use the GUI to process the terminology extraction and alignment over the given corpora or you may run it in an automatic mode as follows:
+
+  java -jar ttc-term-suite-0.9.1.jar --automatic
