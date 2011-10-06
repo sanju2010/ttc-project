@@ -1,7 +1,0 @@
-#launch TTC TermSuite.
-
-= Launch It! =
-
-It should be really simple to run TTCTermSuite.
-
-http://ttc-project.googlecode.com/files/ttc-term-suite.jnlp
