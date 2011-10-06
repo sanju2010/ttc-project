@@ -1,4 +1,4 @@
-#labels Phase-Support
+#labels Phase-Support,Featured
 == Deescription ==
 
 TTC TermSuite is a UIMA application for terminology extraction and alignment from comparable corpora. It process two corpora (a source corpus and a target one) that are comparable. It provides terminologies both in source and target languages. It should also make possible to compute translation candidates from the source language to the target one.
