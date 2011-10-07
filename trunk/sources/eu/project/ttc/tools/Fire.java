@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
 import javax.swing.JButton;
@@ -38,6 +40,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import fr.univnantes.lina.uima.models.TermBankResource;
+import fr.univnantes.lina.uima.models.TermOccurrence;
+import fr.univnantes.lina.uima.models.Term;
 import fr.univnantes.lina.uima.tools.dunamis.models.ProcessingResult;
 
 public class Fire implements ActionListener, StatusCallbackListener {
@@ -222,7 +226,8 @@ public class Fire implements ActionListener, StatusCallbackListener {
 				try {
 					this.doSave();
 				} catch (Exception e) {
-					this.getTermSuite().error(e);
+					e.printStackTrace();
+					// this.getTermSuite().error(e);
 				}
 			}
 		} else if (object instanceof Timer) {
@@ -253,7 +258,7 @@ public class Fire implements ActionListener, StatusCallbackListener {
 			InputStream inputStream = new FileInputStream(file);
 			resource.update(inputStream);
 			resource.embed(this.getTermSuite().getTerms().getModel());
-			UIMAFramework.getLogger().log(Level.INFO,"Term Bank Loaded");
+			UIMAFramework.getLogger().log(Level.CONFIG,"Term Bank Loaded");
 			this.getTermSuite().getToolBar().getSave().setEnabled(true);
 			UIMAFramework.getLogger().log(Level.INFO,this.getEngine().getPerformanceReport().toString());
 		} catch (Exception e) {
@@ -336,30 +341,39 @@ public class Fire implements ActionListener, StatusCallbackListener {
 			DefaultMutableTreeNode root = (DefaultMutableTreeNode) tree.getRoot();
 			int size = root.getChildCount();
 			for (int i = 0; i < size; i++) {
-				DefaultMutableTreeNode entry = (DefaultMutableTreeNode) root.getChildAt(i);
-				Element termEntry = document.createElement("termEntry");
-				body.appendChild(termEntry);
-				Element langSet = document.createElement("langSet");
-				termEntry.appendChild(langSet);
-				int length = entry.getChildCount();
+				DefaultMutableTreeNode aTerminology = (DefaultMutableTreeNode) root.getChildAt(i);
+				int length = aTerminology.getChildCount();
 				for (int j = 0; j < length; j++) {
-					DefaultMutableTreeNode node = (DefaultMutableTreeNode) entry.getChildAt(j);
-					Element ntig = document.createElement("ntig");
-					langSet.appendChild(ntig);
-					Element termGrp = document.createElement("termGrp");
-					ntig.appendChild(termGrp);
+					DefaultMutableTreeNode aTerm = (DefaultMutableTreeNode) aTerminology.getChildAt(j);
+					Element termEntry = document.createElement("termEntry");
+					body.appendChild(termEntry);
+					Element langSet = document.createElement("langSet");
+					termEntry.appendChild(langSet);
+					Element tig = document.createElement("tig");
+					langSet.appendChild(tig);
 					Element term = document.createElement("term");
-					term.setTextContent((String) entry.getUserObject());
-					termGrp.appendChild(term);
-					for (int k = 0; k < node.getChildCount(); k++) {
-						DefaultMutableTreeNode child = (DefaultMutableTreeNode) node.getChildAt(k);
-						String[] note = this.getNote((String) child.getUserObject());
-						if (note == null) {
-							this.addComponent(document, term, child);
-						} else {
-							this.addNote(document, langSet, term, note[0],note[1]);
+					Term trm = (Term) aTerm.getUserObject();
+					term.setTextContent(trm.toString().trim());
+					tig.appendChild(term);
+					this.addNote(document, langSet, tig, "language", trm.language());
+					this.addNote(document, langSet, tig, "complexity", trm.complexity().trim());
+					this.addNote(document, langSet, tig, "category", trm.category().trim());
+					this.addNote(document, langSet, tig, "lemma", trm.lemma().trim());
+					this.addNote(document, langSet, tig, "frequency", trm.size());
+					Set<String> occurrences = new HashSet<String>();
+					for (int k = 0; k < aTerm.getChildCount(); k++) {
+						DefaultMutableTreeNode child = (DefaultMutableTreeNode) aTerm.getChildAt(k);
+						Object object = child.getUserObject();
+						if (object instanceof TermOccurrence) {
+							TermOccurrence anOccurrence = (TermOccurrence) object;
+							occurrences.add(anOccurrence.text().trim());
 						}
 					}
+					for (String occurrence : occurrences) {
+						this.addNote(document, langSet, tig, "occurrence", occurrence);
+						this.addNote(document, langSet, tig, "context", "... " + occurrence + " ...");
+					}
+					this.addNote(document, langSet, tig, "variant", "...");
 				}
 			}
 
@@ -370,33 +384,23 @@ public class Fire implements ActionListener, StatusCallbackListener {
 			transformer.transform(source, result);
 		}
 	}
-
-	private String[] getNote(String string) {
-		String[] result = new String[2];
-		String[] strings = string.split(":");
-		if (strings.length == 2) {
-			result[0] = strings[0].trim();
-			result[1] = strings[1].trim();
-			return result;
-		} else {
-			return null;
-		}
-	}
 	
 	private void addLanguage(Element element,String language) {
 		element.setAttribute("xml:lang", language);
 	}
 	
-	private void addNote(Document document, Element lang, Element element,String type,String value) {
-		if (lang != null && type.equals("language")) {
-			this.addLanguage(lang, value);
-		} 
-		Element termNote = document.createElement("termNote");
-		element.appendChild(termNote);
-		termNote.setAttribute("type", type);
-		termNote.setTextContent(value);
+	private void addNote(Document document, Element lang, Element element,String type,Object value) {
+		if (type.equals("language")) {
+			this.addLanguage(lang, value.toString());
+		} else {
+			Element termNote = document.createElement("termNote");
+			element.appendChild(termNote);
+			termNote.setAttribute("type", type);
+			termNote.setTextContent(value.toString());
+		}
 	}
 	
+	/*
 	private void addComponent(Document document,Element element, DefaultMutableTreeNode root) {
 		Element termCompList = document.createElement("TermCompList");
 		element.appendChild(termCompList);
@@ -411,14 +415,10 @@ public class Fire implements ActionListener, StatusCallbackListener {
 			termComp.setTextContent((String) node.getUserObject());
 			for (int k = 0; k < node.getChildCount(); k++) {
 				DefaultMutableTreeNode child = (DefaultMutableTreeNode) node.getChildAt(k);
-				String[] note = this.getNote((String) child.getUserObject());
-				if (note == null) {
-					this.addComponent(document, termComp, child);
-				} else {
-					this.addNote(document, null, termComp, note[0],note[1]);
-				}
+				
 			}
 		}
 	}
+	*/
 	
 }

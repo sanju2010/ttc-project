@@ -60,9 +60,9 @@ public class FeatureMapping implements SharedResourceObject {
 	}
 
 	public void doLoad(InputStream inputStream) throws IOException {
-		String delimiter = java.lang.System.getProperty("line.separator");
+		// String delimiter = java.lang.System.getProperty("line.separator");
 		Scanner scanner = new Scanner(inputStream);
-		scanner.useDelimiter(delimiter);
+		scanner.useDelimiter("\n");
 		while (scanner.hasNext()) {
 			try {
 				this.doParse(scanner.next());
