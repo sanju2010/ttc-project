@@ -1,0 +1,70 @@
+package fr.univnantes.lina.uima.models;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+
+import org.apache.uima.resource.DataResource;
+import org.apache.uima.resource.ResourceInitializationException;
+import org.apache.uima.resource.SharedResourceObject;
+
+public class TreeTaggerParameter implements SharedResourceObject {
+
+	private Properties properties;
+	
+	private void setProperties() {
+		this.properties = new Properties();
+	}
+	
+	private Properties getProperties() {
+		return this.properties;
+	}
+	
+	public String getFile() throws IOException {
+		return this.getProperties().getProperty("file");
+	}
+	
+	public String getEncoding() {
+		return this.getProperties().getProperty("encoding");
+	}
+	
+	private void doLoad(InputStream inputStream) throws IOException {
+		this.getProperties().load(inputStream);
+	}
+
+	private boolean loaded;
+	
+	private void setLoaded(boolean enabled) {
+		this.loaded = enabled;
+	}
+	
+	private boolean isLoaded() {
+		return this.loaded;
+	}
+	
+	public TreeTaggerParameter() {
+		this.setLoaded(false);
+		this.setProperties();
+	}
+	
+	@Override
+	public void load(DataResource data) throws ResourceInitializationException {
+		try {
+			if (!this.isLoaded()) {
+				this.setLoaded(true);
+				this.doLoad(data.getInputStream());
+			}
+		} catch (Exception e) {
+			throw new ResourceInitializationException(e);
+		}
+	}
+
+	public void override(String parameter) throws IOException {
+		if (parameter != null) {
+			InputStream inputStream = new FileInputStream(parameter);
+			this.doLoad(inputStream);			
+		}
+	}
+			
+}

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
+  <name>Term Context Vector Annotation</name>
+  <description/>
+  <version>1.0</version>
+  <vendor/>
+  <imports>
+    <import name="fr.univnantes.lina.uima.types.TermContextEntryAnnotation"/>
+  </imports>
+  <types>
+    <typeDescription>
+      <name>org.apache.uima.TermContextVectorAnnotation</name>
+      <description/>
+      <supertypeName>uima.tcas.Annotation</supertypeName>
+      <features>
+        <featureDescription>
+          <name>contextVector</name>
+          <description/>
+          <rangeTypeName>uima.cas.FSArray</rangeTypeName>
+          <elementType>org.apache.uima.TermContextEntryAnnotation</elementType>
+        </featureDescription>
+        <featureDescription>
+          <name>term</name>
+          <description/>
+          <rangeTypeName>org.apache.uima.TermContextEntryAnnotation</rangeTypeName>
+        </featureDescription>
+      </features>
+    </typeDescription>
+  </types>
+</typeSystemDescription>
