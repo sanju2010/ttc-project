@@ -104,7 +104,7 @@
         <name>FrenchTreeTaggerParameter</name>
         <description/>
         <fileResourceSpecifier>
-          <fileUrl>eu/project/ttc/resources/TreeTagger.French</fileUrl>
+          <fileUrl>eu/project/ttc/resources/french/TreeTagger.French</fileUrl>
         </fileResourceSpecifier>
         <implementationName>fr.univnantes.lina.uima.models.TreeTaggerParameter</implementationName>
       </externalResource>

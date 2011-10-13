@@ -3,14 +3,11 @@
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>false</primitive>
   <delegateAnalysisEngineSpecifiers>
-    <delegateAnalysisEngine key="SingleWordTermDetector">
-      <import name="eu.project.ttc.engines.SingleWordTermDetector"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="EnglishNeoClassicalTermDetector">
-      <import name="eu.project.ttc.engines.english.EnglishNeoClassicalTermDetector"/>
-    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="EnglishMultiWordTermDetector">
       <import name="eu.project.ttc.engines.english.EnglishMultiWordTermDetector"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="SingleWordTermDetector">
+      <import name="eu.project.ttc.engines.SingleWordTermDetector"/>
     </delegateAnalysisEngine>
   </delegateAnalysisEngineSpecifiers>
   <analysisEngineMetaData>
@@ -24,7 +21,6 @@
       <fixedFlow>
         <node>SingleWordTermDetector</node>
         <node>EnglishMultiWordTermDetector</node>
-        <node>EnglishNeoClassicalTermDetector</node>
       </fixedFlow>
     </flowConstraints>
     <typePriorities/>

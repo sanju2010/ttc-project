@@ -10,7 +10,7 @@
     <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
     <configurationParameters>
       <configurationParameter>
-        <name>Constraint</name>
+        <name>AnnotationType</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
@@ -30,7 +30,7 @@
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
-        <name>Constraint</name>
+        <name>AnnotationType</name>
         <value>
           <string>eu.project.ttc.types.WordAnnotation</string>
         </value>
@@ -85,7 +85,7 @@
         <name>FrenchRuleSystem</name>
         <description/>
         <fileResourceSpecifier>
-          <fileUrl>eu/project/ttc/resources/RuleSystem.French</fileUrl>
+          <fileUrl>eu/project/ttc/resources/french/RuleSystem.French</fileUrl>
         </fileResourceSpecifier>
         <implementationName>fr.free.rocheteau.jerome.models.RuleSystemResource</implementationName>
       </externalResource>

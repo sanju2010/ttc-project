@@ -45,8 +45,8 @@ public abstract class Annotator {
 	private File file;
 	
 	private void setFile() throws IOException {
-		String name = this.getName().replaceAll("\\s+","");
-		this.file = File.createTempFile(name + "-",".xml");
+		String name = this.getName().replaceAll("\\s+","-");
+		this.file = File.createTempFile(name.toLowerCase() + "-",".xml");
 		this.file.deleteOnExit();
 	}
 	

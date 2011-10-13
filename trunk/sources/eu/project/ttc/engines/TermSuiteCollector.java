@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -91,24 +90,20 @@ public class TermSuiteCollector extends CollectionReader_ImplBase {
 		this.doCollect(file,false);
 	}
 	
-	private void setSourceCorpus(String[] directories) throws IOException {
-		if (directories != null) {
-			for (String directory : directories) {
-				File file = new File(directory);
-				this.setSourceCorpus(file);			
-			}			
+	private void setSourceCorpus(String path) throws IOException {
+		if (path != null) {
+			File file = new File(path);
+			this.setSourceCorpus(file);
 		}
 	}
 	
-	private void setTargetCorpus(String[] directories) throws IOException {
-		if (directories != null) {
-			for (String directory : directories) {
-				File file = new File(directory);
-				this.setTargetCorpus(file);	
-			}			
+	private void setTargetCorpus(String path) throws IOException {
+		if (path != null) {
+			File file = new File(path);
+			this.setTargetCorpus(file);
 		}
 	}
-
+	
 	private String sourceLanguage;
 	
 	private void setSourceLanguage(String language) {
@@ -155,9 +150,9 @@ public class TermSuiteCollector extends CollectionReader_ImplBase {
 			this.setSourceLanguage(sourceLanguage);
 			String targetLanguage = (String) this.getConfigParameterValue("TargetLanguage");
 			this.setTargetLanguage(targetLanguage);
-			String[] sourceCorpus = (String[]) this.getConfigParameterValue("SourceDirectories");
+			String sourceCorpus = (String) this.getConfigParameterValue("SourceDirectory");
 			this.setSourceCorpus(sourceCorpus);
-			String[] targetCorpus = (String[]) this.getConfigParameterValue("TargetDirectories");
+			String targetCorpus = (String) this.getConfigParameterValue("TargetDirectory");
 			this.setTargetCorpus(targetCorpus);
 			this.setSize();
 		} catch (Exception e) { 
@@ -169,9 +164,9 @@ public class TermSuiteCollector extends CollectionReader_ImplBase {
 	public void getNext(CAS cas) throws CollectionException {
         try {
         	File file = (File) this.getDocument();
-        	UIMAFramework.getLogger().log(Level.INFO,"Processing " + file.getAbsolutePath());
-        	File document = this.getFile(file);
-        	String text = this.getDocumentText(document);
+        	UIMAFramework.getLogger().log(Level.CONFIG,"Processing " + file.getAbsolutePath());
+        	// File document = this.getFile(file);
+        	String text = this.getDocumentText(/* document */file);
         	String language = this.getDocumentLanguage(); // this.getCrawledDocumentLanguage(dc);
         	cas.setDocumentText(this.doClean(text));
         	cas.setDocumentLanguage(language);
@@ -215,6 +210,7 @@ public class TermSuiteCollector extends CollectionReader_ImplBase {
 	}
 	*/
 	
+	/*
 	private File getFile(File file) throws NullPointerException, FileNotFoundException {
 		File parent = file.getParentFile();
 		String name = this.getCrawledDocument(file.getName());
@@ -236,6 +232,7 @@ public class TermSuiteCollector extends CollectionReader_ImplBase {
 			return null;
 		}
 	}
+	*/
 	
 	public void doAnnotate(JCas cas,File file,/*DublinCore dc,*/String text) throws Exception {
 		SourceDocumentInformation info = new SourceDocumentInformation(cas);
@@ -243,6 +240,7 @@ public class TermSuiteCollector extends CollectionReader_ImplBase {
 		info.setEnd(text.length());
 		info.setDocumentSize(text.length());
 		info.setUri(file.toURI().toString());
+		info.setLastSegment(this.getIndex() == this.getSize());
 		info.addToIndexes();
 		/*
 		if (dc == null) {
@@ -280,7 +278,7 @@ public class TermSuiteCollector extends CollectionReader_ImplBase {
 			if (file.isDirectory()) {
 				return true;
 			} else {
-				return file.getName().endsWith(".xml");
+				return file.getName().endsWith(".txt");
 			}
 		}
 		

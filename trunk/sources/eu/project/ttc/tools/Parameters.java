@@ -9,6 +9,7 @@ import java.util.List;
 import javax.swing.JScrollPane;
 
 import org.apache.uima.UIMAFramework;
+import org.apache.uima.resource.ResourceConfigurationException;
 import org.apache.uima.resource.metadata.ConfigurationParameter;
 import org.apache.uima.resource.metadata.ConfigurationParameterDeclarations;
 import org.apache.uima.resource.metadata.ConfigurationParameterSettings;
@@ -17,12 +18,12 @@ import org.apache.uima.util.Level;
 import org.apache.uima.util.XMLInputSource;
 import org.xml.sax.SAXException;
 
-import fr.univnantes.lina.uima.tools.dunamis.fields.Field;
-import fr.univnantes.lina.uima.tools.dunamis.viewers.SettingViewer;
+import fr.free.rocheteau.jerome.dunamis.fields.Field;
+import fr.free.rocheteau.jerome.dunamis.viewers.SettingViewer;
 
 public class Parameters {
 	
-	private ConfigurationParameter sourceLanguage;
+	/*private ConfigurationParameter sourceLanguage;
 	
 	private void setSourceLanguage() {
 		this.sourceLanguage = UIMAFramework.getResourceSpecifierFactory().createConfigurationParameter();
@@ -52,9 +53,9 @@ public class Parameters {
 	
 	private void setSourceDirectories() {
 		this.sourceDirectories = UIMAFramework.getResourceSpecifierFactory().createConfigurationParameter();
-		this.sourceDirectories.setName("SourceDirectories");
+		this.sourceDirectories.setName("SourceDirectory");
 		this.sourceDirectories.setType(ConfigurationParameter.TYPE_STRING);
-		this.sourceDirectories.setMultiValued(true);		
+		this.sourceDirectories.setMultiValued(false);		
 	}
 	
 	private ConfigurationParameter getSourceDirectories() {
@@ -63,14 +64,14 @@ public class Parameters {
 	
 	private ConfigurationParameter targetDirectories;
 	
-	private void setTargetDirectories() {
+	private void setTargetDirectory() {
 		this.targetDirectories = UIMAFramework.getResourceSpecifierFactory().createConfigurationParameter();
-		this.targetDirectories.setName("TargetDirectories");
+		this.targetDirectories.setName("TargetDirectory");
 		this.targetDirectories.setType(ConfigurationParameter.TYPE_STRING);
-		this.targetDirectories.setMultiValued(true);
+		this.targetDirectories.setMultiValued(false);
 	}
 	
-	private ConfigurationParameter getTargetDirectories() {
+	private ConfigurationParameter getTargetDirectory() {
 		return this.targetDirectories;
 	}
 	
@@ -87,6 +88,58 @@ public class Parameters {
 		return this.treeTaggerHomeDirectory;
 	}
 	
+	private ConfigurationParameter indexSingleWordTerms;
+	
+	private void setIndexSingleWordTerms() {
+		this.indexSingleWordTerms = UIMAFramework.getResourceSpecifierFactory().createConfigurationParameter();
+		this.indexSingleWordTerms.setName("IndexSingleWordTerms");
+		this.indexSingleWordTerms.setType(ConfigurationParameter.TYPE_BOOLEAN);
+		this.indexSingleWordTerms.setMultiValued(false);
+	}
+	
+	private ConfigurationParameter getIndexSingleWordTerms() {
+		return this.indexSingleWordTerms;
+	}
+	
+	private ConfigurationParameter indexMultiWordTerms;
+	
+	private void setIndexMultiWordTerms() {
+		this.indexMultiWordTerms = UIMAFramework.getResourceSpecifierFactory().createConfigurationParameter();
+		this.indexMultiWordTerms.setName("IndexMultiWordTerms");
+		this.indexMultiWordTerms.setType(ConfigurationParameter.TYPE_BOOLEAN);
+		this.indexMultiWordTerms.setMultiValued(false);
+	}
+	
+	private ConfigurationParameter getIndexMultiWordTerms() {
+		return this.indexMultiWordTerms;
+	}
+	
+	private ConfigurationParameter indexCompoundWordTerms;
+	
+	private void setIndexCompoundWordTerms() {
+		this.indexCompoundWordTerms = UIMAFramework.getResourceSpecifierFactory().createConfigurationParameter();
+		this.indexCompoundWordTerms.setName("IndexCompoundWordTerms");
+		this.indexCompoundWordTerms.setType(ConfigurationParameter.TYPE_BOOLEAN);
+		this.indexCompoundWordTerms.setMultiValued(false);
+	}
+	
+	private ConfigurationParameter getIndexCompoundWordTerms() {
+		return this.indexCompoundWordTerms;
+	}
+	
+	private ConfigurationParameter enableTerminologyAlignment;
+	
+	private void setEnableTerminologyAlignment() {
+		this.enableTerminologyAlignment = UIMAFramework.getResourceSpecifierFactory().createConfigurationParameter();
+		this.enableTerminologyAlignment.setName("EnableTerminolgyAlignment");
+		this.enableTerminologyAlignment.setType(ConfigurationParameter.TYPE_BOOLEAN);
+		this.enableTerminologyAlignment.setMultiValued(false);
+	}
+	
+	private ConfigurationParameter getEnableTerminologyAlignment() {
+		return this.enableTerminologyAlignment;
+	}
+	
 	private ConfigurationParameter termBankFile;
 	
 	private void setTermBankFile() {
@@ -98,40 +151,32 @@ public class Parameters {
 	
 	private ConfigurationParameter getTermBankFile() {
 		return this.termBankFile;
-	}
+	}*/
 	
-	private ConfigurationParameter termContextBenchFile;
-	
-	private void setTermContextBenchFile() {
-		this.termContextBenchFile = UIMAFramework.getResourceSpecifierFactory().createConfigurationParameter();
-		this.termContextBenchFile.setName("TermContextBenchFile");
-		this.termContextBenchFile.setType(ConfigurationParameter.TYPE_STRING);
-		this.termContextBenchFile.setMultiValued(false);
-	}
-	
-	private ConfigurationParameter getTermContextBenchFile() {
-		return this.termContextBenchFile;
+	private void addParameter(ConfigurationParameterDeclarations declarations,String name,String type,boolean multiValued,boolean mandatory) {
+		ConfigurationParameter parameter = UIMAFramework.getResourceSpecifierFactory().createConfigurationParameter();
+		parameter.setName(name);
+		parameter.setType(type);
+		parameter.setMultiValued(multiValued);
+		parameter.setMandatory(mandatory);
+		declarations.addConfigurationParameter(parameter);
 	}
 	
 	private ResourceMetaData hiddenMetaData;
 	
 	private void setHiddentMetaData() throws IOException {
 		ConfigurationParameterDeclarations declarations = UIMAFramework.getResourceSpecifierFactory().createConfigurationParameterDeclarations();
-		declarations.addConfigurationParameter(this.getTermBankFile());
-		declarations.addConfigurationParameter(this.getTermContextBenchFile());
+		this.addParameter(declarations, "TermBankFile", ConfigurationParameter.TYPE_STRING, false, true);
 		this.hiddenMetaData = UIMAFramework.getResourceSpecifierFactory().createResourceMetaData();
 		this.hiddenMetaData.setConfigurationParameterDeclarations(declarations);
 		ConfigurationParameterSettings settings = UIMAFramework.getResourceSpecifierFactory().createConfigurationParameterSettings();
 		File termBankFile = File.createTempFile("term-bank-", ".obj");
 		termBankFile.deleteOnExit();
-		File termContextBenchFile = File.createTempFile("term-context-", ".xmi");
-		termContextBenchFile.deleteOnExit();
 		settings.setParameterValue("TermBankFile", termBankFile.getAbsolutePath());
-		settings.setParameterValue("TermContextBenchFile", termContextBenchFile.getAbsolutePath());
 		this.hiddenMetaData.setConfigurationParameterSettings(settings);
 	}
 	
-	public ResourceMetaData getHiddentMetaData() {
+	public ResourceMetaData getHiddenMetaData() {
 		return this.hiddenMetaData;
 	}
 	
@@ -139,11 +184,20 @@ public class Parameters {
 	
 	private void setMetaData() {
 		ConfigurationParameterDeclarations declarations = UIMAFramework.getResourceSpecifierFactory().createConfigurationParameterDeclarations();
-		declarations.addConfigurationParameter(this.getSourceLanguage());
-		declarations.addConfigurationParameter(this.getSourceDirectories());
-		declarations.addConfigurationParameter(this.getTargetLanguage());
-		declarations.addConfigurationParameter(this.getTargetDirectories());
-		declarations.addConfigurationParameter(this.getTreeTaggerHomeDirectory());
+		this.addParameter(declarations, "SourceLanguage", ConfigurationParameter.TYPE_STRING, false, true);
+		this.addParameter(declarations, "SourceDirectory", ConfigurationParameter.TYPE_STRING, false, true);
+		this.addParameter(declarations, "TargetLanguage", ConfigurationParameter.TYPE_STRING, false, true);
+		this.addParameter(declarations, "TargetDirectory", ConfigurationParameter.TYPE_STRING, false, false);
+		this.addParameter(declarations, "TreeTaggerHomeDirectory", ConfigurationParameter.TYPE_STRING, false, true);
+		this.addParameter(declarations, "IndexSingleWordTerms", ConfigurationParameter.TYPE_BOOLEAN, false, false);
+		this.addParameter(declarations, "IndexMultiWordTerms", ConfigurationParameter.TYPE_BOOLEAN, false, false);
+		this.addParameter(declarations, "IndexCompoundWordTerms", ConfigurationParameter.TYPE_BOOLEAN, false, false);
+		this.addParameter(declarations, "EnableTerminologyAlignment", ConfigurationParameter.TYPE_BOOLEAN, false, false);
+		this.addParameter(declarations, "ScopeSize", ConfigurationParameter.TYPE_INTEGER, false, false);
+		this.addParameter(declarations, "AssociationRateClassName", ConfigurationParameter.TYPE_STRING, false, false);
+		this.addParameter(declarations, "SimilarityDistanceClassName", ConfigurationParameter.TYPE_STRING, false, false);
+		this.addParameter(declarations, "DictionaryFile", ConfigurationParameter.TYPE_STRING, false, false);
+		this.addParameter(declarations, "EvaluationListFile", ConfigurationParameter.TYPE_STRING, false, false);
 		this.metaData = UIMAFramework.getResourceSpecifierFactory().createResourceMetaData();
 		this.metaData.setConfigurationParameterDeclarations(declarations);
 		ConfigurationParameterSettings settings = UIMAFramework.getResourceSpecifierFactory().createConfigurationParameterSettings();
@@ -153,7 +207,12 @@ public class Parameters {
 	public ResourceMetaData getMetaData() {
 		return this.metaData;
 	}
-		
+
+	public void validate() throws ResourceConfigurationException {
+		this.getMetaData().validateConfigurationParameterSettings();
+		this.getHiddenMetaData().validateConfigurationParameterSettings();
+	}
+	
 	private SettingViewer viewer;
 	
 	private void setViewer() {
@@ -176,13 +235,18 @@ public class Parameters {
 	}
 	
 	public Parameters() {
+		/*
 		this.setSourceLanguage();
 		this.setTargetLanguage();
 		this.setSourceDirectories();
-		this.setTargetDirectories();
+		this.setTargetDirectory();
 		this.setTreeTaggerHomeDirectory();
+		this.setIndexSingleWordTerms();
+		this.setIndexMultiWordTerms();
+		this.setIndexCompoundWordTerms();
+		this.setEnableTerminologyAlignment();
 		this.setTermBankFile();
-		this.setTermContextBenchFile();
+		*/
 		this.doLoad();
 		this.setViewer();
 		this.setComponent();

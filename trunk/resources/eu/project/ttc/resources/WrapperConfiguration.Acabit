@@ -1,5 +1,0 @@
-# Default Wrapper Configuration
-pre-process =  
-process = acabit -stat $LANGUAGE $INPUT $OUTPUT
-post-process = acabit -tri
-handler-class-name = eu.project.ttc.models.AcabitHandler

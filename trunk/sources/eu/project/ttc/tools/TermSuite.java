@@ -17,8 +17,8 @@ import javax.swing.UIManager;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.util.Level;
 
-import fr.univnantes.lina.uima.tools.dunamis.listeners.ProcessingResultListener;
-import fr.univnantes.lina.uima.tools.dunamis.viewers.ProcessingResultViewer;
+import fr.free.rocheteau.jerome.dunamis.listeners.ProcessingResultListener;
+import fr.free.rocheteau.jerome.dunamis.viewers.ProcessingResultViewer;
 
 public class TermSuite implements Runnable {
 
@@ -118,10 +118,10 @@ public class TermSuite implements Runnable {
 	
 	private void setContent() {		
 		JTabbedPane inner = new JTabbedPane();
-		inner.setTabPlacement(JTabbedPane.LEFT);
-		inner.addTab("Edit",this.getParameters().getComponent());
-		inner.addTab("View",this.getTerms().getComponent());
-		inner.addTab("Show",this.getDocuments().getComponent());
+		inner.setTabPlacement(JTabbedPane.TOP);
+		inner.addTab("   Settings   ",this.getParameters().getComponent());
+		inner.addTab(" Terminolgies ",this.getTerms().getComponent());
+		inner.addTab("  Documents  ",this.getDocuments().getComponent());
 		JSplitPane outter = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 		outter.setTopComponent(this.getToolBar().getComponent());
 		outter.setBottomComponent(inner);

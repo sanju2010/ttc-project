@@ -10,9 +10,6 @@
       <import name="eu.project.ttc.engines.french.FrenchNeoClassicalAdjectiveDetector"/>
     </delegateAnalysisEngine>
   </delegateAnalysisEngineSpecifiers>
-  <flowController key="ConstraintFlowController">
-    <import name="fr.free.rocheteau.jerome.engines.constraints.ConstraintFlowController"/>
-  </flowController>
   <analysisEngineMetaData>
     <name>French NeoClassical Term Detector</name>
     <description/>
@@ -34,6 +31,7 @@
         </inputs>
         <outputs>
           <type allAnnotatorFeatures="true">org.apache.uima.CompoundWordTermAnnotation</type>
+          <type allAnnotatorFeatures="true">org.apache.uima.TermComponentAnnotation</type>
         </outputs>
         <languagesSupported>
           <language>fr</language>
@@ -49,22 +47,22 @@
   <resourceManagerConfiguration>
     <externalResources>
       <externalResource>
-        <name>FrenchClassicalRootBank</name>
+        <name>FrenchRootBank</name>
         <description/>
         <fileResourceSpecifier>
-          <fileUrl>eu/project/ttc/resources/ClassicalRootBank.French</fileUrl>
+          <fileUrl>eu/project/ttc/resources/french/RootBank.French</fileUrl>
         </fileResourceSpecifier>
-        <implementationName>fr.univnantes.lina.uima.models.ClassicalRootBankResource</implementationName>
+        <implementationName>eu.project.ttc.models.RootBankResource</implementationName>
       </externalResource>
     </externalResources>
     <externalResourceBindings>
       <externalResourceBinding>
-        <key>FrenchNeoClassicalNounDetector/ClassicalRootBank</key>
-        <resourceName>FrenchClassicalRootBank</resourceName>
+        <key>FrenchNeoClassicalNounDetector/RootBank</key>
+        <resourceName>FrenchRootBank</resourceName>
       </externalResourceBinding>
       <externalResourceBinding>
-        <key>FrenchNeoClassicalAdjectiveDetector/ClassicalRootBank</key>
-        <resourceName>FrenchClassicalRootBank</resourceName>
+        <key>FrenchNeoClassicalAdjectiveDetector/RootBank</key>
+        <resourceName>FrenchRootBank</resourceName>
       </externalResourceBinding>
     </externalResourceBindings>
   </resourceManagerConfiguration>

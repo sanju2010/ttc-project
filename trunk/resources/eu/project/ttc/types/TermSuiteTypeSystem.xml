@@ -26,10 +26,5 @@
         </featureDescription>
       </features>
     </typeDescription>
-    <typeDescription>
-      <name>eu.project.ttc.types.CompoundWordAnnotation</name>
-      <description/>
-      <supertypeName>eu.project.ttc.types.WordAnnotation</supertypeName>
-    </typeDescription>
   </types>
 </typeSystemDescription>

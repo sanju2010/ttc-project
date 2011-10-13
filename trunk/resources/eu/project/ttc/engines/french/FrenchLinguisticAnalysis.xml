@@ -9,8 +9,8 @@
     <delegateAnalysisEngine key="FrenchTermFilter">
       <import name="eu.project.ttc.engines.french.FrenchTermFilter"/>
     </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="FrenchTreeTaggerMultextMapper">
-      <import name="eu.project.ttc.engines.french.FrenchTreeTaggerMultextMapper"/>
+    <delegateAnalysisEngine key="FrenchTreeTaggerCategoryNormalizer">
+      <import name="eu.project.ttc.engines.french.FrenchTreeTaggerCategoryNormalizer"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="FrenchWordTokenizer">
       <import name="eu.project.ttc.engines.french.FrenchWordTokenizer"/>
@@ -40,7 +40,7 @@
       <fixedFlow>
         <node>FrenchWordTokenizer</node>
         <node>FrenchTreeTaggerWrapper</node>
-        <node>FrenchTreeTaggerMultextMapper</node>
+        <node>FrenchTreeTaggerCategoryNormalizer</node>
         <node>FrenchTermDetector</node>
         <node>FrenchTermFilter</node>
       </fixedFlow>

@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>eu.project.ttc</groupId>
   <artifactId>ttc-term-suite</artifactId>
-  <version>0.9.0</version>
+  <version>0.9.1</version>
   <packaging>jar</packaging>
   <name>TTC TermSuite</name>
   <dependencies>
@@ -22,64 +22,49 @@
       <version>2.3.1</version>
     </dependency>
     <dependency>
-      <groupId>fr.univnantes.lina</groupId>
-      <artifactId>uima-word-tokenizer</artifactId>
-      <version>0.8.0</version>
+    	<groupId>eu.project.ttc</groupId>
+    	<artifactId>uima-term-bank-handler</artifactId>
+    	<version>1.0</version>
+    </dependency>
+    <dependency>
+    	<groupId>eu.project.ttc</groupId>
+    	<artifactId>uima-dictionary-handler</artifactId>
+    	<version>1.0</version>
+    </dependency>
+    <dependency>
+    	<groupId>eu.project.ttc</groupId>
+    	<artifactId>uima-term-aligner</artifactId>
+    	<version>1.0</version>
     </dependency>
     <dependency>
     	<groupId>fr.univnantes.lina</groupId>
     	<artifactId>uima-tree-tagger-wrapper</artifactId>
-    	<version>0.8.0</version>
-    	<type>jar</type>
-    	<scope>compile</scope>
-    </dependency>
-    <dependency>
-    	<groupId>fr.univnantes.lina</groupId>
-    	<artifactId>uima-term-bank-handlers</artifactId>
-    	<version>0.9.0</version>
-    </dependency>
-    <dependency>
-    	<groupId>fr.univnantes.lina</groupId>
-    	<artifactId>uima-dunamis</artifactId>
-    	<version>0.8.0</version>
-    	<scope>compile</scope>
-    </dependency>
-    <dependency>
-    	<groupId>fr.univnantes.lina</groupId>
-    	<artifactId>uima-neo-classical-term-detector</artifactId>
-    	<version>0.8.0</version>
-    	<type>jar</type>
-    	<scope>compile</scope>
+    	<version>1.0</version>
     </dependency>
     <dependency>
     	<groupId>fr.free.rocheteau.jerome</groupId>
-    	<artifactId>uima-annotation-pattern-matcher</artifactId>
+    	<artifactId>pattern-matcher</artifactId>
     	<version>1.0</version>
-    	<scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>fr.free.rocheteau.jerome</groupId>
+      <artifactId>tokenizer</artifactId>
+      <version>1.0</version>
     </dependency>
     <dependency>
     	<groupId>fr.free.rocheteau.jerome</groupId>
-    	<artifactId>uima-constraint-handlers</artifactId>
+    	<artifactId>filter</artifactId>
     	<version>1.0</version>
-    	<scope>provided</scope>
     </dependency>
     <dependency>
-    	<groupId>fr.univnantes.lina</groupId>
-    	<artifactId>uima-dictionary-handlers</artifactId>
-    	<version>0.8.0</version>
-    	<scope>provided</scope>
+    	<groupId>fr.free.rocheteau.jerome</groupId>
+    	<artifactId>context-builder</artifactId>
+    	<version>1.0</version>
     </dependency>
     <dependency>
-    	<groupId>fr.univnantes.lina</groupId>
-    	<artifactId>uima-annotation-filter</artifactId>
-    	<version>0.8.0</version>
-    	<scope>provided</scope>
-    </dependency>
-    <dependency>
-    	<groupId>fr.univnantes.lina</groupId>
-    	<artifactId>uima-contextual-term-aligner</artifactId>
-    	<version>0.8.0</version>
-    	<scope>provided</scope>
+    	<groupId>fr.free.rocheteau.jerome</groupId>
+    	<artifactId>dunamis</artifactId>
+    	<version>1.0</version>
     </dependency>
   </dependencies>
   <licenses>
@@ -143,22 +128,11 @@
       </extension>
     </extensions>
   </build>
-  <distributionManagement>
-    <repository>
-      <id>taln-maven-repository</id>
-      <url>scpexe://taln//var/www/taln/maven</url>
-    </repository>
-  </distributionManagement>
   <repositories>
     <repository>
       <id>apache</id>
       <name>Apache</name>
       <url>http://people.apache.org/repo/m2-incubating-repository</url>
-    </repository>
-    <repository>
-      <id>taln</id>
-      <name>TALN</name>
-      <url>http://www.lina.univ-nantes.fr/taln/maven</url>
     </repository>
     <repository>
     	<id>annolab</id>

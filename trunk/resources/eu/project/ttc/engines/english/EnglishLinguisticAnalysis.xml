@@ -15,8 +15,8 @@
     <delegateAnalysisEngine key="EnglishTermDetector">
       <import name="eu.project.ttc.engines.english.EnglishTermDetector"/>
     </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="EnglishTreeTaggerMultextMapper">
-      <import name="eu.project.ttc.engines.english.EnglishTreeTaggerMultextMapper"/>
+    <delegateAnalysisEngine key="EnglishTreeTaggerCategoryNormalizer">
+      <import name="eu.project.ttc.engines.english.EnglishTreeTaggerCategoryNormalizer"/>
     </delegateAnalysisEngine>
   </delegateAnalysisEngineSpecifiers>
   <analysisEngineMetaData>
@@ -40,7 +40,7 @@
       <fixedFlow>
         <node>EnglishWordTokenizer</node>
         <node>EnglishTreeTaggerWrapper</node>
-        <node>EnglishTreeTaggerMultextMapper</node>
+        <node>EnglishTreeTaggerCategoryNormalizer</node>
         <node>EnglishTermDetector</node>
         <node>EnglishTermFilter</node>
       </fixedFlow>

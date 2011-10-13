@@ -2,7 +2,7 @@
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>true</primitive>
-  <annotatorImplementationName>fr.univnantes.lina.uima.engines.NeoClassicalTermDetector</annotatorImplementationName>
+  <annotatorImplementationName>eu.project.ttc.engines.NeoClassicalTermDetector</annotatorImplementationName>
   <analysisEngineMetaData>
     <name>French NeoClassical Adjective Detector</name>
     <description/>
@@ -10,13 +10,19 @@
     <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
     <configurationParameters>
       <configurationParameter>
-        <name>Constraint</name>
+        <name>Feature</name>
         <type>String</type>
         <multiValued>false</multiValued>
-        <mandatory>false</mandatory>
+        <mandatory>true</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>ClassicalRootBankFile</name>
+        <name>Value</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+      </configurationParameter>
+      <configurationParameter>
+        <name>RootBankFile</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
@@ -24,9 +30,15 @@
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
-        <name>Constraint</name>
+        <name>Feature</name>
         <value>
-          <string>eu.project.ttc.types.WordAnnotation[category=adjective]</string>
+          <string>eu.project.ttc.types.WordAnnotation:category</string>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>Value</name>
+        <value>
+          <string>adjective</string>
         </value>
       </nameValuePair>
     </configurationParameterSettings>
@@ -42,8 +54,8 @@
     <capabilities>
       <capability>
         <inputs>
-          <type allAnnotatorFeatures="true">org.apache.uima.multext.AdjectiveAnnotation</type>
           <type allAnnotatorFeatures="true">org.apache.uima.examples.SourceDocumentInformation</type>
+          <type allAnnotatorFeatures="true">eu.project.ttc.types.WordAnnotation</type>
         </inputs>
         <outputs>
           <type allAnnotatorFeatures="true">org.apache.uima.TermAnnotation</type>
@@ -62,27 +74,27 @@
   </analysisEngineMetaData>
   <externalResourceDependencies>
     <externalResourceDependency>
-      <key>ClassicalRootBank</key>
+      <key>RootBank</key>
       <description/>
-      <interfaceName>fr.univnantes.lina.uima.models.ClassicalRootBank</interfaceName>
+      <interfaceName>eu.project.ttc.models.RootBank</interfaceName>
       <optional>false</optional>
     </externalResourceDependency>
   </externalResourceDependencies>
   <resourceManagerConfiguration>
     <externalResources>
       <externalResource>
-        <name>FrenchClassicalRootBank</name>
+        <name>FrenchRootBank</name>
         <description/>
         <fileResourceSpecifier>
-          <fileUrl>eu/project/ttc/resources/ClassicalRootBank.French</fileUrl>
+          <fileUrl>eu/project/ttc/resources/french/RootBank.French</fileUrl>
         </fileResourceSpecifier>
-        <implementationName>fr.univnantes.lina.uima.models.ClassicalRootBankResource</implementationName>
+        <implementationName>eu.project.ttc.models.RootBankResource</implementationName>
       </externalResource>
     </externalResources>
     <externalResourceBindings>
       <externalResourceBinding>
-        <key>ClassicalRootBank</key>
-        <resourceName>FrenchClassicalRootBank</resourceName>
+        <key>RootBank</key>
+        <resourceName>FrenchRootBank</resourceName>
       </externalResourceBinding>
     </externalResourceBindings>
   </resourceManagerConfiguration>

@@ -2,7 +2,7 @@
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>true</primitive>
-  <annotatorImplementationName>fr.univnantes.lina.uima.engines.WordTokenizer</annotatorImplementationName>
+  <annotatorImplementationName>fr.free.rocheteau.jerome.engines.Tokenizer</annotatorImplementationName>
   <analysisEngineMetaData>
     <name>English Word Tokenizer</name>
     <description/>
@@ -10,41 +10,17 @@
     <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
     <configurationParameters>
       <configurationParameter>
-        <name>SimpleWordAnnotationType</name>
+        <name>AnnotationType</name>
         <type>String</type>
-        <multiValued>false</multiValued>
-        <mandatory>true</mandatory>
-      </configurationParameter>
-      <configurationParameter>
-        <name>CompoundWordAnnotationType</name>
-        <type>String</type>
-        <multiValued>false</multiValued>
-        <mandatory>true</mandatory>
-      </configurationParameter>
-      <configurationParameter>
-        <name>RemoveCoveredWordAnnotations</name>
-        <type>Boolean</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
-        <name>RemoveCoveredWordAnnotations</name>
-        <value>
-          <boolean>true</boolean>
-        </value>
-      </nameValuePair>
-      <nameValuePair>
-        <name>SimpleWordAnnotationType</name>
+        <name>AnnotationType</name>
         <value>
           <string>eu.project.ttc.types.WordAnnotation</string>
-        </value>
-      </nameValuePair>
-      <nameValuePair>
-        <name>CompoundWordAnnotationType</name>
-        <value>
-          <string>eu.project.ttc.types.CompoundWordAnnotation</string>
         </value>
       </nameValuePair>
     </configurationParameterSettings>
@@ -74,27 +50,45 @@
   </analysisEngineMetaData>
   <externalResourceDependencies>
     <externalResourceDependency>
-      <key>WordResource</key>
+      <key>CompoundWordBank</key>
       <description/>
-      <interfaceName>fr.univnantes.lina.uima.models.WordResource</interfaceName>
+      <interfaceName>fr.free.rocheteau.jerome.models.CompoundWordBank</interfaceName>
+      <optional>false</optional>
+    </externalResourceDependency>
+    <externalResourceDependency>
+      <key>WordComponentBank</key>
+      <description/>
+      <interfaceName>fr.free.rocheteau.jerome.models.WordComponentBank</interfaceName>
       <optional>false</optional>
     </externalResourceDependency>
   </externalResourceDependencies>
   <resourceManagerConfiguration>
     <externalResources>
       <externalResource>
-        <name>EnglishWordResource</name>
+        <name>EnglishCompoundWordBank</name>
         <description/>
         <fileResourceSpecifier>
-          <fileUrl>eu/project/ttc/resources/CompoundWords.English</fileUrl>
+          <fileUrl>eu/project/ttc/resources/english/CompoundWordBank.English</fileUrl>
         </fileResourceSpecifier>
-        <implementationName>fr.univnantes.lina.uima.models.WordResource</implementationName>
+        <implementationName>fr.free.rocheteau.jerome.models.CompoundWordBankResource</implementationName>
+      </externalResource>
+      <externalResource>
+        <name>EnglishWordComponentBank</name>
+        <description/>
+        <fileResourceSpecifier>
+          <fileUrl>eu/project/ttc/resources/english/WordComponentBank.English</fileUrl>
+        </fileResourceSpecifier>
+        <implementationName>fr.free.rocheteau.jerome.models.WordComponentBankResource</implementationName>
       </externalResource>
     </externalResources>
     <externalResourceBindings>
       <externalResourceBinding>
-        <key>WordResource</key>
-        <resourceName>EnglishWordResource</resourceName>
+        <key>CompoundWordBank</key>
+        <resourceName>EnglishCompoundWordBank</resourceName>
+      </externalResourceBinding>
+      <externalResourceBinding>
+        <key>WordComponentBank</key>
+        <resourceName>EnglishWordComponentBank</resourceName>
       </externalResourceBinding>
     </externalResourceBindings>
   </resourceManagerConfiguration>

@@ -42,7 +42,7 @@ import org.w3c.dom.Element;
 import fr.univnantes.lina.uima.models.TermBankResource;
 import fr.univnantes.lina.uima.models.TermOccurrence;
 import fr.univnantes.lina.uima.models.Term;
-import fr.univnantes.lina.uima.tools.dunamis.models.ProcessingResult;
+import fr.free.rocheteau.jerome.dunamis.models.ProcessingResult;
 
 public class Fire implements ActionListener, StatusCallbackListener {
 
@@ -84,6 +84,12 @@ public class Fire implements ActionListener, StatusCallbackListener {
 	
 	public void doProcess() {
 		this.getTermSuite().getParameters().doUpdate();
+		try {
+			this.getTermSuite().getParameters().validate();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(this.getTermSuite().getFrame(),e.getMessage(),e.getClass().getSimpleName(),JOptionPane.ERROR_MESSAGE);
+			e.printStackTrace();
+		}
 		Processor proc = new Processor();
 		proc.setTermSuite(this.getTermSuite());
 		proc.execute();
@@ -251,7 +257,7 @@ public class Fire implements ActionListener, StatusCallbackListener {
 	
 	private void doLoad() {
 		try {
-			String path = (String) this.getTermSuite().getParameters().getHiddentMetaData().getConfigurationParameterSettings().getParameterValue("TermBankFile");
+			String path = (String) this.getTermSuite().getParameters().getHiddenMetaData().getConfigurationParameterSettings().getParameterValue("TermBankFile");
 			UIMAFramework.getLogger().log(Level.CONFIG,"Loading Term Bank " + path);
 			File file = new File(path);
 			TermBankResource resource = new TermBankResource();

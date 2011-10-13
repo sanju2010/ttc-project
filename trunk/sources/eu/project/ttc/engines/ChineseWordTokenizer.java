@@ -1,8 +1,8 @@
 package eu.project.ttc.engines;
 
-import fr.univnantes.lina.uima.engines.WordTokenizer;
+import fr.free.rocheteau.jerome.engines.Tokenizer;
 
-public class ChineseWordTokenizer extends WordTokenizer {
+public class ChineseWordTokenizer extends Tokenizer {
 
 	@Override
 	protected boolean hasChanged(String text,int index) {

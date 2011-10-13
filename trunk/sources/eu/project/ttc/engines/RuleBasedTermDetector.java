@@ -12,9 +12,9 @@ import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.tcas.Annotation;
 
 import eu.project.ttc.types.WordAnnotation;
-import fr.free.rocheteau.jerome.engines.AnnotationPatternMatcher;
+import fr.free.rocheteau.jerome.engines.PatternMatcher;
 
-public class RuleBasedTermDetector extends AnnotationPatternMatcher {
+public class RuleBasedTermDetector extends PatternMatcher {
 	
 	private void setComponents(JCas cas,MultiWordTermAnnotation term, Annotation[] annotations) {
 		int length = annotations.length;

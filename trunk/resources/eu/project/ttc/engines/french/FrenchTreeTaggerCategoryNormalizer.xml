@@ -4,7 +4,7 @@
   <primitive>true</primitive>
   <annotatorImplementationName>eu.project.ttc.engines.FeatureMapper</annotatorImplementationName>
   <analysisEngineMetaData>
-    <name>English TreeTagger Multext Mapper</name>
+    <name>French TreeTagger Category Normalizer</name>
     <description/>
     <version>1.0</version>
     <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
@@ -40,7 +40,7 @@
           <type allAnnotatorFeatures="true">org.apache.uima.WordAnnotation</type>
         </outputs>
         <languagesSupported>
-          <language>en</language>
+          <language>fr</language>
         </languagesSupported>
       </capability>
     </capabilities>
@@ -61,10 +61,10 @@
   <resourceManagerConfiguration>
     <externalResources>
       <externalResource>
-        <name>EnglishFeatureMapping</name>
+        <name>FrenchFeatureMapping</name>
         <description/>
         <fileResourceSpecifier>
-          <fileUrl>eu/project/ttc/resources/CategoryMapping.English</fileUrl>
+          <fileUrl>eu/project/ttc/resources/french/CategoryMapping.French</fileUrl>
         </fileResourceSpecifier>
         <implementationName>eu.project.ttc.models.FeatureMapping</implementationName>
       </externalResource>
@@ -72,7 +72,7 @@
     <externalResourceBindings>
       <externalResourceBinding>
         <key>Mapping</key>
-        <resourceName>EnglishFeatureMapping</resourceName>
+        <resourceName>FrenchFeatureMapping</resourceName>
       </externalResourceBinding>
     </externalResourceBindings>
   </resourceManagerConfiguration>

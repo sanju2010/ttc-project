@@ -1,6 +1,6 @@
 
 
-/* First created by JCasGen Sat Sep 24 08:50:19 CEST 2011 */
+/* First created by JCasGen Wed Oct 12 11:16:07 CEST 2011 */
 package eu.project.ttc.types;
 
 import org.apache.uima.jcas.JCas; 
@@ -11,7 +11,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
- * Updated by JCasGen Sat Sep 24 11:28:02 CEST 2011
+ * Updated by JCasGen Wed Oct 12 11:16:07 CEST 2011
  * XML source: /home/rocheteau-j/Repositories/GoogleCode/ttc-term-suite/trunk/resources/eu/project/ttc/types/TermSuiteTypeSystem.xml
  * @generated */
 public class WordAnnotation extends Annotation {
@@ -57,6 +57,8 @@ public class WordAnnotation extends Annotation {
   @generated modifiable */
   private void readObject() {}
      
+ 
+    
   //*--------------*
   //* Feature: category
 

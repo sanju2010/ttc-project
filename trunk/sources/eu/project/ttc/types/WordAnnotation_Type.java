@@ -1,5 +1,5 @@
 
-/* First created by JCasGen Sat Sep 24 08:50:19 CEST 2011 */
+/* First created by JCasGen Wed Oct 12 11:16:07 CEST 2011 */
 package eu.project.ttc.types;
 
 import org.apache.uima.jcas.JCas;
@@ -14,7 +14,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /** 
- * Updated by JCasGen Sat Sep 24 11:28:02 CEST 2011
+ * Updated by JCasGen Wed Oct 12 11:16:07 CEST 2011
  * @generated */
 public class WordAnnotation_Type extends Annotation_Type {
   /** @generated */
@@ -40,9 +40,7 @@ public class WordAnnotation_Type extends Annotation_Type {
   /** @generated 
      @modifiable */
   public final static boolean featOkTst = JCasRegistry.getFeatOkTst("eu.project.ttc.types.WordAnnotation");
-
-
-
+ 
   /** @generated */
   final Feature casFeat_category;
   /** @generated */

@@ -16,22 +16,10 @@ import org.apache.uima.collection.metadata.CpeComponentDescriptor;
 import org.apache.uima.collection.metadata.CpeDescription;
 import org.apache.uima.collection.metadata.CpeDescriptorException;
 import org.apache.uima.collection.metadata.CpeIntegratedCasProcessor;
-import org.apache.uima.resource.ExternalResourceDependency;
-import org.apache.uima.resource.ExternalResourceDescription;
-import org.apache.uima.resource.FileResourceSpecifier;
 import org.apache.uima.resource.metadata.ConfigurationParameter;
 import org.apache.uima.resource.metadata.ConfigurationParameterSettings;
-import org.apache.uima.resource.metadata.ExternalResourceBinding;
 import org.apache.uima.resource.metadata.Import;
 import org.apache.uima.resource.metadata.NameValuePair;
-import org.apache.uima.resource.metadata.ResourceManagerConfiguration;
-
-import fr.univnantes.lina.uima.engines.TermBankFilter;
-import fr.univnantes.lina.uima.engines.TermBankIndexer;
-import fr.univnantes.lina.uima.engines.TermBankWriter;
-import fr.univnantes.lina.uima.engines.TermContextIndexer;
-import fr.univnantes.lina.uima.models.TermBank;
-import fr.univnantes.lina.uima.models.TermBankResource;
 
 public class Processor extends SwingWorker<CpeDescription,Void> {
 
@@ -62,7 +50,8 @@ public class Processor extends SwingWorker<CpeDescription,Void> {
 		this.setTermSuiteCollector();
 		this.setTermSuiteAnnotators();
 		this.setTermSuiteExtractor();
-		File file = File.createTempFile("TermSuiteProcessor-",".xml");
+		this.setTermSuiteTranslator();
+		File file = File.createTempFile("term-suite-processor-",".xml");
 		file.deleteOnExit();
 		OutputStream stream = new FileOutputStream(file);
 		this.termSuiteProcessor.toXML(stream);
@@ -70,18 +59,57 @@ public class Processor extends SwingWorker<CpeDescription,Void> {
 	}
 	
 	private void setTermSuiteCollector() throws Exception {
+		ConfigurationParameterSettings parameters = this.getTermSuite().getParameters().getMetaData().getConfigurationParameterSettings();
 		URL url = this.getClass().getClassLoader().getResource("eu/project/ttc/engines/TermSuiteCollector.xml");
 		CpeCollectionReader termSuiteCollector = CpeDescriptorFactory.produceCollectionReader(url.toURI().toString());
 		CasProcessorConfigurationParameterSettings settings = CpeDescriptorFactory.produceCasProcessorConfigurationParameterSettings();
-		ConfigurationParameterSettings parameters = this.getTermSuite().getParameters().getMetaData().getConfigurationParameterSettings();
 		settings.setParameterValue("SourceLanguage", parameters.getParameterValue("SourceLanguage"));
-		settings.setParameterValue("SourceDirectories",parameters.getParameterValue("SourceDirectories"));
+		settings.setParameterValue("SourceDirectory",parameters.getParameterValue("SourceDirectory"));
 		settings.setParameterValue("TargetLanguage",parameters.getParameterValue("TargetLanguage"));
-		settings.setParameterValue("TargetDirectories",parameters.getParameterValue("TargetDirectories"));
+		settings.setParameterValue("TargetDirectory",parameters.getParameterValue("TargetDirectory"));
 		termSuiteCollector.setConfigurationParameterSettings(settings);
 		this.termSuiteProcessor.addCollectionReader(termSuiteCollector);
 	}
 	
+	private void setTermSuiteTranslator() throws Exception {
+		ConfigurationParameterSettings parameters = this.getTermSuite().getParameters().getMetaData().getConfigurationParameterSettings();
+		Boolean enabled = (Boolean) parameters.getParameterValue("EnableTerminologyAlignment"); 
+		if (enabled != null && enabled.booleanValue()) {
+			URL url = this.getClass().getClassLoader().getResource("fr/univnantes/lina/uima/engines/SingleWordTermAligner.xml");
+			CpeIntegratedCasProcessor termSuiteTranslator = CpeDescriptorFactory.produceCasProcessor("Term Suite Translator");
+			CpeComponentDescriptor desc = CpeDescriptorFactory.produceComponentDescriptor(url.toURI().toString());
+			termSuiteTranslator.setCpeComponentDescriptor(desc);
+			CasProcessorConfigurationParameterSettings settings = CpeDescriptorFactory.produceCasProcessorConfigurationParameterSettings();
+			settings.setParameterValue("SourceLanguage", parameters.getParameterValue("SourceLanguage"));
+			settings.setParameterValue("TargetLanguage",parameters.getParameterValue("TargetLanguage"));
+			settings.setParameterValue("ScopeSize",parameters.getParameterValue("ScopeSize"));
+			settings.setParameterValue("AssociationRateClassName",parameters.getParameterValue("AssociationRateClassName"));
+			settings.setParameterValue("SimilarityDistanceClassName",parameters.getParameterValue("SimilarityDistanceClassName"));
+			settings.setParameterValue("DictionaryFile",parameters.getParameterValue("DictionaryFile"));
+			settings.setParameterValue("EvaluationListFile",parameters.getParameterValue("EvaluationListFile"));
+			termSuiteTranslator.setConfigurationParameterSettings(settings);
+			this.termSuiteProcessor.addCasProcessor(termSuiteTranslator);
+		}
+	}
+	
+	private void setTermSuiteExtractor() throws Exception {
+		ConfigurationParameterSettings parameters = this.getTermSuite().getParameters().getMetaData().getConfigurationParameterSettings();
+		ConfigurationParameterSettings hiddenParameters = this.getTermSuite().getParameters().getHiddenMetaData().getConfigurationParameterSettings();
+        String path = "fr/univnantes/lina/uima/engines/TermBankHandler.xml";
+        URL url = this.getClass().getClassLoader().getResource(path);
+        CpeIntegratedCasProcessor termSuiteAnnotator = CpeDescriptorFactory.produceCasProcessor("Term Suite Extractor");
+        CpeComponentDescriptor desc = CpeDescriptorFactory.produceComponentDescriptor(url.toURI().toString());
+        termSuiteAnnotator.setCpeComponentDescriptor(desc);
+        CasProcessorConfigurationParameterSettings settings = CpeDescriptorFactory.produceCasProcessorConfigurationParameterSettings();
+        settings.setParameterValue("IndexSingleWordTerms", (Boolean) parameters.getParameterValue("IndexSingleWordTerms"));
+        settings.setParameterValue("IndexMultiWordTerms", (Boolean) parameters.getParameterValue("IndexMultiWordTerms"));
+        settings.setParameterValue("IndexCompoundWordTerms", (Boolean) parameters.getParameterValue("IndexCompoundWordTerms"));
+        settings.setParameterValue("TermBankFile", (String) hiddenParameters.getParameterValue("TermBankFile"));
+        termSuiteAnnotator.setConfigurationParameterSettings(settings);
+        this.termSuiteProcessor.addCasProcessor(termSuiteAnnotator);
+	}
+	
+	/*
 	private void setTermSuiteExtractor() throws Exception {
 		Annotator extractor = new TermSuiteExtractor();		
 		CpeIntegratedCasProcessor termSuiteExtractor = CpeDescriptorFactory.produceCasProcessor(extractor.getName());
@@ -91,6 +119,7 @@ public class Processor extends SwingWorker<CpeDescription,Void> {
 		termSuiteExtractor.setConfigurationParameterSettings(settings);
 		this.termSuiteProcessor.addCasProcessor(termSuiteExtractor);
 	}
+	*/
 	
 	private void setTermSuiteAnnotators() throws Exception {
 		Annotator annotators = new TermSuiteAnnotators();
@@ -103,7 +132,7 @@ public class Processor extends SwingWorker<CpeDescription,Void> {
 	}
 		
 	private class TermSuiteAnnotators extends Annotator {
-
+		
 		public TermSuiteAnnotators() throws Exception {
 			super("Term Suite Annotators");
 		}
@@ -125,9 +154,9 @@ public class Processor extends SwingWorker<CpeDescription,Void> {
 		
 		@Override
 		protected NameValuePair[] getNameValuePairs() {
+			ConfigurationParameterSettings settings = getTermSuite().getParameters().getMetaData().getConfigurationParameterSettings();
 			NameValuePair home = this.getFactory().createNameValuePair();
 			home.setName("TreeTaggerHomeDirectory");
-			ConfigurationParameterSettings settings = getTermSuite().getParameters().getMetaData().getConfigurationParameterSettings();
 			String value = (String) settings.getParameterValue(home.getName());
 			home.setValue(value);
 			return new NameValuePair[] { home };
@@ -151,6 +180,7 @@ public class Processor extends SwingWorker<CpeDescription,Void> {
 	
 	}
 	
+	/*
 	private class TermSuiteExtractor extends Annotator {
 
 		public TermSuiteExtractor() throws Exception {
@@ -185,33 +215,29 @@ public class Processor extends SwingWorker<CpeDescription,Void> {
 				
 		@Override
 		protected NameValuePair[] getNameValuePairs() {
-			ConfigurationParameterSettings settings = getTermSuite().getParameters().getHiddentMetaData().getConfigurationParameterSettings();
+			ConfigurationParameterSettings settings = getTermSuite().getParameters().getHiddenMetaData().getConfigurationParameterSettings();
 			NameValuePair termBank = this.getFactory().createNameValuePair();
 			termBank.setName("TermBankFile");
 			termBank.setValue((String) settings.getParameterValue(termBank.getName()));
-			NameValuePair termContextBench = this.getFactory().createNameValuePair();
-			termContextBench.setName("TermContextBenchFile");
-			termContextBench.setValue((String) settings.getParameterValue(termContextBench.getName()));
-			return new NameValuePair[] { termBank, termContextBench };
+			return new NameValuePair[] { termBank };
 			
 		}
 
 		@Override
 		protected void setConfigurationParameterDeclarations() {
 			this.setParameter("TermBankFile", ConfigurationParameter.TYPE_STRING);
-			this.setParameter("TermContextBenchFile", ConfigurationParameter.TYPE_STRING);
 		}
 				
 		@Override
 		protected String[] getFlow() {
-			String[] flows = new String[4];
+			String[] flows = new String[3];
 			flows[0] = TermBankIndexer.class.getCanonicalName();
 			flows[1] = TermBankFilter.class.getCanonicalName();
 			flows[2] = TermBankWriter.class.getCanonicalName();
-			flows[3] = TermContextIndexer.class.getCanonicalName();
 			return flows;
 		}
 		
 		}
-	
+
+	*/
 }

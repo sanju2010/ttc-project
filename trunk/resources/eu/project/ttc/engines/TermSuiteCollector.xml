@@ -20,9 +20,9 @@ It provides a Sofa which document text is given by the text file and which docum
         <mandatory>false</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>SourceDirectories</name>
+        <name>SourceDirectory</name>
         <type>String</type>
-        <multiValued>true</multiValued>
+        <multiValued>false</multiValued>
         <mandatory>false</mandatory>
       </configurationParameter>
       <configurationParameter>
@@ -32,9 +32,9 @@ It provides a Sofa which document text is given by the text file and which docum
         <mandatory>false</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>TargetDirectories</name>
+        <name>TargetDirectory</name>
         <type>String</type>
-        <multiValued>true</multiValued>
+        <multiValued>false</multiValued>
         <mandatory>false</mandatory>
       </configurationParameter>
       <configurationParameter>
