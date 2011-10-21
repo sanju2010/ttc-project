@@ -12,8 +12,8 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
- * Updated by JCasGen Tue Oct 04 09:29:21 CEST 2011
- * XML source: /home/rocheteau-j/Repositories/GoogleCode/uima-term-bank-handlers/trunk/resources/fr/univnantes/lina/uima/types/TermAnnotation.xml
+ * Updated by JCasGen Thu Oct 20 14:55:47 CEST 2011
+ * XML source: /home/rocheteau-j/Repositories/GoogleCode/ttc-term-suite/trunk/modules/uima-term-bank-handler/resources/fr/univnantes/lina/uima/types/TermAnnotation.xml
  * @generated */
 public class TermComponentAnnotation extends Annotation {
   /** @generated
@@ -115,21 +115,21 @@ public class TermComponentAnnotation extends Annotation {
    
     
   //*--------------*
-  //* Feature: reCoveredText
+  //* Feature: text
 
-  /** getter for reCoveredText - gets 
+  /** getter for text - gets 
    * @generated */
-  public String getReCoveredText() {
-    if (TermComponentAnnotation_Type.featOkTst && ((TermComponentAnnotation_Type)jcasType).casFeat_reCoveredText == null)
-      jcasType.jcas.throwFeatMissing("reCoveredText", "org.apache.uima.TermComponentAnnotation");
-    return jcasType.ll_cas.ll_getStringValue(addr, ((TermComponentAnnotation_Type)jcasType).casFeatCode_reCoveredText);}
+  public String getText() {
+    if (TermComponentAnnotation_Type.featOkTst && ((TermComponentAnnotation_Type)jcasType).casFeat_text == null)
+      jcasType.jcas.throwFeatMissing("text", "org.apache.uima.TermComponentAnnotation");
+    return jcasType.ll_cas.ll_getStringValue(addr, ((TermComponentAnnotation_Type)jcasType).casFeatCode_text);}
     
-  /** setter for reCoveredText - sets  
+  /** setter for text - sets  
    * @generated */
-  public void setReCoveredText(String v) {
-    if (TermComponentAnnotation_Type.featOkTst && ((TermComponentAnnotation_Type)jcasType).casFeat_reCoveredText == null)
-      jcasType.jcas.throwFeatMissing("reCoveredText", "org.apache.uima.TermComponentAnnotation");
-    jcasType.ll_cas.ll_setStringValue(addr, ((TermComponentAnnotation_Type)jcasType).casFeatCode_reCoveredText, v);}    
+  public void setText(String v) {
+    if (TermComponentAnnotation_Type.featOkTst && ((TermComponentAnnotation_Type)jcasType).casFeat_text == null)
+      jcasType.jcas.throwFeatMissing("text", "org.apache.uima.TermComponentAnnotation");
+    jcasType.ll_cas.ll_setStringValue(addr, ((TermComponentAnnotation_Type)jcasType).casFeatCode_text, v);}    
   }
 
     

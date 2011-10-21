@@ -53,7 +53,7 @@
           <rangeTypeName>uima.cas.String</rangeTypeName>
         </featureDescription>
         <featureDescription>
-          <name>reCoveredText</name>
+          <name>text</name>
           <description/>
           <rangeTypeName>uima.cas.String</rangeTypeName>
         </featureDescription>
@@ -102,7 +102,7 @@
           <elementType>org.apache.uima.TermAnnotation</elementType>
         </featureDescription>
         <featureDescription>
-          <name>reCoveredText</name>
+          <name>text</name>
           <description/>
           <rangeTypeName>uima.cas.String</rangeTypeName>
         </featureDescription>

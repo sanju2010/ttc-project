@@ -11,8 +11,8 @@ import org.apache.uima.jcas.cas.FSArray;
 
 
 /** 
- * Updated by JCasGen Tue Oct 04 09:29:21 CEST 2011
- * XML source: /home/rocheteau-j/Repositories/GoogleCode/uima-term-bank-handlers/trunk/resources/fr/univnantes/lina/uima/types/TermAnnotation.xml
+ * Updated by JCasGen Thu Oct 20 14:55:47 CEST 2011
+ * XML source: /home/rocheteau-j/Repositories/GoogleCode/ttc-term-suite/trunk/modules/uima-term-bank-handler/resources/fr/univnantes/lina/uima/types/TermAnnotation.xml
  * @generated */
 public class MultiWordTermAnnotation extends TermAnnotation {
   /** @generated

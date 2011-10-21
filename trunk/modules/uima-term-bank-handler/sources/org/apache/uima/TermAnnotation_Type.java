@@ -14,7 +14,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /** 
- * Updated by JCasGen Tue Oct 04 09:29:21 CEST 2011
+ * Updated by JCasGen Thu Oct 20 14:55:47 CEST 2011
  * @generated */
 public class TermAnnotation_Type extends TermComponentAnnotation_Type {
   /** @generated */

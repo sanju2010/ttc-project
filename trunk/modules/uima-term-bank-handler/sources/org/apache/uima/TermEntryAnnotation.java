@@ -15,8 +15,8 @@ import org.apache.uima.jcas.cas.AnnotationBase;
 
 
 /** 
- * Updated by JCasGen Tue Oct 04 09:29:21 CEST 2011
- * XML source: /home/rocheteau-j/Repositories/GoogleCode/uima-term-bank-handlers/trunk/resources/fr/univnantes/lina/uima/types/TermAnnotation.xml
+ * Updated by JCasGen Thu Oct 20 14:55:47 CEST 2011
+ * XML source: /home/rocheteau-j/Repositories/GoogleCode/ttc-term-suite/trunk/modules/uima-term-bank-handler/resources/fr/univnantes/lina/uima/types/TermAnnotation.xml
  * @generated */
 public class TermEntryAnnotation extends Annotation {
   /** @generated
@@ -98,21 +98,21 @@ public class TermEntryAnnotation extends Annotation {
    
     
   //*--------------*
-  //* Feature: reCoveredText
+  //* Feature: text
 
-  /** getter for reCoveredText - gets 
+  /** getter for text - gets 
    * @generated */
-  public String getReCoveredText() {
-    if (TermEntryAnnotation_Type.featOkTst && ((TermEntryAnnotation_Type)jcasType).casFeat_reCoveredText == null)
-      jcasType.jcas.throwFeatMissing("reCoveredText", "org.apache.uima.TermEntryAnnotation");
-    return jcasType.ll_cas.ll_getStringValue(addr, ((TermEntryAnnotation_Type)jcasType).casFeatCode_reCoveredText);}
+  public String getText() {
+    if (TermEntryAnnotation_Type.featOkTst && ((TermEntryAnnotation_Type)jcasType).casFeat_text == null)
+      jcasType.jcas.throwFeatMissing("text", "org.apache.uima.TermEntryAnnotation");
+    return jcasType.ll_cas.ll_getStringValue(addr, ((TermEntryAnnotation_Type)jcasType).casFeatCode_text);}
     
-  /** setter for reCoveredText - sets  
+  /** setter for text - sets  
    * @generated */
-  public void setReCoveredText(String v) {
-    if (TermEntryAnnotation_Type.featOkTst && ((TermEntryAnnotation_Type)jcasType).casFeat_reCoveredText == null)
-      jcasType.jcas.throwFeatMissing("reCoveredText", "org.apache.uima.TermEntryAnnotation");
-    jcasType.ll_cas.ll_setStringValue(addr, ((TermEntryAnnotation_Type)jcasType).casFeatCode_reCoveredText, v);}    
+  public void setText(String v) {
+    if (TermEntryAnnotation_Type.featOkTst && ((TermEntryAnnotation_Type)jcasType).casFeat_text == null)
+      jcasType.jcas.throwFeatMissing("text", "org.apache.uima.TermEntryAnnotation");
+    jcasType.ll_cas.ll_setStringValue(addr, ((TermEntryAnnotation_Type)jcasType).casFeatCode_text, v);}    
   }
 
     

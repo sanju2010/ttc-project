@@ -16,7 +16,7 @@ import org.apache.uima.jcas.tcas.Annotation_Type;
 import org.apache.uima.jcas.cas.AnnotationBase_Type;
 
 /** 
- * Updated by JCasGen Tue Oct 04 09:29:21 CEST 2011
+ * Updated by JCasGen Thu Oct 20 14:55:47 CEST 2011
  * @generated */
 public class TermEntryAnnotation_Type extends Annotation_Type {
   /** @generated */
@@ -81,20 +81,20 @@ public class TermEntryAnnotation_Type extends Annotation_Type {
  
  
   /** @generated */
-  final Feature casFeat_reCoveredText;
+  final Feature casFeat_text;
   /** @generated */
-  final int     casFeatCode_reCoveredText;
+  final int     casFeatCode_text;
   /** @generated */ 
-  public String getReCoveredText(int addr) {
-        if (featOkTst && casFeat_reCoveredText == null)
-      jcas.throwFeatMissing("reCoveredText", "org.apache.uima.TermEntryAnnotation");
-    return ll_cas.ll_getStringValue(addr, casFeatCode_reCoveredText);
+  public String getText(int addr) {
+        if (featOkTst && casFeat_text == null)
+      jcas.throwFeatMissing("text", "org.apache.uima.TermEntryAnnotation");
+    return ll_cas.ll_getStringValue(addr, casFeatCode_text);
   }
   /** @generated */    
-  public void setReCoveredText(int addr, String v) {
-        if (featOkTst && casFeat_reCoveredText == null)
-      jcas.throwFeatMissing("reCoveredText", "org.apache.uima.TermEntryAnnotation");
-    ll_cas.ll_setStringValue(addr, casFeatCode_reCoveredText, v);}
+  public void setText(int addr, String v) {
+        if (featOkTst && casFeat_text == null)
+      jcas.throwFeatMissing("text", "org.apache.uima.TermEntryAnnotation");
+    ll_cas.ll_setStringValue(addr, casFeatCode_text, v);}
     
   
 
@@ -111,8 +111,8 @@ public class TermEntryAnnotation_Type extends Annotation_Type {
     casFeatCode_occurrences  = (null == casFeat_occurrences) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_occurrences).getCode();
 
  
-    casFeat_reCoveredText = jcas.getRequiredFeatureDE(casType, "reCoveredText", "uima.cas.String", featOkTst);
-    casFeatCode_reCoveredText  = (null == casFeat_reCoveredText) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_reCoveredText).getCode();
+    casFeat_text = jcas.getRequiredFeatureDE(casType, "text", "uima.cas.String", featOkTst);
+    casFeatCode_text  = (null == casFeat_text) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_text).getCode();
 
   }
 }
