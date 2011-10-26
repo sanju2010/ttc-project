@@ -1,14 +1,11 @@
 package fr.univnantes.lina.uima.engines;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.annolab.tt4j.DefaultModelResolver;
-import org.annolab.tt4j.ExecutableResolver;
 import org.annolab.tt4j.TokenAdapter;
 import org.annolab.tt4j.TokenHandler;
+import org.annolab.tt4j.TreeTaggerException;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.UimaContext;
 
@@ -30,24 +27,18 @@ import fr.univnantes.lina.uima.models.TreeTaggerParameter;
 
 public class TreeTaggerWrapper extends JCasAnnotator_ImplBase {
 
-	private String homeDirectory;
-	
-	private void setHomeDirectory(String home) {
-		this.homeDirectory = home;
+	private void setTreeTaggerHomeDirectory(String home) {
+		 System.setProperty("treetagger.home", home);
 	}
 	
-	private String getHomeDirectory() {
-		return this.homeDirectory;
+	private TreeTaggerParameter parameter;
+	
+	private void setParameter(TreeTaggerParameter parameter) {
+		this.parameter = parameter;
 	}
 	
-	private TreeTaggerParameter configuration;
-	
-	private void setConfiguration(TreeTaggerParameter configuration) {
-		this.configuration = configuration;
-	}
-	
-	private TreeTaggerParameter getConfiguration() {
-		return this.configuration;
+	private TreeTaggerParameter getParameter() {
+		return this.parameter;
 	}
 	
 	private Handler handler;
@@ -60,16 +51,23 @@ public class TreeTaggerWrapper extends JCasAnnotator_ImplBase {
 		return this.handler;
 	}
 	
+	private Adapter adapter;
+	
+	private void setAdapter() {
+		this.adapter = new Adapter();
+	}
+	
+	private Adapter getAdapter() {
+		return this.adapter;
+	}
+	
 	private org.annolab.tt4j.TreeTaggerWrapper<Annotation> wrapper;	
 	
 	private void setWrapper() throws Exception {
 		this.wrapper = new org.annolab.tt4j.TreeTaggerWrapper<Annotation>();
 		this.wrapper.setHandler(this.getHandler());
-		this.wrapper.setAdapter(new Adapter());
-		Provider provider = new Provider(this.getHomeDirectory());
-		this.wrapper.setExecutableProvider(provider);
-		this.wrapper.setModelProvider(provider);
-		this.wrapper.setModel(provider.getHome() + File.separator + "lib" + File.separator + this.getConfiguration().getFile() + ":" + this.getConfiguration().getEncoding());	
+		this.wrapper.setAdapter(this.getAdapter());
+		this.wrapper.setModel(this.getParameter().getModel());	
 	}
 	
 	private org.annolab.tt4j.TreeTaggerWrapper<Annotation> getWrapper() {
@@ -151,15 +149,17 @@ public class TreeTaggerWrapper extends JCasAnnotator_ImplBase {
 	
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
+		super.initialize(context);
 		try {
 			String home = (String) context.getConfigParameterValue("TreeTaggerHomeDirectory");
-			this.setHomeDirectory(home);
+			this.setTreeTaggerHomeDirectory(home);
 			TreeTaggerParameter configuration = (TreeTaggerParameter) context.getResourceObject("TreeTaggerParameter");
-			this.setConfiguration(configuration);
+			this.setParameter(configuration);
 			String parameter = (String) context.getConfigParameterValue("TreeTaggerParameterFile");
 			configuration.override(parameter);
 			this.setHandler();
-			this.setWrapper();
+			this.setAdapter();
+			// this.setWrapper();
 			String type = (String) context.getConfigParameterValue("AnnotationType");
 			this.setAnnotationType(type);	
 			String tagFeature = (String) context.getConfigParameterValue("TagFeature");
@@ -178,6 +178,7 @@ public class TreeTaggerWrapper extends JCasAnnotator_ImplBase {
 	@Override
 	public void process(JCas cas) throws AnalysisEngineProcessException {
 		try {
+			this.setWrapper();
 			Type type = this.getAnnotationType(cas);
 			Feature tagFeature = this.getTagFeature(cas,type,this.isUpdateRequired());
 			Feature lemmaFeature = this.getLemmaFeature(cas,type,this.isUpdateRequired());
@@ -190,7 +191,13 @@ public class TreeTaggerWrapper extends JCasAnnotator_ImplBase {
 				Annotation token = iter.next();
 				tokens.add(token);
 			}
+			try {
 			this.getWrapper().process(tokens);
+			} catch (TreeTaggerException e) {
+				this.getContext().getLogger().log(Level.WARNING,e.getMessage());
+			} finally {
+				this.getWrapper().destroy();
+			}
 		} catch (Exception e) {
 			throw new AnalysisEngineProcessException(e);
 		}
@@ -217,6 +224,7 @@ public class TreeTaggerWrapper extends JCasAnnotator_ImplBase {
 		}
 		
 		public void token(Annotation annotation, String tag, String lemma) {
+			try {
 				CAS cas = annotation.getCAS();
 				int begin = annotation.getBegin();
 				int end = annotation.getEnd();
@@ -229,6 +237,9 @@ public class TreeTaggerWrapper extends JCasAnnotator_ImplBase {
 					this.annotate(cas, this.tagFeature, begin, end, tag);
 					this.annotate(cas, this.lemmaFeature, begin, end, picked);
 				}
+			} catch (ArrayIndexOutOfBoundsException e) {
+				// e.printStackTrace();
+			}
 		}
 
 		private void update(CAS cas, Annotation annotation, Feature feature, String value) {
@@ -257,82 +268,6 @@ public class TreeTaggerWrapper extends JCasAnnotator_ImplBase {
 		@Override
 		public String getText(Annotation annotation) {
 			return annotation.getCoveredText();
-		}
-		
-	}
-	
-	private class Provider extends DefaultModelResolver implements ExecutableResolver {
-
-		public Provider(String home) throws Exception {
-			this.setHome(home);
-		}
-		
-		private String home;
-		
-		private void setHome(String home) throws Exception {
-			File path = new File(home);
-			if (path.exists()) {
-				if (path.isDirectory()) {
-					this.home = home;
-					try {
-						this.setExecutable(path);
-					} catch (Exception e) {
-						UIMAFramework.getLogger().log(Level.WARNING,e.getMessage());
-						this.executable = "tree-tagger";
-					}
-				} else {
-					throw new Exception("The TreeTagger's home " + home + " isn't a directory.");
-				}
-			} else {
-				throw new Exception("The TreeTagger's home " + home + " doesn't exist.");
-			}
-		}
-		
-		public String getHome() {
-			return this.home;
-		}
-		
-		private String executable;
-		
-		private void setExecutable(File home) throws Exception {
-			File path = new File(home,"bin");
-			if (path.exists()) {
-				if (path.isDirectory()) {
-					String os = System.getProperty("os.name");
-					String exe = "tree-tagger";
-					if (os.startsWith("Windows")) {
-						exe += ".exe";
-					}
-					File file = new File(path,exe);
-					if (file.exists()) {
-						if (file.isFile()) {
-							if (file.canExecute()) {
-								this.executable = file.getAbsolutePath();
-							} else {
-								throw new Exception("The TreeTagger's executable isn't an executable.");
-							}
-						} else {
-							throw new Exception("The TreeTagger's executable isn't a file.");
-						}
-					} else {
-						throw new Exception("The TreeTagger's executable doesn't exist.");
-					}
-				} else {
-					throw new Exception("The TreeTagger's binary directory isn't a directory.");
-				}
-			} else {
-				throw new Exception("The TreeTagger's binary directory doesn't exist.");
-			}
-		}
-
-		@Override
-		public String getExecutable() throws IOException {
-			return this.executable;
-		}
-
-		@Override
-		public void destroy() {
-
 		}
 		
 	}

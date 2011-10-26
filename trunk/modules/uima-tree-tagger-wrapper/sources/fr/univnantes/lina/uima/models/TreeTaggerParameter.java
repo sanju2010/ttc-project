@@ -21,12 +21,16 @@ public class TreeTaggerParameter implements SharedResourceObject {
 		return this.properties;
 	}
 	
-	public String getFile() throws IOException {
+	private String getFile() throws IOException {
 		return this.getProperties().getProperty("file");
 	}
 	
-	public String getEncoding() {
+	private String getEncoding() {
 		return this.getProperties().getProperty("encoding");
+	}
+	
+	public String getModel() throws IOException {
+		return this.getFile() + ":" + this.getEncoding();
 	}
 	
 	private void doLoad(InputStream inputStream) throws IOException {
