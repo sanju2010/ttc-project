@@ -21,13 +21,6 @@
     </dependency>
     <dependency>
     	<groupId>eu.project.ttc</groupId>
-    	<artifactId>uima-term-bank-handler</artifactId>
-    	<version>1.0</version>
-    	<type>jar</type>
-    	<scope>provided</scope>
-    </dependency>
-    <dependency>
-    	<groupId>eu.project.ttc</groupId>
     	<artifactId>uima-dictionary-handler</artifactId>
     	<version>1.0</version>
     	<scope>provided</scope>

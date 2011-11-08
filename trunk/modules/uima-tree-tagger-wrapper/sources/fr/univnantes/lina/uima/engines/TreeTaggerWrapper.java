@@ -6,7 +6,6 @@ import java.util.List;
 import org.annolab.tt4j.TokenAdapter;
 import org.annolab.tt4j.TokenHandler;
 import org.annolab.tt4j.TreeTaggerException;
-import org.apache.uima.UIMAFramework;
 import org.apache.uima.UimaContext;
 
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
@@ -159,7 +158,7 @@ public class TreeTaggerWrapper extends JCasAnnotator_ImplBase {
 			configuration.override(parameter);
 			this.setHandler();
 			this.setAdapter();
-			// this.setWrapper();
+			this.setWrapper();
 			String type = (String) context.getConfigParameterValue("AnnotationType");
 			this.setAnnotationType(type);	
 			String tagFeature = (String) context.getConfigParameterValue("TagFeature");
@@ -178,7 +177,7 @@ public class TreeTaggerWrapper extends JCasAnnotator_ImplBase {
 	@Override
 	public void process(JCas cas) throws AnalysisEngineProcessException {
 		try {
-			this.setWrapper();
+			this.getWrapper().setModel(this.getParameter().getModel());
 			Type type = this.getAnnotationType(cas);
 			Feature tagFeature = this.getTagFeature(cas,type,this.isUpdateRequired());
 			Feature lemmaFeature = this.getLemmaFeature(cas,type,this.isUpdateRequired());
@@ -191,12 +190,13 @@ public class TreeTaggerWrapper extends JCasAnnotator_ImplBase {
 				Annotation token = iter.next();
 				tokens.add(token);
 			}
-			try {
 			this.getWrapper().process(tokens);
-			} catch (TreeTaggerException e) {
+		} catch (TreeTaggerException e) {
+			Throwable c = e.getCause();
+			if (c == null) {
 				this.getContext().getLogger().log(Level.WARNING,e.getMessage());
-			} finally {
-				this.getWrapper().destroy();
+			} else {
+				this.getContext().getLogger().log(Level.WARNING,c.getMessage());				
 			}
 		} catch (Exception e) {
 			throw new AnalysisEngineProcessException(e);
@@ -224,41 +224,42 @@ public class TreeTaggerWrapper extends JCasAnnotator_ImplBase {
 		}
 		
 		public void token(Annotation annotation, String tag, String lemma) {
-			try {
-				CAS cas = annotation.getCAS();
-				int begin = annotation.getBegin();
-				int end = annotation.getEnd();
-				String lemata[] = lemma.split("\\|");
-				String picked = lemata[lemata.length - 1];
-				if (this.update) {
-					this.update(cas, annotation, this.tagFeature, tag);
-					this.update(cas, annotation, this.lemmaFeature, picked);
+			CAS cas = annotation.getCAS();
+			int begin = annotation.getBegin();
+			int end = annotation.getEnd();
+			String picked = null;
+			if (lemma == null) {
+				picked = annotation.getCoveredText(); // "unknown"
+			} else {
+				String lemmata[] = lemma.split("\\|");
+				if (lemmata.length == 0) {
+					picked = lemma;
 				} else {
-					this.annotate(cas, this.tagFeature, begin, end, tag);
-					this.annotate(cas, this.lemmaFeature, begin, end, picked);
-				}
-			} catch (ArrayIndexOutOfBoundsException e) {
-				// e.printStackTrace();
+					picked = lemmata[lemmata.length - 1];
+				}						
+			}
+			if (picked.endsWith("?")) {
+				picked = picked.substring(0, picked.length() - 1);
+			}
+			assert (picked != null);
+			if (this.update) {
+				this.update(cas, annotation, this.tagFeature, tag);
+				this.update(cas, annotation, this.lemmaFeature, picked);
+			} else {
+				this.annotate(cas, this.tagFeature, begin, end, tag);
+				this.annotate(cas, this.lemmaFeature, begin, end, picked);
 			}
 		}
 
 		private void update(CAS cas, Annotation annotation, Feature feature, String value) {
-			try {
-				annotation.setStringValue(feature,value);
-			} catch (Exception e) {
-				UIMAFramework.getLogger().log(Level.WARNING,e.getMessage());
-			}
+			annotation.setStringValue(feature,value);
 		}
 		
 		private void annotate(CAS cas, Feature feature, int begin, int end, String value) {
-			try {
-				Type type = feature.getDomain();
-				AnnotationFS annotation = cas.createAnnotation(type, begin, end);
-				annotation.setStringValue(feature,value);
-				cas.addFsToIndexes(annotation);
-			} catch (Exception e) {
-				UIMAFramework.getLogger().log(Level.WARNING,e.getMessage());
-			}
+			Type type = feature.getDomain();
+			AnnotationFS annotation = cas.createAnnotation(type, begin, end);
+			annotation.setStringValue(feature,value);
+			cas.addFsToIndexes(annotation);
 		}
 
 	}
@@ -267,7 +268,9 @@ public class TreeTaggerWrapper extends JCasAnnotator_ImplBase {
 
 		@Override
 		public String getText(Annotation annotation) {
-			return annotation.getCoveredText();
+			synchronized (annotation.getCAS()) {
+				return annotation.getCoveredText();				
+			}
 		}
 		
 	}
