@@ -9,23 +9,23 @@
   * neo-classical term bank filtering
   * multi-word term bank filtering
 
-== Version 1.6 ==
+== Version 1.2 ==
 
   * term variation computing
 
-== Version 1.2 ==
+== Version 1.3 ==
 
   * term alignment based on interlingual similarity available (implemented and validated)
 
-== Version 1.3 ==
+== Version 1.4 ==
 
   * neo-classical compound term alignment available (implemented and validated)
 
-== Version 1.4 ==
+== Version 1.5 ==
 
   * multi-word term alignment based on a compositional method available (implemented and validated)
 
-== Version 1.5 ==
+== Version 1.6 ==
 
   * aggregation of the different term alignment methods using a specific Flow Controller
 
