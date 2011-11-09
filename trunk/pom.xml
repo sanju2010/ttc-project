@@ -23,17 +23,7 @@
     </dependency>
     <dependency>
     	<groupId>eu.project.ttc</groupId>
-    	<artifactId>uima-term-bank-handler</artifactId>
-    	<version>1.0</version>
-    </dependency>
-    <dependency>
-    	<groupId>eu.project.ttc</groupId>
     	<artifactId>uima-dictionary-handler</artifactId>
-    	<version>1.0</version>
-    </dependency>
-    <dependency>
-    	<groupId>eu.project.ttc</groupId>
-    	<artifactId>uima-term-aligner</artifactId>
     	<version>1.0</version>
     </dependency>
     <dependency>
@@ -64,6 +54,26 @@
     <dependency>
     	<groupId>fr.free.rocheteau.jerome</groupId>
     	<artifactId>dunamis</artifactId>
+    	<version>1.0</version>
+    </dependency>
+    <dependency>
+    	<groupId>fr.free.rocheteau.jerome</groupId>
+    	<artifactId>mapper</artifactId>
+    	<version>1.0</version>
+    </dependency>
+    <dependency>
+    	<groupId>eu.project.ttc</groupId>
+    	<artifactId>uima-chinese-segmenter</artifactId>
+    	<version>1.0</version>
+    </dependency>
+    <dependency>
+    	<groupId>fr.free.rocheteau.jerome</groupId>
+    	<artifactId>indexer</artifactId>
+    	<version>1.0</version>
+    </dependency>
+    <dependency>
+    	<groupId>fr.free.rocheteau.jerome</groupId>
+    	<artifactId>reader</artifactId>
     	<version>1.0</version>
     </dependency>
   </dependencies>
