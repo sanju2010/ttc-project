@@ -3,6 +3,12 @@
 
 = Change Log =
 
+== Version 1.0-rc1 ==
+
+  * CPE workflow split into 3 respectively called TreeTagger, Acabit and Ziggurat
+  * GUI refactoring: 1 tool by CPE
+  * version presented at IJCNLP
+
 == Version 0.9.1 ==
 
   * TBX export bug fix
