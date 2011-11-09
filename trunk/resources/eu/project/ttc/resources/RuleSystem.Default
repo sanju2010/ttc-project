@@ -1,5 +1,0 @@
-# This is the patterns for single-word term detection
-
-eu.project.ttc.types.WordAnnotation[category=noun]
-eu.project.ttc.types.WordAnnotation[category=adjective]
-eu.project.ttc.types.WordAnnotation[category=verb]

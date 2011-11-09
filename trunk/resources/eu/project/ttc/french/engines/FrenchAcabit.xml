@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
+  <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
+  <primitive>false</primitive>
+  <delegateAnalysisEngineSpecifiers>
+    <delegateAnalysisEngine key="FrenchTermIndexer">
+      <import name="eu.project.ttc.french.engines.FrenchTermIndexer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="FrenchTermDetector">
+      <import name="eu.project.ttc.french.engines.FrenchTermDetector"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="FrenchTermFilter">
+      <import name="eu.project.ttc.french.engines.FrenchTermFilter"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="IndexWriter">
+      <import name="eu.project.ttc.all.engines.IndexWriter"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="XmiCasConsumer">
+      <import name="eu.project.ttc.all.engines.XmiCasConsumer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="TermIndexer">
+      <import name="eu.project.ttc.all.engines.TermIndexer"/>
+    </delegateAnalysisEngine>
+  </delegateAnalysisEngineSpecifiers>
+  <analysisEngineMetaData>
+    <name>French Acabit</name>
+    <description/>
+    <version>1.0</version>
+    <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
+    <configurationParameters searchStrategy="language_fallback">
+      <configurationParameter>
+        <name>Directory</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>XmiCasConsumer/Directory</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>File</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>IndexWriter/File</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>Type</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>TermIndexer/Type</parameter>
+        </overrides>
+      </configurationParameter>
+    </configurationParameters>
+    <configurationParameterSettings>
+      <nameValuePair>
+        <name>Directory</name>
+        <value>
+          <string>/tmp</string>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>File</name>
+        <value>
+          <string>terminology.index</string>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>Type</name>
+        <value>
+          <string>eu.project.ttc.types.TermAnnotation</string>
+        </value>
+      </nameValuePair>
+    </configurationParameterSettings>
+    <flowConstraints>
+      <fixedFlow>
+        <node>FrenchTermDetector</node>
+        <node>FrenchTermFilter</node>
+        <node>TermIndexer</node>
+        <node>FrenchTermIndexer</node>
+        <node>IndexWriter</node>
+        <node>XmiCasConsumer</node>
+      </fixedFlow>
+    </flowConstraints>
+    <typePriorities/>
+    <fsIndexCollection/>
+    <capabilities>
+      <capability>
+        <inputs>
+          <type allAnnotatorFeatures="true">org.apache.uima.examples.SourceDocumentInformation</type>
+        </inputs>
+        <outputs>
+          <type allAnnotatorFeatures="true">eu.project.ttc.types.WordAnnotation</type>
+          <type allAnnotatorFeatures="true">org.apache.uima.TermAnnotation</type>
+        </outputs>
+        <languagesSupported>
+          <language>fr</language>
+        </languagesSupported>
+      </capability>
+    </capabilities>
+    <operationalProperties>
+      <modifiesCas>true</modifiesCas>
+      <multipleDeploymentAllowed>true</multipleDeploymentAllowed>
+      <outputsNewCASes>false</outputsNewCASes>
+    </operationalProperties>
+  </analysisEngineMetaData>
+  <resourceManagerConfiguration>
+    <externalResources>
+      <externalResource>
+        <name>DefaultIndex</name>
+        <description/>
+        <fileResourceSpecifier>
+          <fileUrl>eu/project/ttc/all/engines/IndexWriter.xml</fileUrl>
+        </fileResourceSpecifier>
+        <implementationName>fr.free.rocheteau.jerome.models.DefaultIndex</implementationName>
+      </externalResource>
+    </externalResources>
+    <externalResourceBindings>
+      <externalResourceBinding>
+        <key>FrenchTermIndexer/Index</key>
+        <resourceName>DefaultIndex</resourceName>
+      </externalResourceBinding>
+      <externalResourceBinding>
+        <key>TermIndexer/Index</key>
+        <resourceName>DefaultIndex</resourceName>
+      </externalResourceBinding>
+      <externalResourceBinding>
+        <key>IndexWriter/Index</key>
+        <resourceName>DefaultIndex</resourceName>
+      </externalResourceBinding>
+    </externalResourceBindings>
+  </resourceManagerConfiguration>
+</analysisEngineDescription>

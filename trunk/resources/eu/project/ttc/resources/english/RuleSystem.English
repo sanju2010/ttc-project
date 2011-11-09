@@ -1,8 +1,0 @@
-# This is the patterns for term detection in English
-
-eu.project.ttc.types.WordAnnotation[category=noun]	eu.project.ttc.types.WordAnnotation[category=noun]
-
-eu.project.ttc.types.WordAnnotation[category=adjective]	eu.project.ttc.types.WordAnnotation[category=noun]
-
-eu.project.ttc.types.WordAnnotation[category=noun]	eu.project.ttc.types.WordAnnotation[category=preposition,coveredText=of]	eu.project.ttc.types.WordAnnotation[category=noun]
-eu.project.ttc.types.WordAnnotation[category=noun]	eu.project.ttc.types.WordAnnotation[category=preposition,coveredText=in]	eu.project.ttc.types.WordAnnotation[category=noun]

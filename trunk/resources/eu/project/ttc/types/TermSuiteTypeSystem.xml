@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <name>Term Suite Type System</name>
-  <description>This Type System gathers Type Systems required by every UIMA CAS processors used within the TTC project.</description>
+  <description>This Type System gathers Type Systems required by every UIMA CAS processors used within the ttc.types.project.</description>
   <version>1.0</version>
   <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
   <imports>
-    <import name="fr.univnantes.lina.uima.types.TermAnnotation"/>
     <import name="org.apache.uima.examples.SourceDocumentInformation"/>
   </imports>
   <types>
@@ -23,6 +22,129 @@
           <name>lemma</name>
           <description/>
           <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+      </features>
+    </typeDescription>
+    <typeDescription>
+      <name>eu.project.ttc.types.TermAnnotation</name>
+      <description/>
+      <supertypeName>eu.project.ttc.types.TermComponentAnnotation</supertypeName>
+      <features>
+        <featureDescription>
+          <name>complexity</name>
+          <description/>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+      </features>
+    </typeDescription>
+    <typeDescription>
+      <name>eu.project.ttc.types.TermComponentAnnotation</name>
+      <description/>
+      <supertypeName>uima.tcas.Annotation</supertypeName>
+      <features>
+        <featureDescription>
+          <name>category</name>
+          <description/>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>lemma</name>
+          <description/>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+      </features>
+    </typeDescription>
+    <typeDescription>
+      <name>eu.project.ttc.types.SingleWordTermAnnotation</name>
+      <description/>
+      <supertypeName>eu.project.ttc.types.TermAnnotation</supertypeName>
+    </typeDescription>
+    <typeDescription>
+      <name>eu.project.ttc.types.MultiWordTermAnnotation</name>
+      <description/>
+      <supertypeName>eu.project.ttc.types.TermAnnotation</supertypeName>
+    </typeDescription>
+    <typeDescription>
+      <name>eu.project.ttc.types.NeoClassicalCompoundTermAnnotation</name>
+      <description/>
+      <supertypeName>eu.project.ttc.types.TermAnnotation</supertypeName>
+    </typeDescription>
+    <typeDescription>
+      <name>eu.project.ttc.types.TermEntryAnnotation</name>
+      <description/>
+      <supertypeName>uima.tcas.Annotation</supertypeName>
+      <features>
+        <featureDescription>
+          <name>frequency</name>
+          <description/>
+          <rangeTypeName>uima.cas.Double</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>specificity</name>
+          <description/>
+          <rangeTypeName>uima.cas.Double</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>complexity</name>
+          <description/>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>category</name>
+          <description/>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>term</name>
+          <description/>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+      </features>
+    </typeDescription>
+    <typeDescription>
+      <name>eu.project.ttc.types.TermContextEntryAnnotation</name>
+      <description/>
+      <supertypeName>uima.tcas.Annotation</supertypeName>
+      <features>
+        <featureDescription>
+          <name>category</name>
+          <description/>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>lemma</name>
+          <description/>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+      </features>
+    </typeDescription>
+    <typeDescription>
+      <name>eu.project.ttc.types.TermContextIndexAnnotation</name>
+      <description/>
+      <supertypeName>uima.tcas.DocumentAnnotation</supertypeName>
+      <features>
+        <featureDescription>
+          <name>name</name>
+          <description/>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+      </features>
+    </typeDescription>
+    <typeDescription>
+      <name>eu.project.ttc.types.TermContextVectorAnnotation</name>
+      <description/>
+      <supertypeName>uima.tcas.Annotation</supertypeName>
+      <features>
+        <featureDescription>
+          <name>contextVector</name>
+          <description/>
+          <rangeTypeName>uima.cas.FSArray</rangeTypeName>
+          <elementType>eu.project.ttc.types.TermContextEntryAnnotation</elementType>
+        </featureDescription>
+        <featureDescription>
+          <name>term</name>
+          <description/>
+          <rangeTypeName>eu.project.ttc.types.TermContextEntryAnnotation</rangeTypeName>
         </featureDescription>
       </features>
     </typeDescription>

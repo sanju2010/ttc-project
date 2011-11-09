@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
+  <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
+  <primitive>false</primitive>
+  <delegateAnalysisEngineSpecifiers>
+    <delegateAnalysisEngine key="FrenchNeoClassicalNounDetector">
+      <import name="eu.project.ttc.french.engines.FrenchNeoClassicalNounDetector"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="FrenchNeoClassicalAdjectiveDetector">
+      <import name="eu.project.ttc.french.engines.FrenchNeoClassicalAdjectiveDetector"/>
+    </delegateAnalysisEngine>
+  </delegateAnalysisEngineSpecifiers>
+  <analysisEngineMetaData>
+    <name>French NeoClassical Term Detector</name>
+    <description/>
+    <version>1.0</version>
+    <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
+    <configurationParameters/>
+    <configurationParameterSettings/>
+    <flowConstraints>
+      <fixedFlow>
+        <node>FrenchNeoClassicalAdjectiveDetector</node>
+        <node>FrenchNeoClassicalNounDetector</node>
+      </fixedFlow>
+    </flowConstraints>
+    <fsIndexCollection/>
+    <capabilities>
+      <capability>
+        <inputs>
+          <type allAnnotatorFeatures="true">eu.project.ttc.types.WordAnnotation</type>
+        </inputs>
+        <outputs>
+          <type allAnnotatorFeatures="true">eu.project.ttc.types.CompoundWordTermAnnotation</type>
+        </outputs>
+        <languagesSupported>
+          <language>fr</language>
+        </languagesSupported>
+      </capability>
+    </capabilities>
+    <operationalProperties>
+      <modifiesCas>true</modifiesCas>
+      <multipleDeploymentAllowed>true</multipleDeploymentAllowed>
+      <outputsNewCASes>false</outputsNewCASes>
+    </operationalProperties>
+  </analysisEngineMetaData>
+  <resourceManagerConfiguration>
+    <externalResources>
+      <externalResource>
+        <name>FrenchRootBank</name>
+        <description/>
+        <fileResourceSpecifier>
+          <fileUrl>eu/project/ttc/french/resources/RootBank.French</fileUrl>
+        </fileResourceSpecifier>
+        <implementationName>eu.project.ttc.models.RootBankResource</implementationName>
+      </externalResource>
+    </externalResources>
+    <externalResourceBindings>
+      <externalResourceBinding>
+        <key>FrenchNeoClassicalNounDetector/RootBank</key>
+        <resourceName>FrenchRootBank</resourceName>
+      </externalResourceBinding>
+      <externalResourceBinding>
+        <key>FrenchNeoClassicalAdjectiveDetector/RootBank</key>
+        <resourceName>FrenchRootBank</resourceName>
+      </externalResourceBinding>
+    </externalResourceBindings>
+  </resourceManagerConfiguration>
+</analysisEngineDescription>
