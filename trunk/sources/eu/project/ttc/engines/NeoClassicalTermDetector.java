@@ -7,8 +7,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.apache.uima.CompoundWordTermAnnotation;
-import org.apache.uima.TermComponentAnnotation;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
@@ -20,15 +18,15 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.FeaturePath;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationIndex;
-import org.apache.uima.examples.SourceDocumentInformation;
 import org.apache.uima.jcas.JCas;
-import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 
 import eu.project.ttc.models.Root;
 import eu.project.ttc.models.RootBank;
 import eu.project.ttc.models.RootTree;
+import eu.project.ttc.types.NeoClassicalCompoundTermAnnotation;
+import eu.project.ttc.types.TermComponentAnnotation;
 
 public class NeoClassicalTermDetector extends JCasAnnotator_ImplBase {
 
@@ -125,12 +123,14 @@ public class NeoClassicalTermDetector extends JCasAnnotator_ImplBase {
 			this.getSuffixes(cas,begin,end,end,this.getBank().getSuffixTree());
 			if (!this.getComponents().isEmpty()) {
 				this.doFill(cas, begin, end);
+				/*
 				Collections.sort(this.getComponents(),this.getComparator());
 				int length = this.getComponents().size();
 				Annotation[] components = new Annotation[length];
 				for (int i = 0; i< length; i++) {
 					components[i] = this.getComponents().get(i);
 				}
+				*/
 				this.doAnnotate(cas, annotation.getBegin(), annotation.getEnd());
 			}
 		}
@@ -198,32 +198,13 @@ public class NeoClassicalTermDetector extends JCasAnnotator_ImplBase {
 	}
 	
 	private void doAnnotate(JCas cas,int begin,int end) {
-		CompoundWordTermAnnotation annotation = new CompoundWordTermAnnotation(cas,begin,end);
-		annotation.setLanguage(cas.getDocumentLanguage());
-		annotation.setDocument(this.getDocument(cas));
+		NeoClassicalCompoundTermAnnotation annotation = new NeoClassicalCompoundTermAnnotation(cas,begin,end);
 		annotation.setBegin(begin);
 		annotation.setEnd(end);
-		annotation.setComplexity("compound-word");
+		annotation.setComplexity("neo-classical-compound");
 		annotation.setLemma(annotation.getCoveredText());
 		annotation.setCategory(this.getValue());
-		int size = this.getComponents().size();
-		FSArray array = new FSArray(cas, size);
-		annotation.setComponents(array);
-		for (int index = 0; index < size; index++) {
-			annotation.setComponents(index,this.getComponents().get(index));
-		}
 		annotation.addToIndexes();
-	}
-	
-	private String getDocument(JCas cas) {
-		AnnotationIndex<Annotation> index = cas.getAnnotationIndex(SourceDocumentInformation.type);
-		FSIterator<Annotation> iterator = index.iterator();
-		if (iterator.hasNext()) {
-			SourceDocumentInformation annotation = (SourceDocumentInformation) iterator.next();
-			return annotation.getUri();
-		} else {
-			return "";
-		}
 	}
 	
 	private void doFill(JCas cas,int begin,int end) {
@@ -245,14 +226,12 @@ public class NeoClassicalTermDetector extends JCasAnnotator_ImplBase {
 	private void addComponent(JCas cas,int begin,int end) {
 		TermComponentAnnotation annotation = new TermComponentAnnotation(cas,begin,end);
 		annotation.setCategory("word");
-		annotation.setLanguage(cas.getDocumentLanguage());
 		annotation.addToIndexes();
 		this.getComponents().add(annotation);
 	}
 	
 	private void addRootComponent(JCas cas,Root root,int begin,int end,boolean prefix) {
 		TermComponentAnnotation annotation = new TermComponentAnnotation(cas,begin,end);
-		annotation.setLanguage(root.getOrigin());
 		annotation.setLemma(root.getRoot());
 		if (prefix) {
 			annotation.setCategory("initial");

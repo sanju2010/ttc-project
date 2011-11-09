@@ -1,27 +1,35 @@
 package eu.project.ttc.tools;
 
-import java.awt.Component;
 import java.awt.Desktop;
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JSplitPane;
-import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.util.Level;
 
-import fr.free.rocheteau.jerome.dunamis.listeners.ProcessingResultListener;
-import fr.free.rocheteau.jerome.dunamis.viewers.ProcessingResultViewer;
+import eu.project.ttc.tools.utils.About;
+import eu.project.ttc.tools.utils.Preferences;
 
 public class TermSuite implements Runnable {
 
+	private boolean cli;
+	
+	private void enableCommandLineInterface(boolean enabled) {
+		this.cli = enabled;
+	}
+	
+	public boolean isCommandLineInterface() {
+		return this.cli;
+	}
+	
 	public void error(Exception e) {
 		UIMAFramework.getLogger().log(Level.SEVERE,e.getMessage());
 	}
@@ -47,21 +55,11 @@ public class TermSuite implements Runnable {
 	public Desktop getDesktop() {
 		return this.desktop;
 	}
-
-	private Parameters parameters;
-	
-	private void setParameters() {
-		this.parameters = new Parameters();
-	}
-	
-	public Parameters getParameters() {
-		return this.parameters;
-	}
 	
 	private Preferences preferences;
 	
 	private void setPreferences() {
-		this.preferences = new Preferences();
+		this.preferences = new Preferences("term-suite.properties");
 		try {
 			this.preferences.load();
 		} catch (Exception e) {
@@ -84,75 +82,36 @@ public class TermSuite implements Runnable {
 		return this.preferences;
 	}
 
-	private ToolBar toolBar;
+	private TermSuiteToolBar toolBar;
 	
 	private void setToolBar() {
-		this.toolBar = new ToolBar();
+		this.toolBar = new TermSuiteToolBar();
 	}
 	
-	public ToolBar getToolBar() {
+	public TermSuiteToolBar getToolBar() {
 		return this.toolBar;
-	}
+	}	
 	
-	private Terms terms;
-	
-	private void setTerms() {
-		this.terms = new Terms();
-	}
-	
-	public Terms getTerms() {
-		return this.terms;
-	}
-	
-	private ProcessingResultViewer resultViewer;
-	
-	private void setDocuments() {
-		this.resultViewer = new ProcessingResultViewer();
-	}
-	
-	public ProcessingResultViewer getDocuments() {
-		return this.resultViewer;
-	}
-	
-	private Component content;
-	
-	private void setContent() {		
-		JTabbedPane inner = new JTabbedPane();
-		inner.setTabPlacement(JTabbedPane.TOP);
-		inner.addTab("   Settings   ",this.getParameters().getComponent());
-		inner.addTab(" Terminolgies ",this.getTerms().getComponent());
-		inner.addTab("  Documents  ",this.getDocuments().getComponent());
-		JSplitPane outter = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-		outter.setTopComponent(this.getToolBar().getComponent());
-		outter.setBottomComponent(inner);
-		outter.setDividerSize(0);
-		outter.setEnabled(false);
-		this.content = outter;
-	}
-	
-	private Component getContent() {
-		return this.content;
-	}
-	
-	private Dimension getDimension() {
+	private Point getPoint() {
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-		int width = (4 * screen.width) / 5;
-		int height = (4 * screen.height) / 5;
-		Dimension dimension = new Dimension(width,height);
-		return dimension;
+		Dimension frame = this.frame.getSize();
+		Point point = new Point();
+		point.setLocation(screen.width / 10, (screen.height - frame.height) / 2);
+		return point;
 	}
+
 	
 	private JFrame frame;
 	
 	private void setFrame() {
 		this.frame = new JFrame();
 		this.frame.setTitle(this.getPreferences().getTitle());
-		this.frame.setPreferredSize(this.getDimension());
+		// this.frame.setPreferredSize(this.getDimension());
 		this.frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		this.frame.getContentPane().add(this.getContent());
+		this.frame.getContentPane().add(this.getToolBar().getComponent());
 		this.frame.setJMenuBar(null);
 		this.frame.pack();
-		this.frame.setLocationRelativeTo(null);
+		this.frame.setLocation(this.getPoint()); // RelativeTo(null);
 		this.frame.setResizable(false);
 	}
 
@@ -168,58 +127,36 @@ public class TermSuite implements Runnable {
 		return this.frame;
 	}
 	
-	public TermSuite() {
+	public TermSuite(boolean cli) {
+		this.enableCommandLineInterface(cli);
 		this.setDesktop();
-		this.setParameters();
 		this.setPreferences();
 		this.setAbout();
 		this.setToolBar();
-		this.setTerms();
-		this.setDocuments();
-		this.setContent();
 		this.setFrame();
 		this.enableListeners();
 	}
 	
 	private void enableListeners() {
-		Fire fire = new Fire();
-		fire.setTermSuite(this);
-		this.getToolBar().enableListeners(fire);
-		ProcessingResultListener resultListener = new ProcessingResultListener();
-		resultListener.setViewer(this.getDocuments());
-		this.getDocuments().enableListeners(resultListener);
+		TermSuiteListener listener = new TermSuiteListener();
+		listener.setTermSuite(this);
+		this.getToolBar().enableListeners(listener);
 		WindowListener windowListener = new WindowListener();
 		windowListener.setTermSuite(this);
 		this.getFrame().addWindowListener(windowListener);
 	}
-	
-	public void process() {
-		Fire fire = new Fire();
-		fire.setTermSuite(this);
-		fire.doProcess();
-	}
-	
+		
 	public void run() {
 		this.show();
 	}
-	
-	private void save() {
-		try {
-			this.getParameters().doSave();
-		} catch (Exception e) {
-			this.error(e);
-		}
-	}
-	
+		
 	public void quit() {
-		this.save();
 		this.hide();
 		this.getFrame().dispose();
 		System.exit(0);
 	}
 	
 	public void quit(Exception e) {
-		this.save();
 		UIMAFramework.getLogger().log(Level.SEVERE,e.getMessage());
 		e.printStackTrace();
 		this.hide();
@@ -231,17 +168,27 @@ public class TermSuite implements Runnable {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) { }
-		TermSuite termSuite = new TermSuite();
-		boolean auto = false;
+		boolean cli = false;
+		String wrong = null;
 		for (String arg : args) {
-			if (arg.equals("--automatic")) {
-				auto = true;
+			if (arg.equals("--cli")) {
+				cli = true;
+				break;
+			} else if (arg.equals("--gui")) {
+				cli = false;
+				break;
+			} else {
+				wrong = arg;
+				break;
 			}
 		}
-		if (auto) {
-			termSuite.process();
+		if (wrong == null) {
+			TermSuite termSuite = new TermSuite(cli);
+			SwingUtilities.invokeLater(termSuite);			
 		} else {
-			SwingUtilities.invokeLater(termSuite);
+			UIMAFramework.getLogger().log(Level.SEVERE,"Wrong option: " + wrong);
+			UIMAFramework.getLogger().log(Level.INFO,"Options allowed: --cli | --gui");
+			System.exit(1);
 		}
     }
 	
@@ -258,7 +205,7 @@ public class TermSuite implements Runnable {
 		}
 		
 		public void windowClosing(WindowEvent event) {
-			String message = "Do you really want to quit TTC TermSuite?";
+			String message = "Do you really want to quit " + this.getTermSuite().getPreferences().getTitle() + "?";
 			String title = "Exit?";
 			int response = JOptionPane.showConfirmDialog(this.getTermSuite().getFrame(),message,title,JOptionPane.OK_CANCEL_OPTION);
 			if (response == 0) {

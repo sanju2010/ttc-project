@@ -11,7 +11,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
- * Updated by JCasGen Wed Oct 12 11:16:07 CEST 2011
+ * Updated by JCasGen Sat Nov 05 19:54:33 CET 2011
  * XML source: /home/rocheteau-j/Repositories/GoogleCode/ttc-term-suite/trunk/resources/eu/project/ttc/types/TermSuiteTypeSystem.xml
  * @generated */
 public class WordAnnotation extends Annotation {

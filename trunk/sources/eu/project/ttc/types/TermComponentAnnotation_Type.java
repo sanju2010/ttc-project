@@ -1,5 +1,5 @@
 
-/* First created by JCasGen Wed Oct 12 11:16:07 CEST 2011 */
+/* First created by JCasGen Thu Oct 20 17:03:42 CEST 2011 */
 package eu.project.ttc.types;
 
 import org.apache.uima.jcas.JCas;
@@ -16,30 +16,30 @@ import org.apache.uima.jcas.tcas.Annotation_Type;
 /** 
  * Updated by JCasGen Sat Nov 05 19:54:33 CET 2011
  * @generated */
-public class WordAnnotation_Type extends Annotation_Type {
+public class TermComponentAnnotation_Type extends Annotation_Type {
   /** @generated */
   protected FSGenerator getFSGenerator() {return fsGenerator;}
   /** @generated */
   private final FSGenerator fsGenerator = 
     new FSGenerator() {
       public FeatureStructure createFS(int addr, CASImpl cas) {
-  			 if (WordAnnotation_Type.this.useExistingInstance) {
+  			 if (TermComponentAnnotation_Type.this.useExistingInstance) {
   			   // Return eq fs instance if already created
-  		     FeatureStructure fs = WordAnnotation_Type.this.jcas.getJfsFromCaddr(addr);
+  		     FeatureStructure fs = TermComponentAnnotation_Type.this.jcas.getJfsFromCaddr(addr);
   		     if (null == fs) {
-  		       fs = new WordAnnotation(addr, WordAnnotation_Type.this);
-  			   WordAnnotation_Type.this.jcas.putJfsFromCaddr(addr, fs);
+  		       fs = new TermComponentAnnotation(addr, TermComponentAnnotation_Type.this);
+  			   TermComponentAnnotation_Type.this.jcas.putJfsFromCaddr(addr, fs);
   			   return fs;
   		     }
   		     return fs;
-        } else return new WordAnnotation(addr, WordAnnotation_Type.this);
+        } else return new TermComponentAnnotation(addr, TermComponentAnnotation_Type.this);
   	  }
     };
   /** @generated */
-  public final static int typeIndexID = WordAnnotation.typeIndexID;
+  public final static int typeIndexID = TermComponentAnnotation.typeIndexID;
   /** @generated 
      @modifiable */
-  public final static boolean featOkTst = JCasRegistry.getFeatOkTst("eu.project.ttc.types.WordAnnotation");
+  public final static boolean featOkTst = JCasRegistry.getFeatOkTst("eu.project.ttc.types.TermComponentAnnotation");
  
   /** @generated */
   final Feature casFeat_category;
@@ -48,13 +48,13 @@ public class WordAnnotation_Type extends Annotation_Type {
   /** @generated */ 
   public String getCategory(int addr) {
         if (featOkTst && casFeat_category == null)
-      jcas.throwFeatMissing("category", "eu.project.ttc.types.WordAnnotation");
+      jcas.throwFeatMissing("category", "eu.project.ttc.types.TermComponentAnnotation");
     return ll_cas.ll_getStringValue(addr, casFeatCode_category);
   }
   /** @generated */    
   public void setCategory(int addr, String v) {
         if (featOkTst && casFeat_category == null)
-      jcas.throwFeatMissing("category", "eu.project.ttc.types.WordAnnotation");
+      jcas.throwFeatMissing("category", "eu.project.ttc.types.TermComponentAnnotation");
     ll_cas.ll_setStringValue(addr, casFeatCode_category, v);}
     
   
@@ -66,13 +66,13 @@ public class WordAnnotation_Type extends Annotation_Type {
   /** @generated */ 
   public String getLemma(int addr) {
         if (featOkTst && casFeat_lemma == null)
-      jcas.throwFeatMissing("lemma", "eu.project.ttc.types.WordAnnotation");
+      jcas.throwFeatMissing("lemma", "eu.project.ttc.types.TermComponentAnnotation");
     return ll_cas.ll_getStringValue(addr, casFeatCode_lemma);
   }
   /** @generated */    
   public void setLemma(int addr, String v) {
         if (featOkTst && casFeat_lemma == null)
-      jcas.throwFeatMissing("lemma", "eu.project.ttc.types.WordAnnotation");
+      jcas.throwFeatMissing("lemma", "eu.project.ttc.types.TermComponentAnnotation");
     ll_cas.ll_setStringValue(addr, casFeatCode_lemma, v);}
     
   
@@ -81,7 +81,7 @@ public class WordAnnotation_Type extends Annotation_Type {
 
   /** initialize variables to correspond with Cas Type and Features
 	* @generated */
-  public WordAnnotation_Type(JCas jcas, Type casType) {
+  public TermComponentAnnotation_Type(JCas jcas, Type casType) {
     super(jcas, casType);
     casImpl.getFSClassRegistry().addGeneratorForType((TypeImpl)this.casType, getFSGenerator());
 
