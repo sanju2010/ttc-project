@@ -32,6 +32,16 @@ public abstract class Parameters {
 		declarations.addConfigurationParameter(parameter);
 	}
 
+	protected void addParameter(ConfigurationParameterDeclarations declarations,String name,String type,boolean multiValued,boolean mandatory,String description) {
+		ConfigurationParameter parameter = UIMAFramework.getResourceSpecifierFactory().createConfigurationParameter();
+		parameter.setName(name);
+		parameter.setType(type);
+		parameter.setMultiValued(multiValued);
+		parameter.setMandatory(mandatory);
+		parameter.setDescription(description);
+		declarations.addConfigurationParameter(parameter);
+	}
+	
 	private ResourceMetaData metaData;
 	
 	protected abstract void setMetaData(ConfigurationParameterDeclarations declarations);

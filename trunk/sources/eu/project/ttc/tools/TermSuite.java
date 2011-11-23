@@ -15,6 +15,7 @@ import javax.swing.UIManager;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.util.Level;
 
+import eu.project.ttc.tools.help.Help;
 import eu.project.ttc.tools.utils.About;
 import eu.project.ttc.tools.utils.Preferences;
 
@@ -78,6 +79,16 @@ public class TermSuite implements Runnable {
 		return this.about;
 	}
 	
+	private Help help;
+	
+	private void setHelp() {
+		this.help = new Help();
+	}
+	
+	public Help getHelp() {
+		return this.help;
+	}
+	
 	public Preferences  getPreferences() {
 		return this.preferences;
 	}
@@ -130,6 +141,7 @@ public class TermSuite implements Runnable {
 	public TermSuite(boolean cli) {
 		this.enableCommandLineInterface(cli);
 		this.setDesktop();
+		this.setHelp();
 		this.setPreferences();
 		this.setAbout();
 		this.setToolBar();

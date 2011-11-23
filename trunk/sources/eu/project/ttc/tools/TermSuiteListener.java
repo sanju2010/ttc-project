@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import eu.project.ttc.tools.acabit.Acabit;
+import eu.project.ttc.tools.katastasis.Katastasis;
 import eu.project.ttc.tools.treetagger.TreeTagger;
 import eu.project.ttc.tools.ziggurat.Ziggurat;
 
@@ -43,8 +44,10 @@ public class TermSuiteListener implements ActionListener {
 	
 	private void doHelp() {
 		try {
-			if (this.getTermSuite().getDesktop().isSupported(Desktop.Action.BROWSE)) {
+			if (this.getTermSuite().getDesktop() != null && this.getTermSuite().getDesktop().isSupported(Desktop.Action.BROWSE)) {
 				this.getTermSuite().getDesktop().browse(this.getHelp());	
+			} else {
+				SwingUtilities.invokeLater(this.getTermSuite().getHelp());
 			}
 		} catch (IOException e) {
 			this.getTermSuite().error(e);
@@ -65,6 +68,12 @@ public class TermSuiteListener implements ActionListener {
 		SwingUtilities.invokeLater(acabit);
 	}
 
+	private void doKatastasis() {
+		Katastasis katastasis = new Katastasis(false);
+		katastasis.setParent(this.getTermSuite());
+		SwingUtilities.invokeLater(katastasis);
+	}
+	
 	private void doZiggurat() {
 		Ziggurat ziggurat = new Ziggurat(false);
 		ziggurat.setParent(this.getTermSuite());
@@ -87,6 +96,8 @@ public class TermSuiteListener implements ActionListener {
 				this.doTreeTagger();
 			} else if (action.equals("acabit")) {
 				this.doAcabit();
+			} else if (action.equals("katastasis")) {
+				this.doKatastasis();
 			} else if (action.equals("ziggurat")) {
 				this.doZiggurat();
 			} 

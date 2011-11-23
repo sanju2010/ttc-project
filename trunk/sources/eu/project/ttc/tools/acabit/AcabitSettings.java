@@ -12,11 +12,11 @@ public class AcabitSettings extends Parameters {
 	}
 
 	protected void setMetaData(ConfigurationParameterDeclarations declarations) {
-		this.addParameter(declarations, "Language", ConfigurationParameter.TYPE_STRING, false, true);
+		this.addParameter(declarations, "Language", ConfigurationParameter.TYPE_STRING, false, true, "values:en|fr|de|es|ru|lv|zh");
 		this.addParameter(declarations, "InputDirectory", ConfigurationParameter.TYPE_STRING, false, true);
 		this.addParameter(declarations, "OutputDirectory", ConfigurationParameter.TYPE_STRING, false, true);
 		this.addParameter(declarations, "TerminologyFile", ConfigurationParameter.TYPE_STRING, false, true);
-		this.addParameter(declarations, "TermAnnotationType", ConfigurationParameter.TYPE_STRING, false, true);
+		this.addParameter(declarations, "TermAnnotationType", ConfigurationParameter.TYPE_STRING, false, true, "values:eu.project.ttc.types.TermAnnotation|eu.project.ttc.types.SingleWordTermAnnotation|eu.project.ttc.types.MultiWordTermAnnotation|eu.project.ttc.types.NeoClassicalCompoundTermAnnotation");
 	}
 		
 }

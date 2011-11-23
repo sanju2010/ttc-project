@@ -69,7 +69,7 @@ public class TermSuiteToolBar {
 	private JButton acabit;
 	
 	private void setAcabit() {
-		this.acabit = new JButton("Acabit");
+		this.acabit = new JButton("Termer");
 		this.acabit.setActionCommand("acabit");
 		this.acabit.setEnabled(true);
 		this.acabit.setPreferredSize(dimension);
@@ -82,10 +82,26 @@ public class TermSuiteToolBar {
 		return this.acabit;
 	}
 	
+	private JButton katastasis;
+	
+	private void setKatastasis() {
+		this.katastasis = new JButton("Contextualizer");
+		this.katastasis.setActionCommand("katastasis");
+		this.katastasis.setEnabled(true);
+		this.katastasis.setPreferredSize(dimension);
+		this.katastasis.setMargin(insets);
+		this.katastasis.setBackground(color);
+		this.katastasis.setBorderPainted(false);
+	}
+	
+	public JButton getKatastasis() {
+		return this.katastasis;
+	}
+	
 	private JButton ziggurat;
 	
 	private void setZiggurat() {
-		this.ziggurat = new JButton("Ziggurat");
+		this.ziggurat = new JButton("Aligner");
 		this.ziggurat.setActionCommand("ziggurat");
 		this.ziggurat.setEnabled(true);
 		this.ziggurat.setPreferredSize(dimension);
@@ -132,10 +148,12 @@ public class TermSuiteToolBar {
 		c.gridx = 0; c.gridy = 4;
 		this.component.add(this.getAcabit(),c);
 		c.gridx = 0; c.gridy = 5;
-		this.component.add(this.getZiggurat(),c);
+		this.component.add(this.getKatastasis(),c);
 		c.gridx = 0; c.gridy = 6;
+		this.component.add(this.getZiggurat(),c);
+		c.gridx = 0; c.gridy = 7;
 		this.component.add(new JSeparator(JSeparator.VERTICAL),c);
-		c.gridx = 0; c.gridy = 7;		
+		c.gridx = 0; c.gridy = 8;		
 		this.component.add(this.getQuit(),c);
 	}
 	
@@ -149,6 +167,7 @@ public class TermSuiteToolBar {
 		this.getHelp().addActionListener(listener);
 		this.getTreeTagger().addActionListener(listener);
 		this.getAcabit().addActionListener(listener);
+		this.getKatastasis().addActionListener(listener);
 		this.getZiggurat().addActionListener(listener);
 	}
 	
@@ -157,6 +176,7 @@ public class TermSuiteToolBar {
 		this.setHelp();
 		this.setAbout();
 		this.setAcabit();
+		this.setKatastasis();
 		this.setZiggurat();
 		this.setTreeTagger();
 		this.setComponent();

@@ -1,15 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <collectionReaderDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
-  <implementationName>eu.project.ttc.engines.XmiCollectionReader</implementationName>
+  <implementationName>eu.project.ttc.engines.KatastasisCollectionReader</implementationName>
   <processingResourceMetaData>
-    <name>XMI Collection Reader</name>
+    <name>Katastasis Collection Reader</name>
     <description/>
     <version>1.0</version>
     <vendor/>
     <configurationParameters>
       <configurationParameter>
+        <name>Language</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+      </configurationParameter>
+      <configurationParameter>
         <name>Directory</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+      </configurationParameter>
+      <configurationParameter>
+        <name>TerminologyFile</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
@@ -26,10 +38,7 @@
     <capabilities>
       <capability>
         <inputs/>
-        <outputs>
-          <type allAnnotatorFeatures="true">uima.tcas.DocumentAnnotation</type>
-          <type allAnnotatorFeatures="true">org.apache.uima.examples.SourceDocumentInformation</type>
-        </outputs>
+        <outputs/>
         <languagesSupported/>
       </capability>
     </capabilities>

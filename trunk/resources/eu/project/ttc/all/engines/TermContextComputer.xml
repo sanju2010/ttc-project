@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
+  <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
+  <primitive>true</primitive>
+  <annotatorImplementationName>eu.project.ttc.engines.TermContextComputer</annotatorImplementationName>
+  <analysisEngineMetaData>
+    <name>Term Context Computer</name>
+    <description/>
+    <version/>
+    <vendor/>
+    <configurationParameters/>
+    <configurationParameterSettings/>
+    <typeSystemDescription>
+      <imports>
+        <import name="eu.project.ttc.types.TermSuiteTypeSystem"/>
+      </imports>
+    </typeSystemDescription>
+    <typePriorities/>
+    <fsIndexCollection/>
+    <capabilities>
+      <capability>
+        <inputs>
+          <type allAnnotatorFeatures="true">eu.project.ttc.types.TermContextIndexAnnotation</type>
+          <type allAnnotatorFeatures="true">eu.project.ttc.types.TermContextVectorAnnotation</type>
+          <type allAnnotatorFeatures="true">eu.project.ttc.types.TermContextEntryAnnotation</type>
+        </inputs>
+        <outputs/>
+        <languagesSupported/>
+      </capability>
+    </capabilities>
+    <operationalProperties>
+      <modifiesCas>false</modifiesCas>
+      <multipleDeploymentAllowed>true</multipleDeploymentAllowed>
+      <outputsNewCASes>false</outputsNewCASes>
+    </operationalProperties>
+  </analysisEngineMetaData>
+  <externalResourceDependencies>
+    <externalResourceDependency>
+      <key>TermContextSpace</key>
+      <description/>
+      <interfaceName>eu.project.ttc.models.aligner.TermContextSpace</interfaceName>
+      <optional>false</optional>
+    </externalResourceDependency>
+  </externalResourceDependencies>
+  <resourceManagerConfiguration>
+    <externalResources>
+      <externalResource>
+        <name>TermContextSpaceResource</name>
+        <description/>
+        <fileResourceSpecifier>
+          <fileUrl>eu/project/ttc/models/aligner/TermContextSpaceResource.class</fileUrl>
+        </fileResourceSpecifier>
+        <implementationName>eu.project.ttc.models.aligner.TermContextSpaceResource</implementationName>
+      </externalResource>
+    </externalResources>
+    <externalResourceBindings>
+      <externalResourceBinding>
+        <key>TermContextSpace</key>
+        <resourceName>TermContextSpaceResource</resourceName>
+      </externalResourceBinding>
+    </externalResourceBindings>
+  </resourceManagerConfiguration>
+</analysisEngineDescription>

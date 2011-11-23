@@ -2,25 +2,37 @@
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>true</primitive>
-  <annotatorImplementationName>eu.project.ttc.engines.XmiCasConsumer</annotatorImplementationName>
+  <annotatorImplementationName>eu.project.ttc.engines.TermContextBuilder</annotatorImplementationName>
   <analysisEngineMetaData>
-    <name>Xmi Cas Consumer</name>
+    <name>Term Context Builder</name>
     <description/>
     <version>1.0</version>
     <vendor/>
     <configurationParameters>
       <configurationParameter>
-        <name>Directory</name>
+        <name>AnnotationType</name>
         <type>String</type>
         <multiValued>false</multiValued>
-        <mandatory>true</mandatory>
+        <mandatory>false</mandatory>
+      </configurationParameter>
+      <configurationParameter>
+        <name>ScopeSize</name>
+        <type>Integer</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
       </configurationParameter>
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
-        <name>Directory</name>
+        <name>AnnotationType</name>
         <value>
-          <string>/tmp</string>
+          <string>eu.project.ttc.types.TermContextEntryAnnotation</string>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>ScopeSize</name>
+        <value>
+          <integer>7</integer>
         </value>
       </nameValuePair>
     </configurationParameterSettings>
@@ -33,8 +45,12 @@
     <fsIndexCollection/>
     <capabilities>
       <capability>
-        <inputs/>
-        <outputs/>
+        <inputs>
+          <type allAnnotatorFeatures="true">org.apache.uima.TermContextEntryAnnotation</type>
+        </inputs>
+        <outputs>
+          <type allAnnotatorFeatures="true">org.apache.uima.TermContextVectorAnnotation</type>
+        </outputs>
         <languagesSupported/>
       </capability>
     </capabilities>

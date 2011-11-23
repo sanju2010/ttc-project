@@ -1,10 +1,9 @@
-package eu.project.ttc.tools.treetagger;
+package eu.project.ttc.tools.katastasis;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.net.URL;
-import java.util.Locale;
 
 import javax.swing.SwingWorker;
 
@@ -17,16 +16,16 @@ import org.apache.uima.collection.metadata.CpeDescriptorException;
 import org.apache.uima.collection.metadata.CpeIntegratedCasProcessor;
 import org.apache.uima.resource.metadata.ConfigurationParameterSettings;
 
-public class TreeTaggerEngine extends SwingWorker<CpeDescription,Void> {
+public class KatastasisEngine extends SwingWorker<CpeDescription,Void> {
 
-	private TreeTagger treeTagger;
+	private Katastasis katastasis;
 	
-	public void setTreeTagger(TreeTagger treeTagger) {
-		this.treeTagger = treeTagger;
+	public void setKatastasis(Katastasis katastasis) {
+		this.katastasis = katastasis;
 	}
 	
-	private TreeTagger getTreeTagger() {
-		return this.treeTagger;
+	private Katastasis getKatastasis() {
+		return this.katastasis;
 	}
 		
 	private CpeDescription collectionProcessingEngine;
@@ -45,7 +44,7 @@ public class TreeTaggerEngine extends SwingWorker<CpeDescription,Void> {
 		this.setCollectionProcessingEngine();
 		this.setCollectionReader();
 		this.setAnalysisEngine();
-		File file = File.createTempFile("treetagger-cpe-",".xml");
+		File file = File.createTempFile("ziggurat-cpe-",".xml");
 		file.deleteOnExit();
 		OutputStream stream = new FileOutputStream(file);
 		this.collectionProcessingEngine.toXML(stream);
@@ -53,30 +52,30 @@ public class TreeTaggerEngine extends SwingWorker<CpeDescription,Void> {
 	}
 	
 	private void setCollectionReader() throws Exception {
-		ConfigurationParameterSettings parameters = this.getTreeTagger().getSettings().getMetaData().getConfigurationParameterSettings();
-		URL url = this.getClass().getClassLoader().getResource("eu/project/ttc/all/engines/TreeTaggerCollectionReader.xml");
+		ConfigurationParameterSettings parameters = this.getKatastasis().getSettings().getMetaData().getConfigurationParameterSettings();
+		URL url = this.getClass().getClassLoader().getResource("eu/project/ttc/all/engines/KatastasisCollectionReader.xml");
 		CpeCollectionReader termSuiteCollector = CpeDescriptorFactory.produceCollectionReader(url.toURI().toString());
 		CasProcessorConfigurationParameterSettings settings = CpeDescriptorFactory.produceCasProcessorConfigurationParameterSettings();
 		settings.setParameterValue("Language", parameters.getParameterValue("Language"));
-		settings.setParameterValue("Directory",parameters.getParameterValue("InputDirectory"));
+		settings.setParameterValue("Directory",parameters.getParameterValue("Directory"));
+		settings.setParameterValue("TerminologyFile",parameters.getParameterValue("TerminologyFile"));
 		termSuiteCollector.setConfigurationParameterSettings(settings);
 		this.collectionProcessingEngine.addCollectionReader(termSuiteCollector);
 	}
-
+	
 	private void setAnalysisEngine() throws Exception {
-		ConfigurationParameterSettings parameters = this.getTreeTagger().getSettings().getMetaData().getConfigurationParameterSettings();
-		String code = (String) parameters.getParameterValue("Language");
-		String language = new Locale (code).getDisplayLanguage(Locale.ENGLISH);
-		String path = "eu/project/ttc/" + language.toLowerCase() + "/engines/" + language + "TreeTagger.xml";
-        URL url = this.getClass().getClassLoader().getResource(path);
-        CpeIntegratedCasProcessor termMateAnnotator = CpeDescriptorFactory.produceCasProcessor(language + " TreeTagger");
-        CpeComponentDescriptor desc = CpeDescriptorFactory.produceComponentDescriptor(url.toURI().toString());
-        termMateAnnotator.setCpeComponentDescriptor(desc);
-        CasProcessorConfigurationParameterSettings settings = CpeDescriptorFactory.produceCasProcessorConfigurationParameterSettings();
-        settings.setParameterValue("TreeTaggerHomeDirectory", (String) parameters.getParameterValue("TreeTaggerHomeDirectory"));
-        settings.setParameterValue("Directory", (String) parameters.getParameterValue("OutputDirectory"));
-        termMateAnnotator.setConfigurationParameterSettings(settings);
-        this.collectionProcessingEngine.addCasProcessor(termMateAnnotator);
+		ConfigurationParameterSettings parameters = this.getKatastasis().getSettings().getMetaData().getConfigurationParameterSettings();
+		URL url = this.getClass().getClassLoader().getResource("eu/project/ttc/all/engines/KatastasisAnalysisEngine.xml");
+		CpeIntegratedCasProcessor termSuiteTranslator = CpeDescriptorFactory.produceCasProcessor("Katastasis Analysis Engine");
+		CpeComponentDescriptor desc = CpeDescriptorFactory.produceComponentDescriptor(url.toURI().toString());
+		termSuiteTranslator.setCpeComponentDescriptor(desc);
+		CasProcessorConfigurationParameterSettings settings = CpeDescriptorFactory.produceCasProcessorConfigurationParameterSettings();
+		settings.setParameterValue("Language", parameters.getParameterValue("Language"));
+		settings.setParameterValue("ScopeSize",parameters.getParameterValue("ScopeSize"));
+		settings.setParameterValue("AssociationRateClassName",parameters.getParameterValue("AssociationRateClassName"));
+		// settings.setParameterValue("File",parameters.getParameterValue("File"));
+		termSuiteTranslator.setConfigurationParameterSettings(settings);
+		this.collectionProcessingEngine.addCasProcessor(termSuiteTranslator);
 	}
-
+	
 }

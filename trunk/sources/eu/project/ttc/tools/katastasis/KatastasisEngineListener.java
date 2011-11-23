@@ -1,14 +1,11 @@
-package eu.project.ttc.tools.acabit;
+package eu.project.ttc.tools.katastasis;
 
 import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.concurrent.ExecutionException;
 
 import javax.swing.JButton;
@@ -17,94 +14,89 @@ import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
 import org.apache.uima.UIMAFramework;
-import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.cas.CAS;
-import org.apache.uima.cas.impl.XmiCasDeserializer;
 import org.apache.uima.collection.CollectionProcessingEngine;
 import org.apache.uima.collection.EntityProcessStatus;
 import org.apache.uima.collection.StatusCallbackListener;
 import org.apache.uima.collection.metadata.CpeDescription;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.apache.uima.util.CasCreationUtils;
 import org.apache.uima.util.Level;
 import org.apache.uima.util.Progress;
-import org.apache.uima.util.XMLInputSource;
-import org.apache.uima.util.XMLParser;
 
 import eu.project.ttc.tools.TermSuite;
 import fr.free.rocheteau.jerome.dunamis.models.ProcessingResult;
 
-public class AcabitEngineListener implements ActionListener, StatusCallbackListener {
+public class KatastasisEngineListener implements ActionListener, StatusCallbackListener {
 
-	private Acabit acabit;
+	private Katastasis katastasis;
 	
-	public void setAcabit(Acabit acabit) {
-		this.acabit = acabit;
+	public void setKatastasis(Katastasis katastasis) {
+		this.katastasis = katastasis;
 	}
 	
-	private Acabit getAcabit() {
-		return this.acabit;
+	private Katastasis getKatastasis() {
+		return this.katastasis;
 	}
 	
 	private URI getHelp() throws URISyntaxException {
-		String uri = this.getAcabit().getPreferences().getHelp();
+		String uri = this.getKatastasis().getPreferences().getHelp();
 		return new URI(uri);
 	}
 	
 	private void doQuit() {
-		String message = "Do you really want to quit " + this.getAcabit().getPreferences().getTitle() + "?";
+		String message = "Do you really want to quit " + this.getKatastasis().getPreferences().getTitle() + "?";
 		String title = "Quit";
-		int response = JOptionPane.showConfirmDialog(this.getAcabit().getFrame(),message,title,JOptionPane.YES_NO_OPTION);
+		int response = JOptionPane.showConfirmDialog(this.getKatastasis().getFrame(),message,title,JOptionPane.YES_NO_OPTION);
 		if (response == 0) {
-			this.getAcabit().quit();				
+			this.getKatastasis().quit();				
 		}
 	}
 	
 	private void doHelp() {
 		try {
-			if (this.getAcabit().getDesktop() != null && this.getAcabit().getDesktop().isSupported(Desktop.Action.BROWSE)) {
-				this.getAcabit().getDesktop().browse(this.getHelp());	
+			if (this.getKatastasis().getDesktop() != null && this.getKatastasis().getDesktop().isSupported(Desktop.Action.BROWSE)) {
+				this.getKatastasis().getDesktop().browse(this.getHelp());	
 			} else {
-				Runnable parent = this.getAcabit().getParent();
+				Runnable parent = this.getKatastasis().getParent();
 				if (parent instanceof TermSuite) {
 					TermSuite termSuite = (TermSuite) parent;
-					termSuite.getHelp().selectTermer();
+					termSuite.getHelp().selectAligner();
 					SwingUtilities.invokeLater(termSuite.getHelp());
 				}
 			}
 		} catch (IOException e) {
-			this.getAcabit().error(e);
+			this.getKatastasis().error(e);
 		} catch (URISyntaxException e) {
-			this.getAcabit().error(e);
+			this.getKatastasis().error(e);
 		}
 	}
 	
 	public void doProcess() {
-		this.getAcabit().getSettings().doUpdate();
+		this.getKatastasis().getSettings().doUpdate();
 		try {
-			this.getAcabit().getSettings().validate();
+			this.getKatastasis().getSettings().validate();
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(this.getAcabit().getFrame(),e.getMessage(),e.getClass().getSimpleName(),JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this.getKatastasis().getFrame(),e.getMessage(),e.getClass().getSimpleName(),JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		}
-		AcabitEngine proc = new AcabitEngine();
-		proc.setAcabit(this.getAcabit());
+		KatastasisEngine proc = new KatastasisEngine();
+		proc.setKatastasis(this.getKatastasis());
 		proc.execute();
 		try {
 			CpeDescription desc = proc.get();
 			this.setTimer();
-			this.getAcabit().getToolBar().getRun().setEnabled(false);
-			this.getAcabit().getToolBar().getPause().setEnabled(true);
-			this.getAcabit().getToolBar().getStop().setEnabled(true);
+			this.getKatastasis().getToolBar().getRun().setEnabled(false);
+			this.getKatastasis().getToolBar().getPause().setEnabled(true);
+			this.getKatastasis().getToolBar().getStop().setEnabled(true);
 			this.setEngine(desc);
 		} catch (InterruptedException e) {
-			JOptionPane.showMessageDialog(this.getAcabit().getFrame(),e.getMessage(),"Interrupted Exception",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this.getKatastasis().getFrame(),e.getMessage(),"Interrupted Exception",JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		} catch (ExecutionException e) {
-			JOptionPane.showMessageDialog(this.getAcabit().getFrame(),e.getMessage(),"Execution Exception",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this.getKatastasis().getFrame(),e.getMessage(),"Execution Exception",JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		} catch (ResourceInitializationException e) {
-			JOptionPane.showMessageDialog(this.getAcabit().getFrame(),e.getMessage(),"Resource Initialization Exception",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this.getKatastasis().getFrame(),e.getMessage(),"Resource Initialization Exception",JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		} 
 	}
@@ -121,19 +113,19 @@ public class AcabitEngineListener implements ActionListener, StatusCallbackListe
 			}
 		}
 		if (files == -1) {
-			this.getAcabit().getToolBar().getProgressBar().setIndeterminate(true);
+			this.getKatastasis().getToolBar().getProgressBar().setIndeterminate(true);
 	    } else {
-	    	this.getAcabit().getToolBar().getProgressBar().setMaximum(files);
-	    	this.getAcabit().getToolBar().getProgressBar().setIndeterminate(false);
+	    	this.getKatastasis().getToolBar().getProgressBar().setMaximum(files);
+	    	this.getKatastasis().getToolBar().getProgressBar().setIndeterminate(false);
 	    }
-		this.getAcabit().getToolBar().getProgressBar().setValue(0);
+		this.getKatastasis().getToolBar().getProgressBar().setValue(0);
 		this.getTimer().start();
 	}
 	
 	private void doResume() {
 		if (this.getEngine().isPaused()) {
-			this.getAcabit().getToolBar().getProgressBar().setString("Resumed...");
-			this.getAcabit().getToolBar().getPause().setEnabled(true);
+			this.getKatastasis().getToolBar().getProgressBar().setString("Resumed...");
+			this.getKatastasis().getToolBar().getPause().setEnabled(true);
 			this.getTimer().restart();
 			this.getEngine().resume();
 		} 
@@ -141,11 +133,11 @@ public class AcabitEngineListener implements ActionListener, StatusCallbackListe
 	
 	private void doPause() {
 		if (this.getEngine().isProcessing()) {
-			this.getAcabit().getToolBar().getProgressBar().setString("Paused...");
-			this.getAcabit().getToolBar().getRun().setText("Resume");
-			this.getAcabit().getToolBar().getRun().setActionCommand("resume");
-			this.getAcabit().getToolBar().getRun().setEnabled(true);
-			this.getAcabit().getToolBar().getPause().setEnabled(false);
+			this.getKatastasis().getToolBar().getProgressBar().setString("Paused...");
+			this.getKatastasis().getToolBar().getRun().setText("Resume");
+			this.getKatastasis().getToolBar().getRun().setActionCommand("resume");
+			this.getKatastasis().getToolBar().getRun().setEnabled(true);
+			this.getKatastasis().getToolBar().getPause().setEnabled(false);
 			this.getEngine().pause();
 			this.getTimer().stop();
 		}
@@ -156,9 +148,9 @@ public class AcabitEngineListener implements ActionListener, StatusCallbackListe
 			this.getEngine().stop();
 		}
 		this.getTimer().stop();
-		this.getAcabit().getToolBar().getRun().setEnabled(true);
-		this.getAcabit().getToolBar().getPause().setEnabled(false);
-		this.getAcabit().getToolBar().getStop().setEnabled(false);
+		this.getKatastasis().getToolBar().getRun().setEnabled(true);
+		this.getKatastasis().getToolBar().getPause().setEnabled(false);
+		this.getKatastasis().getToolBar().getStop().setEnabled(false);
 	}
 	
 	private void doTime() {
@@ -175,8 +167,8 @@ public class AcabitEngineListener implements ActionListener, StatusCallbackListe
 			}
 			if (index >= 0) {
 				int value = (int) progress[index].getCompleted();
-				this.getAcabit().getToolBar().getProgressBar().setValue(value);
-				this.getAcabit().getToolBar().getProgressBar().setString(value + " / " + progress[index].getTotal());
+				this.getKatastasis().getToolBar().getProgressBar().setValue(value);
+				this.getKatastasis().getToolBar().getProgressBar().setString(value + " / " + progress[index].getTotal());
 			} 
 		}
 	}
@@ -214,7 +206,7 @@ public class AcabitEngineListener implements ActionListener, StatusCallbackListe
 			} else if (action.equals("help")) { 
 				this.doHelp();
 			} else if (action.equals("about")) {
-				this.getAcabit().getAbout().show();
+				this.getKatastasis().getAbout().show();
 			} else if (action.equals("run")) {
 				this.doProcess();
 			} else if (action.equals("pause")) {
@@ -246,33 +238,14 @@ public class AcabitEngineListener implements ActionListener, StatusCallbackListe
 
 	@Override
 	public void collectionProcessComplete() {
-		UIMAFramework.getLogger().log(Level.INFO,"Collection Process Complete");
 		this.doStop();
-		this.doLoad();
+		UIMAFramework.getLogger().log(Level.INFO,"Collection Process Complete");
 		UIMAFramework.getLogger().log(Level.INFO,this.getEngine().getPerformanceReport().toString());
-		if (this.getAcabit().isCommandLineInterface()) {
-			this.getAcabit().quit();
+		if (this.getKatastasis().isCommandLineInterface()) {
+			this.getKatastasis().quit();
 		}
 	}
 	
-	private void doLoad() {
-		try {
-			String path = (String) this.getAcabit().getSettings().getMetaData().getConfigurationParameterSettings().getParameterValue("TerminologyFile");
-			InputStream inputStream = new FileInputStream(path);
-			URL url = this.getClass().getClassLoader().getResource("eu/project/ttc/all/engines/IndexWriter.xml");
-			XMLInputSource source = new XMLInputSource(url);
-			XMLParser parser = UIMAFramework.getXMLParser();
-			AnalysisEngineDescription ae = parser.parseAnalysisEngineDescription(source); 
-			CAS cas = CasCreationUtils.createCas(ae);
-			// Handler handler = HandlerFactory.get();
-			// handler.update(inputStream, cas.getJCas());
-			XmiCasDeserializer.deserialize(inputStream, cas);
-			this.getAcabit().getTerminologies().doLoad(cas.getJCas());
-		} catch (Exception e) {
-			this.getAcabit().error(e);
-		}
-	}
-
 	@Override
 	public void paused() { }
 
@@ -286,20 +259,20 @@ public class AcabitEngineListener implements ActionListener, StatusCallbackListe
 	public void entityProcessComplete(CAS cas, EntityProcessStatus status) {
 		if (status.isException()) {
 			String message = status.getStatusMessage();
-			this.getAcabit().warning(message);
+			this.getKatastasis().warning(message);
 			for (Exception e : status.getExceptions()) {
-				this.getAcabit().error(e);
+				this.getKatastasis().error(e);
 			}
 		} else if (status.isEntitySkipped()) {
 			String message = status.getStatusMessage();
-			this.getAcabit().warning(message);
+			this.getKatastasis().warning(message);
 		} else {
 			try {
 				ProcessingResult result = new ProcessingResult();
 				result.setCas(cas);
-				this.getAcabit().getDocuments().getResultModel().addElement(result);
+				this.getKatastasis().getDocuments().getResultModel().addElement(result);
 			} catch (Exception e) {
-				this.getAcabit().error(e);
+				this.getKatastasis().error(e);
 			}
 		}
 	}

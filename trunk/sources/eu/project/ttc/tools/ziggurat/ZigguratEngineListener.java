@@ -10,6 +10,7 @@ import java.util.concurrent.ExecutionException;
 
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
 import org.apache.uima.UIMAFramework;
@@ -22,6 +23,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Level;
 import org.apache.uima.util.Progress;
 
+import eu.project.ttc.tools.TermSuite;
 import fr.free.rocheteau.jerome.dunamis.models.ProcessingResult;
 
 public class ZigguratEngineListener implements ActionListener, StatusCallbackListener {
@@ -52,8 +54,15 @@ public class ZigguratEngineListener implements ActionListener, StatusCallbackLis
 	
 	private void doHelp() {
 		try {
-			if (this.getZiggurat().getDesktop().isSupported(Desktop.Action.BROWSE)) {
+			if (this.getZiggurat().getDesktop() != null && this.getZiggurat().getDesktop().isSupported(Desktop.Action.BROWSE)) {
 				this.getZiggurat().getDesktop().browse(this.getHelp());	
+			} else {
+				Runnable parent = this.getZiggurat().getParent();
+				if (parent instanceof TermSuite) {
+					TermSuite termSuite = (TermSuite) parent;
+					termSuite.getHelp().selectAligner();
+					SwingUtilities.invokeLater(termSuite.getHelp());
+				}
 			}
 		} catch (IOException e) {
 			this.getZiggurat().error(e);
