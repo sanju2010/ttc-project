@@ -2,31 +2,25 @@
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>true</primitive>
-  <annotatorImplementationName>eu.project.ttc.engines.TermContextFilter</annotatorImplementationName>
+  <annotatorImplementationName>fr.free.rocheteau.jerome.engines.Writer</annotatorImplementationName>
   <analysisEngineMetaData>
-    <name>Term Context Filter</name>
+    <name>Index Writer</name>
     <description/>
     <version>1.0</version>
     <vendor/>
     <configurationParameters>
       <configurationParameter>
-        <name>IndexName</name>
+        <name>File</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
-      <configurationParameter>
-        <name>DictionaryFile</name>
-        <type>String</type>
-        <multiValued>false</multiValued>
-        <mandatory>false</mandatory>
-      </configurationParameter>
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
-        <name>IndexName</name>
+        <name>File</name>
         <value>
-          <string>Source</string>
+          <string>output.index</string>
         </value>
       </nameValuePair>
     </configurationParameterSettings>
@@ -52,45 +46,27 @@
   </analysisEngineMetaData>
   <externalResourceDependencies>
     <externalResourceDependency>
-      <key>TermContextSpace</key>
+      <key>Index</key>
       <description/>
-      <interfaceName>eu.project.ttc.models.aligner.TermContextSpace</interfaceName>
-      <optional>false</optional>
-    </externalResourceDependency>
-    <externalResourceDependency>
-      <key>Dictionary</key>
-      <description/>
-      <interfaceName>fr.univnantes.lina.uima.dictionaries.Dictionary</interfaceName>
+      <interfaceName>fr.free.rocheteau.jerome.models.Index</interfaceName>
       <optional>false</optional>
     </externalResourceDependency>
   </externalResourceDependencies>
   <resourceManagerConfiguration>
     <externalResources>
       <externalResource>
-        <name>TermContextSpaceResource</name>
+        <name>DefaultIndex</name>
         <description/>
         <fileResourceSpecifier>
-          <fileUrl>eu/project/ttc/models/aligner/TermContextSpaceResource.class</fileUrl>
+          <fileUrl>eu/project/ttc/all/engines/TermContextIndexWriter.xml</fileUrl>
         </fileResourceSpecifier>
-        <implementationName>eu.project.ttc.models.aligner.TermContextSpaceResource</implementationName>
-      </externalResource>
-      <externalResource>
-        <name>EvaluationDictionary</name>
-        <description/>
-        <fileResourceSpecifier>
-          <fileUrl>eu/project/ttc/resources/Dictionary.Evaluation</fileUrl>
-        </fileResourceSpecifier>
-        <implementationName>fr.univnantes.lina.uima.dictionaries.DictionaryResource</implementationName>
+        <implementationName>fr.free.rocheteau.jerome.models.DefaultIndex</implementationName>
       </externalResource>
     </externalResources>
     <externalResourceBindings>
       <externalResourceBinding>
-        <key>TermContextSpace</key>
-        <resourceName>TermContextSpaceResource</resourceName>
-      </externalResourceBinding>
-      <externalResourceBinding>
-        <key>Dictionary</key>
-        <resourceName>EvaluationDictionary</resourceName>
+        <key>Index</key>
+        <resourceName>DefaultIndex</resourceName>
       </externalResourceBinding>
     </externalResourceBindings>
   </resourceManagerConfiguration>

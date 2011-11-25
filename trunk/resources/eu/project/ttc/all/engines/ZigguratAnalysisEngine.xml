@@ -2,19 +2,13 @@
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>true</primitive>
-  <annotatorImplementationName>eu.project.ttc.engines.TermContextChecker</annotatorImplementationName>
+  <annotatorImplementationName>eu.project.ttc.engines.ZigguratAnalysisEngine</annotatorImplementationName>
   <analysisEngineMetaData>
-    <name>Term Context Checker</name>
+    <name>Ziggurat Analysis Engine</name>
     <description/>
-    <version>1.0</version>
+    <version/>
     <vendor/>
     <configurationParameters>
-      <configurationParameter>
-        <name>IndexName</name>
-        <type>String</type>
-        <multiValued>false</multiValued>
-        <mandatory>true</mandatory>
-      </configurationParameter>
       <configurationParameter>
         <name>DictionaryFile</name>
         <type>String</type>
@@ -22,7 +16,19 @@
         <mandatory>false</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>File</name>
+        <name>SourceTermContextIndexFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
+      <configurationParameter>
+        <name>TargetTermContextIndexFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
+      <configurationParameter>
+        <name>SimilarityDistanceClassName</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
@@ -30,15 +36,9 @@
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
-        <name>IndexName</name>
+        <name>SimilarityDistanceClassName</name>
         <value>
-          <string>Source</string>
-        </value>
-      </nameValuePair>
-      <nameValuePair>
-        <name>File</name>
-        <value>
-          <string>ziggurat-alignment.top</string>
+          <string>eu.project.ttc.metrics.Cosinus</string>
         </value>
       </nameValuePair>
     </configurationParameterSettings>
@@ -57,52 +57,70 @@
       </capability>
     </capabilities>
     <operationalProperties>
-      <modifiesCas>true</modifiesCas>
+      <modifiesCas>false</modifiesCas>
       <multipleDeploymentAllowed>true</multipleDeploymentAllowed>
       <outputsNewCASes>false</outputsNewCASes>
     </operationalProperties>
   </analysisEngineMetaData>
   <externalResourceDependencies>
     <externalResourceDependency>
-      <key>TermContextSpace</key>
-      <description/>
-      <interfaceName>eu.project.ttc.models.aligner.TermContextSpace</interfaceName>
-      <optional>false</optional>
-    </externalResourceDependency>
-    <externalResourceDependency>
       <key>Dictionary</key>
       <description/>
       <interfaceName>fr.univnantes.lina.uima.dictionaries.Dictionary</interfaceName>
+      <optional>false</optional>
+    </externalResourceDependency>
+    <externalResourceDependency>
+      <key>SourceIndex</key>
+      <description/>
+      <interfaceName>eu.project.ttc.models.TermContextIndex</interfaceName>
+      <optional>false</optional>
+    </externalResourceDependency>
+    <externalResourceDependency>
+      <key>TargetIndex</key>
+      <description/>
+      <interfaceName>eu.project.ttc.models.TermContextIndex</interfaceName>
       <optional>false</optional>
     </externalResourceDependency>
   </externalResourceDependencies>
   <resourceManagerConfiguration>
     <externalResources>
       <externalResource>
-        <name>TermContextSpaceResource</name>
+        <name>DefaultDictionary</name>
         <description/>
         <fileResourceSpecifier>
-          <fileUrl>eu/project/ttc/models/aligner/TermContextSpaceResource.class</fileUrl>
-        </fileResourceSpecifier>
-        <implementationName>eu.project.ttc.models.aligner.TermContextSpaceResource</implementationName>
-      </externalResource>
-      <externalResource>
-        <name>EvaluationDictionary</name>
-        <description/>
-        <fileResourceSpecifier>
-          <fileUrl>eu/project/ttc/resources/Dictionary.Evaluation</fileUrl>
+          <fileUrl>fr/univnantes/lina/uima/resources/Dictionary.Default</fileUrl>
         </fileResourceSpecifier>
         <implementationName>fr.univnantes.lina.uima.dictionaries.DictionaryResource</implementationName>
+      </externalResource>
+      <externalResource>
+        <name>SourceTermContextIndex</name>
+        <description/>
+        <fileResourceSpecifier>
+          <fileUrl>eu/project/ttc/models/TermContextIndexListener.class</fileUrl>
+        </fileResourceSpecifier>
+        <implementationName>eu.project.ttc.models.TermContextIndexListener</implementationName>
+      </externalResource>
+      <externalResource>
+        <name>TargetTermContextIndex</name>
+        <description/>
+        <fileResourceSpecifier>
+          <fileUrl>eu/project/ttc/models/TermContextIndexListener.class</fileUrl>
+        </fileResourceSpecifier>
+        <implementationName>eu.project.ttc.models.TermContextIndexListener</implementationName>
       </externalResource>
     </externalResources>
     <externalResourceBindings>
       <externalResourceBinding>
-        <key>TermContextSpace</key>
-        <resourceName>TermContextSpaceResource</resourceName>
+        <key>Dictionary</key>
+        <resourceName>DefaultDictionary</resourceName>
       </externalResourceBinding>
       <externalResourceBinding>
-        <key>Dictionary</key>
-        <resourceName>EvaluationDictionary</resourceName>
+        <key>SourceIndex</key>
+        <resourceName>SourceTermContextIndex</resourceName>
+      </externalResourceBinding>
+      <externalResourceBinding>
+        <key>TargetIndex</key>
+        <resourceName>TargetTermContextIndex</resourceName>
       </externalResourceBinding>
     </externalResourceBindings>
   </resourceManagerConfiguration>

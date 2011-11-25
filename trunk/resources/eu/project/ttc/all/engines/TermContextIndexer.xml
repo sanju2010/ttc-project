@@ -2,33 +2,27 @@
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>true</primitive>
-  <annotatorImplementationName>eu.project.ttc.engines.TermContextIndexer</annotatorImplementationName>
+  <annotatorImplementationName>fr.free.rocheteau.jerome.engines.Indexer</annotatorImplementationName>
   <analysisEngineMetaData>
     <name>Term Context Indexer</name>
     <description/>
-    <version/>
+    <version>1.0</version>
     <vendor/>
     <configurationParameters>
       <configurationParameter>
-        <name>SourceLanguage</name>
+        <name>Type</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>SourceName</name>
+        <name>AssociationRateClassName</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>TargetLanguage</name>
-        <type>String</type>
-        <multiValued>false</multiValued>
-        <mandatory>true</mandatory>
-      </configurationParameter>
-      <configurationParameter>
-        <name>TargetName</name>
+        <name>Language</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
@@ -36,27 +30,21 @@
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
-        <name>SourceLanguage</name>
+        <name>Type</name>
         <value>
-          <string>en</string>
+          <string>eu.project.ttc.types.TermContextVectorAnnotation</string>
         </value>
       </nameValuePair>
       <nameValuePair>
-        <name>TargetLanguage</name>
+        <name>AssociationRateClassName</name>
         <value>
-          <string>fr</string>
+          <string>eu.project.ttc.metrics.LogLikelihood</string>
         </value>
       </nameValuePair>
       <nameValuePair>
-        <name>TargetName</name>
+        <name>Language</name>
         <value>
-          <string>Target</string>
-        </value>
-      </nameValuePair>
-      <nameValuePair>
-        <name>SourceName</name>
-        <value>
-          <string>Source</string>
+          <string>x-unspecified</string>
         </value>
       </nameValuePair>
     </configurationParameterSettings>
@@ -69,45 +57,58 @@
     <fsIndexCollection/>
     <capabilities>
       <capability>
-        <inputs>
-          <type allAnnotatorFeatures="true">eu.project.ttc.types.SingleWordTermAnnotation</type>
-        </inputs>
-        <outputs>
-          <type allAnnotatorFeatures="true">eu.project.ttc.types.TermContextEntryAnnotation</type>
-          <type allAnnotatorFeatures="true">eu.project.ttc.types.TermContextIndexAnnotation</type>
-        </outputs>
+        <inputs/>
+        <outputs/>
         <languagesSupported/>
       </capability>
     </capabilities>
     <operationalProperties>
       <modifiesCas>true</modifiesCas>
       <multipleDeploymentAllowed>true</multipleDeploymentAllowed>
-      <outputsNewCASes>true</outputsNewCASes>
+      <outputsNewCASes>false</outputsNewCASes>
     </operationalProperties>
   </analysisEngineMetaData>
   <externalResourceDependencies>
     <externalResourceDependency>
-      <key>TermContextBench</key>
+      <key>Index</key>
       <description/>
-      <interfaceName>eu.project.ttc.models.aligner.TermContextBench</interfaceName>
+      <interfaceName>fr.free.rocheteau.jerome.models.Index</interfaceName>
+      <optional>false</optional>
+    </externalResourceDependency>
+    <externalResourceDependency>
+      <key>Listener</key>
+      <description/>
+      <interfaceName>fr.free.rocheteau.jerome.models.IndexListener</interfaceName>
       <optional>false</optional>
     </externalResourceDependency>
   </externalResourceDependencies>
   <resourceManagerConfiguration>
     <externalResources>
       <externalResource>
-        <name>DefaultTermContextBench</name>
+        <name>DefaultIndex</name>
         <description/>
         <fileResourceSpecifier>
-          <fileUrl>eu/project/ttc/models/aligner/TermContextBench.class</fileUrl>
+          <fileUrl>eu/project/ttc/all/engines/TermContextIndexWriter.xml</fileUrl>
         </fileResourceSpecifier>
-        <implementationName>eu.project.ttc.models.aligner.TermContextBenchResource</implementationName>
+        <implementationName>fr.free.rocheteau.jerome.models.DefaultIndex</implementationName>
+      </externalResource>
+      <externalResource>
+        <name>TermContextIndexListener</name>
+        <description/>
+        <fileResourceSpecifier>
+          <fileUrl>eu/project/ttc/models/TermContextIndexListener.class</fileUrl>
+        </fileResourceSpecifier>
+        <implementationName>eu.project.ttc.models.TermContextIndexListener</implementationName>
       </externalResource>
     </externalResources>
     <externalResourceBindings>
       <externalResourceBinding>
-        <key>TermContextBench</key>
-        <resourceName>DefaultTermContextBench</resourceName>
+        <key>Index</key>
+        <resourceName>DefaultIndex</resourceName>
+      </externalResourceBinding>
+      <externalResourceBinding>
+        <key>Listener</key>
+        <resourceName>TermContextIndexListener</resourceName>
       </externalResourceBinding>
     </externalResourceBindings>
   </resourceManagerConfiguration>

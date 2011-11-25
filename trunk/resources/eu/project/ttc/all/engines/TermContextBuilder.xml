@@ -26,13 +26,13 @@
       <nameValuePair>
         <name>AnnotationType</name>
         <value>
-          <string>eu.project.ttc.types.TermContextEntryAnnotation</string>
+          <string>eu.project.ttc.types.SingleWordTermAnnotation</string>
         </value>
       </nameValuePair>
       <nameValuePair>
         <name>ScopeSize</name>
         <value>
-          <integer>7</integer>
+          <integer>3</integer>
         </value>
       </nameValuePair>
     </configurationParameterSettings>
