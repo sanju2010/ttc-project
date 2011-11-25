@@ -213,6 +213,7 @@ public class TermContextIndexListener implements IndexListener, TermContextIndex
 	@Override
 	public void configure(UimaContext context) throws ResourceInitializationException {
 		try {
+			this.enableReleased(false);
 			String language = (String) context.getConfigParameterValue("Language");
 			this.setLanguage(language);
 			String className = (String) context.getConfigParameterValue("AssociationRateClassName");
@@ -236,15 +237,30 @@ public class TermContextIndexListener implements IndexListener, TermContextIndex
 			}
 		}
 	}
+	
+	private boolean realeased = false;
 
+	private void enableReleased(boolean enabled) {
+		this.realeased = enabled;
+	}
+	
+	private boolean isReleased() {
+		return this.realeased;
+	}
+	
 	@Override
-	public void release(JCas cas) throws AnalysisEngineProcessException { 
+	public void release(JCas cas) throws AnalysisEngineProcessException {
 		try {
-			Locale locale = new Locale(this.getLanguage());
-			UIMAFramework.getLogger().log(Level.INFO,"Normalizing " + locale.getDisplayLanguage(Locale.ENGLISH) + " Term Context Index");
-			this.normalize(this.getAssociationRate());
-			UIMAFramework.getLogger().log(Level.INFO,"Annotating " + locale.getDisplayLanguage(Locale.ENGLISH) + " Term Context Index");
-			this.annotate(cas);
+			if (this.isReleased()) {
+				return;
+			} else {
+				this.enableReleased(true);
+				Locale locale = new Locale(this.getLanguage());
+				UIMAFramework.getLogger().log(Level.INFO,"Normalizing " + locale.getDisplayLanguage(Locale.ENGLISH) + " Term Context Index");
+				this.normalize(this.getAssociationRate());
+				UIMAFramework.getLogger().log(Level.INFO,"Annotating " + locale.getDisplayLanguage(Locale.ENGLISH) + " Term Context Index");
+				this.annotate(cas);
+			}
 		} catch (Exception e) {
 			throw new AnalysisEngineProcessException(e);
 		}
