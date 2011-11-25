@@ -18,6 +18,7 @@ import javax.swing.UIManager;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.util.Level;
 
+import eu.project.ttc.tools.TermSuite;
 import eu.project.ttc.tools.utils.About;
 import eu.project.ttc.tools.utils.Preferences;
 import eu.project.ttc.tools.utils.ToolBar;
@@ -26,13 +27,13 @@ import fr.free.rocheteau.jerome.dunamis.viewers.ProcessingResultViewer;
 
 public class Ziggurat implements Runnable {
 
-	private Runnable parent;
+	private TermSuite parent;
 	
-	public void setParent(Runnable parent) {
+	public void setParent(TermSuite parent) {
 		this.parent = parent;
 	}
 	
-	public Runnable getParent() {
+	public TermSuite getParent() {
 		return this.parent;
 	}
 	
@@ -63,8 +64,6 @@ public class Ziggurat implements Runnable {
 	private void setDesktop() {
 		if (Desktop.isDesktopSupported()) {
 			this.desktop = Desktop.getDesktop();
-		} else {
-			this.warning("No Desktop Integration");
 		}
 	}
 	
@@ -118,6 +117,16 @@ public class Ziggurat implements Runnable {
 		return this.toolBar;
 	}
 		
+	private ZigguratViewer translations;
+	
+	private void setTranslations() {
+		this.translations = new ZigguratViewer();
+	}
+	
+	public ZigguratViewer getTranslations() {
+		return this.translations;
+	}
+	
 	private ProcessingResultViewer documents;
 	
 	private void setDocuments() {
@@ -134,7 +143,8 @@ public class Ziggurat implements Runnable {
 		JTabbedPane inner = new JTabbedPane();
 		inner.setTabPlacement(JTabbedPane.TOP);
 		inner.addTab("   Settings   ",this.getSettings().getComponent());
-		inner.addTab("  Documents  ",this.getDocuments().getComponent());
+		inner.addTab(" Translations ",this.getTranslations().getComponent());
+		inner.addTab("   Documents  ",this.getDocuments().getComponent());
 		JSplitPane outter = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 		outter.setTopComponent(this.getToolBar().getComponent());
 		outter.setBottomComponent(inner);
@@ -188,6 +198,7 @@ public class Ziggurat implements Runnable {
 		this.setPreferences();
 		this.setAbout();
 		this.setToolBar();
+		this.setTranslations();
 		this.setDocuments();
 		this.setContent();
 		this.setFrame();

@@ -11,7 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JSeparator;
 import javax.swing.JToolBar;
 
-public class TermSuiteToolBar {
+public class TermSuiteLauncher {
 	
 	// private final Dimension dimension = new Dimension(66,33);
 	private final Dimension dimension = new Dimension(198,66);
@@ -130,6 +130,22 @@ public class TermSuiteToolBar {
 		return this.treetagger;
 	}
 	
+	private JButton tildetagger;
+	
+	private void setTildeTagger() {
+		this.tildetagger = new JButton("TildeTagger");
+		this.tildetagger.setActionCommand("tildetagger");
+		this.tildetagger.setEnabled(true);
+		this.tildetagger.setPreferredSize(dimension);
+		this.tildetagger.setMargin(insets);
+		this.tildetagger.setBackground(color);
+		this.tildetagger.setBorderPainted(false);
+	}
+	
+	public JButton getTildeTagger() {
+		return this.tildetagger;
+	}
+	
 	private JToolBar component;
 	
 	private void setComponent() {
@@ -146,14 +162,16 @@ public class TermSuiteToolBar {
 		c.gridx = 0; c.gridy = 3;
 		this.component.add(this.getTreeTagger(),c);
 		c.gridx = 0; c.gridy = 4;
-		this.component.add(this.getAcabit(),c);
+		this.component.add(this.getTildeTagger(),c);
 		c.gridx = 0; c.gridy = 5;
-		this.component.add(this.getKatastasis(),c);
+		this.component.add(this.getAcabit(),c);
 		c.gridx = 0; c.gridy = 6;
-		this.component.add(this.getZiggurat(),c);
+		this.component.add(this.getKatastasis(),c);
 		c.gridx = 0; c.gridy = 7;
+		this.component.add(this.getZiggurat(),c);
+		c.gridx = 0; c.gridy = 8;
 		this.component.add(new JSeparator(JSeparator.VERTICAL),c);
-		c.gridx = 0; c.gridy = 8;		
+		c.gridx = 0; c.gridy = 9;		
 		this.component.add(this.getQuit(),c);
 	}
 	
@@ -166,12 +184,13 @@ public class TermSuiteToolBar {
 		this.getAbout().addActionListener(listener);
 		this.getHelp().addActionListener(listener);
 		this.getTreeTagger().addActionListener(listener);
+		this.getTildeTagger().addActionListener(listener);
 		this.getAcabit().addActionListener(listener);
 		this.getKatastasis().addActionListener(listener);
 		this.getZiggurat().addActionListener(listener);
 	}
 	
-	public TermSuiteToolBar() {
+	public TermSuiteLauncher() {
 		this.setQuit();
 		this.setHelp();
 		this.setAbout();
@@ -179,6 +198,7 @@ public class TermSuiteToolBar {
 		this.setKatastasis();
 		this.setZiggurat();
 		this.setTreeTagger();
+		this.setTildeTagger();
 		this.setComponent();
 	}
 	

@@ -73,7 +73,7 @@ public class KatastasisEngine extends SwingWorker<CpeDescription,Void> {
 		settings.setParameterValue("Language", parameters.getParameterValue("Language"));
 		settings.setParameterValue("ScopeSize",parameters.getParameterValue("ScopeSize"));
 		settings.setParameterValue("AssociationRateClassName",parameters.getParameterValue("AssociationRateClassName"));
-		// settings.setParameterValue("File",parameters.getParameterValue("File"));
+		settings.setParameterValue("File",parameters.getParameterValue("File"));
 		termSuiteTranslator.setConfigurationParameterSettings(settings);
 		this.collectionProcessingEngine.addCasProcessor(termSuiteTranslator);
 	}

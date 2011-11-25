@@ -18,6 +18,7 @@ import javax.swing.UIManager;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.util.Level;
 
+import eu.project.ttc.tools.TermSuite;
 import eu.project.ttc.tools.utils.About;
 import eu.project.ttc.tools.utils.Preferences;
 import eu.project.ttc.tools.utils.ToolBar;
@@ -26,13 +27,13 @@ import fr.free.rocheteau.jerome.dunamis.viewers.ProcessingResultViewer;
 
 public class Katastasis implements Runnable {
 
-	private Runnable parent;
+	private TermSuite parent;
 	
-	public void setParent(Runnable parent) {
+	public void setParent(TermSuite parent) {
 		this.parent = parent;
 	}
 	
-	public Runnable getParent() {
+	public TermSuite getParent() {
 		return this.parent;
 	}
 	
@@ -63,8 +64,6 @@ public class Katastasis implements Runnable {
 	private void setDesktop() {
 		if (Desktop.isDesktopSupported()) {
 			this.desktop = Desktop.getDesktop();
-		} else {
-			this.warning("No Desktop Integration");
 		}
 	}
 	
@@ -117,7 +116,17 @@ public class Katastasis implements Runnable {
 	public ToolBar getToolBar() {
 		return this.toolBar;
 	}
-		
+	
+	private KatastasisViewer contexts;
+	
+	private void setContexts() {
+		this.contexts = new KatastasisViewer();
+	}
+	
+	public KatastasisViewer getContexts() {
+		return this.contexts;
+	}
+	
 	private ProcessingResultViewer documents;
 	
 	private void setDocuments() {
@@ -133,7 +142,8 @@ public class Katastasis implements Runnable {
 	private void setContent() {		
 		JTabbedPane inner = new JTabbedPane();
 		inner.setTabPlacement(JTabbedPane.TOP);
-		inner.addTab("   Settings   ",this.getSettings().getComponent());
+		inner.addTab("  Settings   ",this.getSettings().getComponent());
+		inner.addTab("  Contexts   ",this.getContexts().getComponent());
 		inner.addTab("  Documents  ",this.getDocuments().getComponent());
 		JSplitPane outter = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 		outter.setTopComponent(this.getToolBar().getComponent());
@@ -188,6 +198,7 @@ public class Katastasis implements Runnable {
 		this.setPreferences();
 		this.setAbout();
 		this.setToolBar();
+		this.setContexts();
 		this.setDocuments();
 		this.setContent();
 		this.setFrame();

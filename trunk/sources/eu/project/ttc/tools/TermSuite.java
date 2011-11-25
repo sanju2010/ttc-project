@@ -48,8 +48,6 @@ public class TermSuite implements Runnable {
 	private void setDesktop() {
 		if (Desktop.isDesktopSupported()) {
 			this.desktop = Desktop.getDesktop();
-		} else {
-			this.warning("No Desktop Integration");
 		}
 	}
 	
@@ -93,13 +91,13 @@ public class TermSuite implements Runnable {
 		return this.preferences;
 	}
 
-	private TermSuiteToolBar toolBar;
+	private TermSuiteLauncher toolBar;
 	
 	private void setToolBar() {
-		this.toolBar = new TermSuiteToolBar();
+		this.toolBar = new TermSuiteLauncher();
 	}
 	
-	public TermSuiteToolBar getToolBar() {
+	public TermSuiteLauncher getToolBar() {
 		return this.toolBar;
 	}	
 	

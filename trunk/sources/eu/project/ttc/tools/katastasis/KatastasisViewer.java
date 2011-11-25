@@ -1,4 +1,4 @@
-package eu.project.ttc.tools.utils;
+package eu.project.ttc.tools.katastasis;
 
 import java.awt.Dimension;
 
@@ -7,7 +7,7 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
-import eu.project.ttc.types.TermEntryAnnotation;
+import eu.project.ttc.types.VectorAnnotation;
 
 import org.apache.uima.cas.CASRuntimeException;
 import org.apache.uima.cas.FSIterator;
@@ -15,7 +15,7 @@ import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 
-public class Terminologies {
+public class KatastasisViewer {
 
 	private Dimension getDimension() {
 		return new Dimension(600,400);
@@ -24,7 +24,7 @@ public class Terminologies {
 	private DefaultMutableTreeNode root;
 
 	private void setRoot() {
-		this.root = new DefaultMutableTreeNode("Terminology");
+		this.root = new DefaultMutableTreeNode("Context");
 	}
 	
 	private DefaultMutableTreeNode getRoot() {
@@ -67,7 +67,7 @@ public class Terminologies {
 		return this.scroll;
 	}
 		
-	public Terminologies() {
+	public KatastasisViewer() {
 		this.setRoot();
 		this.setModel();
 		this.setTree();
@@ -76,26 +76,26 @@ public class Terminologies {
 	
 	public void doLoad(JCas cas) {
 		try {
-		AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TermEntryAnnotation.type);
-		FSIterator<Annotation> iterator = index.iterator();
-		while (iterator.hasNext()) {
-			TermEntryAnnotation entry = (TermEntryAnnotation) iterator.next();
-			DefaultMutableTreeNode node = new DefaultMutableTreeNode();
-			node.setUserObject(entry.getTerm());
-			this.getRoot().add(node);
-			this.addNotes(node, entry);
-		}
-		this.getModel().reload();
+			AnnotationIndex<Annotation> index = cas.getAnnotationIndex(VectorAnnotation.type);
+			FSIterator<Annotation> iterator = index.iterator();
+			while (iterator.hasNext()) {
+				VectorAnnotation annotation = (VectorAnnotation) iterator.next();
+				DefaultMutableTreeNode node = new DefaultMutableTreeNode();
+				node.setUserObject(annotation.getItem() + " (" + annotation.getFrequency() + ")");
+				this.getRoot().add(node);
+				String context = annotation.getCoveredText();
+				String[] scores = context.split(":");
+				for (String score : scores) {
+					String[] items = score.trim().split("#");
+					if (items.length == 2) {
+						this.addNote(node, items[0].trim(), items[1].trim());
+					}
+				}
+			}
+			this.getModel().reload();
 		} catch (CASRuntimeException e) {
 			e.printStackTrace();
 		}
-	}
-	
-	private void addNotes(DefaultMutableTreeNode root,TermEntryAnnotation annotation) {
-		this.addNote(root, "complexity", annotation.getComplexity());
-		this.addNote(root, "category", annotation.getCategory());
-		this.addNote(root, "frequency", annotation.getFrequency());
-		this.addNote(root, "specificity", annotation.getSpecificity());
 	}
 	
 	private void addNote(DefaultMutableTreeNode root,String key,Object value) {

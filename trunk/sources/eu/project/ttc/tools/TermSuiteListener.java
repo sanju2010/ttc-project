@@ -13,6 +13,7 @@ import javax.swing.SwingUtilities;
 
 import eu.project.ttc.tools.acabit.Acabit;
 import eu.project.ttc.tools.katastasis.Katastasis;
+import eu.project.ttc.tools.tildetagger.TildeTagger;
 import eu.project.ttc.tools.treetagger.TreeTagger;
 import eu.project.ttc.tools.ziggurat.Ziggurat;
 
@@ -62,6 +63,12 @@ public class TermSuiteListener implements ActionListener {
 		SwingUtilities.invokeLater(treetagger);
 	}
 	
+	private void doTildeTagger() {
+		TildeTagger tildetagger = new TildeTagger(false);
+		tildetagger.setParent(this.getTermSuite());
+		SwingUtilities.invokeLater(tildetagger);
+	}
+	
 	private void doAcabit() {
 		Acabit acabit = new Acabit(false);
 		acabit.setParent(this.getTermSuite());
@@ -94,6 +101,8 @@ public class TermSuiteListener implements ActionListener {
 				this.getTermSuite().getAbout().show();
 			} else if (action.equals("treetagger")) {
 				this.doTreeTagger();
+			} else if (action.equals("tildetagger")) {
+				this.doTildeTagger();
 			} else if (action.equals("acabit")) {
 				this.doAcabit();
 			} else if (action.equals("katastasis")) {

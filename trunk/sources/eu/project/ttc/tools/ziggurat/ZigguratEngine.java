@@ -53,34 +53,25 @@ public class ZigguratEngine extends SwingWorker<CpeDescription,Void> {
 	
 	private void setCollectionReader() throws Exception {
 		ConfigurationParameterSettings parameters = this.getZiggurat().getSettings().getMetaData().getConfigurationParameterSettings();
-		URL url = this.getClass().getClassLoader().getResource("eu/project/ttc/engines/aligner/TermContextLoader.xml");
+		URL url = this.getClass().getClassLoader().getResource("eu/project/ttc/all/engines/ZigguratCollectionReader.xml");
 		CpeCollectionReader termSuiteCollector = CpeDescriptorFactory.produceCollectionReader(url.toURI().toString());
 		CasProcessorConfigurationParameterSettings settings = CpeDescriptorFactory.produceCasProcessorConfigurationParameterSettings();
-		settings.setParameterValue("SourceLanguage", parameters.getParameterValue("SourceLanguage"));
-		settings.setParameterValue("SourceDirectory",parameters.getParameterValue("SourceDirectory"));
-		settings.setParameterValue("SourceTerminologyFile",parameters.getParameterValue("SourceTerminologyFile"));
-		settings.setParameterValue("TargetLanguage",parameters.getParameterValue("TargetLanguage"));
-		settings.setParameterValue("TargetDirectory",parameters.getParameterValue("TargetDirectory"));
-		settings.setParameterValue("TargetTerminologyFile",parameters.getParameterValue("TargetTerminologyFile"));
+		settings.setParameterValue("File",parameters.getParameterValue("EvaluationListFile"));
 		termSuiteCollector.setConfigurationParameterSettings(settings);
 		this.collectionProcessingEngine.addCollectionReader(termSuiteCollector);
 	}
 	
 	private void setAnalysisEngine() throws Exception {
 		ConfigurationParameterSettings parameters = this.getZiggurat().getSettings().getMetaData().getConfigurationParameterSettings();
-		URL url = this.getClass().getClassLoader().getResource("eu/project/ttc/engines/aligner/SingleWordTermAligner.xml");
-		CpeIntegratedCasProcessor termSuiteTranslator = CpeDescriptorFactory.produceCasProcessor("SingleWord Term Aligner");
+		URL url = this.getClass().getClassLoader().getResource("eu/project/ttc/all/engines/ZigguratAnalysisEngine.xml");
+		CpeIntegratedCasProcessor termSuiteTranslator = CpeDescriptorFactory.produceCasProcessor("Ziggurat Analysis Engine");
 		CpeComponentDescriptor desc = CpeDescriptorFactory.produceComponentDescriptor(url.toURI().toString());
 		termSuiteTranslator.setCpeComponentDescriptor(desc);
 		CasProcessorConfigurationParameterSettings settings = CpeDescriptorFactory.produceCasProcessorConfigurationParameterSettings();
-		settings.setParameterValue("File",parameters.getParameterValue("AlignmentFile"));
-		settings.setParameterValue("SourceLanguage", parameters.getParameterValue("SourceLanguage"));
-		settings.setParameterValue("TargetLanguage",parameters.getParameterValue("TargetLanguage"));
-		settings.setParameterValue("ScopeSize",parameters.getParameterValue("ScopeSize"));
-		settings.setParameterValue("AssociationRateClassName",parameters.getParameterValue("AssociationRateClassName"));
 		settings.setParameterValue("SimilarityDistanceClassName",parameters.getParameterValue("SimilarityDistanceClassName"));
 		settings.setParameterValue("DictionaryFile",parameters.getParameterValue("DictionaryFile"));
-		settings.setParameterValue("EvaluationListFile",parameters.getParameterValue("EvaluationListFile"));
+		settings.setParameterValue("SourceTermContextIndexFile",parameters.getParameterValue("SourceTermContextIndexFile"));
+		settings.setParameterValue("TargetTermContextIndexFile",parameters.getParameterValue("TargetTermContextIndexFile"));
 		termSuiteTranslator.setConfigurationParameterSettings(settings);
 		this.collectionProcessingEngine.addCasProcessor(termSuiteTranslator);
 	}

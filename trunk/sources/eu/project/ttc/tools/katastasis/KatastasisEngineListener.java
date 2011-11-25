@@ -3,9 +3,12 @@ package eu.project.ttc.tools.katastasis;
 import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.concurrent.ExecutionException;
 
 import javax.swing.JButton;
@@ -14,14 +17,19 @@ import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
 import org.apache.uima.UIMAFramework;
+import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.cas.CAS;
+import org.apache.uima.cas.impl.XmiCasDeserializer;
 import org.apache.uima.collection.CollectionProcessingEngine;
 import org.apache.uima.collection.EntityProcessStatus;
 import org.apache.uima.collection.StatusCallbackListener;
 import org.apache.uima.collection.metadata.CpeDescription;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.apache.uima.util.CasCreationUtils;
 import org.apache.uima.util.Level;
 import org.apache.uima.util.Progress;
+import org.apache.uima.util.XMLInputSource;
+import org.apache.uima.util.XMLParser;
 
 import eu.project.ttc.tools.TermSuite;
 import fr.free.rocheteau.jerome.dunamis.models.ProcessingResult;
@@ -239,7 +247,7 @@ public class KatastasisEngineListener implements ActionListener, StatusCallbackL
 	@Override
 	public void collectionProcessComplete() {
 		this.doStop();
-		UIMAFramework.getLogger().log(Level.INFO,"Collection Process Complete");
+		this.doLoad();
 		UIMAFramework.getLogger().log(Level.INFO,this.getEngine().getPerformanceReport().toString());
 		if (this.getKatastasis().isCommandLineInterface()) {
 			this.getKatastasis().quit();
@@ -277,6 +285,24 @@ public class KatastasisEngineListener implements ActionListener, StatusCallbackL
 		}
 	}
 
+	private void doLoad() {
+		try {
+			String path = (String) this.getKatastasis().getSettings().getMetaData().getConfigurationParameterSettings().getParameterValue("File");
+			InputStream inputStream = new FileInputStream(path);
+			URL url = this.getClass().getClassLoader().getResource("eu/project/ttc/all/engines/TermContextIndexWriter.xml");
+			XMLInputSource source = new XMLInputSource(url);
+			XMLParser parser = UIMAFramework.getXMLParser();
+			AnalysisEngineDescription ae = parser.parseAnalysisEngineDescription(source); 
+			CAS cas = CasCreationUtils.createCas(ae);
+			// Handler handler = HandlerFactory.get();
+			// handler.update(inputStream, cas.getJCas());
+			XmiCasDeserializer.deserialize(inputStream, cas);
+			this.getKatastasis().getContexts().doLoad(cas.getJCas());
+		} catch (Exception e) {
+			this.getKatastasis().error(e);
+		}
+	}
+	
 	/*
 	
 	private JFileChooser chooser;
