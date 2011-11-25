@@ -38,23 +38,6 @@
       </features>
     </typeDescription>
     <typeDescription>
-      <name>eu.project.ttc.types.TermComponentAnnotation</name>
-      <description/>
-      <supertypeName>uima.tcas.Annotation</supertypeName>
-      <features>
-        <featureDescription>
-          <name>category</name>
-          <description/>
-          <rangeTypeName>uima.cas.String</rangeTypeName>
-        </featureDescription>
-        <featureDescription>
-          <name>lemma</name>
-          <description/>
-          <rangeTypeName>uima.cas.String</rangeTypeName>
-        </featureDescription>
-      </features>
-    </typeDescription>
-    <typeDescription>
       <name>eu.project.ttc.types.SingleWordTermAnnotation</name>
       <description/>
       <supertypeName>eu.project.ttc.types.TermAnnotation</supertypeName>
@@ -102,7 +85,7 @@
       </features>
     </typeDescription>
     <typeDescription>
-      <name>eu.project.ttc.types.TermContextEntryAnnotation</name>
+      <name>eu.project.ttc.types.TermComponentAnnotation</name>
       <description/>
       <supertypeName>uima.tcas.Annotation</supertypeName>
       <features>
@@ -119,32 +102,76 @@
       </features>
     </typeDescription>
     <typeDescription>
-      <name>eu.project.ttc.types.TermContextIndexAnnotation</name>
-      <description/>
-      <supertypeName>uima.tcas.DocumentAnnotation</supertypeName>
-      <features>
-        <featureDescription>
-          <name>name</name>
-          <description/>
-          <rangeTypeName>uima.cas.String</rangeTypeName>
-        </featureDescription>
-      </features>
-    </typeDescription>
-    <typeDescription>
-      <name>eu.project.ttc.types.TermContextVectorAnnotation</name>
+      <name>eu.project.ttc.types.TermContextAnnotation</name>
       <description/>
       <supertypeName>uima.tcas.Annotation</supertypeName>
       <features>
         <featureDescription>
-          <name>contextVector</name>
+          <name>context</name>
           <description/>
           <rangeTypeName>uima.cas.FSArray</rangeTypeName>
-          <elementType>eu.project.ttc.types.TermContextEntryAnnotation</elementType>
+          <elementType>eu.project.ttc.types.TermAnnotation</elementType>
         </featureDescription>
         <featureDescription>
           <name>term</name>
           <description/>
-          <rangeTypeName>eu.project.ttc.types.TermContextEntryAnnotation</rangeTypeName>
+          <rangeTypeName>eu.project.ttc.types.TermAnnotation</rangeTypeName>
+        </featureDescription>
+      </features>
+    </typeDescription>
+    <typeDescription>
+      <name>eu.project.ttc.types.VectorAnnotation</name>
+      <description/>
+      <supertypeName>uima.tcas.Annotation</supertypeName>
+      <features>
+        <featureDescription>
+          <name>item</name>
+          <description/>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>frequency</name>
+          <description/>
+          <rangeTypeName>uima.cas.Integer</rangeTypeName>
+        </featureDescription>
+      </features>
+    </typeDescription>
+    <typeDescription>
+      <name>eu.project.ttc.types.CandidateAnnotation</name>
+      <description/>
+      <supertypeName>uima.tcas.Annotation</supertypeName>
+      <features>
+        <featureDescription>
+          <name>translation</name>
+          <description/>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>score</name>
+          <description/>
+          <rangeTypeName>uima.cas.Double</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>rank</name>
+          <description/>
+          <rangeTypeName>uima.cas.Integer</rangeTypeName>
+        </featureDescription>
+      </features>
+    </typeDescription>
+    <typeDescription>
+      <name>eu.project.ttc.types.TranslationAnnotation</name>
+      <description/>
+      <supertypeName>uima.tcas.Annotation</supertypeName>
+      <features>
+        <featureDescription>
+          <name>term</name>
+          <description/>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>language</name>
+          <description/>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
         </featureDescription>
       </features>
     </typeDescription>
