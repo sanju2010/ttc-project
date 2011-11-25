@@ -26,7 +26,7 @@ public class ZigguratViewer {
 	private Dimension getDimension() {
 		return new Dimension(600,400);
 	}
-
+	
 	private DefaultMutableTreeNode root;
 
 	private void setRoot() {
@@ -129,7 +129,7 @@ public class ZigguratViewer {
 		this.setSplit();
 	}
 	
-	public void doLoad(JCas cas) {
+	public synchronized void doLoad(JCas cas) {
 		try {
 			Set<String> translations = this.updateTableModel(cas);
 			this.updateTreeModel(cas, translations);
@@ -151,9 +151,6 @@ public class ZigguratViewer {
 	
 	private void updateTreeModel(JCas cas, Set<String> translations) {
 		int best = -1;
-		DefaultMutableTreeNode node = new DefaultMutableTreeNode();
-		node.setUserObject(cas.getDocumentText());
-		this.getRoot().add(node);
 		AnnotationIndex<Annotation> index = cas.getAnnotationIndex(CandidateAnnotation.type);
 		FSIterator<Annotation> iterator = index.iterator();
 		String[] candidates = new String[20];
@@ -173,6 +170,9 @@ public class ZigguratViewer {
 				}
 			}
 		}
+		DefaultMutableTreeNode node = new DefaultMutableTreeNode();
+		node.setUserObject(cas.getDocumentText() + " (" + (best == -1 ? "unranked" : new Integer(best).toString()) + ")");
+		this.getRoot().add(node);
 		for (int i = 0; i < 20; i++) {
 			this.addNote(node, candidates[i], new Integer(i + 1), scores[i]);
 		}
