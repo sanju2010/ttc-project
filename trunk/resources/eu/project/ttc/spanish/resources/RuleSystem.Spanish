@@ -1,13 +1,13 @@
 # This is the patterns for term detection in Spanish
 
-eu.project.ttc.types.WordAnnotation[category=adjective]	eu.project.ttc.types.WordAnnotation[category=noun]
+na	eu.project.ttc.types.WordAnnotation[category=adjective]	eu.project.ttc.types.WordAnnotation[category=noun]
 
-eu.project.ttc.types.WordAnnotation[category=noun]	eu.project.ttc.types.WordAnnotation[category=adjective]	eu.project.ttc.types.WordAnnotation[category=adjective]?
+na	eu.project.ttc.types.WordAnnotation[category=noun]	eu.project.ttc.types.WordAnnotation[category=adjective]	eu.project.ttc.types.WordAnnotation[category=adjective]?
 
-eu.project.ttc.types.WordAnnotation[category=noun]	eu.project.ttc.types.WordAnnotation[category=preposition,coveredText="de"]	eu.project.ttc.types.WordAnnotation[category=adjective]
-eu.project.ttc.types.WordAnnotation[category=noun]	eu.project.ttc.types.WordAnnotation[category=preposition,coveredText="del"]	eu.project.ttc.types.WordAnnotation[category=adjective]
-eu.project.ttc.types.WordAnnotation[category=noun]	eu.project.ttc.types.WordAnnotation[category=adjective]	eu.project.ttc.types.WordAnnotation[category=preposition,coveredText="de"]	eu.project.ttc.types.WordAnnotation[category=adjective]
-eu.project.ttc.types.WordAnnotation[category=noun]	eu.project.ttc.types.WordAnnotation[category=preposition,coveredText="de"]	eu.project.ttc.types.WordAnnotation[category=adjective]	eu.project.ttc.types.WordAnnotation[category=adjective]
+na	eu.project.ttc.types.WordAnnotation[category=noun]	eu.project.ttc.types.WordAnnotation[category=preposition,coveredText="de"]	eu.project.ttc.types.WordAnnotation[category=adjective]
+na	eu.project.ttc.types.WordAnnotation[category=noun]	eu.project.ttc.types.WordAnnotation[category=preposition,coveredText="del"]	eu.project.ttc.types.WordAnnotation[category=adjective]
+na	eu.project.ttc.types.WordAnnotation[category=noun]	eu.project.ttc.types.WordAnnotation[category=adjective]	eu.project.ttc.types.WordAnnotation[category=preposition,coveredText="de"]	eu.project.ttc.types.WordAnnotation[category=adjective]
+na	eu.project.ttc.types.WordAnnotation[category=noun]	eu.project.ttc.types.WordAnnotation[category=preposition,coveredText="de"]	eu.project.ttc.types.WordAnnotation[category=adjective]	eu.project.ttc.types.WordAnnotation[category=adjective]
 
-eu.project.ttc.types.WordAnnotation[category=noun]	eu.project.ttc.types.WordAnnotation[category=preposition,coveredText="a"]	eu.project.ttc.types.WordAnnotation[category=adjective]
-eu.project.ttc.types.WordAnnotation[category=noun]	eu.project.ttc.types.WordAnnotation[category=preposition,coveredText="al"]	eu.project.ttc.types.WordAnnotation[category=adjective]
+na	eu.project.ttc.types.WordAnnotation[category=noun]	eu.project.ttc.types.WordAnnotation[category=preposition,coveredText="a"]	eu.project.ttc.types.WordAnnotation[category=adjective]
+na	eu.project.ttc.types.WordAnnotation[category=noun]	eu.project.ttc.types.WordAnnotation[category=preposition,coveredText="al"]	eu.project.ttc.types.WordAnnotation[category=adjective]

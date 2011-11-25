@@ -1,9 +1,9 @@
 # This is the patterns for term detection in German
 
-eu.project.ttc.types.WordAnnotation[category=adjective]	eu.project.ttc.types.WordAnnotation[category=noun]
+na	eu.project.ttc.types.WordAnnotation[category=adjective]	eu.project.ttc.types.WordAnnotation[category=noun]
 
-eu.project.ttc.types.WordAnnotation[category=noun]	eu.project.ttc.types.WordAnnotation[category=article]	eu.project.ttc.types.WordAnnotation[category=noun]
+nn	eu.project.ttc.types.WordAnnotation[category=noun]	eu.project.ttc.types.WordAnnotation[category=article]	eu.project.ttc.types.WordAnnotation[category=noun]
 
-eu.project.ttc.types.WordAnnotation[category=noun]	eu.project.ttc.types.WordAnnotation[category=preposition,coveredText="des"]	eu.project.ttc.types.WordAnnotation[category=noun]
+npn	eu.project.ttc.types.WordAnnotation[category=noun]	eu.project.ttc.types.WordAnnotation[category=preposition,coveredText="des"]	eu.project.ttc.types.WordAnnotation[category=noun]
 
-eu.project.ttc.types.WordAnnotation[category=noun]	eu.project.ttc.types.WordAnnotation[category=preposition,coveredText="der"]	eu.project.ttc.types.WordAnnotation[category=noun]
+npn	eu.project.ttc.types.WordAnnotation[category=noun]	eu.project.ttc.types.WordAnnotation[category=preposition,coveredText="der"]	eu.project.ttc.types.WordAnnotation[category=noun]

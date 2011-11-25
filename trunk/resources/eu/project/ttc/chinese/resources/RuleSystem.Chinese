@@ -1,3 +1,3 @@
 # This is the patterns for term detection in Chinese
 
-eu.project.ttc.types.WordAnnotation[category=noun]	eu.project.ttc.types.WordAnnotation[category=noun]
+nn	eu.project.ttc.types.WordAnnotation[category=noun]	eu.project.ttc.types.WordAnnotation[category=noun]
