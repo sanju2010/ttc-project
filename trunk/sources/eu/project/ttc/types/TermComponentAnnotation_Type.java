@@ -1,5 +1,5 @@
 
-/* First created by JCasGen Thu Oct 20 17:03:42 CEST 2011 */
+/* First created by JCasGen Wed Nov 23 12:04:54 CET 2011 */
 package eu.project.ttc.types;
 
 import org.apache.uima.jcas.JCas;
@@ -14,7 +14,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /** 
- * Updated by JCasGen Sat Nov 05 19:54:33 CET 2011
+ * Updated by JCasGen Thu Nov 24 11:55:19 CET 2011
  * @generated */
 public class TermComponentAnnotation_Type extends Annotation_Type {
   /** @generated */
