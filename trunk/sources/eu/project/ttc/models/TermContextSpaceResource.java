@@ -121,7 +121,7 @@ public class TermContextSpaceResource implements TermContextSpace {
 					UIMAFramework.getLogger().log(Level.OFF,"Skiping  source term '" + term + "' checking");
 				} else {
 					total++;
-					int position = this.positionOf(term, references, context.getSortedCoOccurrences(), builder);
+					int position = this.positionOf(term, references, context.sort(), builder);
 					if (position > 100) {
 						UIMAFramework.getLogger().log(Level.OFF,"Skiping  '" + term + "' because best translation found at " + position + " > 100");
 					} else {
@@ -217,17 +217,17 @@ public class TermContextSpaceResource implements TermContextSpace {
 	
 	/************************************** 2) Indexing **********************************/
 	
-	private Map<String,TermContextIndex> indexes;
+	private Map<String,TermContextIndexResource> indexes;
 	
 	private void setIndexes() {
-		this.indexes = new HashMap<String, TermContextIndex>();
+		this.indexes = new HashMap<String, TermContextIndexResource>();
 	}
 	
 	@Override
 	public void addIndex(String indexID) {
 		TermContextIndex index = this.indexes.get(indexID);
 		if (index == null) {
-			this.indexes.put(indexID, new TermContextIndex());
+			this.indexes.put(indexID, new TermContextIndexResource());
 			UIMAFramework.getLogger().log(Level.CONFIG,"Adding Term Context Index '" + indexID  + "'");
 		}
 	}

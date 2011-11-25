@@ -6,7 +6,6 @@ import org.apache.uima.jcas.tcas.Annotation;
 import eu.project.ttc.types.MultiWordTermAnnotation;
 import eu.project.ttc.types.SingleWordTermAnnotation;
 import eu.project.ttc.types.TermAnnotation;
-import eu.project.ttc.types.TermComponentAnnotation;
 import eu.project.ttc.types.WordAnnotation;
 import fr.free.rocheteau.jerome.engines.PatternMatcher;
 
@@ -24,13 +23,17 @@ public class RuleBasedTermDetector extends PatternMatcher {
 				term.setComplexity("single-word");
 			} else {
 				term = new MultiWordTermAnnotation(cas, begin, end);
+				/*
 				for (int index = 0; index < annotations.length; index++) {
 					WordAnnotation a = (WordAnnotation) annotations[index];
+					
 					TermComponentAnnotation component = new TermComponentAnnotation(cas, a.getBegin(), a.getEnd());
 					component.setCategory(a.getCategory());
 					component.setLemma(a.getLemma());
 					component.addToIndexes();
+					
 				}
+				*/
 				term.setComplexity("multi-word");
 				term.setCategory(id);
 				term.setLemma(cas.getDocumentText().substring(begin, end).toLowerCase().trim());

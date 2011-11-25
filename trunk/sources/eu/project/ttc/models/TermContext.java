@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class TermContext implements Comparable<TermContext> {
+public class TermContext /* implements Comparable<TermContext> */ {
 
 	private TermContextComparator comparator;
 	
@@ -57,12 +57,13 @@ public class TermContext implements Comparable<TermContext> {
 		}
 	}
 
-	public Map<String, Double> getSortedCoOccurrences() {
+	public Map<String, Double> sort() {
 		Map<String, Double> occurrences = new TreeMap<String, Double>(this.getComparator());
 		occurrences.putAll(this.getCoOccurrences());
 		return occurrences;
 	}
 		
+	/*
 	public String toString(String term,int depth) {
 		StringBuilder builder = new StringBuilder();
 		int index = 0;
@@ -84,11 +85,12 @@ public class TermContext implements Comparable<TermContext> {
 		}
 		return builder.toString();
 	}
+	*/
 	
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		int index = 0;
-		Map<String, Double> occurrences = this.getSortedCoOccurrences();
+		Map<String, Double> occurrences = this.sort();
 		int size = occurrences.size();
 		for (String key: occurrences.keySet()) {
 			index++;
@@ -103,6 +105,7 @@ public class TermContext implements Comparable<TermContext> {
 		return builder.toString();
 	}
 	
+	/*
 	@Override
 	public int compareTo(TermContext termContext) {
 		for (String key : this.getCoOccurrences().keySet()) {
@@ -121,6 +124,7 @@ public class TermContext implements Comparable<TermContext> {
 		}
 		return 0;
 	}
+	*/
 	
 	private class TermContextComparator implements Comparator<String> {
 

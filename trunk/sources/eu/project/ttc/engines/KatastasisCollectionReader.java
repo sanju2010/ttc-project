@@ -37,8 +37,6 @@ import org.apache.uima.util.XMLInputSource;
 import org.apache.uima.util.XMLParser;
 
 import eu.project.ttc.types.SingleWordTermAnnotation;
-import eu.project.ttc.types.TermContextEntryAnnotation;
-import eu.project.ttc.types.TermContextIndexAnnotation;
 import eu.project.ttc.types.TermEntryAnnotation;
 
 public class KatastasisCollectionReader extends CollectionReader_ImplBase {
@@ -198,21 +196,18 @@ public class KatastasisCollectionReader extends CollectionReader_ImplBase {
 			XmiCasDeserializer.deserialize(stream, cas);
 			AnnotationIndex<Annotation> index = cas.getJCas().getAnnotationIndex(SingleWordTermAnnotation.type);
 			FSIterator<Annotation> iterator = index.iterator();
+			Set<Annotation> annotations = new HashSet<Annotation>();
 			while (iterator.hasNext()) {
 				SingleWordTermAnnotation annotation = (SingleWordTermAnnotation) iterator.next();
 				// String term = annotation.getCoveredText().toLowerCase();
 				String lemma = annotation.getLemma().toLowerCase();
-				if (this.getTerminology().contains(lemma)) {
-					String category = annotation.getCategory().toLowerCase();
-					TermContextEntryAnnotation entry = new TermContextEntryAnnotation(cas.getJCas(), annotation.getBegin(), annotation.getEnd());
-					entry.setCategory(category);
-					entry.setLemma(lemma);
-					entry.addToIndexes();
+				if (!this.getTerminology().contains(lemma)) {
+					annotations.add(annotation);
 				}
 			}
-			TermContextIndexAnnotation annotation = new TermContextIndexAnnotation(cas.getJCas(), cas.getDocumentAnnotation().getEnd(), cas.getDocumentAnnotation().getEnd());
-			annotation.setLanguage(this.getLanguage());
-			annotation.addToIndexes();
+			for (Annotation annotation : annotations) {
+				annotation.removeFromIndexes();
+			}
 			UIMAFramework.getLogger().log(Level.INFO, "Processing " + file.getAbsolutePath());
 			this.incrIndex();
 		} catch (Exception e) {

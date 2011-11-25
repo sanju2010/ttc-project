@@ -209,9 +209,9 @@ public class NeoClassicalTermDetector extends JCasAnnotator_ImplBase {
 	
 	private void doFill(JCas cas,int begin,int end) {
 		int last = begin;
-		List<TermComponentAnnotation> annotations = new ArrayList<TermComponentAnnotation>(this.getComponents());
+		List<Annotation> annotations = new ArrayList<Annotation>(this.getComponents());
 		Collections.sort(annotations,this.getComparator());
-		for (TermComponentAnnotation annotation : annotations) {
+		for (Annotation annotation : annotations) {
 			int index = annotation.getBegin();
 			if (last < index) {
 				this.addComponent(cas, last, index);
