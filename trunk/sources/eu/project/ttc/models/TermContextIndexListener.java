@@ -86,18 +86,6 @@ public class TermContextIndexListener implements IndexListener, TermContextIndex
 		}
 	}
 	
-	public void doFilter(Set<String> terms) {
-		Set<String> selected = new HashSet<String>();
-		for (String term : this.getTermContexts().keySet()) {
-			if (!terms.contains(term)) {
-				selected.add(term);
-			}
-		}
-		for (String term : selected) {
-			this.getTermContexts().remove(term);
-		}
-	}
-	
 	public void addOccurrences(String term,Integer occurrences) {
 		Integer occ = this.occurrences.get(term);
 		if (occ == null) {
@@ -299,12 +287,6 @@ public class TermContextIndexListener implements IndexListener, TermContextIndex
 				this.setCoOccurrences(term, coTerm, new Double(norm), TermContext.DEL_MODE);
 			}
 		}
-	}
-
-	@Override
-	public void clear() {
-		this.getOccurrences().clear();
-		this.getTermContexts().clear();
 	}
 	
 }

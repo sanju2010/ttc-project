@@ -1,7 +1,9 @@
 package eu.project.ttc.engines;
 
 import java.io.File;
+import java.util.Collection;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -71,6 +73,22 @@ public class ZigguratAnalysisEngine extends JCasAnnotator_ImplBase {
 		return this.targetIndex;
 	}
 	
+	private static boolean done = false;
+	
+	private void doShrink() {
+		if (!done) {
+			done = true;
+			Set<String> sourceFilter = this.getDictionary().map().keySet();
+			this.getSourceIndex().doShrink(sourceFilter);
+	        Collection<Set<String>> targetFilters = this.getDictionary().map().values();
+	        Set<String> targetFilter = new HashSet<String>();
+	        for (Set<String> filter : targetFilters) {
+	                targetFilter.addAll(filter);
+	        }
+	        this.getTargetIndex().doShrink(targetFilter);			
+		}
+	}
+	
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
@@ -89,6 +107,7 @@ public class ZigguratAnalysisEngine extends JCasAnnotator_ImplBase {
 				File file = new File(path);
 				this.getDictionary().doLoad(file.toURI());
 			}
+			this.doShrink();
 			String sourceIndexFile = (String) context.getConfigParameterValue("SourceTermContextIndexFile");
 			if (sourceIndexFile != null) {
 				File file = new File(sourceIndexFile);

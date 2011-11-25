@@ -18,8 +18,6 @@ public interface TermContextIndex {
 
 	public void doShrink(Set<String> terms);
 
-	public void doFilter(Set<String> terms);
-
 	public void addOccurrences(String term, Integer occurrences);
 
 	public void setOccurrences(String term, Integer occurrences);
@@ -29,7 +27,5 @@ public interface TermContextIndex {
 	public void addCoOccurrences(String term, String context, Double coOccurrences);
 
 	public void doLoad(URI uri) throws ResourceInitializationException;
-
-	public void clear();
 
 }
