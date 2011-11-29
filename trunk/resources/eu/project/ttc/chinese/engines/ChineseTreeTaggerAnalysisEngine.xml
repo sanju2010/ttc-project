@@ -3,21 +3,27 @@
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>false</primitive>
   <delegateAnalysisEngineSpecifiers>
-    <delegateAnalysisEngine key="FrenchWordTokenizer">
-      <import name="eu.project.ttc.french.engines.FrenchWordTokenizer"/>
+    <delegateAnalysisEngine key="ChineseSegmenter">
+      <import name="eu.project.ttc.chinese.engines.ChineseSegmenter"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="ChineseLemmaNormalizer">
+      <import name="eu.project.ttc.chinese.engines.ChineseLemmaNormalizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="ChineseStemNormalizer">
+      <import name="eu.project.ttc.chinese.engines.ChineseStemNormalizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="ChineseTreeTaggerWrapper">
+      <import name="eu.project.ttc.chinese.engines.ChineseTreeTaggerWrapper"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="XmiCasConsumer">
       <import name="eu.project.ttc.all.engines.XmiCasConsumer"/>
     </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="FrenchTreeTaggerWrapper">
-      <import name="eu.project.ttc.french.engines.FrenchTreeTaggerWrapper"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="FrenchTreeTaggerCategoryNormalizer">
-      <import name="eu.project.ttc.french.engines.FrenchTreeTaggerCategoryNormalizer"/>
+    <delegateAnalysisEngine key="ChineseTreeTaggerCategoryNormalizer">
+      <import name="eu.project.ttc.chinese.engines.ChineseTreeTaggerCategoryNormalizer"/>
     </delegateAnalysisEngine>
   </delegateAnalysisEngineSpecifiers>
   <analysisEngineMetaData>
-    <name>French TreeTagger</name>
+    <name>Chinese TreeTagger Analysis Engine</name>
     <description/>
     <version>1.0</version>
     <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
@@ -26,9 +32,9 @@
         <name>TreeTaggerHomeDirectory</name>
         <type>String</type>
         <multiValued>false</multiValued>
-        <mandatory>true</mandatory>
+        <mandatory>false</mandatory>
         <overrides>
-          <parameter>FrenchTreeTaggerWrapper/TreeTaggerHomeDirectory</parameter>
+          <parameter>ChineseTreeTaggerWrapper/TreeTaggerHomeDirectory</parameter>
         </overrides>
       </configurationParameter>
       <configurationParameter>
@@ -43,23 +49,19 @@
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
-        <name>TreeTaggerHomeDirectory</name>
-        <value>
-          <string>/usr/share/tree-tagger</string>
-        </value>
-      </nameValuePair>
-      <nameValuePair>
         <name>Directory</name>
         <value>
-          <string>/tmp</string>
+          <string>output</string>
         </value>
       </nameValuePair>
     </configurationParameterSettings>
     <flowConstraints>
       <fixedFlow>
-        <node>FrenchWordTokenizer</node>
-        <node>FrenchTreeTaggerWrapper</node>
-        <node>FrenchTreeTaggerCategoryNormalizer</node>
+        <node>ChineseSegmenter</node>
+        <node>ChineseTreeTaggerWrapper</node>
+        <node>ChineseTreeTaggerCategoryNormalizer</node>
+        <node>ChineseLemmaNormalizer</node>
+        <node>ChineseStemNormalizer</node>
         <node>XmiCasConsumer</node>
       </fixedFlow>
     </flowConstraints>
@@ -67,12 +69,14 @@
     <fsIndexCollection/>
     <capabilities>
       <capability>
-        <inputs/>
+        <inputs>
+          <type allAnnotatorFeatures="true">org.apache.uima.examples.SourceDocumentInformation</type>
+        </inputs>
         <outputs>
           <type allAnnotatorFeatures="true">eu.project.ttc.types.WordAnnotation</type>
         </outputs>
         <languagesSupported>
-          <language>fr</language>
+          <language>zh</language>
         </languagesSupported>
       </capability>
     </capabilities>

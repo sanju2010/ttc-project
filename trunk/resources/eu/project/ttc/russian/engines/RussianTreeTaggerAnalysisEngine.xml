@@ -3,24 +3,24 @@
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>false</primitive>
   <delegateAnalysisEngineSpecifiers>
-    <delegateAnalysisEngine key="ChineseSegmenter">
-      <import name="eu.project.ttc.chinese.engines.ChineseSegmenter"/>
+    <delegateAnalysisEngine key="RussianTreeTaggerWrapper">
+      <import name="eu.project.ttc.russian.engines.RussianTreeTaggerWrapper"/>
     </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="ChineseTreeTaggerWrapper">
-      <import name="eu.project.ttc.chinese.engines.ChineseTreeTaggerWrapper"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="ChineseTreeTaggerLemmaNormalizer">
-      <import name="eu.project.ttc.chinese.engines.ChineseTreeTaggerLemmaNormalizer"/>
+    <delegateAnalysisEngine key="RussianTreeTaggerCategoryNormalizer">
+      <import name="eu.project.ttc.russian.engines.RussianTreeTaggerCategoryNormalizer"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="XmiCasConsumer">
       <import name="eu.project.ttc.all.engines.XmiCasConsumer"/>
     </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="ChineseTreeTaggerCategoryNormalizer">
-      <import name="eu.project.ttc.chinese.engines.ChineseTreeTaggerCategoryNormalizer"/>
+    <delegateAnalysisEngine key="RussianStemmer">
+      <import name="eu.project.ttc.russian.engines.RussianStemmer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="RussianWordTokenizer">
+      <import name="eu.project.ttc.russian.engines.RussianWordTokenizer"/>
     </delegateAnalysisEngine>
   </delegateAnalysisEngineSpecifiers>
   <analysisEngineMetaData>
-    <name>Chinese TreeTagger</name>
+    <name>Russian TreeTagger Analysis Engine</name>
     <description/>
     <version>1.0</version>
     <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
@@ -29,9 +29,9 @@
         <name>TreeTaggerHomeDirectory</name>
         <type>String</type>
         <multiValued>false</multiValued>
-        <mandatory>false</mandatory>
+        <mandatory>true</mandatory>
         <overrides>
-          <parameter>ChineseTreeTaggerWrapper/TreeTaggerHomeDirectory</parameter>
+          <parameter>RussianTreeTaggerWrapper/TreeTaggerHomeDirectory</parameter>
         </overrides>
       </configurationParameter>
       <configurationParameter>
@@ -46,18 +46,24 @@
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
+        <name>TreeTaggerHomeDirectory</name>
+        <value>
+          <string>/usr/share/tree-tagger</string>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
         <name>Directory</name>
         <value>
-          <string>output</string>
+          <string>/tmp</string>
         </value>
       </nameValuePair>
     </configurationParameterSettings>
     <flowConstraints>
       <fixedFlow>
-        <node>ChineseSegmenter</node>
-        <node>ChineseTreeTaggerWrapper</node>
-        <node>ChineseTreeTaggerCategoryNormalizer</node>
-        <node>ChineseTreeTaggerLemmaNormalizer</node>
+        <node>RussianWordTokenizer</node>
+        <node>RussianTreeTaggerWrapper</node>
+        <node>RussianTreeTaggerCategoryNormalizer</node>
+        <node>RussianStemmer</node>
         <node>XmiCasConsumer</node>
       </fixedFlow>
     </flowConstraints>
@@ -65,14 +71,12 @@
     <fsIndexCollection/>
     <capabilities>
       <capability>
-        <inputs>
-          <type allAnnotatorFeatures="true">org.apache.uima.examples.SourceDocumentInformation</type>
-        </inputs>
+        <inputs/>
         <outputs>
           <type allAnnotatorFeatures="true">eu.project.ttc.types.WordAnnotation</type>
         </outputs>
         <languagesSupported>
-          <language>zh</language>
+          <language>ru</language>
         </languagesSupported>
       </capability>
     </capabilities>

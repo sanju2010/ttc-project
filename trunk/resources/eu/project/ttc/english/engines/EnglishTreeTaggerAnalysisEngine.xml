@@ -3,21 +3,24 @@
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>false</primitive>
   <delegateAnalysisEngineSpecifiers>
-    <delegateAnalysisEngine key="SpanishWordTokenizer">
-      <import name="eu.project.ttc.spanish.engines.SpanishWordTokenizer"/>
+    <delegateAnalysisEngine key="EnglishWordTokenizer">
+      <import name="eu.project.ttc.english.engines.EnglishWordTokenizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="EnglishTreeTaggerWrapper">
+      <import name="eu.project.ttc.english.engines.EnglishTreeTaggerWrapper"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="EnglishStemmer">
+      <import name="eu.project.ttc.english.engines.EnglishStemmer"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="XmiCasConsumer">
       <import name="eu.project.ttc.all.engines.XmiCasConsumer"/>
     </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="SpanishTreeTaggerWrapper">
-      <import name="eu.project.ttc.spanish.engines.SpanishTreeTaggerWrapper"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="SpanishTreeTaggerCategoryNormalizer">
-      <import name="eu.project.ttc.spanish.engines.SpanishTreeTaggerCategoryNormalizer"/>
+    <delegateAnalysisEngine key="EnglishTreeTaggerCategoryNormalizer">
+      <import name="eu.project.ttc.english.engines.EnglishTreeTaggerCategoryNormalizer"/>
     </delegateAnalysisEngine>
   </delegateAnalysisEngineSpecifiers>
   <analysisEngineMetaData>
-    <name>Spanish TreeTagger</name>
+    <name>English TreeTagger Analysis Engine</name>
     <description/>
     <version>1.0</version>
     <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
@@ -28,7 +31,7 @@
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
         <overrides>
-          <parameter>SpanishTreeTaggerWrapper/TreeTaggerHomeDirectory</parameter>
+          <parameter>EnglishTreeTaggerWrapper/TreeTaggerHomeDirectory</parameter>
         </overrides>
       </configurationParameter>
       <configurationParameter>
@@ -57,9 +60,10 @@
     </configurationParameterSettings>
     <flowConstraints>
       <fixedFlow>
-        <node>SpanishWordTokenizer</node>
-        <node>SpanishTreeTaggerWrapper</node>
-        <node>SpanishTreeTaggerCategoryNormalizer</node>
+        <node>EnglishWordTokenizer</node>
+        <node>EnglishTreeTaggerWrapper</node>
+        <node>EnglishTreeTaggerCategoryNormalizer</node>
+        <node>EnglishStemmer</node>
         <node>XmiCasConsumer</node>
       </fixedFlow>
     </flowConstraints>
@@ -72,7 +76,7 @@
           <type allAnnotatorFeatures="true">eu.project.ttc.types.WordAnnotation</type>
         </outputs>
         <languagesSupported>
-          <language>es</language>
+          <language>en</language>
         </languagesSupported>
       </capability>
     </capabilities>

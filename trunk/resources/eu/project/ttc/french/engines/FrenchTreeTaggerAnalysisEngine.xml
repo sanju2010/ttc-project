@@ -3,21 +3,24 @@
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>false</primitive>
   <delegateAnalysisEngineSpecifiers>
-    <delegateAnalysisEngine key="GermanWordTokenizer">
-      <import name="eu.project.ttc.german.engines.GermanWordTokenizer"/>
+    <delegateAnalysisEngine key="FrenchStemmer">
+      <import name="eu.project.ttc.french.engines.FrenchStemmer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="FrenchWordTokenizer">
+      <import name="eu.project.ttc.french.engines.FrenchWordTokenizer"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="XmiCasConsumer">
       <import name="eu.project.ttc.all.engines.XmiCasConsumer"/>
     </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="GermanTreeTaggerWrapper">
-      <import name="eu.project.ttc.german.engines.GermanTreeTaggerWrapper"/>
+    <delegateAnalysisEngine key="FrenchTreeTaggerWrapper">
+      <import name="eu.project.ttc.french.engines.FrenchTreeTaggerWrapper"/>
     </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="GermanTreeTaggerCategoryNormalizer">
-      <import name="eu.project.ttc.german.engines.GermanTreeTaggerCategoryNormalizer"/>
+    <delegateAnalysisEngine key="FrenchTreeTaggerCategoryNormalizer">
+      <import name="eu.project.ttc.french.engines.FrenchTreeTaggerCategoryNormalizer"/>
     </delegateAnalysisEngine>
   </delegateAnalysisEngineSpecifiers>
   <analysisEngineMetaData>
-    <name>German TreeTagger</name>
+    <name>French TreeTagger Analysis Engine</name>
     <description/>
     <version>1.0</version>
     <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
@@ -28,7 +31,7 @@
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
         <overrides>
-          <parameter>GermanTreeTaggerWrapper/TreeTaggerHomeDirectory</parameter>
+          <parameter>FrenchTreeTaggerWrapper/TreeTaggerHomeDirectory</parameter>
         </overrides>
       </configurationParameter>
       <configurationParameter>
@@ -57,9 +60,10 @@
     </configurationParameterSettings>
     <flowConstraints>
       <fixedFlow>
-        <node>GermanWordTokenizer</node>
-        <node>GermanTreeTaggerWrapper</node>
-        <node>GermanTreeTaggerCategoryNormalizer</node>
+        <node>FrenchWordTokenizer</node>
+        <node>FrenchTreeTaggerWrapper</node>
+        <node>FrenchTreeTaggerCategoryNormalizer</node>
+        <node>FrenchStemmer</node>
         <node>XmiCasConsumer</node>
       </fixedFlow>
     </flowConstraints>
@@ -72,7 +76,7 @@
           <type allAnnotatorFeatures="true">eu.project.ttc.types.WordAnnotation</type>
         </outputs>
         <languagesSupported>
-          <language>de</language>
+          <language>fr</language>
         </languagesSupported>
       </capability>
     </capabilities>

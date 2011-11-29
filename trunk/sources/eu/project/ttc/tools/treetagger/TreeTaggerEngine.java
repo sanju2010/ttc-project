@@ -67,9 +67,9 @@ public class TreeTaggerEngine extends SwingWorker<CpeDescription,Void> {
 		ConfigurationParameterSettings parameters = this.getTreeTagger().getSettings().getMetaData().getConfigurationParameterSettings();
 		String code = (String) parameters.getParameterValue("Language");
 		String language = new Locale (code).getDisplayLanguage(Locale.ENGLISH);
-		String path = "eu/project/ttc/" + language.toLowerCase() + "/engines/" + language + "TreeTagger.xml";
+		String path = "eu/project/ttc/" + language.toLowerCase() + "/engines/" + language + "TreeTaggerAnalysisEngine.xml";
         URL url = this.getClass().getClassLoader().getResource(path);
-        CpeIntegratedCasProcessor termMateAnnotator = CpeDescriptorFactory.produceCasProcessor(language + " TreeTagger");
+        CpeIntegratedCasProcessor termMateAnnotator = CpeDescriptorFactory.produceCasProcessor(language + " TreeTagger Analysis Engine");
         CpeComponentDescriptor desc = CpeDescriptorFactory.produceComponentDescriptor(url.toURI().toString());
         termMateAnnotator.setCpeComponentDescriptor(desc);
         CasProcessorConfigurationParameterSettings settings = CpeDescriptorFactory.produceCasProcessorConfigurationParameterSettings();

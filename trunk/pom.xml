@@ -71,6 +71,11 @@
     	<artifactId>indexer</artifactId>
     	<version>1.0</version>
     </dependency>
+    <dependency>
+    	<groupId>fr.free.rocheteau.jerome</groupId>
+    	<artifactId>stemmer</artifactId>
+    	<version>1.0</version>
+    </dependency>
   </dependencies>
   <licenses>
     <license>
