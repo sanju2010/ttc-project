@@ -13,7 +13,7 @@ import org.apache.uima.cas.impl.FeatureImpl;
 import org.apache.uima.cas.Feature;
 
 /** 
- * Updated by JCasGen Thu Nov 24 11:55:19 CET 2011
+ * Updated by JCasGen Tue Nov 29 11:26:08 CET 2011
  * @generated */
 public class TermAnnotation_Type extends TermComponentAnnotation_Type {
   /** @generated */
@@ -57,6 +57,42 @@ public class TermAnnotation_Type extends TermComponentAnnotation_Type {
     ll_cas.ll_setStringValue(addr, casFeatCode_complexity, v);}
     
   
+ 
+  /** @generated */
+  final Feature casFeat_frequency;
+  /** @generated */
+  final int     casFeatCode_frequency;
+  /** @generated */ 
+  public double getFrequency(int addr) {
+        if (featOkTst && casFeat_frequency == null)
+      jcas.throwFeatMissing("frequency", "eu.project.ttc.types.TermAnnotation");
+    return ll_cas.ll_getDoubleValue(addr, casFeatCode_frequency);
+  }
+  /** @generated */    
+  public void setFrequency(int addr, double v) {
+        if (featOkTst && casFeat_frequency == null)
+      jcas.throwFeatMissing("frequency", "eu.project.ttc.types.TermAnnotation");
+    ll_cas.ll_setDoubleValue(addr, casFeatCode_frequency, v);}
+    
+  
+ 
+  /** @generated */
+  final Feature casFeat_specificity;
+  /** @generated */
+  final int     casFeatCode_specificity;
+  /** @generated */ 
+  public double getSpecificity(int addr) {
+        if (featOkTst && casFeat_specificity == null)
+      jcas.throwFeatMissing("specificity", "eu.project.ttc.types.TermAnnotation");
+    return ll_cas.ll_getDoubleValue(addr, casFeatCode_specificity);
+  }
+  /** @generated */    
+  public void setSpecificity(int addr, double v) {
+        if (featOkTst && casFeat_specificity == null)
+      jcas.throwFeatMissing("specificity", "eu.project.ttc.types.TermAnnotation");
+    ll_cas.ll_setDoubleValue(addr, casFeatCode_specificity, v);}
+    
+  
 
 
 
@@ -69,6 +105,14 @@ public class TermAnnotation_Type extends TermComponentAnnotation_Type {
  
     casFeat_complexity = jcas.getRequiredFeatureDE(casType, "complexity", "uima.cas.String", featOkTst);
     casFeatCode_complexity  = (null == casFeat_complexity) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_complexity).getCode();
+
+ 
+    casFeat_frequency = jcas.getRequiredFeatureDE(casType, "frequency", "uima.cas.Double", featOkTst);
+    casFeatCode_frequency  = (null == casFeat_frequency) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_frequency).getCode();
+
+ 
+    casFeat_specificity = jcas.getRequiredFeatureDE(casType, "specificity", "uima.cas.Double", featOkTst);
+    casFeatCode_specificity  = (null == casFeat_specificity) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_specificity).getCode();
 
   }
 }

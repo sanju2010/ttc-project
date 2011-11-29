@@ -7,13 +7,14 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
-import eu.project.ttc.types.TermEntryAnnotation;
-
 import org.apache.uima.cas.CASRuntimeException;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
+
+import eu.project.ttc.types.TermAnnotation;
+import eu.project.ttc.types.TermComponentAnnotation;
 
 public class AcabitViewer {
 
@@ -76,14 +77,15 @@ public class AcabitViewer {
 	
 	public void doLoad(JCas cas) {
 		try {
-		AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TermEntryAnnotation.type);
+		AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TermAnnotation.type);
 		FSIterator<Annotation> iterator = index.iterator();
 		while (iterator.hasNext()) {
-			TermEntryAnnotation entry = (TermEntryAnnotation) iterator.next();
+			TermAnnotation annotation = (TermAnnotation) iterator.next();
 			DefaultMutableTreeNode node = new DefaultMutableTreeNode();
-			node.setUserObject(entry.getTerm());
+			node.setUserObject(annotation.getCoveredText());
 			this.getRoot().add(node);
-			this.addNotes(node, entry);
+			this.addNotes(node, annotation);
+			this.addComponents(node, cas, annotation);
 		}
 		this.getModel().reload();
 		} catch (CASRuntimeException e) {
@@ -91,7 +93,20 @@ public class AcabitViewer {
 		}
 	}
 	
-	private void addNotes(DefaultMutableTreeNode root,TermEntryAnnotation annotation) {
+	private void addComponents(DefaultMutableTreeNode root, JCas cas, TermAnnotation annotation) {
+		AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TermComponentAnnotation.type);
+		FSIterator<Annotation> iterator = index.subiterator(annotation);
+		while (iterator.hasNext()) {
+			TermComponentAnnotation component = (TermComponentAnnotation) iterator.next();
+			DefaultMutableTreeNode node = new DefaultMutableTreeNode();
+			node.setUserObject(component.getCoveredText());
+			root.add(node);
+			this.addNote(node, "category", component.getCategory());
+			this.addNote(node, "lemma", component.getLemma());
+		}
+	}
+
+	private void addNotes(DefaultMutableTreeNode root,TermAnnotation annotation) {
 		this.addNote(root, "complexity", annotation.getComplexity());
 		this.addNote(root, "category", annotation.getCategory());
 		this.addNote(root, "frequency", annotation.getFrequency());

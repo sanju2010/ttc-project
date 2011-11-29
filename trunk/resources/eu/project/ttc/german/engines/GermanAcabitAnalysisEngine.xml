@@ -3,14 +3,14 @@
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>false</primitive>
   <delegateAnalysisEngineSpecifiers>
-    <delegateAnalysisEngine key="RussianTermDetector">
-      <import name="eu.project.ttc.russian.engines.RussianTermDetector"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="RussianTermFilter">
-      <import name="eu.project.ttc.russian.engines.RussianTermFilter"/>
+    <delegateAnalysisEngine key="GermanTermDetector">
+      <import name="eu.project.ttc.german.engines.GermanTermDetector"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="IndexWriter">
       <import name="eu.project.ttc.all.engines.IndexWriter"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="GermanTermFilter">
+      <import name="eu.project.ttc.german.engines.GermanTermFilter"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="XmiCasConsumer">
       <import name="eu.project.ttc.all.engines.XmiCasConsumer"/>
@@ -18,9 +18,12 @@
     <delegateAnalysisEngine key="TermIndexer">
       <import name="eu.project.ttc.all.engines.TermIndexer"/>
     </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="GermanTermIndexer">
+      <import name="eu.project.ttc.german.engines.GermanTermIndexer"/>
+    </delegateAnalysisEngine>
   </delegateAnalysisEngineSpecifiers>
   <analysisEngineMetaData>
-    <name>Russian Acabit</name>
+    <name>German Acabit Analysis Engine</name>
     <description/>
     <version>1.0</version>
     <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
@@ -52,6 +55,15 @@
           <parameter>TermIndexer/Type</parameter>
         </overrides>
       </configurationParameter>
+      <configurationParameter>
+        <name>Language</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>TermIndexer/Language</parameter>
+        </overrides>
+      </configurationParameter>
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
@@ -72,12 +84,19 @@
           <string>eu.project.ttc.types.TermAnnotation</string>
         </value>
       </nameValuePair>
+      <nameValuePair>
+        <name>Language</name>
+        <value>
+          <string>x-unspecified</string>
+        </value>
+      </nameValuePair>
     </configurationParameterSettings>
     <flowConstraints>
       <fixedFlow>
-        <node>RussianTermDetector</node>
-        <node>RussianTermFilter</node>
+        <node>GermanTermDetector</node>
+        <node>GermanTermFilter</node>
         <node>TermIndexer</node>
+        <node>GermanTermIndexer</node>
         <node>IndexWriter</node>
         <node>XmiCasConsumer</node>
       </fixedFlow>
@@ -94,7 +113,7 @@
           <type allAnnotatorFeatures="true">org.apache.uima.TermAnnotation</type>
         </outputs>
         <languagesSupported>
-          <language>ru</language>
+          <language>de</language>
         </languagesSupported>
       </capability>
     </capabilities>
@@ -116,6 +135,10 @@
       </externalResource>
     </externalResources>
     <externalResourceBindings>
+      <externalResourceBinding>
+        <key>GermanTermIndexer/Index</key>
+        <resourceName>DefaultIndex</resourceName>
+      </externalResourceBinding>
       <externalResourceBinding>
         <key>TermIndexer/Index</key>
         <resourceName>DefaultIndex</resourceName>

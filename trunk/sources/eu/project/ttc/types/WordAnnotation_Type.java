@@ -14,7 +14,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /** 
- * Updated by JCasGen Thu Nov 24 11:55:19 CET 2011
+ * Updated by JCasGen Tue Nov 29 11:26:08 CET 2011
  * @generated */
 public class WordAnnotation_Type extends Annotation_Type {
   /** @generated */
@@ -76,6 +76,24 @@ public class WordAnnotation_Type extends Annotation_Type {
     ll_cas.ll_setStringValue(addr, casFeatCode_lemma, v);}
     
   
+ 
+  /** @generated */
+  final Feature casFeat_stem;
+  /** @generated */
+  final int     casFeatCode_stem;
+  /** @generated */ 
+  public String getStem(int addr) {
+        if (featOkTst && casFeat_stem == null)
+      jcas.throwFeatMissing("stem", "eu.project.ttc.types.WordAnnotation");
+    return ll_cas.ll_getStringValue(addr, casFeatCode_stem);
+  }
+  /** @generated */    
+  public void setStem(int addr, String v) {
+        if (featOkTst && casFeat_stem == null)
+      jcas.throwFeatMissing("stem", "eu.project.ttc.types.WordAnnotation");
+    ll_cas.ll_setStringValue(addr, casFeatCode_stem, v);}
+    
+  
 
 
 
@@ -92,6 +110,10 @@ public class WordAnnotation_Type extends Annotation_Type {
  
     casFeat_lemma = jcas.getRequiredFeatureDE(casType, "lemma", "uima.cas.String", featOkTst);
     casFeatCode_lemma  = (null == casFeat_lemma) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_lemma).getCode();
+
+ 
+    casFeat_stem = jcas.getRequiredFeatureDE(casType, "stem", "uima.cas.String", featOkTst);
+    casFeatCode_stem  = (null == casFeat_stem) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_stem).getCode();
 
   }
 }

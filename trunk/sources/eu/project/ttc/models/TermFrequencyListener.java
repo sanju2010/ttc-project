@@ -9,7 +9,7 @@ import org.apache.uima.resource.DataResource;
 import org.apache.uima.resource.ResourceAccessException;
 import org.apache.uima.resource.ResourceInitializationException;
 
-import eu.project.ttc.types.TermEntryAnnotation;
+import eu.project.ttc.types.TermAnnotation;
 import fr.free.rocheteau.jerome.models.IndexListener;
 
 public class TermFrequencyListener implements IndexListener {
@@ -54,21 +54,21 @@ public class TermFrequencyListener implements IndexListener {
 	private boolean done = false;
 
 	private void set(JCas cas) {
-		AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TermEntryAnnotation.type);
+		AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TermAnnotation.type);
 		FSIterator<Annotation> iterator = index.iterator();
 		while (iterator.hasNext()) {
-			TermEntryAnnotation annotation = (TermEntryAnnotation) iterator.next();
+			TermAnnotation annotation = (TermAnnotation) iterator.next();
 			double frequency = annotation.getFrequency();
 			this.specializedFrequency += frequency;
 		}
 	}
 	
 	private void get(JCas cas) {
-		AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TermEntryAnnotation.type);
+		AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TermAnnotation.type);
 		FSIterator<Annotation> iterator = index.iterator();
 		while (iterator.hasNext()) {
-			TermEntryAnnotation annotation = (TermEntryAnnotation) iterator.next();
-			String entry = annotation.getTerm().toLowerCase();
+			TermAnnotation annotation = (TermAnnotation) iterator.next();
+			String entry = annotation.getCoveredText(); // .toLowerCase();
 			double frequency = annotation.getFrequency() / this.getSpecializedFrequency();
 			double generalFrequency = this.getGeneralLanguage().get(entry);
 			if (generalFrequency != 0.0) { 

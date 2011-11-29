@@ -10,7 +10,7 @@ import org.apache.uima.jcas.cas.TOP_Type;
 
 
 /** 
- * Updated by JCasGen Thu Nov 24 11:55:19 CET 2011
+ * Updated by JCasGen Tue Nov 29 11:26:08 CET 2011
  * XML source: /home/rocheteau-j/Repositories/GoogleCode/ttc-term-suite/trunk/resources/eu/project/ttc/types/TermSuiteTypeSystem.xml
  * @generated */
 public class TermAnnotation extends TermComponentAnnotation {
@@ -74,6 +74,42 @@ public class TermAnnotation extends TermComponentAnnotation {
     if (TermAnnotation_Type.featOkTst && ((TermAnnotation_Type)jcasType).casFeat_complexity == null)
       jcasType.jcas.throwFeatMissing("complexity", "eu.project.ttc.types.TermAnnotation");
     jcasType.ll_cas.ll_setStringValue(addr, ((TermAnnotation_Type)jcasType).casFeatCode_complexity, v);}    
+   
+    
+  //*--------------*
+  //* Feature: frequency
+
+  /** getter for frequency - gets 
+   * @generated */
+  public double getFrequency() {
+    if (TermAnnotation_Type.featOkTst && ((TermAnnotation_Type)jcasType).casFeat_frequency == null)
+      jcasType.jcas.throwFeatMissing("frequency", "eu.project.ttc.types.TermAnnotation");
+    return jcasType.ll_cas.ll_getDoubleValue(addr, ((TermAnnotation_Type)jcasType).casFeatCode_frequency);}
+    
+  /** setter for frequency - sets  
+   * @generated */
+  public void setFrequency(double v) {
+    if (TermAnnotation_Type.featOkTst && ((TermAnnotation_Type)jcasType).casFeat_frequency == null)
+      jcasType.jcas.throwFeatMissing("frequency", "eu.project.ttc.types.TermAnnotation");
+    jcasType.ll_cas.ll_setDoubleValue(addr, ((TermAnnotation_Type)jcasType).casFeatCode_frequency, v);}    
+   
+    
+  //*--------------*
+  //* Feature: specificity
+
+  /** getter for specificity - gets 
+   * @generated */
+  public double getSpecificity() {
+    if (TermAnnotation_Type.featOkTst && ((TermAnnotation_Type)jcasType).casFeat_specificity == null)
+      jcasType.jcas.throwFeatMissing("specificity", "eu.project.ttc.types.TermAnnotation");
+    return jcasType.ll_cas.ll_getDoubleValue(addr, ((TermAnnotation_Type)jcasType).casFeatCode_specificity);}
+    
+  /** setter for specificity - sets  
+   * @generated */
+  public void setSpecificity(double v) {
+    if (TermAnnotation_Type.featOkTst && ((TermAnnotation_Type)jcasType).casFeat_specificity == null)
+      jcasType.jcas.throwFeatMissing("specificity", "eu.project.ttc.types.TermAnnotation");
+    jcasType.ll_cas.ll_setDoubleValue(addr, ((TermAnnotation_Type)jcasType).casFeatCode_specificity, v);}    
   }
 
     

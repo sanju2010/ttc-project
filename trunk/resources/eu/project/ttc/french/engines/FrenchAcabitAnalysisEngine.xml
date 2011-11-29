@@ -3,8 +3,14 @@
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>false</primitive>
   <delegateAnalysisEngineSpecifiers>
-    <delegateAnalysisEngine key="GermanTermDetector">
-      <import name="eu.project.ttc.german.engines.GermanTermDetector"/>
+    <delegateAnalysisEngine key="FrenchTermIndexer">
+      <import name="eu.project.ttc.french.engines.FrenchTermIndexer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="FrenchTermDetector">
+      <import name="eu.project.ttc.french.engines.FrenchTermDetector"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="FrenchTermFilter">
+      <import name="eu.project.ttc.french.engines.FrenchTermFilter"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="IndexWriter">
       <import name="eu.project.ttc.all.engines.IndexWriter"/>
@@ -12,18 +18,12 @@
     <delegateAnalysisEngine key="XmiCasConsumer">
       <import name="eu.project.ttc.all.engines.XmiCasConsumer"/>
     </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="GermanTermFilter">
-      <import name="eu.project.ttc.german.engines.GermanTermFilter"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="GermanTermIndexer">
-      <import name="eu.project.ttc.german.engines.GermanTermIndexer"/>
-    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="TermIndexer">
       <import name="eu.project.ttc.all.engines.TermIndexer"/>
     </delegateAnalysisEngine>
   </delegateAnalysisEngineSpecifiers>
   <analysisEngineMetaData>
-    <name>German Acabit</name>
+    <name>French Acabit Analysis Engine</name>
     <description/>
     <version>1.0</version>
     <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
@@ -55,6 +55,15 @@
           <parameter>TermIndexer/Type</parameter>
         </overrides>
       </configurationParameter>
+      <configurationParameter>
+        <name>Language</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>TermIndexer/Language</parameter>
+        </overrides>
+      </configurationParameter>
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
@@ -75,13 +84,19 @@
           <string>eu.project.ttc.types.TermAnnotation</string>
         </value>
       </nameValuePair>
+      <nameValuePair>
+        <name>Language</name>
+        <value>
+          <string>x-unspecified</string>
+        </value>
+      </nameValuePair>
     </configurationParameterSettings>
     <flowConstraints>
       <fixedFlow>
-        <node>GermanTermDetector</node>
-        <node>GermanTermFilter</node>
+        <node>FrenchTermDetector</node>
+        <node>FrenchTermFilter</node>
         <node>TermIndexer</node>
-        <node>GermanTermIndexer</node>
+        <node>FrenchTermIndexer</node>
         <node>IndexWriter</node>
         <node>XmiCasConsumer</node>
       </fixedFlow>
@@ -98,7 +113,7 @@
           <type allAnnotatorFeatures="true">org.apache.uima.TermAnnotation</type>
         </outputs>
         <languagesSupported>
-          <language>de</language>
+          <language>fr</language>
         </languagesSupported>
       </capability>
     </capabilities>
@@ -121,7 +136,7 @@
     </externalResources>
     <externalResourceBindings>
       <externalResourceBinding>
-        <key>GermanTermIndexer/Index</key>
+        <key>FrenchTermIndexer/Index</key>
         <resourceName>DefaultIndex</resourceName>
       </externalResourceBinding>
       <externalResourceBinding>

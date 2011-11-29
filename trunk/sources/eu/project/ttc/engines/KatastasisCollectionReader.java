@@ -37,7 +37,7 @@ import org.apache.uima.util.XMLInputSource;
 import org.apache.uima.util.XMLParser;
 
 import eu.project.ttc.types.SingleWordTermAnnotation;
-import eu.project.ttc.types.TermEntryAnnotation;
+import eu.project.ttc.types.TermAnnotation;
 
 public class KatastasisCollectionReader extends CollectionReader_ImplBase {
 
@@ -74,12 +74,12 @@ public class KatastasisCollectionReader extends CollectionReader_ImplBase {
 	}
 
 	private void setTerminology(CAS cas) throws CASException {
-		AnnotationIndex<Annotation> index = cas.getJCas().getAnnotationIndex(TermEntryAnnotation.type);
+		AnnotationIndex<Annotation> index = cas.getJCas().getAnnotationIndex(TermAnnotation.type);
 		FSIterator<Annotation> iterator = index.iterator();
 		while (iterator.hasNext()) {
 			try {
-				TermEntryAnnotation annotation = (TermEntryAnnotation) iterator.next();					
-				String term = annotation.getTerm().toLowerCase();
+				TermAnnotation annotation = (TermAnnotation) iterator.next();					
+				String term = annotation.getCoveredText();
 				if (term.length() > 1) {
 					this.terminology.add(term);						
 				}

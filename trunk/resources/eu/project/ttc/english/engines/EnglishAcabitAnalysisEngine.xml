@@ -23,7 +23,7 @@
     </delegateAnalysisEngine>
   </delegateAnalysisEngineSpecifiers>
   <analysisEngineMetaData>
-    <name>English Acabit</name>
+    <name>English Acabit Analysis Engine</name>
     <description/>
     <version>1.0</version>
     <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
@@ -55,6 +55,15 @@
           <parameter>TermIndexer/Type</parameter>
         </overrides>
       </configurationParameter>
+      <configurationParameter>
+        <name>Language</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>TermIndexer/Language</parameter>
+        </overrides>
+      </configurationParameter>
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
@@ -73,6 +82,12 @@
         <name>Type</name>
         <value>
           <string>eu.project.ttc.types.TermAnnotation</string>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>Language</name>
+        <value>
+          <string>x-unspecified</string>
         </value>
       </nameValuePair>
     </configurationParameterSettings>

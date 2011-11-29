@@ -11,7 +11,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
- * Updated by JCasGen Thu Nov 24 11:55:19 CET 2011
+ * Updated by JCasGen Tue Nov 29 11:26:08 CET 2011
  * XML source: /home/rocheteau-j/Repositories/GoogleCode/ttc-term-suite/trunk/resources/eu/project/ttc/types/TermSuiteTypeSystem.xml
  * @generated */
 public class WordAnnotation extends Annotation {
@@ -93,6 +93,24 @@ public class WordAnnotation extends Annotation {
     if (WordAnnotation_Type.featOkTst && ((WordAnnotation_Type)jcasType).casFeat_lemma == null)
       jcasType.jcas.throwFeatMissing("lemma", "eu.project.ttc.types.WordAnnotation");
     jcasType.ll_cas.ll_setStringValue(addr, ((WordAnnotation_Type)jcasType).casFeatCode_lemma, v);}    
+   
+    
+  //*--------------*
+  //* Feature: stem
+
+  /** getter for stem - gets 
+   * @generated */
+  public String getStem() {
+    if (WordAnnotation_Type.featOkTst && ((WordAnnotation_Type)jcasType).casFeat_stem == null)
+      jcasType.jcas.throwFeatMissing("stem", "eu.project.ttc.types.WordAnnotation");
+    return jcasType.ll_cas.ll_getStringValue(addr, ((WordAnnotation_Type)jcasType).casFeatCode_stem);}
+    
+  /** setter for stem - sets  
+   * @generated */
+  public void setStem(String v) {
+    if (WordAnnotation_Type.featOkTst && ((WordAnnotation_Type)jcasType).casFeat_stem == null)
+      jcasType.jcas.throwFeatMissing("stem", "eu.project.ttc.types.WordAnnotation");
+    jcasType.ll_cas.ll_setStringValue(addr, ((WordAnnotation_Type)jcasType).casFeatCode_stem, v);}    
   }
 
     

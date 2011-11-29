@@ -23,6 +23,11 @@
           <description/>
           <rangeTypeName>uima.cas.String</rangeTypeName>
         </featureDescription>
+        <featureDescription>
+          <name>stem</name>
+          <description/>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
       </features>
     </typeDescription>
     <typeDescription>
@@ -34,6 +39,16 @@
           <name>complexity</name>
           <description/>
           <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>frequency</name>
+          <description/>
+          <rangeTypeName>uima.cas.Double</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>specificity</name>
+          <description/>
+          <rangeTypeName>uima.cas.Double</rangeTypeName>
         </featureDescription>
       </features>
     </typeDescription>
@@ -51,38 +66,6 @@
       <name>eu.project.ttc.types.NeoClassicalCompoundTermAnnotation</name>
       <description/>
       <supertypeName>eu.project.ttc.types.TermAnnotation</supertypeName>
-    </typeDescription>
-    <typeDescription>
-      <name>eu.project.ttc.types.TermEntryAnnotation</name>
-      <description/>
-      <supertypeName>uima.tcas.Annotation</supertypeName>
-      <features>
-        <featureDescription>
-          <name>frequency</name>
-          <description/>
-          <rangeTypeName>uima.cas.Double</rangeTypeName>
-        </featureDescription>
-        <featureDescription>
-          <name>specificity</name>
-          <description/>
-          <rangeTypeName>uima.cas.Double</rangeTypeName>
-        </featureDescription>
-        <featureDescription>
-          <name>complexity</name>
-          <description/>
-          <rangeTypeName>uima.cas.String</rangeTypeName>
-        </featureDescription>
-        <featureDescription>
-          <name>category</name>
-          <description/>
-          <rangeTypeName>uima.cas.String</rangeTypeName>
-        </featureDescription>
-        <featureDescription>
-          <name>term</name>
-          <description/>
-          <rangeTypeName>uima.cas.String</rangeTypeName>
-        </featureDescription>
-      </features>
     </typeDescription>
     <typeDescription>
       <name>eu.project.ttc.types.TermComponentAnnotation</name>

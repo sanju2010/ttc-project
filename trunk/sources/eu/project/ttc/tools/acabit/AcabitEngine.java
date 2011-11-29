@@ -66,12 +66,13 @@ public class AcabitEngine extends SwingWorker<CpeDescription,Void> {
 		ConfigurationParameterSettings parameters = this.getAcabit().getSettings().getMetaData().getConfigurationParameterSettings();
 		String code = (String) parameters.getParameterValue("Language");
 		String language = new Locale (code).getDisplayLanguage(Locale.ENGLISH);
-		String path = "eu/project/ttc/" + language.toLowerCase() + "/engines/" + language + "Acabit.xml";
+		String path = "eu/project/ttc/" + language.toLowerCase() + "/engines/" + language + "AcabitAnalysisEngine.xml";
         URL url = this.getClass().getClassLoader().getResource(path);
-        CpeIntegratedCasProcessor termMateAnnotator = CpeDescriptorFactory.produceCasProcessor(language + " Acabit");
+        CpeIntegratedCasProcessor termMateAnnotator = CpeDescriptorFactory.produceCasProcessor(language + " Acabit Analysis Engine");
         CpeComponentDescriptor desc = CpeDescriptorFactory.produceComponentDescriptor(url.toURI().toString());
         termMateAnnotator.setCpeComponentDescriptor(desc);
         CasProcessorConfigurationParameterSettings settings = CpeDescriptorFactory.produceCasProcessorConfigurationParameterSettings();
+        settings.setParameterValue("Language", code);
         settings.setParameterValue("Directory", (String) parameters.getParameterValue("OutputDirectory"));
         settings.setParameterValue("File", (String) parameters.getParameterValue("TerminologyFile"));
         settings.setParameterValue("Type", (String) parameters.getParameterValue("TermAnnotationType"));

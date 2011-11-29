@@ -3,11 +3,11 @@
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>false</primitive>
   <delegateAnalysisEngineSpecifiers>
-    <delegateAnalysisEngine key="SpanishTermFilter">
-      <import name="eu.project.ttc.spanish.engines.SpanishTermFilter"/>
+    <delegateAnalysisEngine key="RussianTermDetector">
+      <import name="eu.project.ttc.russian.engines.RussianTermDetector"/>
     </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="SpanishTermDetector">
-      <import name="eu.project.ttc.spanish.engines.SpanishTermDetector"/>
+    <delegateAnalysisEngine key="RussianTermFilter">
+      <import name="eu.project.ttc.russian.engines.RussianTermFilter"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="IndexWriter">
       <import name="eu.project.ttc.all.engines.IndexWriter"/>
@@ -20,7 +20,7 @@
     </delegateAnalysisEngine>
   </delegateAnalysisEngineSpecifiers>
   <analysisEngineMetaData>
-    <name>Spanish Acabit</name>
+    <name>Russian Acabit Analysis Engine</name>
     <description/>
     <version>1.0</version>
     <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
@@ -52,6 +52,15 @@
           <parameter>TermIndexer/Type</parameter>
         </overrides>
       </configurationParameter>
+      <configurationParameter>
+        <name>Language</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>TermIndexer/Language</parameter>
+        </overrides>
+      </configurationParameter>
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
@@ -72,11 +81,17 @@
           <string>eu.project.ttc.types.TermAnnotation</string>
         </value>
       </nameValuePair>
+      <nameValuePair>
+        <name>Language</name>
+        <value>
+          <string>x-unspecified</string>
+        </value>
+      </nameValuePair>
     </configurationParameterSettings>
     <flowConstraints>
       <fixedFlow>
-        <node>SpanishTermDetector</node>
-        <node>SpanishTermFilter</node>
+        <node>RussianTermDetector</node>
+        <node>RussianTermFilter</node>
         <node>TermIndexer</node>
         <node>IndexWriter</node>
         <node>XmiCasConsumer</node>
@@ -94,7 +109,7 @@
           <type allAnnotatorFeatures="true">org.apache.uima.TermAnnotation</type>
         </outputs>
         <languagesSupported>
-          <language>es</language>
+          <language>ru</language>
         </languagesSupported>
       </capability>
     </capabilities>

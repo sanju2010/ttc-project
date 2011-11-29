@@ -256,9 +256,8 @@ public class TermContextIndexListener implements IndexListener, TermContextIndex
 			} else {
 				this.enableReleased(true);
 				Locale locale = new Locale(this.getLanguage());
-				UIMAFramework.getLogger().log(Level.INFO,"Normalizing " + locale.getDisplayLanguage(Locale.ENGLISH) + " Term Context Index");
+				UIMAFramework.getLogger().log(Level.INFO,"Releasing " + locale.getDisplayLanguage(Locale.ENGLISH) + " Term Context Index");
 				this.normalize(this.getAssociationRate());
-				UIMAFramework.getLogger().log(Level.INFO,"Annotating " + locale.getDisplayLanguage(Locale.ENGLISH) + " Term Context Index");
 				this.annotate(cas);
 			}
 		} catch (Exception e) {
