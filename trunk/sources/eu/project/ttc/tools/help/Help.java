@@ -49,10 +49,13 @@ public class Help implements Runnable {
 		this.content = new JTabbedPane();
 		this.content.setTabPlacement(JTabbedPane.TOP);
 		String locale = this.getLocale().getDisplayLanguage(Locale.ENGLISH);
-		this.content.addTab("  TreeTegger  ",this.getHelp("TreeTagger", locale));
+		this.content.addTab("  Term Suite  ",this.getHelp("TermSuite", locale));
+		this.content.addTab("  TreeTagger  ",this.getHelp("TreeTagger", locale));
+		this.content.addTab(" Tilde Tagger ",this.getHelp("TildeTagger", locale));
 		this.content.addTab("    Termer    ",this.getHelp("Termer", locale));
 		this.content.addTab("Contextualizer",this.getHelp("Contextualizer", locale));
 		this.content.addTab("   Aligner    ",this.getHelp("Aligner", locale));
+		this.content.addTab("  Converter   ",this.getHelp("Converter", locale));
 	}
 	
 	private JTabbedPane getContent() {
@@ -118,19 +121,27 @@ public class Help implements Runnable {
 	}
 
 	public void selectTreeTagger() {
-		this.getContent().setSelectedIndex(0);
-	}
-	
-	public void selectTermer() {
 		this.getContent().setSelectedIndex(1);
 	}
 	
-	public void selectContextualizer() {
+	public void selectTildeTagger() {
 		this.getContent().setSelectedIndex(2);
 	}
 	
-	public void selectAligner() {
+	public void selectTermer() {
 		this.getContent().setSelectedIndex(3);
+	}
+	
+	public void selectContextualizer() {
+		this.getContent().setSelectedIndex(4);
+	}
+	
+	public void selectAligner() {
+		this.getContent().setSelectedIndex(5);
+	}
+	
+	public void selectConverter() {
+		this.getContent().setSelectedIndex(6);
 	}
 	
 }

@@ -60,7 +60,7 @@ public class TildeTaggerEngineListener implements ActionListener, StatusCallback
 				Runnable parent = this.getTildeTagger().getParent();
 				if (parent instanceof TermSuite) {
 					TermSuite termSuite = (TermSuite) parent;
-					termSuite.getHelp().selectTreeTagger();
+					termSuite.getHelp().selectTildeTagger();
 					SwingUtilities.invokeLater(termSuite.getHelp());
 				}
 			}

@@ -68,7 +68,7 @@ public class KatastasisEngineListener implements ActionListener, StatusCallbackL
 				Runnable parent = this.getKatastasis().getParent();
 				if (parent instanceof TermSuite) {
 					TermSuite termSuite = (TermSuite) parent;
-					termSuite.getHelp().selectAligner();
+					termSuite.getHelp().selectContextualizer();
 					SwingUtilities.invokeLater(termSuite.getHelp());
 				}
 			}

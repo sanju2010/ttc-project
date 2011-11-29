@@ -143,9 +143,9 @@ public class Acabit implements Runnable {
 	private void setContent() {		
 		JTabbedPane inner = new JTabbedPane();
 		inner.setTabPlacement(JTabbedPane.TOP);
-		inner.addTab("   Settings   ",this.getSettings().getComponent());
-		inner.addTab(" Terminolgies ",this.getTerminologies().getComponent());
-		inner.addTab("   Documents  ",this.getDocuments().getComponent());
+		inner.addTab("   Settings    ",this.getSettings().getComponent());
+		inner.addTab(" Terminologies ",this.getTerminologies().getComponent());
+		inner.addTab("   Documents   ",this.getDocuments().getComponent());
 		JSplitPane outter = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 		outter.setTopComponent(this.getToolBar().getComponent());
 		outter.setBottomComponent(inner);

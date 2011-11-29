@@ -24,6 +24,7 @@ public class HelpTab {
 	private void setText() throws IOException {
 		this.text = new JEditorPane();
 		this.text.setPage(this.getUrl());
+		this.text.setEditable(false);
 	}
 	
 	private JEditorPane getText() {

@@ -59,7 +59,7 @@ public class ConverterEngineListener implements ActionListener, StatusCallbackLi
 				Runnable parent = this.getConverter().getParent();
 				if (parent instanceof TermSuite) {
 					TermSuite termSuite = (TermSuite) parent;
-					termSuite.getHelp().selectTreeTagger();
+					termSuite.getHelp().selectConverter();
 					SwingUtilities.invokeLater(termSuite.getHelp());
 				}
 			}
