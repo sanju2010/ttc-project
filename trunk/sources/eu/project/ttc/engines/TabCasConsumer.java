@@ -10,7 +10,6 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.FSIterator;
-import org.apache.uima.cas.impl.XmiCasSerializer;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.examples.SourceDocumentInformation;
 import org.apache.uima.jcas.JCas;
@@ -18,10 +17,11 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Level;
-import org.xml.sax.SAXParseException;
 
-public class XmiCasConsumer extends JCasAnnotator_ImplBase {
-		
+import eu.project.ttc.types.WordAnnotation;
+
+public class TabCasConsumer extends JCasAnnotator_ImplBase {
+	
 	private File directory;
 	
 	private void setDirectory(String path) throws IOException {
@@ -61,13 +61,29 @@ public class XmiCasConsumer extends JCasAnnotator_ImplBase {
 			String name = file.getName();
 			int i = name.lastIndexOf('.');
 			if (i == -1) {
-				return name + ".xmi";
+				return name + ".tsv";
 			} else {
-				return name.substring(0, i) + ".xmi";
+				return name.substring(0, i) + ".tsv";
 			}
 		} else {
 			return null;
 		}
+	}
+	
+	private String analysis(JCas cas) {
+		StringBuilder builder = new StringBuilder();
+		AnnotationIndex<Annotation> index = cas.getAnnotationIndex(WordAnnotation.type);
+		FSIterator<Annotation> iterator = index.iterator();
+		while (iterator.hasNext()) {
+			WordAnnotation annotation = (WordAnnotation) iterator.next();
+			builder.append(annotation.getCoveredText());
+			builder.append('\t');
+			builder.append(annotation.getCategory());
+			builder.append('\t');
+			builder.append(annotation.getLemma());
+			builder.append('\n');
+		}
+		return builder.toString();
 	}
 	
 	@Override
@@ -75,15 +91,15 @@ public class XmiCasConsumer extends JCasAnnotator_ImplBase {
 		try {
 			String name = this.retrieve(cas);
 			if (name == null) { 
-				this.getContext().getLogger().log(Level.WARNING,"Skiping CAS Serialization");
+				this.getContext().getLogger().log(Level.WARNING,"Skiping CAS Converting");
 			} else {
 				File file = new File(this.getDirectory(), name);
 				OutputStream stream = new FileOutputStream(file);
 				try {
-					XmiCasSerializer.serialize(cas.getCas(), cas.getTypeSystem(), stream);
-					this.getContext().getLogger().log(Level.CONFIG,"Serializing " + file.getAbsolutePath());
-				} catch (SAXParseException e) {
-					this.getContext().getLogger().log(Level.WARNING,"Failure while serializing " + file + "\nCaused by " + e.getClass().getCanonicalName() + ": " + e.getMessage());
+					stream.write(this.analysis(cas).getBytes());
+					this.getContext().getLogger().log(Level.CONFIG,"Converting " + file.getAbsolutePath());
+				} catch (Exception e) {
+					this.getContext().getLogger().log(Level.WARNING,"Error while converting " + file.getAbsolutePath() + "\n" + e.getMessage());
 				} finally {
 					stream.close();
 				}

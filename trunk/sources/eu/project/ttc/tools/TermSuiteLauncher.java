@@ -146,6 +146,22 @@ public class TermSuiteLauncher {
 		return this.tildetagger;
 	}
 	
+	private JButton converter;
+	
+	private void setConverter() {
+		this.converter = new JButton("Converter");
+		this.converter.setActionCommand("converter");
+		this.converter.setEnabled(true);
+		this.converter.setPreferredSize(dimension);
+		this.converter.setMargin(insets);
+		this.converter.setBackground(color);
+		this.converter.setBorderPainted(false);
+	}
+	
+	public JButton getConverter() {
+		return this.converter;
+	}
+	
 	private JToolBar component;
 	
 	private void setComponent() {
@@ -172,6 +188,10 @@ public class TermSuiteLauncher {
 		c.gridx = 0; c.gridy = 8;
 		this.component.add(new JSeparator(JSeparator.VERTICAL),c);
 		c.gridx = 0; c.gridy = 9;		
+		this.component.add(this.getConverter(),c);
+		c.gridx = 0; c.gridy = 10;		
+		this.component.add(new JSeparator(JSeparator.VERTICAL),c);
+		c.gridx = 0; c.gridy = 11;		
 		this.component.add(this.getQuit(),c);
 	}
 	
@@ -188,6 +208,7 @@ public class TermSuiteLauncher {
 		this.getAcabit().addActionListener(listener);
 		this.getKatastasis().addActionListener(listener);
 		this.getZiggurat().addActionListener(listener);
+		this.getConverter().addActionListener(listener);
 	}
 	
 	public TermSuiteLauncher() {
@@ -199,6 +220,7 @@ public class TermSuiteLauncher {
 		this.setZiggurat();
 		this.setTreeTagger();
 		this.setTildeTagger();
+		this.setConverter();
 		this.setComponent();
 	}
 	

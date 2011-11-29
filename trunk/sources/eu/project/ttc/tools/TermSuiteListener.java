@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import eu.project.ttc.tools.acabit.Acabit;
+import eu.project.ttc.tools.converter.Converter;
 import eu.project.ttc.tools.katastasis.Katastasis;
 import eu.project.ttc.tools.tildetagger.TildeTagger;
 import eu.project.ttc.tools.treetagger.TreeTagger;
@@ -87,6 +88,12 @@ public class TermSuiteListener implements ActionListener {
 		SwingUtilities.invokeLater(ziggurat);
 	}
 	
+	private void doConverter() {
+		Converter converter = new Converter(false);
+		converter.setParent(this.getTermSuite());
+		SwingUtilities.invokeLater(converter);
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		Object object = event.getSource();
@@ -109,6 +116,8 @@ public class TermSuiteListener implements ActionListener {
 				this.doKatastasis();
 			} else if (action.equals("ziggurat")) {
 				this.doZiggurat();
+			} else if (action.equals("converter")) {
+				this.doConverter();
 			} 
 		} 
 	}
