@@ -1,3 +1,4 @@
+ABK	abbreviation
 ABR	abbreviation
 ADJ	adjective
 ADV	adverb
@@ -16,6 +17,10 @@ PRO:POS	pronoun
 PRO:REL	pronoun
 PRP	preposition
 PRP:det	preposition
+PUN	punctuation
+PUN:cit	punctuation
+SENT	sentence
+SYM	symbol
 VER:cond	verb
 VER:futu	verb
 VER:impe	verb

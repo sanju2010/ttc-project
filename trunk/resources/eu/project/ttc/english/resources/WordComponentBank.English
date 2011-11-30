@@ -9,6 +9,7 @@ prefix::»
 prefix::«
 suffix::.
 # suffix::'
+suffix::-
 suffix::]
 suffix::}
 suffix::`
