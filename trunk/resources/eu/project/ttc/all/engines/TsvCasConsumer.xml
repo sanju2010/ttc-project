@@ -2,15 +2,15 @@
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>true</primitive>
-  <annotatorImplementationName>eu.project.ttc.engines.TabCasConsumer</annotatorImplementationName>
+  <annotatorImplementationName>eu.project.ttc.engines.TsvCasConsumer</annotatorImplementationName>
   <analysisEngineMetaData>
-    <name>Tab Cas Consumer</name>
+    <name>TSV Cas Consumer</name>
     <description/>
     <version>1.0</version>
     <vendor/>
     <configurationParameters>
       <configurationParameter>
-        <name>Directory</name>
+        <name>FileOrDirectory</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
@@ -18,7 +18,7 @@
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
-        <name>Directory</name>
+        <name>FileOrDirectory</name>
         <value>
           <string>/tmp</string>
         </value>
