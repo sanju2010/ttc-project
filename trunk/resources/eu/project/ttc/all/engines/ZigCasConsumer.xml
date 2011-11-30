@@ -2,9 +2,9 @@
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>true</primitive>
-  <annotatorImplementationName>eu.project.ttc.engines.FlxCasConsumer</annotatorImplementationName>
+  <annotatorImplementationName>eu.project.ttc.engines.ZigCasConsumer</annotatorImplementationName>
   <analysisEngineMetaData>
-    <name>FLX Cas Consumer</name>
+    <name>ZIG Cas Consumer</name>
     <description/>
     <version>1.0</version>
     <vendor/>
@@ -20,7 +20,7 @@
       <nameValuePair>
         <name>FileOrDirectory</name>
         <value>
-          <string>/tmp/output.flx</string>
+          <string>/tmp/output.zig</string>
         </value>
       </nameValuePair>
     </configurationParameterSettings>
@@ -44,30 +44,4 @@
       <outputsNewCASes>false</outputsNewCASes>
     </operationalProperties>
   </analysisEngineMetaData>
-  <externalResourceDependencies>
-    <externalResourceDependency>
-      <key>Resource</key>
-      <description/>
-      <interfaceName>eu.project.ttc.models.FlxResource</interfaceName>
-      <optional>false</optional>
-    </externalResourceDependency>
-  </externalResourceDependencies>
-  <resourceManagerConfiguration>
-    <externalResources>
-      <externalResource>
-        <name>FlxResource</name>
-        <description/>
-        <fileResourceSpecifier>
-          <fileUrl>eu/project/ttc/models/FlxResource.class</fileUrl>
-        </fileResourceSpecifier>
-        <implementationName>eu.project.ttc.models.FlxResource</implementationName>
-      </externalResource>
-    </externalResources>
-    <externalResourceBindings>
-      <externalResourceBinding>
-        <key>Resource</key>
-        <resourceName>FlxResource</resourceName>
-      </externalResourceBinding>
-    </externalResourceBindings>
-  </resourceManagerConfiguration>
 </analysisEngineDescription>

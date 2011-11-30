@@ -162,7 +162,7 @@ public class TermContextIndexListener implements IndexListener, TermContextIndex
 		try {
 			if (!this.isLoaded(uri)) {
 				this.getLoaded().add(uri.toString());
-				UIMAFramework.getLogger().log(Level.OFF, "Loading " + uri);
+				UIMAFramework.getLogger().log(Level.CONFIG, "Loading " + uri);
 				InputStream inputStream = uri.toURL().openStream();
 				URL url = this.getClass().getClassLoader().getResource("eu/project/ttc/all/engines/TermContextIndexWriter.xml");
 				XMLInputSource source = new XMLInputSource(url);
