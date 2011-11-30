@@ -9,6 +9,9 @@
     <delegateAnalysisEngine key="SpanishTermDetector">
       <import name="eu.project.ttc.spanish.engines.SpanishTermDetector"/>
     </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="SpanishTermIndexer">
+      <import name="eu.project.ttc.spanish.engines.SpanishTermIndexer"/>
+    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="IndexWriter">
       <import name="eu.project.ttc.all.engines.IndexWriter"/>
     </delegateAnalysisEngine>
@@ -93,6 +96,7 @@
         <node>SpanishTermDetector</node>
         <node>SpanishTermFilter</node>
         <node>TermIndexer</node>
+        <node>SpanishTermIndexer</node>
         <node>IndexWriter</node>
         <node>XmiCasConsumer</node>
       </fixedFlow>
@@ -137,6 +141,10 @@
       </externalResourceBinding>
       <externalResourceBinding>
         <key>IndexWriter/Index</key>
+        <resourceName>DefaultIndex</resourceName>
+      </externalResourceBinding>
+      <externalResourceBinding>
+        <key>SpanishTermIndexer/Index</key>
         <resourceName>DefaultIndex</resourceName>
       </externalResourceBinding>
     </externalResourceBindings>

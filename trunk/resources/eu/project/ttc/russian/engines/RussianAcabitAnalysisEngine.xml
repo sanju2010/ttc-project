@@ -15,6 +15,9 @@
     <delegateAnalysisEngine key="XmiCasConsumer">
       <import name="eu.project.ttc.all.engines.XmiCasConsumer"/>
     </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="RussianTermIndexer">
+      <import name="eu.project.ttc.russian.engines.RussianTermIndexer"/>
+    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="TermIndexer">
       <import name="eu.project.ttc.all.engines.TermIndexer"/>
     </delegateAnalysisEngine>
@@ -93,6 +96,7 @@
         <node>RussianTermDetector</node>
         <node>RussianTermFilter</node>
         <node>TermIndexer</node>
+        <node>RussianTermIndexer</node>
         <node>IndexWriter</node>
         <node>XmiCasConsumer</node>
       </fixedFlow>
@@ -137,6 +141,10 @@
       </externalResourceBinding>
       <externalResourceBinding>
         <key>IndexWriter/Index</key>
+        <resourceName>DefaultIndex</resourceName>
+      </externalResourceBinding>
+      <externalResourceBinding>
+        <key>RussianTermIndexer/Index</key>
         <resourceName>DefaultIndex</resourceName>
       </externalResourceBinding>
     </externalResourceBindings>

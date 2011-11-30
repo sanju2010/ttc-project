@@ -3,6 +3,9 @@
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>false</primitive>
   <delegateAnalysisEngineSpecifiers>
+    <delegateAnalysisEngine key="ChineseTermIndexer">
+      <import name="eu.project.ttc.chinese.engines.ChineseTermIndexer"/>
+    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="IndexWriter">
       <import name="eu.project.ttc.all.engines.IndexWriter"/>
     </delegateAnalysisEngine>
@@ -93,6 +96,7 @@
         <node>ChineseTermDetector</node>
         <node>ChineseTermFilter</node>
         <node>TermIndexer</node>
+        <node>ChineseTermIndexer</node>
         <node>IndexWriter</node>
         <node>XmiCasConsumer</node>
       </fixedFlow>
@@ -137,6 +141,10 @@
       </externalResourceBinding>
       <externalResourceBinding>
         <key>IndexWriter/Index</key>
+        <resourceName>DefaultIndex</resourceName>
+      </externalResourceBinding>
+      <externalResourceBinding>
+        <key>ChineseTermIndexer/Index</key>
         <resourceName>DefaultIndex</resourceName>
       </externalResourceBinding>
     </externalResourceBindings>
