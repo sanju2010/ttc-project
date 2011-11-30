@@ -3,6 +3,7 @@ package eu.project.ttc.engines;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 
+import eu.project.ttc.models.Term;
 import eu.project.ttc.types.MultiWordTermAnnotation;
 import eu.project.ttc.types.SingleWordTermAnnotation;
 import eu.project.ttc.types.TermAnnotation;
@@ -20,7 +21,7 @@ public class RuleBasedTermDetector extends PatternMatcher {
 				WordAnnotation word = (WordAnnotation) annotations[0];
 				term.setCategory(word.getCategory());
 				term.setLemma(word.getLemma());
-				term.setComplexity("single-word");
+				term.setComplexity(Term.SINGLE_WORD);
 			} else {
 				term = new MultiWordTermAnnotation(cas, begin, end);
 				/*
@@ -34,7 +35,7 @@ public class RuleBasedTermDetector extends PatternMatcher {
 					
 				}
 				*/
-				term.setComplexity("multi-word");
+				term.setComplexity(Term.MULTI_WORD);
 				term.setCategory(id);
 				term.setLemma(cas.getDocumentText().substring(begin, end).toLowerCase().trim());
 			}

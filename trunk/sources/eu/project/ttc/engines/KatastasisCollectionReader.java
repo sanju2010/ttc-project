@@ -74,11 +74,11 @@ public class KatastasisCollectionReader extends CollectionReader_ImplBase {
 	}
 
 	private void setTerminology(CAS cas) throws CASException {
-		AnnotationIndex<Annotation> index = cas.getJCas().getAnnotationIndex(TermAnnotation.type);
+		AnnotationIndex<Annotation> index = cas.getJCas().getAnnotationIndex(SingleWordTermAnnotation.type);
 		FSIterator<Annotation> iterator = index.iterator();
 		while (iterator.hasNext()) {
 			try {
-				TermAnnotation annotation = (TermAnnotation) iterator.next();					
+				SingleWordTermAnnotation annotation = (SingleWordTermAnnotation) iterator.next();					
 				String term = annotation.getCoveredText();
 				if (term.length() > 1) {
 					this.terminology.add(term);						
@@ -194,14 +194,17 @@ public class KatastasisCollectionReader extends CollectionReader_ImplBase {
 			File file = this.getFiles().next();
 			InputStream stream = new FileInputStream(file);
 			XmiCasDeserializer.deserialize(stream, cas);
-			AnnotationIndex<Annotation> index = cas.getJCas().getAnnotationIndex(SingleWordTermAnnotation.type);
+			AnnotationIndex<Annotation> index = cas.getJCas().getAnnotationIndex(TermAnnotation.type);
 			FSIterator<Annotation> iterator = index.iterator();
 			Set<Annotation> annotations = new HashSet<Annotation>();
 			while (iterator.hasNext()) {
-				SingleWordTermAnnotation annotation = (SingleWordTermAnnotation) iterator.next();
-				// String term = annotation.getCoveredText().toLowerCase();
-				String lemma = annotation.getLemma().toLowerCase();
-				if (!this.getTerminology().contains(lemma)) {
+				TermAnnotation annotation = (TermAnnotation) iterator.next();
+				if (annotation instanceof SingleWordTermAnnotation) {
+					String lemma = annotation.getLemma().toLowerCase();
+					if (!this.getTerminology().contains(lemma)) { 
+						annotations.add(annotation);
+					}					
+				} else {
 					annotations.add(annotation);
 				}
 			}

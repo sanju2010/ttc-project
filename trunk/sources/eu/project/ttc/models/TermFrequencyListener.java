@@ -70,6 +70,7 @@ public class TermFrequencyListener implements IndexListener {
 			TermAnnotation annotation = (TermAnnotation) iterator.next();
 			String entry = annotation.getCoveredText(); // .toLowerCase();
 			double frequency = annotation.getFrequency() / this.getSpecializedFrequency();
+			annotation.setFrequency(frequency);
 			double generalFrequency = this.getGeneralLanguage().get(entry);
 			if (generalFrequency != 0.0) { 
 				annotation.setSpecificity(frequency / generalFrequency);				

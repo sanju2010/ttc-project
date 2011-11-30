@@ -25,6 +25,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 import eu.project.ttc.models.Root;
 import eu.project.ttc.models.RootBank;
 import eu.project.ttc.models.RootTree;
+import eu.project.ttc.models.Term;
 import eu.project.ttc.types.NeoClassicalCompoundTermAnnotation;
 import eu.project.ttc.types.TermComponentAnnotation;
 
@@ -201,7 +202,7 @@ public class NeoClassicalTermDetector extends JCasAnnotator_ImplBase {
 		NeoClassicalCompoundTermAnnotation annotation = new NeoClassicalCompoundTermAnnotation(cas,begin,end);
 		annotation.setBegin(begin);
 		annotation.setEnd(end);
-		annotation.setComplexity("neo-classical-compound");
+		annotation.setComplexity(Term.NEO_CLASSICAL_COMPOUND);
 		annotation.setLemma(annotation.getCoveredText());
 		annotation.setCategory(this.getValue());
 		annotation.addToIndexes();

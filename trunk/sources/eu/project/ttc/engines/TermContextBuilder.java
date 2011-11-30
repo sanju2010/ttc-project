@@ -13,18 +13,18 @@ public class TermContextBuilder extends ContextBuilder {
 	@Override
 	protected void annotate(JCas cas, Annotation annotation,Annotation[] annotations) {
 		// System.out.println(annotation.getCoveredText() + " " + annotation.getBegin() + " " + annotation.getEnd() + " " + annotations.length);
-		TermContextAnnotation vector = new TermContextAnnotation(cas);
-		vector.setTerm((TermAnnotation) annotation);
+		TermContextAnnotation context = new TermContextAnnotation(cas);
+		context.setTerm((TermAnnotation) annotation);
 		int length = annotations.length;
 		FSArray array = new FSArray(cas,length);
-		vector.setContext(array);
+		context.setContext(array);
 		for (int index = 0; index < length; index ++) {
 			Annotation a = annotations[index];
-			vector.setContext(index, (TermAnnotation) a);
+			context.setContext(index, (TermAnnotation) a);
 		}
-		vector.setBegin(annotation.getBegin());
-		vector.setEnd(annotation.getEnd());
-		vector.addToIndexes();
+		context.setBegin(annotation.getBegin());
+		context.setEnd(annotation.getEnd());
+		context.addToIndexes();
 	}
 
 }

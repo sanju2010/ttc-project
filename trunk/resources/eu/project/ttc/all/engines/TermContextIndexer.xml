@@ -32,7 +32,7 @@
       <nameValuePair>
         <name>Type</name>
         <value>
-          <string>eu.project.ttc.types.TermContextVectorAnnotation</string>
+          <string>eu.project.ttc.types.TermContextAnnotation</string>
         </value>
       </nameValuePair>
       <nameValuePair>

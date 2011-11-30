@@ -195,7 +195,16 @@ public class TermIndexListener implements IndexListener {
 					builder.append(entry);
 					int end = builder.length();
 					builder.append('\n');
-					TermAnnotation annotation = new TermAnnotation(cas,begin,end);
+					TermAnnotation annotation = null;
+					if (complexity.equals(Term.SINGLE_WORD)) {
+						annotation = new SingleWordTermAnnotation(cas,begin,end);
+					} else if (complexity.equals(Term.MULTI_WORD)) {
+						annotation = new MultiWordTermAnnotation(cas,begin,end);
+					} else if (complexity.equals(Term.NEO_CLASSICAL_COMPOUND)) {
+						annotation = new NeoClassicalCompoundTermAnnotation(cas,begin,end);
+					} else {
+						annotation = new TermAnnotation(cas,begin,end);
+					}
 					annotation.setFrequency(frequency);
 					annotation.setCategory(category);
 					annotation.setComplexity(complexity);
