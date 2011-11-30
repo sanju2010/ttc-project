@@ -28,19 +28,22 @@ public class XmiCollectionReader extends CollectionReader_ImplBase {
 		
 	private Iterator<File> files;
 
-	private void setFiles(File directory) throws FileNotFoundException {
-		if (directory.exists()) {
-			if (directory.isDirectory()) {				
+	private void setFiles(File file) throws FileNotFoundException {
+		if (file.exists()) {
+			if (file.isDirectory()) {				
 				List<File> files = new ArrayList<File>();
-				files.addAll(Arrays.asList(directory.listFiles(this.getFilter())));
+				files.addAll(Arrays.asList(file.listFiles(this.getFilter())));
 				Collections.sort(files);
 				this.files = files.iterator();
 				this.setSize(files.size());
 			} else {
-				throw new FileNotFoundException(directory.getAbsolutePath());
+				List<File> files = new ArrayList<File>();
+				files.add(file);
+				this.files = files.iterator();
+				this.setSize(files.size());
 			}
 		} else {
-			throw new FileNotFoundException(directory.getAbsolutePath());
+			throw new FileNotFoundException(file.getAbsolutePath());
 		}
 	}
 

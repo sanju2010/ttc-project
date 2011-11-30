@@ -44,7 +44,7 @@ public class ConverterEngine extends SwingWorker<CpeDescription,Void> {
 		this.setCollectionProcessingEngine();
 		this.setCollectionReader();
 		this.setAnalysisEngine();
-		File file = File.createTempFile("treetagger-cpe-",".xml");
+		File file = File.createTempFile("converter-cpe-",".xml");
 		file.deleteOnExit();
 		OutputStream stream = new FileOutputStream(file);
 		this.collectionProcessingEngine.toXML(stream);
@@ -56,7 +56,7 @@ public class ConverterEngine extends SwingWorker<CpeDescription,Void> {
 		URL url = this.getClass().getClassLoader().getResource("eu/project/ttc/all/engines/XmiCollectionReader.xml");
 		CpeCollectionReader termSuiteCollector = CpeDescriptorFactory.produceCollectionReader(url.toURI().toString());
 		CasProcessorConfigurationParameterSettings settings = CpeDescriptorFactory.produceCasProcessorConfigurationParameterSettings();
-		settings.setParameterValue("Directory",parameters.getParameterValue("InputDirectory"));
+		settings.setParameterValue("Directory",parameters.getParameterValue("InputFileOrDirectory"));
 		termSuiteCollector.setConfigurationParameterSettings(settings);
 		this.collectionProcessingEngine.addCollectionReader(termSuiteCollector);
 	}
@@ -65,14 +65,12 @@ public class ConverterEngine extends SwingWorker<CpeDescription,Void> {
 		ConfigurationParameterSettings parameters = this.getConverter().getSettings().getMetaData().getConfigurationParameterSettings();
 		String className = (String) parameters.getParameterValue("AnnotatorClassName");
 		String path  = className.replaceAll("\\.", "/") + ".xml";
-		System.out.println(path);
         URL url = this.getClass().getClassLoader().getResource(path);
-        System.out.println(url);
         CpeIntegratedCasProcessor termMateAnnotator = CpeDescriptorFactory.produceCasProcessor("Converter Analysis Engine");
         CpeComponentDescriptor desc = CpeDescriptorFactory.produceComponentDescriptor(url.toURI().toString());
         termMateAnnotator.setCpeComponentDescriptor(desc);
         CasProcessorConfigurationParameterSettings settings = CpeDescriptorFactory.produceCasProcessorConfigurationParameterSettings();
-        settings.setParameterValue("Directory", (String) parameters.getParameterValue("OutputDirectory"));
+        settings.setParameterValue("FileOrDirectory", (String) parameters.getParameterValue("OutputFileOrDirectory"));
         termMateAnnotator.setConfigurationParameterSettings(settings);
         this.collectionProcessingEngine.addCasProcessor(termMateAnnotator);
 	}

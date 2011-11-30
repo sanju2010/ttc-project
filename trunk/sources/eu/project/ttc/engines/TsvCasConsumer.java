@@ -20,7 +20,7 @@ import org.apache.uima.util.Level;
 
 import eu.project.ttc.types.WordAnnotation;
 
-public class TabCasConsumer extends JCasAnnotator_ImplBase {
+public class TsvCasConsumer extends JCasAnnotator_ImplBase {
 	
 	private File directory;
 	
@@ -45,7 +45,7 @@ public class TabCasConsumer extends JCasAnnotator_ImplBase {
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
 		try {
-			String directory = (String) context.getConfigParameterValue("Directory");
+			String directory = (String) context.getConfigParameterValue("FileOrDirectory");
 			this.setDirectory(directory);
 		} catch (Exception e) {
 			throw new ResourceInitializationException(e);

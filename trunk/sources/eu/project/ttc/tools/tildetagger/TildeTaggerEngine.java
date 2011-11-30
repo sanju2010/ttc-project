@@ -45,7 +45,7 @@ public class TildeTaggerEngine extends SwingWorker<CpeDescription,Void> {
 		this.setCollectionProcessingEngine();
 		this.setCollectionReader();
 		this.setAnalysisEngine();
-		File file = File.createTempFile("treetagger-cpe-",".xml");
+		File file = File.createTempFile("tildetagger-cpe-",".xml");
 		file.deleteOnExit();
 		OutputStream stream = new FileOutputStream(file);
 		this.collectionProcessingEngine.toXML(stream);

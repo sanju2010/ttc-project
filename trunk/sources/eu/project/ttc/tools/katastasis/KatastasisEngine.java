@@ -44,7 +44,7 @@ public class KatastasisEngine extends SwingWorker<CpeDescription,Void> {
 		this.setCollectionProcessingEngine();
 		this.setCollectionReader();
 		this.setAnalysisEngine();
-		File file = File.createTempFile("ziggurat-cpe-",".xml");
+		File file = File.createTempFile("katastasis-cpe-",".xml");
 		file.deleteOnExit();
 		OutputStream stream = new FileOutputStream(file);
 		this.collectionProcessingEngine.toXML(stream);
