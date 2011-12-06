@@ -6,6 +6,8 @@ prefix::`
 prefix::"
 prefix::»
 prefix::«
+prefix::-
+suffix::-
 suffix::.
 suffix::]
 suffix::}

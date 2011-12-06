@@ -44,7 +44,7 @@
       <nameValuePair>
         <name>Type</name>
         <value>
-          <string>eu.project.ttc.types.TermAnnotation</string>
+          <string>eu.project.ttc.types.TermAnnotation:lemma</string>
         </value>
       </nameValuePair>
     </configurationParameterSettings>

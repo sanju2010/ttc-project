@@ -4,7 +4,7 @@
   <primitive>true</primitive>
   <annotatorImplementationName>fr.free.rocheteau.jerome.engines.Filter</annotatorImplementationName>
   <analysisEngineMetaData>
-    <name>Spanish Term Filter</name>
+    <name>English Lemma Filter</name>
     <description/>
     <version>1.0</version>
     <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
@@ -62,7 +62,7 @@
         </inputs>
         <outputs/>
         <languagesSupported>
-          <language>es</language>
+          <language>en</language>
         </languagesSupported>
       </capability>
     </capabilities>
@@ -83,10 +83,10 @@
   <resourceManagerConfiguration>
     <externalResources>
       <externalResource>
-        <name>SpanishFilter</name>
+        <name>EnglishFilter</name>
         <description/>
         <fileResourceSpecifier>
-          <fileUrl>eu/project/ttc/spanish/resources/Filter.Spanish</fileUrl>
+          <fileUrl>eu/project/ttc/english/resources/Filter.English</fileUrl>
         </fileResourceSpecifier>
         <implementationName>fr.free.rocheteau.jerome.models.FilterResource</implementationName>
       </externalResource>
@@ -94,7 +94,7 @@
     <externalResourceBindings>
       <externalResourceBinding>
         <key>Filter</key>
-        <resourceName>SpanishFilter</resourceName>
+        <resourceName>EnglishFilter</resourceName>
       </externalResourceBinding>
     </externalResourceBindings>
   </resourceManagerConfiguration>

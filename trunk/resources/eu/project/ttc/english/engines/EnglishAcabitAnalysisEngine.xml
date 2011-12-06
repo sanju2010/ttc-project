@@ -12,6 +12,9 @@
     <delegateAnalysisEngine key="XmiCasConsumer">
       <import name="eu.project.ttc.all.engines.XmiCasConsumer"/>
     </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="EnglishLemmaFilter">
+      <import name="eu.project.ttc.english.engines.EnglishLemmaFilter"/>
+    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="EnglishTermIndexer">
       <import name="eu.project.ttc.english.engines.EnglishTermIndexer"/>
     </delegateAnalysisEngine>
@@ -95,6 +98,7 @@
       <fixedFlow>
         <node>EnglishTermDetector</node>
         <node>EnglishTermFilter</node>
+        <node>EnglishLemmaFilter</node>
         <node>TermIndexer</node>
         <node>EnglishTermIndexer</node>
         <node>IndexWriter</node>
@@ -133,6 +137,14 @@
         </fileResourceSpecifier>
         <implementationName>fr.free.rocheteau.jerome.models.DefaultIndex</implementationName>
       </externalResource>
+      <externalResource>
+        <name>EnglishFilter</name>
+        <description/>
+        <fileResourceSpecifier>
+          <fileUrl>eu/project/ttc/english/resources/Filter.English</fileUrl>
+        </fileResourceSpecifier>
+        <implementationName>fr.free.rocheteau.jerome.models.FilterResource</implementationName>
+      </externalResource>
     </externalResources>
     <externalResourceBindings>
       <externalResourceBinding>
@@ -146,6 +158,14 @@
       <externalResourceBinding>
         <key>IndexWriter/Index</key>
         <resourceName>DefaultIndex</resourceName>
+      </externalResourceBinding>
+      <externalResourceBinding>
+        <key>EnglishTermFilter/Filter</key>
+        <resourceName>EnglishFilter</resourceName>
+      </externalResourceBinding>
+      <externalResourceBinding>
+        <key>EnglishLemmaFilter/Filter</key>
+        <resourceName>EnglishFilter</resourceName>
       </externalResourceBinding>
     </externalResourceBindings>
   </resourceManagerConfiguration>
