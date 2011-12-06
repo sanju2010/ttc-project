@@ -143,5 +143,9 @@ public class Help implements Runnable {
 	public void selectConverter() {
 		this.getContent().setSelectedIndex(6);
 	}
+
+	public void selectTermSuite() {
+		this.getContent().setSelectedIndex(0);
+	}
 	
 }

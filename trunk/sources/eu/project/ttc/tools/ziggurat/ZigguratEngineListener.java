@@ -1,11 +1,7 @@
 package eu.project.ttc.tools.ziggurat;
 
-import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.concurrent.ExecutionException;
 
 import javax.swing.JButton;
@@ -38,11 +34,6 @@ public class ZigguratEngineListener implements ActionListener, StatusCallbackLis
 		return this.termSuite;
 	}
 	
-	private URI getHelp() throws URISyntaxException {
-		String uri = this.getZiggurat().getPreferences().getHelp();
-		return new URI(uri);
-	}
-	
 	private void doQuit() {
 		String message = "Do you really want to quit " + this.getZiggurat().getPreferences().getTitle() + "?";
 		String title = "Quit";
@@ -54,21 +45,12 @@ public class ZigguratEngineListener implements ActionListener, StatusCallbackLis
 	
 	private void doHelp() {
 		try {
-			if (this.getZiggurat().getDesktop() != null && this.getZiggurat().getDesktop().isSupported(Desktop.Action.BROWSE)) {
-				this.getZiggurat().getDesktop().browse(this.getHelp());	
-			} else {
-				Runnable parent = this.getZiggurat().getParent();
-				if (parent instanceof TermSuite) {
-					TermSuite termSuite = (TermSuite) parent;
-					termSuite.getHelp().selectAligner();
-					SwingUtilities.invokeLater(termSuite.getHelp());
-				}
-			}
-		} catch (IOException e) {
+			TermSuite parent = this.getZiggurat().getParent();
+			parent.getHelp().selectAligner();
+			SwingUtilities.invokeLater(parent.getHelp());
+		} catch (Exception e) {
 			this.getZiggurat().error(e);
-		} catch (URISyntaxException e) {
-			this.getZiggurat().error(e);
-		}
+		} 
 	}
 	
 	public void doProcess() {

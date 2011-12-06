@@ -1,11 +1,7 @@
 package eu.project.ttc.tools.converter;
 
-import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.concurrent.ExecutionException;
 
 import javax.swing.JButton;
@@ -37,11 +33,6 @@ public class ConverterEngineListener implements ActionListener, StatusCallbackLi
 		return this.converter;
 	}
 	
-	private URI getHelp() throws URISyntaxException {
-		String uri = this.getConverter().getPreferences().getHelp();
-		return new URI(uri);
-	}
-	
 	private void doQuit() {
 		String message = "Do you really want to quit " + this.getConverter().getPreferences().getTitle() + "?";
 		String title = "Quit";
@@ -53,21 +44,12 @@ public class ConverterEngineListener implements ActionListener, StatusCallbackLi
 	
 	private void doHelp() {
 		try {
-			if (this.getConverter().getDesktop() != null && this.getConverter().getDesktop().isSupported(Desktop.Action.BROWSE)) {
-				this.getConverter().getDesktop().browse(this.getHelp());	
-			} else {
-				Runnable parent = this.getConverter().getParent();
-				if (parent instanceof TermSuite) {
-					TermSuite termSuite = (TermSuite) parent;
-					termSuite.getHelp().selectConverter();
-					SwingUtilities.invokeLater(termSuite.getHelp());
-				}
-			}
-		} catch (IOException e) {
+			TermSuite termSuite = this.getConverter().getParent();
+			termSuite.getHelp().selectConverter();
+			SwingUtilities.invokeLater(termSuite.getHelp());
+		} catch (Exception e) {
 			this.getConverter().error(e);
-		} catch (URISyntaxException e) {
-			this.getConverter().error(e);
-		}
+		} 
 	}
 	
 	public void doProcess() {

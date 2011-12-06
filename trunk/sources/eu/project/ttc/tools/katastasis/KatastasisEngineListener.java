@@ -1,13 +1,9 @@
 package eu.project.ttc.tools.katastasis;
 
-import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.concurrent.ExecutionException;
 
@@ -45,12 +41,7 @@ public class KatastasisEngineListener implements ActionListener, StatusCallbackL
 	private Katastasis getKatastasis() {
 		return this.katastasis;
 	}
-	
-	private URI getHelp() throws URISyntaxException {
-		String uri = this.getKatastasis().getPreferences().getHelp();
-		return new URI(uri);
-	}
-	
+
 	private void doQuit() {
 		String message = "Do you really want to quit " + this.getKatastasis().getPreferences().getTitle() + "?";
 		String title = "Quit";
@@ -62,21 +53,12 @@ public class KatastasisEngineListener implements ActionListener, StatusCallbackL
 	
 	private void doHelp() {
 		try {
-			if (this.getKatastasis().getDesktop() != null && this.getKatastasis().getDesktop().isSupported(Desktop.Action.BROWSE)) {
-				this.getKatastasis().getDesktop().browse(this.getHelp());	
-			} else {
-				Runnable parent = this.getKatastasis().getParent();
-				if (parent instanceof TermSuite) {
-					TermSuite termSuite = (TermSuite) parent;
-					termSuite.getHelp().selectContextualizer();
-					SwingUtilities.invokeLater(termSuite.getHelp());
-				}
-			}
-		} catch (IOException e) {
+			TermSuite parent = this.getKatastasis().getParent();
+			parent.getHelp().selectContextualizer();
+			SwingUtilities.invokeLater(parent.getHelp());
+		} catch (Exception e) {
 			this.getKatastasis().error(e);
-		} catch (URISyntaxException e) {
-			this.getKatastasis().error(e);
-		}
+		} 
 	}
 	
 	public void doProcess() {

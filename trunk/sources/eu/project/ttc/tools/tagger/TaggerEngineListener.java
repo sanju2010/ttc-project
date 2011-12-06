@@ -57,8 +57,14 @@ public class TaggerEngineListener implements ActionListener, StatusCallbackListe
 	private void doHelp() {
 		try {
 			Tagger parent = this.getTaggerTool().getParent();
-			parent.getParent().getHelp().selectTildeTagger();
-			SwingUtilities.invokeLater(parent.getParent().getHelp());
+			if (parent.isTreeTaggerSelected()) {
+				parent.getParent().getHelp().selectTreeTagger();
+			} else if (parent.isTildeTaggerSelected()) {
+				parent.getParent().getHelp().selectTildeTagger();
+			} else {
+				parent.getParent().getHelp().selectTermSuite();
+			}
+			SwingUtilities.invokeLater(parent.getParent().getHelp());				
 		} catch (Exception e) {
 			this.getTaggerTool().error(e);
 		}

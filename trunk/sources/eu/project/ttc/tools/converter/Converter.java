@@ -1,6 +1,5 @@
 package eu.project.ttc.tools.converter;
 
-import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
@@ -53,18 +52,6 @@ public class Converter implements Runnable {
 	
 	public void message(String message) {
 		UIMAFramework.getLogger().log(Level.INFO,message);
-	}
-	
-	private Desktop desktop;
-	
-	private void setDesktop() {
-		if (Desktop.isDesktopSupported()) {
-			this.desktop = Desktop.getDesktop();
-		}
-	}
-	
-	public Desktop getDesktop() {
-		return this.desktop;
 	}
 
 	private ConverterSettings settings;
@@ -163,7 +150,6 @@ public class Converter implements Runnable {
 	
 	public Converter(boolean cli) {
 		this.enableCommandLineInterface(cli);
-		this.setDesktop();
 		this.setSettings();
 		this.setPreferences();
 		this.setAbout();

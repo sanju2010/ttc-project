@@ -1,13 +1,9 @@
 package eu.project.ttc.tools.acabit;
 
-import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.concurrent.ExecutionException;
 
@@ -46,11 +42,6 @@ public class AcabitEngineListener implements ActionListener, StatusCallbackListe
 		return this.acabit;
 	}
 	
-	private URI getHelp() throws URISyntaxException {
-		String uri = this.getAcabit().getPreferences().getHelp();
-		return new URI(uri);
-	}
-	
 	private void doQuit() {
 		String message = "Do you really want to quit " + this.getAcabit().getPreferences().getTitle() + "?";
 		String title = "Quit";
@@ -62,21 +53,12 @@ public class AcabitEngineListener implements ActionListener, StatusCallbackListe
 	
 	private void doHelp() {
 		try {
-			if (this.getAcabit().getDesktop() != null && this.getAcabit().getDesktop().isSupported(Desktop.Action.BROWSE)) {
-				this.getAcabit().getDesktop().browse(this.getHelp());	
-			} else {
-				Runnable parent = this.getAcabit().getParent();
-				if (parent instanceof TermSuite) {
-					TermSuite termSuite = (TermSuite) parent;
-					termSuite.getHelp().selectTermer();
-					SwingUtilities.invokeLater(termSuite.getHelp());
-				}
-			}
-		} catch (IOException e) {
+			TermSuite parent = this.getAcabit().getParent();
+			parent.getHelp().selectTermer();
+			SwingUtilities.invokeLater(parent.getHelp());
+		} catch (Exception e) {
 			this.getAcabit().error(e);
-		} catch (URISyntaxException e) {
-			this.getAcabit().error(e);
-		}
+		} 
 	}
 	
 	public void doProcess() {

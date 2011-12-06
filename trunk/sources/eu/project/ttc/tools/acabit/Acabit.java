@@ -1,7 +1,6 @@
 package eu.project.ttc.tools.acabit;
 
 import java.awt.Component;
-import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
@@ -58,18 +57,6 @@ public class Acabit implements Runnable {
 	
 	public void message(String message) {
 		UIMAFramework.getLogger().log(Level.INFO,message);
-	}
-	
-	private Desktop desktop;
-	
-	private void setDesktop() {
-		if (Desktop.isDesktopSupported()) {
-			this.desktop = Desktop.getDesktop();
-		} 
-	}
-	
-	public Desktop getDesktop() {
-		return this.desktop;
 	}
 
 	private AcabitSettings settings;
@@ -194,7 +181,6 @@ public class Acabit implements Runnable {
 	
 	public Acabit(boolean cli) {
 		this.enableCommandLineInterface(cli);
-		this.setDesktop();
 		this.setSettings();
 		this.setPreferences();
 		this.setAbout();

@@ -141,11 +141,11 @@ public class Tagger implements Runnable {
 		return this.content;
 	}
 	
-	private boolean isTreeTaggerSelected() {
+	public boolean isTreeTaggerSelected() {
 		return this.getContent().getSelectedIndex() == 0;
 	}
 	
-	private boolean isTildeTaggerSelected() {
+	public boolean isTildeTaggerSelected() {
 		return this.getContent().getSelectedIndex() == 1;
 	}
 	
