@@ -3,6 +3,32 @@
 
 = Change Log =
 
+== Version 1.0-rc6 ==
+
+  * bug fix: the Indexer annotator was running as many times as there are index listeners and not only once
+  * bug fix: removing hapax both by filtering raw terms and by filtering their lemma 
+  * bug fix: enabling term indexation according to their annotation types
+
+
+== Version 1.0-rc5 ==
+
+  * adding a Converter launcher for converting XMI files into other formats e.g. TSV
+  * sorting the terminology view of the Termer tool by frequencies
+
+== Version 1.0-rc4 ==
+
+  * adding a Stemmer for English, French, German, Russian and Spanish into the TreeTagger analysis engine
+
+== Version 1.0-rc3 ==
+
+  * adding Tilde Tagger for processing Latvian
+  * adding a term context result viewer for the Contextualizer tool
+
+== Version 1.0-rc2 ==
+
+  * splitting Ziggurat in 2 tools: Contextualizer and Aligner
+  * renaming Acabit in Termer
+
 == Version 1.0-rc1 ==
 
   * CPE workflow split into 3 respectively called TreeTagger, Acabit and Ziggurat
