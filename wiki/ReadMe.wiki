@@ -1,13 +1,13 @@
 #labels Phase-Support,Featured
-# the README file of the TTC TermSuite tool
+# the README file of the TTC Term Suite tool
 
 = ReadMe =
 
 == Description ==
 
-This is the UIMA application of the European project [http://www.ttc-project.eu/index.php TTC] _Terminology Extraction, Translation Tools and Comparable Corpora_. This project aims at leveraging machine translation, computer-assisted translation and multilingual content management tools by automatically generating bilingual terminologies from comparable corpora in five European languages (English, French, German, Spanish and one under-resourced language, Latvian), as well as in Chinese and Russian. This OpenSource UIMA-based application that supports the project activities is called TTC TermSuite.
+This is the UIMA application of the European project [http://www.ttc-project.eu/index.php TTC] _Terminology Extraction, Translation Tools and Comparable Corpora_. This project aims at leveraging machine translation, computer-assisted translation and multilingual content management tools by automatically generating bilingual terminologies from comparable corpora in five European languages (English, French, German, Spanish and one under-resourced language, Latvian), as well as in Chinese and Russian.
 
-TTC TermSuite is powered by:
+TTC Term Suite is powered by:
   * the Java programming language and runtime environment, 
   * the framework [http://uima.apache.org/ Apache UIMA], 
   * the part-of-speech tagger and lemmatizer [http://www.ims.uni-stuttgart.de/projekte/corplex/TreeTagger/ TreeTagger],
@@ -19,5 +19,5 @@ First, please check that are installed on your computer:
   * a Java 6 Runtime Environment ([http://www.java.com/fr/download/ Sun] or [http://openjdk.java.net/install/ OpenJDK]),
   * the part-of-speech tagger and lemmatizer [http://www.ims.uni-stuttgart.de/projekte/corplex/TreeTagger/ TreeTagger].
 
-You may download the [http://ttc-project.googlecode.com/files/ttc-term-suite-1.0-rc1.jar TTC TermSuite] executable Java archive and open it within a Java 6 Runtime Environment or by the help of the following command line:
- java -jar ttc-term-suite-1.0-rc1.jar
+You may download the [http://ttc-project.googlecode.com/files/ttc-term-suite-1.0-rc6.jar TTC Term Suite] executable Java archive and open it within a Java 6 Runtime Environment or by the help of the following command line:
+ java -jar ttc-term-suite-1.0-rc6.jar
