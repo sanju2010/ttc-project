@@ -14,8 +14,7 @@ import javax.swing.SwingUtilities;
 import eu.project.ttc.tools.acabit.Acabit;
 import eu.project.ttc.tools.converter.Converter;
 import eu.project.ttc.tools.katastasis.Katastasis;
-import eu.project.ttc.tools.tildetagger.TildeTagger;
-import eu.project.ttc.tools.treetagger.TreeTagger;
+import eu.project.ttc.tools.tagger.Tagger;
 import eu.project.ttc.tools.ziggurat.Ziggurat;
 
 public class TermSuiteListener implements ActionListener {
@@ -58,16 +57,10 @@ public class TermSuiteListener implements ActionListener {
 		}
 	}
 	
-	private void doTreeTagger() {
-		TreeTagger treetagger = new TreeTagger(false);
-		treetagger.setParent(this.getTermSuite());
-		SwingUtilities.invokeLater(treetagger);
-	}
-	
-	private void doTildeTagger() {
-		TildeTagger tildetagger = new TildeTagger(false);
-		tildetagger.setParent(this.getTermSuite());
-		SwingUtilities.invokeLater(tildetagger);
+	private void doTagger() {
+		Tagger tagger = new Tagger(false);
+		tagger.setParent(this.getTermSuite());
+		SwingUtilities.invokeLater(tagger);
 	}
 	
 	private void doAcabit() {
@@ -106,10 +99,8 @@ public class TermSuiteListener implements ActionListener {
 				this.doHelp();
 			} else if (action.equals("about")) {
 				this.getTermSuite().getAbout().show();
-			} else if (action.equals("treetagger")) {
-				this.doTreeTagger();
-			} else if (action.equals("tildetagger")) {
-				this.doTildeTagger();
+			} else if (action.equals("tagger")) {
+				this.doTagger();
 			} else if (action.equals("acabit")) {
 				this.doAcabit();
 			} else if (action.equals("katastasis")) {

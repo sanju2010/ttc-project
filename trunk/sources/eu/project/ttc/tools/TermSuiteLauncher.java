@@ -114,36 +114,20 @@ public class TermSuiteLauncher {
 		return this.ziggurat;
 	}
 	
-	private JButton treetagger;
+	private JButton tagger;
 	
-	private void setTreeTagger() {
-		this.treetagger = new JButton("TreeTagger");
-		this.treetagger.setActionCommand("treetagger");
-		this.treetagger.setEnabled(true);
-		this.treetagger.setPreferredSize(dimension);
-		this.treetagger.setMargin(insets);
-		this.treetagger.setBackground(color);
-		this.treetagger.setBorderPainted(false);
+	private void setTagger() {
+		this.tagger = new JButton("Tagger");
+		this.tagger.setActionCommand("tagger");
+		this.tagger.setEnabled(true);
+		this.tagger.setPreferredSize(dimension);
+		this.tagger.setMargin(insets);
+		this.tagger.setBackground(color);
+		this.tagger.setBorderPainted(false);
 	}
 	
-	public JButton getTreeTagger() {
-		return this.treetagger;
-	}
-	
-	private JButton tildetagger;
-	
-	private void setTildeTagger() {
-		this.tildetagger = new JButton("TildeTagger");
-		this.tildetagger.setActionCommand("tildetagger");
-		this.tildetagger.setEnabled(true);
-		this.tildetagger.setPreferredSize(dimension);
-		this.tildetagger.setMargin(insets);
-		this.tildetagger.setBackground(color);
-		this.tildetagger.setBorderPainted(false);
-	}
-	
-	public JButton getTildeTagger() {
-		return this.tildetagger;
+	public JButton getTagger() {
+		return this.tagger;
 	}
 	
 	private JButton converter;
@@ -176,22 +160,20 @@ public class TermSuiteLauncher {
 		c.gridx = 0; c.gridy = 2;
 		this.component.add(new JSeparator(JSeparator.VERTICAL),c);
 		c.gridx = 0; c.gridy = 3;
-		this.component.add(this.getTreeTagger(),c);
+		this.component.add(this.getTagger(),c);
 		c.gridx = 0; c.gridy = 4;
-		this.component.add(this.getTildeTagger(),c);
-		c.gridx = 0; c.gridy = 5;
 		this.component.add(this.getAcabit(),c);
-		c.gridx = 0; c.gridy = 6;
+		c.gridx = 0; c.gridy = 5;
 		this.component.add(this.getKatastasis(),c);
-		c.gridx = 0; c.gridy = 7;
+		c.gridx = 0; c.gridy = 6;
 		this.component.add(this.getZiggurat(),c);
-		c.gridx = 0; c.gridy = 8;
+		c.gridx = 0; c.gridy = 7;
 		this.component.add(new JSeparator(JSeparator.VERTICAL),c);
-		c.gridx = 0; c.gridy = 9;		
+		c.gridx = 0; c.gridy = 8;		
 		this.component.add(this.getConverter(),c);
-		c.gridx = 0; c.gridy = 10;		
+		c.gridx = 0; c.gridy = 9;		
 		this.component.add(new JSeparator(JSeparator.VERTICAL),c);
-		c.gridx = 0; c.gridy = 11;		
+		c.gridx = 0; c.gridy = 10;		
 		this.component.add(this.getQuit(),c);
 	}
 	
@@ -203,8 +185,7 @@ public class TermSuiteLauncher {
 		this.getQuit().addActionListener(listener);
 		this.getAbout().addActionListener(listener);
 		this.getHelp().addActionListener(listener);
-		this.getTreeTagger().addActionListener(listener);
-		this.getTildeTagger().addActionListener(listener);
+		this.getTagger().addActionListener(listener);
 		this.getAcabit().addActionListener(listener);
 		this.getKatastasis().addActionListener(listener);
 		this.getZiggurat().addActionListener(listener);
@@ -218,8 +199,7 @@ public class TermSuiteLauncher {
 		this.setAcabit();
 		this.setKatastasis();
 		this.setZiggurat();
-		this.setTreeTagger();
-		this.setTildeTagger();
+		this.setTagger();
 		this.setConverter();
 		this.setComponent();
 	}
