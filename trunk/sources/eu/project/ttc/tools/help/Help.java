@@ -52,6 +52,8 @@ public class Help implements Runnable {
 		this.content.addTab("  Term Suite  ",this.getHelp("TermSuite", locale));
 		this.content.addTab("  TreeTagger  ",this.getHelp("TreeTagger", locale));
 		this.content.addTab(" Tilde Tagger ",this.getHelp("TildeTagger", locale));
+		this.content.addTab("   RFTagger   ",this.getHelp("RFTagger", locale));
+		this.content.addTab("   FreeLing   ",this.getHelp("FreeLing", locale));
 		this.content.addTab("    Termer    ",this.getHelp("Termer", locale));
 		this.content.addTab("Contextualizer",this.getHelp("Contextualizer", locale));
 		this.content.addTab("   Aligner    ",this.getHelp("Aligner", locale));
@@ -120,6 +122,10 @@ public class Help implements Runnable {
 		
 	}
 
+	public void selectTermSuite() {
+		this.getContent().setSelectedIndex(0);
+	}
+	
 	public void selectTreeTagger() {
 		this.getContent().setSelectedIndex(1);
 	}
@@ -128,24 +134,28 @@ public class Help implements Runnable {
 		this.getContent().setSelectedIndex(2);
 	}
 	
-	public void selectTermer() {
+	public void selectRFTagger() {
 		this.getContent().setSelectedIndex(3);
 	}
 	
-	public void selectContextualizer() {
+	public void selectFreeLing() {
 		this.getContent().setSelectedIndex(4);
 	}
 	
-	public void selectAligner() {
+	public void selectTermer() {
 		this.getContent().setSelectedIndex(5);
 	}
 	
-	public void selectConverter() {
+	public void selectContextualizer() {
 		this.getContent().setSelectedIndex(6);
 	}
-
-	public void selectTermSuite() {
-		this.getContent().setSelectedIndex(0);
+	
+	public void selectAligner() {
+		this.getContent().setSelectedIndex(7);
+	}
+	
+	public void selectConverter() {
+		this.getContent().setSelectedIndex(8);
 	}
 	
 }

@@ -18,6 +18,10 @@ import org.apache.uima.UIMAFramework;
 import org.apache.uima.util.Level;
 
 import eu.project.ttc.tools.TermSuite;
+import eu.project.ttc.tools.tagger.freeling.FreeLing;
+import eu.project.ttc.tools.tagger.freeling.FreeLingEngine;
+import eu.project.ttc.tools.tagger.rftagger.RFTagger;
+import eu.project.ttc.tools.tagger.rftagger.RFTaggerEngine;
 import eu.project.ttc.tools.tagger.tildetagger.TildeTagger;
 import eu.project.ttc.tools.tagger.tildetagger.TildeTaggerEngine;
 import eu.project.ttc.tools.tagger.treetagger.TreeTagger;
@@ -124,6 +128,28 @@ public class Tagger implements Runnable {
 		return this.tildeTagger;
 	}
 	
+	private RFTagger rfTagger;
+	
+	private void setRFTagger() {
+		this.rfTagger = new RFTagger();
+		this.rfTagger.setParent(this);
+	}
+	
+	private RFTagger getRFTagger() {
+		return this.rfTagger;
+	}
+	
+	private FreeLing freeLing;
+	
+	private void setFreeLing() {
+		this.freeLing = new FreeLing();
+		this.freeLing.setParent(this);
+	}
+	
+	private FreeLing getFreeLing() {
+		return this.freeLing;
+	}
+	
 	private JTabbedPane content;
 	
 	private void setContent() {
@@ -131,7 +157,9 @@ public class Tagger implements Runnable {
 		this.content.setTabPlacement(JTabbedPane.TOP);
 		this.content.addTab("  TreeTagger  ",this.getTreeTagger().getComponent());
 		this.content.addTab(" Tilde Tagger ",this.getTildeTagger().getComponent());
-		this.content.addTab("   Documents  ",this.getDocuments().getComponent());
+		this.content.addTab("   RFTagger   ",this.getRFTagger().getComponent());
+		this.content.addTab("   FreeLing   ",this.getFreeLing().getComponent());
+		this.content.addTab("  Documents   ",this.getDocuments().getComponent());
 		Listener listener = new Listener();
 		listener.setTagger(this);
 		this.content.addChangeListener(listener);
@@ -147,6 +175,14 @@ public class Tagger implements Runnable {
 	
 	public boolean isTildeTaggerSelected() {
 		return this.getContent().getSelectedIndex() == 1;
+	}
+	
+	public boolean isRFTaggerSelected() {
+		return this.getContent().getSelectedIndex() == 2;
+	}
+	
+	public boolean isFreeLingSelected() {
+		return this.getContent().getSelectedIndex() == 3;
 	}
 	
 	private JSplitPane component;
@@ -202,6 +238,8 @@ public class Tagger implements Runnable {
 		this.setToolBar();
 		this.setTreeTagger();
 		this.setTildeTagger();
+		this.setRFTagger();
+		this.setFreeLing();
 		this.setDocuments();
 		this.setContent();
 		this.setComponent();
@@ -229,14 +267,28 @@ public class Tagger implements Runnable {
 			this.setAbout(this.getTreeTagger().getAbout());
 			this.listener.setTaggerTool(this.getTreeTagger());
 			TreeTaggerEngine engine = new TreeTaggerEngine();
-			engine.setTreeTagger(this.getTreeTagger());
+			engine.setTaggerTool(this.getTreeTagger());
 			this.listener.setTaggerEngine(engine);
 		} else if (this.isTildeTaggerSelected()) {
 			this.setPreferences(this.getTildeTagger().getPreferences());
 			this.setAbout(this.getTildeTagger().getAbout());
 			this.listener.setTaggerTool(this.getTildeTagger());
 			TildeTaggerEngine engine = new TildeTaggerEngine();
-			engine.setTildeTagger(this.getTildeTagger());
+			engine.setTaggerTool(this.getTildeTagger());
+			this.listener.setTaggerEngine(engine);
+		} else if (this.isRFTaggerSelected()) {
+			this.setPreferences(this.getRFTagger().getPreferences());
+			this.setAbout(this.getRFTagger().getAbout());
+			this.listener.setTaggerTool(this.getRFTagger());
+			RFTaggerEngine engine = new RFTaggerEngine();
+			engine.setTaggerTool(this.getRFTagger());
+			this.listener.setTaggerEngine(engine);
+		} else if (this.isFreeLingSelected()) {
+			this.setPreferences(this.getFreeLing().getPreferences());
+			this.setAbout(this.getFreeLing().getAbout());
+			this.listener.setTaggerTool(this.getFreeLing());
+			FreeLingEngine engine = new FreeLingEngine();
+			engine.setTaggerTool(this.getFreeLing());
 			this.listener.setTaggerEngine(engine);
 		}
 	}

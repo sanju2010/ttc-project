@@ -61,6 +61,10 @@ public class TaggerEngineListener implements ActionListener, StatusCallbackListe
 				parent.getParent().getHelp().selectTreeTagger();
 			} else if (parent.isTildeTaggerSelected()) {
 				parent.getParent().getHelp().selectTildeTagger();
+			} else if (parent.isRFTaggerSelected()) {
+				parent.getParent().getHelp().selectRFTagger();
+			} else if (parent.isFreeLingSelected()) {
+				parent.getParent().getHelp().selectFreeLing();
 			} else {
 				parent.getParent().getHelp().selectTermSuite();
 			}
@@ -79,11 +83,8 @@ public class TaggerEngineListener implements ActionListener, StatusCallbackListe
 			e.printStackTrace();
 		}
 		try {
-			System.out.println("executing");
 			this.getTaggerEngine().execute();
-			System.out.println("getting");
 			CpeDescription desc = this.getTaggerEngine().get();
-			System.out.println("processing");
 			this.setTimer();
 			this.getTaggerTool().getParent().getToolBar().getRun().setEnabled(false);
 			this.getTaggerTool().getParent().getToolBar().getPause().setEnabled(true);

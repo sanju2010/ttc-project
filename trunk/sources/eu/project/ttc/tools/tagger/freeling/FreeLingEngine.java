@@ -1,4 +1,4 @@
-package eu.project.ttc.tools.tagger.tildetagger;
+package eu.project.ttc.tools.tagger.freeling;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -20,7 +20,7 @@ import org.apache.uima.resource.metadata.ConfigurationParameterSettings;
 import eu.project.ttc.tools.tagger.TaggerTool;
 import eu.project.ttc.tools.tagger.TaggerEngine;
 
-public class TildeTaggerEngine extends SwingWorker<CpeDescription,Void> implements TaggerEngine {
+public class FreeLingEngine extends SwingWorker<CpeDescription,Void> implements TaggerEngine {
 
 	private TaggerTool taggerTool;
 	
@@ -70,13 +70,12 @@ public class TildeTaggerEngine extends SwingWorker<CpeDescription,Void> implemen
 		ConfigurationParameterSettings parameters = this.getTaggerTool().getSettings().getMetaData().getConfigurationParameterSettings();
 		String code = (String) parameters.getParameterValue("Language");
 		String language = new Locale (code).getDisplayLanguage(Locale.ENGLISH);
-		String path = "eu/project/ttc/" + language.toLowerCase() + "/engines/" + language + "TildeTaggerAnalysisEngine.xml";
+		String path = "eu/project/ttc/" + language.toLowerCase() + "/engines/" + language + "FreeLingAnalysisEngine.xml";
         URL url = this.getClass().getClassLoader().getResource(path);
         CpeIntegratedCasProcessor termMateAnnotator = CpeDescriptorFactory.produceCasProcessor(language + " TildeTagger Analysis Engine");
         CpeComponentDescriptor desc = CpeDescriptorFactory.produceComponentDescriptor(url.toURI().toString());
         termMateAnnotator.setCpeComponentDescriptor(desc);
         CasProcessorConfigurationParameterSettings settings = CpeDescriptorFactory.produceCasProcessorConfigurationParameterSettings();
-        settings.setParameterValue("ScriptFile", (String) parameters.getParameterValue("ScriptFile"));
         settings.setParameterValue("Directory", (String) parameters.getParameterValue("OutputDirectory"));
         termMateAnnotator.setConfigurationParameterSettings(settings);
         this.collectionProcessingEngine.addCasProcessor(termMateAnnotator);

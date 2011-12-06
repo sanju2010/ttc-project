@@ -21,7 +21,7 @@ import org.apache.uima.util.Level;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
 
-public class TreeTaggerCollectionReader extends CollectionReader_ImplBase {
+public class TextCollectionReader extends CollectionReader_ImplBase {
 	
 	private String language;
 	

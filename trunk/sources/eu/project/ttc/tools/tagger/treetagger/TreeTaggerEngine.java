@@ -18,17 +18,18 @@ import org.apache.uima.collection.metadata.CpeIntegratedCasProcessor;
 import org.apache.uima.resource.metadata.ConfigurationParameterSettings;
 
 import eu.project.ttc.tools.tagger.TaggerEngine;
+import eu.project.ttc.tools.tagger.TaggerTool;
 
 public class TreeTaggerEngine extends SwingWorker<CpeDescription,Void> implements TaggerEngine {
 
-	private TreeTagger treeTagger;
+	private TaggerTool taggerTool;
 	
-	public void setTreeTagger(TreeTagger treeTagger) {
-		this.treeTagger = treeTagger;
+	public void setTaggerTool(TaggerTool taggerTool) {
+		this.taggerTool = taggerTool;
 	}
 	
-	private TreeTagger getTreeTagger() {
-		return this.treeTagger;
+	private TaggerTool getTaggerTool() {
+		return this.taggerTool;
 	}
 		
 	private CpeDescription collectionProcessingEngine;
@@ -55,8 +56,8 @@ public class TreeTaggerEngine extends SwingWorker<CpeDescription,Void> implement
 	}
 	
 	private void setCollectionReader() throws Exception {
-		ConfigurationParameterSettings parameters = this.getTreeTagger().getSettings().getMetaData().getConfigurationParameterSettings();
-		URL url = this.getClass().getClassLoader().getResource("eu/project/ttc/all/engines/TreeTaggerCollectionReader.xml");
+		ConfigurationParameterSettings parameters = this.getTaggerTool().getSettings().getMetaData().getConfigurationParameterSettings();
+		URL url = this.getClass().getClassLoader().getResource("eu/project/ttc/all/engines/TextCollectionReader.xml");
 		CpeCollectionReader termSuiteCollector = CpeDescriptorFactory.produceCollectionReader(url.toURI().toString());
 		CasProcessorConfigurationParameterSettings settings = CpeDescriptorFactory.produceCasProcessorConfigurationParameterSettings();
 		settings.setParameterValue("Language", parameters.getParameterValue("Language"));
@@ -66,7 +67,7 @@ public class TreeTaggerEngine extends SwingWorker<CpeDescription,Void> implement
 	}
 
 	private void setAnalysisEngine() throws Exception {
-		ConfigurationParameterSettings parameters = this.getTreeTagger().getSettings().getMetaData().getConfigurationParameterSettings();
+		ConfigurationParameterSettings parameters = this.getTaggerTool().getSettings().getMetaData().getConfigurationParameterSettings();
 		String code = (String) parameters.getParameterValue("Language");
 		String language = new Locale (code).getDisplayLanguage(Locale.ENGLISH);
 		String path = "eu/project/ttc/" + language.toLowerCase() + "/engines/" + language + "TreeTaggerAnalysisEngine.xml";
