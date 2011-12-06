@@ -5,8 +5,8 @@
 
 == Version 1.0 ==
 
-  * term variation computing
-  * term alignment based on interlingual similarity available (implemented and validated)
-  * neo-classical compound term alignment available (implemented and validated)
-  * multi-word term alignment based on a compositional method available (implemented and validated)
-  * CLI and scripts provided
+  * computing term variations
+  * implementing term alignment based on interlingual similarity available (implemented and validated)
+  * implementing and validating neo-classical compound term alignment available
+  * implementing and validating multi-word term alignment based on a compositional method available
+  * providing CLI utilities
