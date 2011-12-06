@@ -1,6 +1,11 @@
 package eu.project.ttc.tools.acabit;
 
 import java.awt.Dimension;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
@@ -77,17 +82,30 @@ public class AcabitViewer {
 	
 	public void doLoad(JCas cas) {
 		try {
-		AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TermAnnotation.type);
-		FSIterator<Annotation> iterator = index.iterator();
-		while (iterator.hasNext()) {
-			TermAnnotation annotation = (TermAnnotation) iterator.next();
-			DefaultMutableTreeNode node = new DefaultMutableTreeNode();
-			node.setUserObject(annotation.getCoveredText());
-			this.getRoot().add(node);
-			this.addNotes(node, annotation);
-			this.addComponents(node, cas, annotation);
-		}
-		this.getModel().reload();
+			Map<Double, Set<TermAnnotation>> annotations = new TreeMap<Double, Set<TermAnnotation>>(new FrequencyComparator());
+			AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TermAnnotation.type);
+			FSIterator<Annotation> iterator = index.iterator();
+			while (iterator.hasNext()) {
+				TermAnnotation annotation = (TermAnnotation) iterator.next();
+				double frequency = annotation.getFrequency();
+				Set<TermAnnotation> terms = annotations.get(frequency);
+				if (terms == null) {
+					terms = new HashSet<TermAnnotation>();
+					annotations.put(new Double(frequency), terms);
+				}
+				terms.add(annotation);
+			}
+			for (Double frequency : annotations.keySet()) {
+				Set<TermAnnotation> terms = annotations.get(frequency);
+				for (TermAnnotation term : terms) {
+					DefaultMutableTreeNode node = new DefaultMutableTreeNode();
+					node.setUserObject(term.getCoveredText());
+					this.getRoot().add(node);
+					this.addNotes(node, term);
+					this.addComponents(node, cas, term);
+				}
+			}
+			this.getModel().reload();
 		} catch (CASRuntimeException e) {
 			e.printStackTrace();
 		}
@@ -121,5 +139,15 @@ public class AcabitViewer {
 			root.add(node);
 		}	
 	}
+	
+	private class FrequencyComparator implements Comparator<Double> {
+		
+		@Override
+		public int compare(Double source, Double target) {
+			return target.compareTo(source);
+		}
+		
+	}
+
 		
 }
