@@ -1,11 +1,9 @@
 package eu.project.ttc.models;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.UimaContext;
@@ -28,121 +26,150 @@ import fr.free.rocheteau.jerome.models.IndexListener;
 
 public class TermIndexListener implements IndexListener {
 
-	private Map<String, Integer> frequencies;
-	
-	private void setFrequencies() {
-		this.frequencies = new HashMap<String, Integer>();
-	}
-	
-	private Map<String, Integer> getFrequencies() {
-		return this.frequencies;
-	}
-	
-	private Map<String, List<Component>> components;
-	
-	private void setComponents() {
-		this.components = new HashMap<String, List<Component>>();
-	}
-	
-	private Map<String, List<Component>> getComponents() {
-		return this.components;
-	}
-	
-	private Map<String, String> categories;
-	
-	private void setCategories() {
-		this.categories = new HashMap<String, String>();
-	}
-	
-	private Map<String, String> getCategories() {
-		return this.categories;
-	}
-	
-	private Map<String, String> complexities;
-	
-	private void setComplexities() {
-		this.complexities = new HashMap<String, String>();
-	}
-	
-	private Map<String, String> getComplexities() {
-		return this.complexities;
-	}
-	
-	private String add(TermAnnotation annotation, boolean normalized) {
-		String term = normalized ? annotation.getLemma() : annotation.getCoveredText();
-		if (term == null) { 
-			return null;
-		} else {
-			term = term.toLowerCase().trim();
-			if (term.length() <= 2) {
+	private class SimpleTermFrequency {
+		
+		public SimpleTermFrequency() {
+			this.setFrequencies();
+			this.setCategories();
+		}
+		
+		private Map<String, Integer> frequencies;
+		
+		private void setFrequencies() {
+			this.frequencies = new HashMap<String, Integer>();
+		}
+		
+		public Map<String, Integer> getFrequencies() {
+			return this.frequencies;
+		}
+
+		private Map<String, String> categories;
+		
+		private void setCategories() {
+			this.categories = new HashMap<String, String>();
+		}
+		
+		public Map<String, String> getCategories() {
+			return this.categories;
+		}
+
+		protected String add(TermAnnotation annotation, boolean normalized) {
+			String term = normalized ? annotation.getLemma().toLowerCase() : annotation.getCoveredText().toLowerCase();
+			if (term == null) { 
 				return null;
 			} else {
-				Integer frequency = this.getFrequencies().get(term);
-				int freq = frequency == null ? 1 : frequency.intValue() + 1;
-				this.getFrequencies().put(term, new Integer(freq));
-				this.getCategories().put(term, annotation.getCategory());
-				this.getComplexities().put(term, annotation.getComplexity());
+				term = term.toLowerCase().trim();
+				if (term.length() <= 2) {
+					return null;
+				} else {
+					Integer frequency = this.getFrequencies().get(term);
+					int freq = frequency == null ? 1 : frequency.intValue() + 1;
+					this.getFrequencies().put(term, new Integer(freq));
+					this.getCategories().put(term, annotation.getCategory());
+					return term;
+				}
 			}
 		}
-		return term;
-	}
-		
-	private void addEntry(SingleWordTermAnnotation annotation) {
-		this.add(annotation, true);
-	}
 
-	private void addEntry(MultiWordTermAnnotation annotation) {
-		String term = this.add(annotation, false);
-		if (term == null) {
-			return;
-		} else {
-			this.addComponents(annotation, term);
+		public void addEntry(SingleWordTermAnnotation annotation) {
+			this.add(annotation, true);
 		}
-	}
 
-	private void addEntry(NeoClassicalCompoundTermAnnotation annotation) {
-		String term = this.add(annotation, false);
-		if (term == null) {
-			return;
-		} else {
-			this.addComponents(annotation, term);
-		}
 	}
 	
-	private void addComponents(TermAnnotation annotation, String term) {
-		try {
-			JCas cas = annotation.getCAS().getJCas();
-			AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TermComponentAnnotation.type);
-			FSIterator<Annotation> iterator = index.subiterator(annotation);
-			List<Component> components = new ArrayList<Component>();
-			while (iterator.hasNext()) {
-				TermComponentAnnotation component = (TermComponentAnnotation) iterator.next();
-				Component c = new Component();
-				c.update(component, annotation.getBegin());
-				components.add(c);
-			}
-			this.getComponents().put(term, components);
-		} catch (CASException e) {
-			UIMAFramework.getLogger().log(Level.WARNING,e.getMessage());
+	private class ComplexTermFrequency extends SimpleTermFrequency {
+
+		public ComplexTermFrequency() {
+			super();
+			this.setComponents();
 		}
+		
+		private Map<String, List<Component>> components;
+		
+		private void setComponents() {
+			this.components = new HashMap<String, List<Component>>();
+		}
+		
+		private Map<String, List<Component>> getComponents() {
+			return this.components;
+		}
+	
+		public void addEntry(MultiWordTermAnnotation annotation) {
+			String term = this.add(annotation, false);
+			if (term == null) {
+				return;
+			} else {
+				this.addComponents(annotation, term);
+			}
+		}
+	
+		public void addEntry(NeoClassicalCompoundTermAnnotation annotation) {
+			String term = this.add(annotation, false);
+			if (term == null) {
+				return;
+			} else {
+				this.addComponents(annotation, term);
+			}
+		}
+		
+		private void addComponents(TermAnnotation annotation, String term) {
+			try {
+				JCas cas = annotation.getCAS().getJCas();
+				AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TermComponentAnnotation.type);
+				FSIterator<Annotation> iterator = index.subiterator(annotation);
+				List<Component> components = new ArrayList<Component>();
+				while (iterator.hasNext()) {
+					TermComponentAnnotation component = (TermComponentAnnotation) iterator.next();
+					if (component.getBegin() == annotation.getBegin() && component.getEnd() == annotation.getEnd()) {
+						continue;
+					} else {
+						Component c = new Component();
+						c.update(component, annotation.getBegin());
+						components.add(c);
+					}
+				}
+				this.getComponents().put(term, components);
+			} catch (CASException e) {
+				UIMAFramework.getLogger().log(Level.WARNING,e.getMessage());
+			}
+		}
+		
+	}	
+	
+	private SimpleTermFrequency singleWordTermFrequency;
+	
+	private void setSingleWordTermFrequency() {
+		this.singleWordTermFrequency = new SimpleTermFrequency();
+	}
+	
+	private SimpleTermFrequency getSingleWordTermFrequency() {
+		return this.singleWordTermFrequency;
+	}
+	
+	private ComplexTermFrequency multiWordTermFrequency;
+	
+	private void setMultiWordTermFrequency() {
+		this.multiWordTermFrequency = new ComplexTermFrequency();
+	}
+	
+	private ComplexTermFrequency getMultiWordTermFrequency() {
+		return this.multiWordTermFrequency;
+	}
+	
+	private ComplexTermFrequency neoClassicalCompoundFrequency;
+	
+	private void setNeoClassicalCompoundFrequency() {
+		this.neoClassicalCompoundFrequency = new ComplexTermFrequency();
+	}
+	
+	private ComplexTermFrequency getNeoClassicalCompoundFrequency() {
+		return this.neoClassicalCompoundFrequency;
 	}
 	
 	public TermIndexListener() {
-		this.setFrequencies();
-		this.setComponents();
-		this.setCategories();
-		this.setComplexities();
-		this.setComparator();
-	}
-	
-	private FrequencyComparator comparator;
-	
-	private void setComparator() {
-		this.comparator = new FrequencyComparator(this.getFrequencies());
-	}
-	
-	private FrequencyComparator getComparator() {
-		return this.comparator;
+		this.setSingleWordTermFrequency();
+		this.setMultiWordTermFrequency();
+		this.setNeoClassicalCompoundFrequency();
 	}
 	
 	private String language;
@@ -155,10 +182,34 @@ public class TermIndexListener implements IndexListener {
 		return this.language;
 	}
 	
+	private String type;
+	
+	private void setType(String type) {
+		this.type = type;
+	}
+	
+	private boolean isAllTermEnabled() {
+		return this.type.equals(TermAnnotation.class.getCanonicalName()); 
+	}
+	
+	private boolean isSingleWordTermEnabled() {
+		return this.isAllTermEnabled() || this.type.equals(SingleWordTermAnnotation.class.getCanonicalName()); 
+	}
+	
+	private boolean isMultiWordTermEnabled() {
+		return this.isAllTermEnabled() || this.type.equals(MultiWordTermAnnotation.class.getCanonicalName()); 
+	}
+	
+	private boolean isNeoClassicalCompoundEnabled() {
+		return this.isAllTermEnabled() || this.type.equals(NeoClassicalCompoundTermAnnotation.class.getCanonicalName()); 
+	}
+	
 	@Override 
 	public void configure(UimaContext context){ 
 		String language = (String) context.getConfigParameterValue("Language");
 		this.setLanguage(language);
+		String type = (String) context.getConfigParameterValue("Type");
+		this.setType(type);
 	}
 	
 	@Override
@@ -166,59 +217,73 @@ public class TermIndexListener implements IndexListener {
 
 	@Override
 	public void update(Annotation annotation) {
-		if (annotation instanceof SingleWordTermAnnotation) {
-			this.addEntry((SingleWordTermAnnotation) annotation);							
-		} else if (annotation instanceof MultiWordTermAnnotation) {
-			this.addEntry((MultiWordTermAnnotation) annotation);			
-		} else if (annotation instanceof NeoClassicalCompoundTermAnnotation) {
-			this.addEntry((NeoClassicalCompoundTermAnnotation) annotation);			
+		if (annotation instanceof SingleWordTermAnnotation && this.isSingleWordTermEnabled()) {
+			this.getSingleWordTermFrequency().addEntry((SingleWordTermAnnotation) annotation);					
+		} else if (annotation instanceof MultiWordTermAnnotation && this.isMultiWordTermEnabled()) {
+			this.getMultiWordTermFrequency().addEntry((MultiWordTermAnnotation) annotation);
+		} else if (annotation instanceof NeoClassicalCompoundTermAnnotation && this.isNeoClassicalCompoundEnabled()) {
+			this.getNeoClassicalCompoundFrequency().addEntry((NeoClassicalCompoundTermAnnotation) annotation);
 		}
 	}
 	
-	private boolean done = false;
-	
 	@Override
 	public void release(JCas cas) {
-		if (!this.done) {
-			this.done = true;
-			cas.setDocumentLanguage(this.getLanguage());
-			StringBuilder builder = new StringBuilder();
-			Map<String, Integer> entries = new TreeMap<String, Integer>(this.getComparator());
-			entries.putAll(this.getFrequencies());
-			for (String entry : entries.keySet()) {
-				int frequency = this.getFrequencies().get(entry).intValue();
-				String category = this.getCategories().get(entry);
-				String complexity = this.getComplexities().get(entry);
-				List<Component> components = this.getComponents().get(entry);
-				if (frequency > 1) {
-					int begin = builder.length();
-					builder.append(entry);
-					int end = builder.length();
-					builder.append('\n');
-					TermAnnotation annotation = null;
-					if (complexity.equals(Term.SINGLE_WORD)) {
-						annotation = new SingleWordTermAnnotation(cas,begin,end);
-					} else if (complexity.equals(Term.MULTI_WORD)) {
-						annotation = new MultiWordTermAnnotation(cas,begin,end);
-					} else if (complexity.equals(Term.NEO_CLASSICAL_COMPOUND)) {
-						annotation = new NeoClassicalCompoundTermAnnotation(cas,begin,end);
-					} else {
-						annotation = new TermAnnotation(cas,begin,end);
-					}
-					annotation.setFrequency(frequency);
-					annotation.setCategory(category);
-					annotation.setComplexity(complexity);
-					annotation.addToIndexes();
-					if (components != null && !components.isEmpty()) {
-						for (Component component : components) {
-							TermComponentAnnotation c = new TermComponentAnnotation(cas);
-							component.release(c, annotation.getBegin());
-							c.addToIndexes();
-						}						
-					}
+		cas.setDocumentLanguage(this.getLanguage());
+		StringBuilder builder = new StringBuilder();
+		this.release(cas, builder, this.getSingleWordTermFrequency());
+		this.release(cas, builder, this.getMultiWordTermFrequency(), Term.MULTI_WORD);
+		this.release(cas, builder, this.getNeoClassicalCompoundFrequency(), Term.NEO_CLASSICAL_COMPOUND);
+		cas.setDocumentText(builder.toString());
+	}
+
+	private void release(JCas cas, StringBuilder builder, SimpleTermFrequency frequency) {
+		for (String entry : frequency.getFrequencies().keySet()) {
+			int freq = frequency.getFrequencies().get(entry).intValue();
+			String category = frequency.getCategories().get(entry);
+			if (freq > 1) {
+				int begin = builder.length();
+				builder.append(entry);
+				int end = builder.length();
+				builder.append('\n');
+				TermAnnotation annotation = new SingleWordTermAnnotation(cas,begin,end);
+				annotation.setFrequency(freq);
+				annotation.setCategory(category);
+				annotation.setComplexity(Term.SINGLE_WORD);
+				annotation.addToIndexes();
+			}
+		}
+	}
+	
+	private void release(JCas cas, StringBuilder builder, ComplexTermFrequency frequency, String complexity) {
+		for (String entry : frequency.getFrequencies().keySet()) {
+			int freq = frequency.getFrequencies().get(entry).intValue();
+			String category = frequency.getCategories().get(entry);
+			List<Component> components = frequency.getComponents().get(entry);
+			if (freq > 1) {
+				int begin = builder.length();
+				builder.append(entry);
+				int end = builder.length();
+				builder.append('\n');
+				TermAnnotation annotation = null;
+				if (complexity.equals(Term.MULTI_WORD)) {
+					annotation = new MultiWordTermAnnotation(cas,begin,end);
+				} else if (complexity.equals(Term.NEO_CLASSICAL_COMPOUND)) {
+					annotation = new NeoClassicalCompoundTermAnnotation(cas,begin,end);
+				} else {
+					continue;
+				}
+				annotation.setFrequency(freq);
+				annotation.setCategory(category);
+				annotation.setComplexity(complexity);
+				annotation.addToIndexes();
+				if (components != null) {
+					for (Component component : components) {
+						TermComponentAnnotation c = new TermComponentAnnotation(cas);
+						component.release(c, annotation.getBegin());
+						c.addToIndexes();
+					}						
 				}
 			}
-			cas.setDocumentText(builder.toString());
 		}
 	}
 	
@@ -249,30 +314,5 @@ public class TermIndexListener implements IndexListener {
 		}
 		
 	}
-	
-	private class FrequencyComparator implements Comparator<String> {
-
-		private Map<String, Integer> frequencies;
 		
-		public FrequencyComparator(Map<String, Integer> frequencies) {
-			this.frequencies = frequencies;
-		}
-		
-		@Override
-		public int compare(String sourceKey, String targetKey) {
-			Integer sourceValue = this.frequencies.get(sourceKey);
-			Integer targetValue = this.frequencies.get(targetKey);
-			double source = sourceValue == null ? 0.0 : sourceValue.doubleValue();
-			double target = targetValue == null ? 0.0 : targetValue.doubleValue();
-			if (source < target) {
-				return 1;
-			} else if (source > target) {
-				return -1;
-			} else {
-				return sourceKey.compareTo(targetKey);
-			}
-		}
-		
-	}
-	
 }

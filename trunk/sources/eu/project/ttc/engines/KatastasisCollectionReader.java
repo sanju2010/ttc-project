@@ -77,15 +77,9 @@ public class KatastasisCollectionReader extends CollectionReader_ImplBase {
 		AnnotationIndex<Annotation> index = cas.getJCas().getAnnotationIndex(SingleWordTermAnnotation.type);
 		FSIterator<Annotation> iterator = index.iterator();
 		while (iterator.hasNext()) {
-			try {
-				SingleWordTermAnnotation annotation = (SingleWordTermAnnotation) iterator.next();					
-				String term = annotation.getCoveredText();
-				if (term.length() > 1) {
-					this.terminology.add(term);						
-				}
-			} catch (Exception e) {
-				// ignore
-			}
+			SingleWordTermAnnotation annotation = (SingleWordTermAnnotation) iterator.next();					
+			String term = annotation.getCoveredText().toLowerCase();
+			this.terminology.add(term);						
 		}
 	}
 			
@@ -203,7 +197,7 @@ public class KatastasisCollectionReader extends CollectionReader_ImplBase {
 					String lemma = annotation.getLemma().toLowerCase();
 					if (!this.getTerminology().contains(lemma)) { 
 						annotations.add(annotation);
-					}					
+					}
 				} else {
 					annotations.add(annotation);
 				}

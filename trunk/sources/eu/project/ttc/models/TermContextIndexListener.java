@@ -228,11 +228,11 @@ public class TermContextIndexListener implements IndexListener, TermContextIndex
 		if (annotation instanceof TermContextAnnotation) {
 			TermContextAnnotation vector = (TermContextAnnotation) annotation; 
 			int length = vector.getContext().size();
-			String term = vector.getTerm().getLemma();
+			String term = vector.getTerm().getLemma().toLowerCase();
 			this.addOccurrences(term, null);
 			for (int i = 0; i < length; i++) {
 				TermAnnotation entry = vector.getContext(i);
-				String context = entry.getLemma();
+				String context = entry.getLemma().toLowerCase();
 				this.addCoOccurrences(term, context, new Double(1));
 			}
 		}

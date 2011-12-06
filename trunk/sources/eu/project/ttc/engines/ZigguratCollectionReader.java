@@ -20,6 +20,11 @@ import org.apache.uima.util.Level;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
 
+import eu.project.ttc.models.Term;
+import eu.project.ttc.types.MultiWordTermAnnotation;
+import eu.project.ttc.types.NeoClassicalCompoundTermAnnotation;
+import eu.project.ttc.types.SingleWordTermAnnotation;
+import eu.project.ttc.types.TermAnnotation;
 import eu.project.ttc.types.TranslationAnnotation;
 import fr.univnantes.lina.uima.dictionaries.DictionaryFactory;
 import fr.univnantes.lina.uima.dictionaries.Entry;
@@ -85,16 +90,29 @@ public class ZigguratCollectionReader extends CollectionReader_ImplBase {
 			Entry entry = this.getIterator().next();
 			cas.setDocumentLanguage(entry.getSourceLanguage());
 			cas.setDocumentText(entry.getSourceEntry());
+			int begin = 0;
+			int end = cas.getDocumentText().length();
 			
-			TranslationAnnotation annotation = new TranslationAnnotation(cas.getJCas(), 0, cas.getDocumentText().length());
+			String complexity = entry.getSourceCategory();
+			TermAnnotation term = null;
+			if (complexity.equals(Term.SINGLE_WORD)) {
+				term = new SingleWordTermAnnotation(cas.getJCas(), begin, end);
+			} else if (complexity.equals(Term.MULTI_WORD)) {
+				term = new MultiWordTermAnnotation(cas.getJCas(), begin, end);
+			} else if (complexity.equals(Term.NEO_CLASSICAL_COMPOUND)) {
+				term = new NeoClassicalCompoundTermAnnotation(cas.getJCas(), begin, end);
+			} else {
+				term = new TermAnnotation(cas.getJCas(), begin, end);
+			}
+			term.addToIndexes();
+			
+			TranslationAnnotation annotation = new TranslationAnnotation(cas.getJCas(), begin, end);
 			annotation.setTerm(entry.getTargetEntry());
 			annotation.setLanguage(entry.getTargetLanguage());
 			annotation.addToIndexes();
 			
-			SourceDocumentInformation sdi = new SourceDocumentInformation(cas.getJCas());
-			sdi.setBegin(0);
-			sdi.setEnd(cas.getDocumentText().length());
-			sdi.setDocumentSize(cas.getDocumentText().length());
+			SourceDocumentInformation sdi = new SourceDocumentInformation(cas.getJCas(), begin, end);
+			sdi.setDocumentSize(end);
 			sdi.setLastSegment(!this.hasNext());
 			sdi.setOffsetInSource(0);
 			sdi.setUri("http://" + cas.getDocumentText() + ".term");

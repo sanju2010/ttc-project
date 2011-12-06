@@ -1,9 +1,11 @@
 package eu.project.ttc.engines;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -12,7 +14,10 @@ import org.apache.uima.UIMAFramework;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
+import org.apache.uima.cas.FSIterator;
+import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Level;
 
@@ -20,6 +25,8 @@ import eu.project.ttc.metrics.SimilarityDistance;
 import eu.project.ttc.models.TermContext;
 import eu.project.ttc.models.TermContextIndex;
 import eu.project.ttc.types.CandidateAnnotation;
+import eu.project.ttc.types.SingleWordTermAnnotation;
+import eu.project.ttc.types.TermAnnotation;
 import fr.univnantes.lina.uima.dictionaries.Dictionary;
 
 public class ZigguratAnalysisEngine extends JCasAnnotator_ImplBase {
@@ -73,11 +80,21 @@ public class ZigguratAnalysisEngine extends JCasAnnotator_ImplBase {
 		return this.targetIndex;
 	}
 	
-	private static boolean done = false;
+	private Map<Double, String> candidates;
+	
+	private void setCandidtates() {
+		this.candidates = new TreeMap<Double, String>(new ScoreComparator());
+	}
+	
+	private Map<Double, String> getCandidates() {
+		return this.candidates;
+	}
+	
+	private static boolean shrinked = false;
 	
 	private void doShrink() {
-		if (!done) {
-			done = true;
+		if (!shrinked) {
+			shrinked = true;
 			Set<String> sourceFilter = this.getDictionary().map().keySet();
 			this.getSourceIndex().doShrink(sourceFilter);
 	        Collection<Set<String>> targetFilters = this.getDictionary().map().values();
@@ -128,17 +145,26 @@ public class ZigguratAnalysisEngine extends JCasAnnotator_ImplBase {
 		try {
 			String term = cas.getDocumentText();
 			String language = cas.getDocumentLanguage();
-			if (this.getSourceIndex().getLanguage().equals(language)) {
-				TermContext context = this.getSourceIndex().getTermContexts().get(term);
-				if (context == null) {
-					UIMAFramework.getLogger().log(Level.WARNING,"Skiping " + term +  " as it doesn't belong to the source index");
+			AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TermAnnotation.type);
+			FSIterator<Annotation> iterator = index.iterator();
+			if (iterator.hasNext()) {
+				TermAnnotation annotation = (TermAnnotation) iterator.next();
+				if (this.getSourceIndex().getLanguage().equals(language)) {
+					TermContext context = this.getSourceIndex().getTermContexts().get(term);
+					if (context == null) {
+						UIMAFramework.getLogger().log(Level.WARNING,"Skiping " + term +  " as it doesn't belong to the source index");
+					} else if (annotation instanceof SingleWordTermAnnotation) {
+						TermContext transfer = this.transfer(term, context);
+						this.align(term, transfer);
+						this.annotate(cas);
+					} else {
+						UIMAFramework.getLogger().log(Level.WARNING,"Skiping " + term + " because of method not yet implemented.");
+					}
 				} else {
-					TermContext transfer = this.transfer(term, context);
-					this.align(term, transfer);
-					this.annotate(cas);
-				}				
+					UIMAFramework.getLogger().log(Level.WARNING,"Skiping " + term +  " because of language clash between " + language + " and " + this.getSourceIndex().getLanguage());
+				}
 			} else {
-				UIMAFramework.getLogger().log(Level.WARNING,"Skiping " + term +  " because of language clash between " + language + " and " + this.getSourceIndex().getLanguage());
+				UIMAFramework.getLogger().log(Level.WARNING,"Skiping " + term +  " because it isn't a term.");
 			}
 		} catch (Exception e) {
 			throw new AnalysisEngineProcessException(e);
@@ -198,16 +224,28 @@ public class ZigguratAnalysisEngine extends JCasAnnotator_ImplBase {
 		}
 	}
 	
-	private Map<Double, String> candidates;
-	
-	private void setCandidtates() {
-		this.candidates = new TreeMap<Double, String>(new ScoreComparator());
+	private List<Set<String>> transfer(List<String> components) {
+		List<Set<String>> candidates = new ArrayList<Set<String>>();
+		for (String component : components) {
+			Set<String> candidate = this.getDictionary().map().get(component);
+			candidates.add(candidate);
+		}
+		return candidates;
 	}
 	
-	private Map<Double, String> getCandidates() {
-		return this.candidates;
+	private Set<List<String>> combine(List<Set<String>> components) {
+		Set<List<String>> combinaisons = new HashSet<List<String>>();
+		// TODO
+		return combinaisons;
 	}
-		
+	
+	private Set<List<String>> select(Set<List<String>> components) {
+		for (List<String> component : components) {
+			// TODO
+		}
+		return components;
+	}
+	
 	private class ScoreComparator implements Comparator<Double> {
 
 		@Override
