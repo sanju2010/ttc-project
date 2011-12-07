@@ -3,6 +3,11 @@
 
 = Change Log =
 
+== Version 1.0-rc7 ==
+
+  * refactoring taggers: a tagger button and one tagger engine per tab
+  * refactoring converters: a converter button and one converter engine per tab
+
 == Version 1.0-rc6 ==
 
   * bug fix: the Indexer annotator was running as many times as there are index listeners and not only once
