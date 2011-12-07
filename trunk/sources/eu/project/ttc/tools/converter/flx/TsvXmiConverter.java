@@ -9,7 +9,7 @@ import org.apache.uima.util.Level;
 import eu.project.ttc.tools.converter.Converter;
 import eu.project.ttc.tools.converter.ConverterTool;
 
-public class FlxConverter implements ConverterTool {
+public class TsvXmiConverter implements ConverterTool {
 
 	private Converter parent;
 	
@@ -75,7 +75,7 @@ public class FlxConverter implements ConverterTool {
 		return this.getSettings().getComponent();
 	}
 	
-	public FlxConverter() {
+	public TsvXmiConverter() {
 		this.setSettings();
 	}
 	

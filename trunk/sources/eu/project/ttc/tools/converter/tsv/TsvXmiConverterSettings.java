@@ -6,9 +6,9 @@ import org.apache.uima.resource.metadata.ConfigurationParameterDeclarations;
 import eu.project.ttc.tools.converter.ConverterSettings;
 import eu.project.ttc.tools.utils.Parameters;
 
-public class TsvConverterSettings extends Parameters implements ConverterSettings {	
+public class TsvXmiConverterSettings extends Parameters implements ConverterSettings {	
 	
-	public TsvConverterSettings(String resource) {
+	public TsvXmiConverterSettings(String resource) {
 		super(resource);
 	}
 

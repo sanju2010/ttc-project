@@ -19,7 +19,7 @@ import org.apache.uima.resource.metadata.ConfigurationParameterSettings;
 import eu.project.ttc.tools.converter.ConverterEngine;
 import eu.project.ttc.tools.converter.ConverterTool;
 
-public class TsvConverterEngine extends SwingWorker<CpeDescription,Void> implements ConverterEngine {
+public class XmiTsvConverterEngine extends SwingWorker<CpeDescription,Void> implements ConverterEngine {
 
 	private ConverterTool converterTool;
 	
@@ -47,7 +47,7 @@ public class TsvConverterEngine extends SwingWorker<CpeDescription,Void> impleme
 		this.setCollectionProcessingEngine();
 		this.setCollectionReader();
 		this.setAnalysisEngine();
-		File file = File.createTempFile("converter-tsv-cpe-",".xml");
+		File file = File.createTempFile("converter-xmi-tsv-cpe-",".xml");
 		file.deleteOnExit();
 		OutputStream stream = new FileOutputStream(file);
 		this.collectionProcessingEngine.toXML(stream);

@@ -18,12 +18,14 @@ import org.apache.uima.UIMAFramework;
 import org.apache.uima.util.Level;
 
 import eu.project.ttc.tools.TermSuite;
-import eu.project.ttc.tools.converter.flx.FlxConverter;
-import eu.project.ttc.tools.converter.flx.FlxConverterEngine;
-import eu.project.ttc.tools.converter.tsv.TsvConverter;
-import eu.project.ttc.tools.converter.tsv.TsvConverterEngine;
-import eu.project.ttc.tools.converter.zig.ZigConverter;
-import eu.project.ttc.tools.converter.zig.ZigConverterEngine;
+import eu.project.ttc.tools.converter.tbx.TbxXmiConverter;
+import eu.project.ttc.tools.converter.tbx.TbxXmiConverterEngine;
+import eu.project.ttc.tools.converter.tbx.XmiTbxConverter;
+import eu.project.ttc.tools.converter.tbx.XmiTbxConverterEngine;
+import eu.project.ttc.tools.converter.tsv.TsvXmiConverter;
+import eu.project.ttc.tools.converter.tsv.TsvXmiConverterEngine;
+import eu.project.ttc.tools.converter.tsv.XmiTsvConverter;
+import eu.project.ttc.tools.converter.tsv.XmiTsvConverterEngine;
 import eu.project.ttc.tools.utils.About;
 import eu.project.ttc.tools.utils.Preferences;
 import eu.project.ttc.tools.utils.ToolBar;
@@ -106,37 +108,48 @@ public class Converter implements Runnable {
 		return dimension;
 	}
 	
-	private TsvConverter tsvConverter;
+	private XmiTsvConverter xmiTsvConverter;
 	
-	private void setTsvConverter() {
-		this.tsvConverter = new TsvConverter();
-		this.tsvConverter.setParent(this);
+	private void setXmiTsvConverter() {
+		this.xmiTsvConverter = new XmiTsvConverter();
+		this.xmiTsvConverter.setParent(this);
 	}
 	
-	private TsvConverter getTsvConverter() {
-		return this.tsvConverter;
+	private XmiTsvConverter getXmiTsvConverter() {
+		return this.xmiTsvConverter;
 	}
 	
-	private FlxConverter flxConverter;
+	private TsvXmiConverter tsvXmiConverter;
 	
-	private void setFlxConverter() {
-		this.flxConverter = new FlxConverter();
-		this.flxConverter.setParent(this);
+	private void setTsvXmiConverter() {
+		this.tsvXmiConverter = new TsvXmiConverter();
+		this.tsvXmiConverter.setParent(this);
 	}
 	
-	private FlxConverter getFlxConverter() {
-		return this.flxConverter;
+	private TsvXmiConverter getTsvXmiConverter() {
+		return this.tsvXmiConverter;
 	}
 	
-	private ZigConverter zigConverter;
+	private XmiTbxConverter xmiTbxConverter;
 	
-	private void setZigConverter() {
-		this.zigConverter = new ZigConverter();
-		this.zigConverter.setParent(this);
+	private void setXmiTbxConverter() {
+		this.xmiTbxConverter = new XmiTbxConverter();
+		this.xmiTbxConverter.setParent(this);
 	}
 	
-	private ZigConverter getZigConverter() {
-		return this.zigConverter;
+	private XmiTbxConverter getXmiTbxConverter() {
+		return this.xmiTbxConverter;
+	}
+	
+	private TbxXmiConverter tbxXmiConverter;
+	
+	private void setTbxXmiConverter() {
+		this.tbxXmiConverter = new TbxXmiConverter();
+		this.tbxXmiConverter.setParent(this);
+	}
+	
+	private TbxXmiConverter getTbxXmiConverter() {
+		return this.tbxXmiConverter;
 	}
 	
 	private JTabbedPane content;
@@ -144,9 +157,10 @@ public class Converter implements Runnable {
 	private void setContent() {
 		this.content = new JTabbedPane();
 		this.content.setTabPlacement(JTabbedPane.TOP);
-		this.content.addTab("Tagger: XMI -> TSV        ",this.getTsvConverter().getComponent());
-		this.content.addTab("Tagger: XMI -> FLX        ",this.getFlxConverter().getComponent());
-		this.content.addTab("Contextualizer: XMI -> ZIG",this.getZigConverter().getComponent());
+		this.content.addTab(" XMI -> TSV ",this.getXmiTsvConverter().getComponent());
+		this.content.addTab(" TSV -> XMI ",this.getTsvXmiConverter().getComponent());
+		this.content.addTab(" XMI -> TBX ",this.getXmiTbxConverter().getComponent());
+		this.content.addTab(" TBX -> XMI ",this.getTbxXmiConverter().getComponent());
 		Listener listener = new Listener();
 		listener.setConverter(this);
 		this.content.addChangeListener(listener);
@@ -156,18 +170,22 @@ public class Converter implements Runnable {
 		return this.content;
 	}
 	
-	public boolean isTsvSelected() {
+	public boolean isXmiTsvSelected() {
 		return this.getContent().getSelectedIndex() == 0;
 	}
 	
-	public boolean isFlxSelected() {
+	public boolean isTsvXmiSelected() {
 		return this.getContent().getSelectedIndex() == 1;
 	}
 	
-	public boolean isZigSelected() {
+	public boolean isXmiTbxSelected() {
 		return this.getContent().getSelectedIndex() == 2;
 	}
 	
+	public boolean isTbxXmiSelected() {
+		return this.getContent().getSelectedIndex() == 3;
+	}
+
 	private JSplitPane component;
 	
 	private void setComponent() {
@@ -213,9 +231,10 @@ public class Converter implements Runnable {
 		this.setPreferences();
 		this.setAbout();
 		this.setToolBar();
-		this.setTsvConverter();
-		this.setFlxConverter();
-		this.setZigConverter();
+		this.setXmiTsvConverter();
+		this.setTsvXmiConverter();
+		this.setXmiTbxConverter();
+		this.setTbxXmiConverter();
 		this.setContent();
 		this.setComponent();
 		this.setFrame();
@@ -234,20 +253,25 @@ public class Converter implements Runnable {
 	}
 	
 	public void enableListsners() {
-		if (this.isTsvSelected()) {
-			this.listener.setConverterTool(this.getTsvConverter());
-			TsvConverterEngine engine = new TsvConverterEngine();
-			engine.setConverterTool(this.getTsvConverter());
+		if (this.isXmiTsvSelected()) {
+			this.listener.setConverterTool(this.getXmiTsvConverter());
+			XmiTsvConverterEngine engine = new XmiTsvConverterEngine();
+			engine.setConverterTool(this.getXmiTsvConverter());
 			this.listener.setConverterEngine(engine);
-		} else if (this.isFlxSelected()) {
-			this.listener.setConverterTool(this.getFlxConverter());
-			FlxConverterEngine engine = new FlxConverterEngine();
-			engine.setConverterTool(this.getFlxConverter());
+		} else if (this.isTsvXmiSelected()) {
+			this.listener.setConverterTool(this.getTsvXmiConverter());
+			TsvXmiConverterEngine engine = new TsvXmiConverterEngine();
+			engine.setConverterTool(this.getTsvXmiConverter());
 			this.listener.setConverterEngine(engine);
-		} else if (this.isZigSelected()) {
-			this.listener.setConverterTool(this.getZigConverter());
-			ZigConverterEngine engine = new ZigConverterEngine();
-			engine.setConverterTool(this.getZigConverter());
+		} else if (this.isXmiTbxSelected()) {
+			this.listener.setConverterTool(this.getXmiTbxConverter());
+			XmiTbxConverterEngine engine = new XmiTbxConverterEngine();
+			engine.setConverterTool(this.getXmiTbxConverter());
+			this.listener.setConverterEngine(engine);
+		}  else if (this.isTbxXmiSelected()) {
+			this.listener.setConverterTool(this.getTbxXmiConverter());
+			TbxXmiConverterEngine engine = new TbxXmiConverterEngine();
+			engine.setConverterTool(this.getTbxXmiConverter());
 			this.listener.setConverterEngine(engine);
 		}
 	}
@@ -270,8 +294,10 @@ public class Converter implements Runnable {
 	
 	private void save() {
 		try {
-			this.getTsvConverter().getSettings().doSave();
-			this.getFlxConverter().getSettings().doSave();
+			this.getXmiTsvConverter().getSettings().doSave();
+			this.getTsvXmiConverter().getSettings().doSave();
+			this.getXmiTbxConverter().getSettings().doSave();
+			this.getTbxXmiConverter().getSettings().doSave();
 		} catch (Exception e) {
 			this.error(e);
 		}

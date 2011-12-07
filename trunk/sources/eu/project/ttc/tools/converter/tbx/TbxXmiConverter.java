@@ -1,4 +1,4 @@
-package eu.project.ttc.tools.converter.tsv;
+package eu.project.ttc.tools.converter.tbx;
 
 import java.awt.Component;
 import java.io.File;
@@ -9,7 +9,7 @@ import org.apache.uima.util.Level;
 import eu.project.ttc.tools.converter.Converter;
 import eu.project.ttc.tools.converter.ConverterTool;
 
-public class TsvConverter implements ConverterTool {
+public class TbxXmiConverter implements ConverterTool {
 
 	private Converter parent;
 	
@@ -53,17 +53,17 @@ public class TsvConverter implements ConverterTool {
 		UIMAFramework.getLogger().log(Level.INFO,message);
 	}
 	
-	private TsvConverterSettings settings;
+	private XmiTbxConverterSettings settings;
 	
 	private void setSettings() {
-		this.settings = new TsvConverterSettings(System.getProperty("user.home") + File.separator + ".converter-tsv.settings");
+		this.settings = new XmiTbxConverterSettings(System.getProperty("user.home") + File.separator + ".converter-tbx-xmi.settings");
 	}
 	
 	/* (non-Javadoc)
 	 * @see eu.project.ttc.tools.tildetagger.TaggerEmbedder#getSettings()
 	 */
 	@Override
-	public TsvConverterSettings getSettings() {
+	public XmiTbxConverterSettings getSettings() {
 		return this.settings;
 	}
 
@@ -75,7 +75,7 @@ public class TsvConverter implements ConverterTool {
 		return this.getSettings().getComponent();
 	}
 	
-	public TsvConverter() {
+	public TbxXmiConverter() {
 		this.setSettings();
 	}
 	

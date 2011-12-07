@@ -6,14 +6,14 @@
 	<META NAME="GENERATOR" CONTENT="LibreOffice 3.4  (Linux)">
 	<META NAME="CREATED" CONTENT="0;0">
 	<META NAME="CHANGEDBY" CONTENT="Jérôme Rocheteau">
-	<META NAME="CHANGED" CONTENT="20111206;16351700">
+	<META NAME="CHANGED" CONTENT="20111207;14365600">
+	<META NAME="CHANGEDBY" CONTENT="Jérôme Rocheteau">
 	<META NAME="CHANGEDBY" CONTENT="Jérôme Rocheteau">
 	<STYLE TYPE="text/css">
 	<!--
 		H2.western { font-family: "Albany", sans-serif; font-size: 14pt; font-style: italic }
 		H2.cjk { font-family: "HG Mincho Light J"; font-size: 14pt; font-style: italic }
 		H2.ctl { font-family: "Arial Unicode MS"; font-size: 14pt; font-style: italic }
-		A.western:visited { so-language: en-US }
 	-->
 	</STYLE>
 </HEAD>
@@ -67,7 +67,7 @@ on your computer at least.</FONT></P>
 	<LI><P ALIGN=JUSTIFY><FONT FACE="Liberation Sans, sans-serif">the
 	Chinese model is encoded in utf8 and is called zh.par.</FONT></P>
 </UL>
-<H2 CLASS="western" ALIGN=JUSTIFY><FONT FACE="Liberation Sans, sans-serif"><SPAN LANG="en-US">Settings</SPAN></FONT></H2>
+<H2 CLASS="western" ALIGN=JUSTIFY><FONT FACE="Liberation Sans, sans-serif">Settings</FONT></H2>
 <P ALIGN=JUSTIFY><FONT FACE="Liberation Sans, sans-serif"><B>TreeTagger</B>
 requires the following parameters to be set: </FONT>
 </P>
@@ -86,7 +86,26 @@ requires the following parameters to be set: </FONT>
 	installed on your computer. </FONT>
 	</P>
 </UL>
-<P ALIGN=JUSTIFY><BR><BR>
-</P>
+<H2 CLASS="western">Behaviour</H2>
+<P ALIGN=JUSTIFY><B>TreeTagger</B> behaves as follows:</P>
+<UL>
+	<LI><P ALIGN=JUSTIFY>Firstly, it reads every text files In the input
+	directory and creates a CAS per file.</P>
+	<LI><P ALIGN=JUSTIFY>Secondly, it runs a word tokenizer in order to
+	provide annotations of the type <U>WordAnnotation</U>.</P>
+	<LI><P ALIGN=JUSTIFY>Thirdly, it applies the tree-tagger program
+	over all word annotations in order to set their 'category' and
+	'lemma' feature values.</P>
+	<LI><P ALIGN=JUSTIFY>Fourthly, it maps the 'category' feature value
+	from every word annotations that ranges over the language-specific
+	tag set into a unique tag set specified by the Multext's project.
+	Only grammatical category expansed notations are provided yet. This
+	mapping is given as a resource.</P>
+	<LI><P ALIGN=JUSTIFY>Then, it stems according to the Porter's
+	algorithm in order to fill the 'stem' feature value of every word
+	annotations.</P>
+	<LI><P ALIGN=JUSTIFY>Finally, it writes a output XMI file per input
+	text file.</P>
+</UL>
 </BODY>
 </HTML>
