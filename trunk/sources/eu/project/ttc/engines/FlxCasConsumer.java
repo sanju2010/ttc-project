@@ -54,7 +54,7 @@ public class FlxCasConsumer extends JCasAnnotator_ImplBase {
 		try {
 			FlxResource tabResource = (FlxResource) context.getResourceObject("Resource");
 			this.setResource(tabResource);
-			String path = (String) context.getConfigParameterValue("FileOrDirectory");
+			String path = (String) context.getConfigParameterValue("File");
 			this.setFile(path);
 		} catch (Exception e) {
 			throw new ResourceInitializationException(e);

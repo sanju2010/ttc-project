@@ -10,7 +10,7 @@
     <vendor/>
     <configurationParameters>
       <configurationParameter>
-        <name>FileOrDirectory</name>
+        <name>Directory</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
@@ -18,7 +18,7 @@
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
-        <name>FileOrDirectory</name>
+        <name>Directory</name>
         <value>
           <string>/tmp</string>
         </value>

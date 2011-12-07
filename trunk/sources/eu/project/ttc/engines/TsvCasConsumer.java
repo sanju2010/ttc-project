@@ -45,7 +45,7 @@ public class TsvCasConsumer extends JCasAnnotator_ImplBase {
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
 		try {
-			String directory = (String) context.getConfigParameterValue("FileOrDirectory");
+			String directory = (String) context.getConfigParameterValue("Directory");
 			this.setDirectory(directory);
 		} catch (Exception e) {
 			throw new ResourceInitializationException(e);

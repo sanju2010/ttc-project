@@ -4,18 +4,26 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.util.Level;
 
 import eu.project.ttc.tools.TermSuite;
+import eu.project.ttc.tools.converter.flx.FlxConverter;
+import eu.project.ttc.tools.converter.flx.FlxConverterEngine;
+import eu.project.ttc.tools.converter.tsv.TsvConverter;
+import eu.project.ttc.tools.converter.tsv.TsvConverterEngine;
+import eu.project.ttc.tools.converter.zig.ZigConverter;
+import eu.project.ttc.tools.converter.zig.ZigConverterEngine;
 import eu.project.ttc.tools.utils.About;
 import eu.project.ttc.tools.utils.Preferences;
 import eu.project.ttc.tools.utils.ToolBar;
@@ -52,16 +60,6 @@ public class Converter implements Runnable {
 	
 	public void message(String message) {
 		UIMAFramework.getLogger().log(Level.INFO,message);
-	}
-
-	private ConverterSettings settings;
-	
-	private void setSettings() {
-		this.settings = new ConverterSettings(System.getProperty("user.home") + File.separator + ".converter.settings");
-	}
-	
-	public ConverterSettings getSettings() {
-		return this.settings;
 	}
 	
 	private Preferences preferences;
@@ -108,18 +106,80 @@ public class Converter implements Runnable {
 		return dimension;
 	}
 	
-	private JSplitPane content;
+	private TsvConverter tsvConverter;
 	
-	private void setContent() {	
-		this.content = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-		this.content.setTopComponent(this.getToolBar().getComponent());
-		this.content.setBottomComponent(this.getSettings().getComponent());
-		this.content.setDividerSize(0);
-		this.content.setEnabled(false);
+	private void setTsvConverter() {
+		this.tsvConverter = new TsvConverter();
+		this.tsvConverter.setParent(this);
 	}
 	
-	private JSplitPane getContent() {
+	private TsvConverter getTsvConverter() {
+		return this.tsvConverter;
+	}
+	
+	private FlxConverter flxConverter;
+	
+	private void setFlxConverter() {
+		this.flxConverter = new FlxConverter();
+		this.flxConverter.setParent(this);
+	}
+	
+	private FlxConverter getFlxConverter() {
+		return this.flxConverter;
+	}
+	
+	private ZigConverter zigConverter;
+	
+	private void setZigConverter() {
+		this.zigConverter = new ZigConverter();
+		this.zigConverter.setParent(this);
+	}
+	
+	private ZigConverter getZigConverter() {
+		return this.zigConverter;
+	}
+	
+	private JTabbedPane content;
+	
+	private void setContent() {
+		this.content = new JTabbedPane();
+		this.content.setTabPlacement(JTabbedPane.TOP);
+		this.content.addTab("Tagger: XMI -> TSV        ",this.getTsvConverter().getComponent());
+		this.content.addTab("Tagger: XMI -> FLX        ",this.getFlxConverter().getComponent());
+		this.content.addTab("Contextualizer: XMI -> ZIG",this.getZigConverter().getComponent());
+		Listener listener = new Listener();
+		listener.setConverter(this);
+		this.content.addChangeListener(listener);
+	}
+	
+	private JTabbedPane getContent() {
 		return this.content;
+	}
+	
+	public boolean isTsvSelected() {
+		return this.getContent().getSelectedIndex() == 0;
+	}
+	
+	public boolean isFlxSelected() {
+		return this.getContent().getSelectedIndex() == 1;
+	}
+	
+	public boolean isZigSelected() {
+		return this.getContent().getSelectedIndex() == 2;
+	}
+	
+	private JSplitPane component;
+	
+	private void setComponent() {
+		this.component = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+		this.component.setTopComponent(this.getToolBar().getComponent());
+		this.component.setBottomComponent(this.getContent());
+		this.component.setDividerSize(0);
+		this.component.setEnabled(false);
+	}
+	
+	private JSplitPane getComponent() {
+		return this.component;
 	}
 	
 	private JFrame frame;
@@ -129,7 +189,7 @@ public class Converter implements Runnable {
 		this.frame.setTitle(this.getPreferences().getTitle());
 		this.frame.setPreferredSize(this.getDimension());
 		this.frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		this.frame.getContentPane().add(this.getContent());
+		this.frame.getContentPane().add(this.getComponent());
 		this.frame.setJMenuBar(null);
 		this.frame.pack();
 		this.frame.setLocationRelativeTo(null);
@@ -150,28 +210,54 @@ public class Converter implements Runnable {
 	
 	public Converter(boolean cli) {
 		this.enableCommandLineInterface(cli);
-		this.setSettings();
 		this.setPreferences();
 		this.setAbout();
 		this.setToolBar();
+		this.setTsvConverter();
+		this.setFlxConverter();
+		this.setZigConverter();
 		this.setContent();
+		this.setComponent();
 		this.setFrame();
-		this.enableListeners();
+		this.setListener();
 	}
 	
-	private void enableListeners() {
-		ConverterEngineListener acabitEngineListener = new ConverterEngineListener();
-		acabitEngineListener.setConverter(this);
-		this.getToolBar().enableListeners(acabitEngineListener);
+	private ConverterEngineListener listener;
+	
+	private void setListener() {
+		this.listener = new ConverterEngineListener();
+		this.enableListsners();
+		this.getToolBar().enableListeners(this.listener);
 		WindowListener windowListener = new WindowListener();
-		windowListener.setTreeTagger(this);
+		windowListener.setConverter(this);
 		this.getFrame().addWindowListener(windowListener);
 	}
 	
+	public void enableListsners() {
+		if (this.isTsvSelected()) {
+			this.listener.setConverterTool(this.getTsvConverter());
+			TsvConverterEngine engine = new TsvConverterEngine();
+			engine.setConverterTool(this.getTsvConverter());
+			this.listener.setConverterEngine(engine);
+		} else if (this.isFlxSelected()) {
+			this.listener.setConverterTool(this.getFlxConverter());
+			FlxConverterEngine engine = new FlxConverterEngine();
+			engine.setConverterTool(this.getFlxConverter());
+			this.listener.setConverterEngine(engine);
+		} else if (this.isZigSelected()) {
+			this.listener.setConverterTool(this.getZigConverter());
+			ZigConverterEngine engine = new ZigConverterEngine();
+			engine.setConverterTool(this.getZigConverter());
+			this.listener.setConverterEngine(engine);
+		}
+	}
+	
 	private void process() {
+		/*
 		ConverterEngineListener engineListener = new ConverterEngineListener();
 		engineListener.setConverter(this);
 		engineListener.doProcess();
+		*/
 	}
 	
 	public void run() {
@@ -184,7 +270,8 @@ public class Converter implements Runnable {
 	
 	private void save() {
 		try {
-			this.getSettings().doSave();
+			this.getTsvConverter().getSettings().doSave();
+			this.getFlxConverter().getSettings().doSave();
 		} catch (Exception e) {
 			this.error(e);
 		}
@@ -240,24 +327,39 @@ public class Converter implements Runnable {
 	
 	private class WindowListener extends WindowAdapter {
 				
-		private Converter treeTagger;
+		private Converter converter;
 		
-		public void setTreeTagger(Converter treeTagger) {
-			this.treeTagger = treeTagger;
+		public void setConverter(Converter converter) {
+			this.converter = converter;
 		}
 		
-		private Converter getTreeTagger() {
-			return this.treeTagger;
+		private Converter getConverter() {
+			return this.converter;
 		}
 		
 		public void windowClosing(WindowEvent event) {
-			String message = "Do you really want to quit " + this.getTreeTagger().getPreferences().getTitle() + "?";
+			String message = "Do you really want to quit " + this.getConverter().getPreferences().getTitle() + "?";
 			String title = "Exit?";
-			int response = JOptionPane.showConfirmDialog(this.getTreeTagger().getFrame(),message,title,JOptionPane.OK_CANCEL_OPTION);
+			int response = JOptionPane.showConfirmDialog(this.getConverter().getFrame(),message,title,JOptionPane.OK_CANCEL_OPTION);
 			if (response == 0) {
-				this.getTreeTagger().quit();
+				this.getConverter().quit();
 			} 
 		 }
+		
+	}
+	
+	private class Listener implements ChangeListener {
+
+		private Converter converter;
+		
+		public void setConverter(Converter converter) {
+			this.converter = converter;
+		}
+		
+		@Override
+		public void stateChanged(ChangeEvent event) {
+			this.converter.enableListsners();
+		}
 		
 	}
 	

@@ -40,7 +40,7 @@ public class ZigCasConsumer extends JCasAnnotator_ImplBase {
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
 		try {
-			String path = (String) context.getConfigParameterValue("FileOrDirectory");
+			String path = (String) context.getConfigParameterValue("File");
 			this.setFile(path);
 		} catch (Exception e) {
 			throw new ResourceInitializationException(e);

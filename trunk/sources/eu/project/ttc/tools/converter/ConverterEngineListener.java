@@ -23,61 +23,69 @@ import eu.project.ttc.tools.TermSuite;
 
 public class ConverterEngineListener implements ActionListener, StatusCallbackListener {
 
-	private Converter converter;
+	private ConverterTool converterTool;
 	
-	public void setConverter(Converter converter) {
-		this.converter = converter;
+	public void setConverterTool(ConverterTool converterTool) {
+		this.converterTool = converterTool;
 	}
 	
-	private Converter getConverter() {
-		return this.converter;
+	private ConverterTool getConverterTool() {
+		return this.converterTool;
+	}
+	
+	private ConverterEngine converterEngine;
+	
+	public void setConverterEngine(ConverterEngine converterEngine) {
+		this.converterEngine = converterEngine;
+	}
+	
+	private ConverterEngine getConverterEngine() {
+		return this.converterEngine;
 	}
 	
 	private void doQuit() {
-		String message = "Do you really want to quit " + this.getConverter().getPreferences().getTitle() + "?";
+		String message = "Do you really want to quit " + this.getConverterTool().getParent().getPreferences().getTitle() + "?";
 		String title = "Quit";
-		int response = JOptionPane.showConfirmDialog(this.getConverter().getFrame(),message,title,JOptionPane.YES_NO_OPTION);
+		int response = JOptionPane.showConfirmDialog(this.getConverterTool().getParent().getFrame(),message,title,JOptionPane.YES_NO_OPTION);
 		if (response == 0) {
-			this.getConverter().quit();				
+			this.getConverterTool().getParent().quit();				
 		}
 	}
 	
 	private void doHelp() {
 		try {
-			TermSuite termSuite = this.getConverter().getParent();
+			TermSuite termSuite = this.getConverterTool().getParent().getParent();
 			termSuite.getHelp().selectConverter();
 			SwingUtilities.invokeLater(termSuite.getHelp());
 		} catch (Exception e) {
-			this.getConverter().error(e);
+			this.getConverterTool().error(e);
 		} 
 	}
 	
 	public void doProcess() {
-		this.getConverter().getSettings().doUpdate();
+		this.getConverterTool().getSettings().doUpdate();
 		try {
-			this.getConverter().getSettings().validate();
+			this.getConverterTool().getSettings().validate();
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(this.getConverter().getFrame(),e.getMessage(),e.getClass().getSimpleName(),JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this.getConverterTool().getParent().getFrame(),e.getMessage(),e.getClass().getSimpleName(),JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		}
-		ConverterEngine proc = new ConverterEngine();
-		proc.setConverter(this.getConverter());
-		proc.execute();
 		try {
-			CpeDescription desc = proc.get();
+			this.getConverterEngine().execute();
+			CpeDescription desc = this.getConverterEngine().get();
 			this.setTimer();
-			this.getConverter().getToolBar().getRun().setEnabled(false);
-			this.getConverter().getToolBar().getPause().setEnabled(true);
-			this.getConverter().getToolBar().getStop().setEnabled(true);
+			this.getConverterTool().getParent().getToolBar().getRun().setEnabled(false);
+			this.getConverterTool().getParent().getToolBar().getPause().setEnabled(true);
+			this.getConverterTool().getParent().getToolBar().getStop().setEnabled(true);
 			this.setEngine(desc);
 		} catch (InterruptedException e) {
-			JOptionPane.showMessageDialog(this.getConverter().getFrame(),e.getMessage(),"Interrupted Exception",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this.getConverterTool().getParent().getFrame(),e.getMessage(),"Interrupted Exception",JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		} catch (ExecutionException e) {
-			JOptionPane.showMessageDialog(this.getConverter().getFrame(),e.getMessage(),"Execution Exception",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this.getConverterTool().getParent().getFrame(),e.getMessage(),"Execution Exception",JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		} catch (ResourceInitializationException e) {
-			JOptionPane.showMessageDialog(this.getConverter().getFrame(),e.getMessage(),"Resource Initialization Exception",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this.getConverterTool().getParent().getFrame(),e.getMessage(),"Resource Initialization Exception",JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		} 
 	}
@@ -94,19 +102,19 @@ public class ConverterEngineListener implements ActionListener, StatusCallbackLi
 			}
 		}
 		if (files == -1) {
-			this.getConverter().getToolBar().getProgressBar().setIndeterminate(true);
+			this.getConverterTool().getParent().getToolBar().getProgressBar().setIndeterminate(true);
 	    } else {
-	    	this.getConverter().getToolBar().getProgressBar().setMaximum(files);
-	    	this.getConverter().getToolBar().getProgressBar().setIndeterminate(false);
+	    	this.getConverterTool().getParent().getToolBar().getProgressBar().setMaximum(files);
+	    	this.getConverterTool().getParent().getToolBar().getProgressBar().setIndeterminate(false);
 	    }
-		this.getConverter().getToolBar().getProgressBar().setValue(0);
+		this.getConverterTool().getParent().getToolBar().getProgressBar().setValue(0);
 		this.getTimer().start();
 	}
 	
 	private void doResume() {
 		if (this.getEngine().isPaused()) {
-			this.getConverter().getToolBar().getProgressBar().setString("Resumed...");
-			this.getConverter().getToolBar().getPause().setEnabled(true);
+			this.getConverterTool().getParent().getToolBar().getProgressBar().setString("Resumed...");
+			this.getConverterTool().getParent().getToolBar().getPause().setEnabled(true);
 			this.getTimer().restart();
 			this.getEngine().resume();
 		} 
@@ -114,11 +122,11 @@ public class ConverterEngineListener implements ActionListener, StatusCallbackLi
 	
 	private void doPause() {
 		if (this.getEngine().isProcessing()) {
-			this.getConverter().getToolBar().getProgressBar().setString("Paused...");
-			this.getConverter().getToolBar().getRun().setText("Resume");
-			this.getConverter().getToolBar().getRun().setActionCommand("resume");
-			this.getConverter().getToolBar().getRun().setEnabled(true);
-			this.getConverter().getToolBar().getPause().setEnabled(false);
+			this.getConverterTool().getParent().getToolBar().getProgressBar().setString("Paused...");
+			this.getConverterTool().getParent().getToolBar().getRun().setText("Resume");
+			this.getConverterTool().getParent().getToolBar().getRun().setActionCommand("resume");
+			this.getConverterTool().getParent().getToolBar().getRun().setEnabled(true);
+			this.getConverterTool().getParent().getToolBar().getPause().setEnabled(false);
 			this.getEngine().pause();
 			this.getTimer().stop();
 		}
@@ -129,9 +137,9 @@ public class ConverterEngineListener implements ActionListener, StatusCallbackLi
 			this.getEngine().stop();
 		}
 		this.getTimer().stop();
-		this.getConverter().getToolBar().getRun().setEnabled(true);
-		this.getConverter().getToolBar().getPause().setEnabled(false);
-		this.getConverter().getToolBar().getStop().setEnabled(false);
+		this.getConverterTool().getParent().getToolBar().getRun().setEnabled(true);
+		this.getConverterTool().getParent().getToolBar().getPause().setEnabled(false);
+		this.getConverterTool().getParent().getToolBar().getStop().setEnabled(false);
 	}
 	
 	private void doTime() {
@@ -148,8 +156,8 @@ public class ConverterEngineListener implements ActionListener, StatusCallbackLi
 			}
 			if (index >= 0) {
 				int value = (int) progress[index].getCompleted();
-				this.getConverter().getToolBar().getProgressBar().setValue(value);
-				this.getConverter().getToolBar().getProgressBar().setString(value + " / " + progress[index].getTotal());
+				this.getConverterTool().getParent().getToolBar().getProgressBar().setValue(value);
+				this.getConverterTool().getParent().getToolBar().getProgressBar().setString(value + " / " + progress[index].getTotal());
 			} 
 		}
 	}
@@ -187,7 +195,7 @@ public class ConverterEngineListener implements ActionListener, StatusCallbackLi
 			} else if (action.equals("help")) { 
 				this.doHelp();
 			} else if (action.equals("about")) {
-				this.getConverter().getAbout().show();
+				this.getConverterTool().getParent().getAbout().show();
 			} else if (action.equals("run")) {
 				this.doProcess();
 			} else if (action.equals("pause")) {
@@ -221,8 +229,8 @@ public class ConverterEngineListener implements ActionListener, StatusCallbackLi
 	public void collectionProcessComplete() {
 		this.doStop();
 		this.doLoad();
-		if (this.getConverter().isCommandLineInterface()) {
-			this.getConverter().quit();;
+		if (this.getConverterTool().getParent().isCommandLineInterface()) {
+			this.getConverterTool().getParent().quit();;
 		}
 	}
 	
@@ -242,7 +250,7 @@ public class ConverterEngineListener implements ActionListener, StatusCallbackLi
 			// this.getTermSuite().getToolBar().getSave().setEnabled(true);
 			UIMAFramework.getLogger().log(Level.INFO,this.getEngine().getPerformanceReport().toString());
 		} catch (Exception e) {
-			this.getConverter().error(e);
+			this.getConverterTool().error(e);
 		}
 	}
 
@@ -259,13 +267,13 @@ public class ConverterEngineListener implements ActionListener, StatusCallbackLi
 	public void entityProcessComplete(CAS cas, EntityProcessStatus status) {
 		if (status.isException()) {
 			String message = status.getStatusMessage();
-			this.getConverter().warning(message);
+			this.getConverterTool().warning(message);
 			for (Exception e : status.getExceptions()) {
-				this.getConverter().error(e);
+				this.getConverterTool().error(e);
 			}
 		} else if (status.isEntitySkipped()) {
 			String message = status.getStatusMessage();
-			this.getConverter().warning(message);
+			this.getConverterTool().warning(message);
 		} 
 	}
 	
