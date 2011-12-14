@@ -13,7 +13,7 @@ import org.apache.uima.cas.impl.FeatureImpl;
 import org.apache.uima.cas.Feature;
 
 /** 
- * Updated by JCasGen Tue Nov 29 11:26:08 CET 2011
+ * Updated by JCasGen Tue Dec 13 12:41:54 CET 2011
  * @generated */
 public class MultiWordTermAnnotation_Type extends TermAnnotation_Type {
   /** @generated */

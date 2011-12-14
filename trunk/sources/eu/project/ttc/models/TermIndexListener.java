@@ -16,13 +16,14 @@ import org.apache.uima.resource.DataResource;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Level;
 
+import uima.sandbox.indexer.resources.IndexListener;
+
 import eu.project.ttc.types.MultiWordTermAnnotation;
 import eu.project.ttc.types.NeoClassicalCompoundTermAnnotation;
 import eu.project.ttc.types.SingleWordTermAnnotation;
 import eu.project.ttc.types.TermAnnotation;
 import eu.project.ttc.types.TermComponentAnnotation;
 
-import fr.free.rocheteau.jerome.models.IndexListener;
 
 public class TermIndexListener implements IndexListener {
 
@@ -216,7 +217,7 @@ public class TermIndexListener implements IndexListener {
 	public void load(DataResource data) throws ResourceInitializationException { }
 
 	@Override
-	public void update(Annotation annotation) {
+	public void index(Annotation annotation) {
 		if (annotation instanceof SingleWordTermAnnotation && this.isSingleWordTermEnabled()) {
 			this.getSingleWordTermFrequency().addEntry((SingleWordTermAnnotation) annotation);					
 		} else if (annotation instanceof MultiWordTermAnnotation && this.isMultiWordTermEnabled()) {
@@ -228,6 +229,8 @@ public class TermIndexListener implements IndexListener {
 	
 	@Override
 	public void release(JCas cas) {
+		System.out.println("term index");
+		System.out.flush();
 		cas.setDocumentLanguage(this.getLanguage());
 		StringBuilder builder = new StringBuilder();
 		this.release(cas, builder, this.getSingleWordTermFrequency());
@@ -285,11 +288,6 @@ public class TermIndexListener implements IndexListener {
 				}
 			}
 		}
-	}
-	
-	@Override
-	public double priority() {
-		return 1;
 	}
 
 	private class Component {

@@ -2,7 +2,7 @@
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>true</primitive>
-  <annotatorImplementationName>fr.free.rocheteau.jerome.engines.Indexer</annotatorImplementationName>
+  <annotatorImplementationName>uima.sandbox.indexer.engines.Indexer</annotatorImplementationName>
   <analysisEngineMetaData>
     <name>French Term Indexer</name>
     <description/>
@@ -48,13 +48,13 @@
     <externalResourceDependency>
       <key>Index</key>
       <description/>
-      <interfaceName>fr.free.rocheteau.jerome.models.Index</interfaceName>
+      <interfaceName>uima.sandbox.indexer.resources.Index</interfaceName>
       <optional>false</optional>
     </externalResourceDependency>
     <externalResourceDependency>
       <key>Listener</key>
       <description/>
-      <interfaceName>fr.free.rocheteau.jerome.models.IndexListener</interfaceName>
+      <interfaceName>uima.sandbox.indexer.resources.IndexListener</interfaceName>
       <optional>false</optional>
     </externalResourceDependency>
     <externalResourceDependency>
@@ -72,7 +72,7 @@
         <fileResourceSpecifier>
           <fileUrl>eu/project/ttc/all/engines/IndexWriter.xml</fileUrl>
         </fileResourceSpecifier>
-        <implementationName>fr.free.rocheteau.jerome.models.DefaultIndex</implementationName>
+        <implementationName>uima.sandbox.indexer.resources.DefaultIndex</implementationName>
       </externalResource>
       <externalResource>
         <name>TermFrequencyListener</name>

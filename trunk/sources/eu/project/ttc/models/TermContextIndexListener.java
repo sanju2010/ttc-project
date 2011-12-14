@@ -27,11 +27,12 @@ import org.apache.uima.util.Level;
 import org.apache.uima.util.XMLInputSource;
 import org.apache.uima.util.XMLParser;
 
+import uima.sandbox.indexer.resources.IndexListener;
+
 import eu.project.ttc.metrics.AssociationRate;
 import eu.project.ttc.types.TermAnnotation;
 import eu.project.ttc.types.TermContextAnnotation;
 import eu.project.ttc.types.VectorAnnotation;
-import fr.free.rocheteau.jerome.models.IndexListener;
 
 public class TermContextIndexListener implements IndexListener, TermContextIndex /* Comparable<TermContextIndex> */ {
 	
@@ -198,14 +199,6 @@ public class TermContextIndexListener implements IndexListener, TermContextIndex
 			}
 		}
 	}
-	
-	/**
-	 * The priority of this listener against the others.
-	 */
-	@Override
-	public double priority() {
-		return 0.5;
-	}
 
 	/**
 	 * 
@@ -224,7 +217,7 @@ public class TermContextIndexListener implements IndexListener, TermContextIndex
 	}
 
 	@Override
-	public void update(Annotation annotation) throws AnalysisEngineProcessException { 
+	public void index(Annotation annotation) throws AnalysisEngineProcessException { 
 		if (annotation instanceof TermContextAnnotation) {
 			TermContextAnnotation vector = (TermContextAnnotation) annotation; 
 			int length = vector.getContext().size();

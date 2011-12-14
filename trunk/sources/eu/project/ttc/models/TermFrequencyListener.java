@@ -9,8 +9,9 @@ import org.apache.uima.resource.DataResource;
 import org.apache.uima.resource.ResourceAccessException;
 import org.apache.uima.resource.ResourceInitializationException;
 
+import uima.sandbox.indexer.resources.IndexListener;
+
 import eu.project.ttc.types.TermAnnotation;
-import fr.free.rocheteau.jerome.models.IndexListener;
 
 public class TermFrequencyListener implements IndexListener {
 	
@@ -49,7 +50,7 @@ public class TermFrequencyListener implements IndexListener {
 	public void load(DataResource data) throws ResourceInitializationException { }
 
 	@Override
-	public void update(Annotation annotation) { }
+	public void index(Annotation annotation) { }
 	
 	private boolean done = false;
 
@@ -80,16 +81,13 @@ public class TermFrequencyListener implements IndexListener {
 	
 	@Override
 	public void release(JCas cas) { 
+		System.out.println("term frequency");
+		System.out.flush();
 		if (!this.done) {
 			this.done = true;
 			this.set(cas);
 			this.get(cas);
 		}
-	}
-
-	@Override
-	public double priority() {
-		return 0.5;
 	}
 
 }

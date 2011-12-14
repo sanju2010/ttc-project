@@ -2,39 +2,27 @@
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>true</primitive>
-  <annotatorImplementationName>fr.univnantes.lina.uima.engines.TreeTaggerWrapper</annotatorImplementationName>
+  <annotatorImplementationName>uima.sandbox.mapper.engines.Mapper</annotatorImplementationName>
   <analysisEngineMetaData>
-    <name>French TreeTagger Wrapper</name>
+    <name>French TreeTagger Tense Normalizer</name>
     <description/>
     <version>1.0</version>
     <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
     <configurationParameters>
       <configurationParameter>
-        <name>TreeTaggerHomeDirectory</name>
-        <type>String</type>
-        <multiValued>false</multiValued>
-        <mandatory>false</mandatory>
-      </configurationParameter>
-      <configurationParameter>
-        <name>AnnotationType</name>
+        <name>Source</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>TagFeature</name>
+        <name>Target</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>LemmaFeature</name>
-        <type>String</type>
-        <multiValued>false</multiValued>
-        <mandatory>true</mandatory>
-      </configurationParameter>
-      <configurationParameter>
-        <name>UpdateAnnotationFeatures</name>
+        <name>Update</name>
         <type>Boolean</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
@@ -42,25 +30,25 @@
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
-        <name>AnnotationType</name>
+        <name>Source</name>
         <value>
-          <string>eu.project.ttc.types.WordAnnotation</string>
+          <string>eu.project.ttc.types.WordAnnotation:tag</string>
         </value>
       </nameValuePair>
       <nameValuePair>
-        <name>TagFeature</name>
+        <name>Target</name>
         <value>
-          <string>tag</string>
+          <string>eu.project.ttc.types.WordAnnotation:tense</string>
         </value>
       </nameValuePair>
       <nameValuePair>
-        <name>LemmaFeature</name>
+        <name>Target</name>
         <value>
-          <string>lemma</string>
+          <string>eu.project.ttc.types.WordAnnotation:category</string>
         </value>
       </nameValuePair>
       <nameValuePair>
-        <name>UpdateAnnotationFeatures</name>
+        <name>Update</name>
         <value>
           <boolean>true</boolean>
         </value>
@@ -76,9 +64,13 @@
     <capabilities>
       <capability>
         <inputs>
-          <type allAnnotatorFeatures="true">eu.project.ttc.types.WordAnnotation</type>
+          <type>eu.project.ttc.types.WordAnnotation</type>
+          <feature>eu.project.ttc.types.WordAnnotation:tag</feature>
         </inputs>
-        <outputs/>
+        <outputs>
+          <type>eu.project.ttc.types.WordAnnotation</type>
+          <feature>eu.project.ttc.types.WordAnnotation:tense</feature>
+        </outputs>
         <languagesSupported>
           <language>fr</language>
         </languagesSupported>
@@ -92,27 +84,27 @@
   </analysisEngineMetaData>
   <externalResourceDependencies>
     <externalResourceDependency>
-      <key>TreeTaggerParameter</key>
+      <key>Mapping</key>
       <description/>
-      <interfaceName>fr.univnantes.lina.uima.models.TreeTaggerParameter</interfaceName>
+      <interfaceName>uima.sandbox.mapper.resources.Mapping</interfaceName>
       <optional>false</optional>
     </externalResourceDependency>
   </externalResourceDependencies>
   <resourceManagerConfiguration>
     <externalResources>
       <externalResource>
-        <name>FrenchTreeTaggerParameter</name>
+        <name>FrenchTenseMapping</name>
         <description/>
         <fileResourceSpecifier>
-          <fileUrl>eu/project/ttc/french/resources/TreeTagger.French</fileUrl>
+          <fileUrl>eu/project/ttc/french/resources/french-tense-mapping.xml</fileUrl>
         </fileResourceSpecifier>
-        <implementationName>fr.univnantes.lina.uima.models.TreeTaggerParameter</implementationName>
+        <implementationName>uima.sandbox.mapper.resources.MappingResource</implementationName>
       </externalResource>
     </externalResources>
     <externalResourceBindings>
       <externalResourceBinding>
-        <key>TreeTaggerParameter</key>
-        <resourceName>FrenchTreeTaggerParameter</resourceName>
+        <key>Mapping</key>
+        <resourceName>FrenchTenseMapping</resourceName>
       </externalResourceBinding>
     </externalResourceBindings>
   </resourceManagerConfiguration>

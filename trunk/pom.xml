@@ -32,17 +32,17 @@
     	<version>1.0</version>
     </dependency>
     <dependency>
-    	<groupId>fr.free.rocheteau.jerome</groupId>
-    	<artifactId>pattern-matcher</artifactId>
+    	<groupId>uima.sandbox</groupId>
+    	<artifactId>matcher</artifactId>
     	<version>1.0</version>
     </dependency>
     <dependency>
-      <groupId>fr.free.rocheteau.jerome</groupId>
+      <groupId>uima.sandbox</groupId>
       <artifactId>tokenizer</artifactId>
       <version>1.0</version>
     </dependency>
     <dependency>
-    	<groupId>fr.free.rocheteau.jerome</groupId>
+    	<groupId>uima.sandbox</groupId>
     	<artifactId>filter</artifactId>
     	<version>1.0</version>
     </dependency>
@@ -57,7 +57,7 @@
     	<version>1.0</version>
     </dependency>
     <dependency>
-    	<groupId>fr.free.rocheteau.jerome</groupId>
+    	<groupId>uima.sandbox</groupId>
     	<artifactId>mapper</artifactId>
     	<version>1.0</version>
     </dependency>
@@ -67,12 +67,12 @@
     	<version>1.0</version>
     </dependency>
     <dependency>
-    	<groupId>fr.free.rocheteau.jerome</groupId>
+    	<groupId>uima.sandbox</groupId>
     	<artifactId>indexer</artifactId>
     	<version>1.0</version>
     </dependency>
     <dependency>
-    	<groupId>fr.free.rocheteau.jerome</groupId>
+    	<groupId>uima.sandbox</groupId>
     	<artifactId>stemmer</artifactId>
     	<version>1.0</version>
     </dependency>

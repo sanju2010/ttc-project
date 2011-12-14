@@ -4,8 +4,11 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.uima.UIMAFramework;
@@ -31,11 +34,28 @@ import fr.univnantes.lina.uima.dictionaries.Entry;
 
 public class ZigguratCollectionReader extends CollectionReader_ImplBase {
 
-	private Iterator<Entry> iterator;
-	
+	private Iterator<Translation> iterator;
+		
 	private void setIterator(Collection<Entry> entries) {
-		this.size = entries.size();
-		this.iterator = entries.iterator();
+		Set<Translation> translations = new HashSet<Translation>();
+		for (Entry entry : entries) {
+			String term = entry.getSourceEntry();
+			String language = entry.getSourceLanguage();
+			String category = entry.getSourceCategory();
+			Translation translation = null;
+			for (Translation t : translations) {
+				if (t.getTerm().equals(term) && t.getLanguage().equals(language) && t.getCategory().equals(category)) {
+					translation = t;
+				}
+			}
+			if (translation == null) {
+				translation = new Translation(term, language, category);
+				translations.add(translation);
+			}
+			translation.addTranslation(entry.getTargetLanguage(), entry.getTargetEntry());
+		}
+		this.size = translations.size();
+		this.iterator = translations.iterator();
 	}
 	
 	private void setIterator(String path) throws IOException {
@@ -44,7 +64,7 @@ public class ZigguratCollectionReader extends CollectionReader_ImplBase {
 		this.setIterator(entries);
 	}
 	
-	private Iterator<Entry> getIterator() {
+	private Iterator<Translation> getIterator() {
 		return this.iterator;
 	}
 	
@@ -87,13 +107,13 @@ public class ZigguratCollectionReader extends CollectionReader_ImplBase {
 	@Override
 	public void getNext(CAS cas) throws IOException, CollectionException {
 		try {
-			Entry entry = this.getIterator().next();
-			cas.setDocumentLanguage(entry.getSourceLanguage());
-			cas.setDocumentText(entry.getSourceEntry());
+			Translation translation = this.getIterator().next();
+			cas.setDocumentLanguage(translation.getLanguage());
+			cas.setDocumentText(translation.getTerm());
 			int begin = 0;
 			int end = cas.getDocumentText().length();
 			
-			String complexity = entry.getSourceCategory();
+			String complexity = translation.getCategory();
 			TermAnnotation term = null;
 			if (complexity.equals(Term.SINGLE_WORD)) {
 				term = new SingleWordTermAnnotation(cas.getJCas(), begin, end);
@@ -106,10 +126,15 @@ public class ZigguratCollectionReader extends CollectionReader_ImplBase {
 			}
 			term.addToIndexes();
 			
-			TranslationAnnotation annotation = new TranslationAnnotation(cas.getJCas(), begin, end);
-			annotation.setTerm(entry.getTargetEntry());
-			annotation.setLanguage(entry.getTargetLanguage());
-			annotation.addToIndexes();
+			Map<String, Set<String>> translations = translation.getTranslations();
+			for (String language : translations.keySet()) {
+				for (String goldStandard : translations.get(language)) {
+					TranslationAnnotation annotation = new TranslationAnnotation(cas.getJCas(), begin, end);
+					annotation.setTerm(goldStandard);
+					annotation.setLanguage(language);
+					annotation.addToIndexes();				
+				}
+			}
 			
 			SourceDocumentInformation sdi = new SourceDocumentInformation(cas.getJCas(), begin, end);
 			sdi.setDocumentSize(end);
@@ -134,5 +159,62 @@ public class ZigguratCollectionReader extends CollectionReader_ImplBase {
 
 	@Override
 	public void close() throws IOException { }
+
+	private class Translation {
 		
+		private String term;
+		
+		public String getTerm() {
+			return this.term;
+		}
+		
+		private String language;
+		
+		public String getLanguage() {
+			return this.language;
+		}
+		
+		private String category;
+		
+		public String getCategory() {
+			return this.category;
+		}
+		
+		private Map<String, Set<String>> translations;
+		
+		public Map<String, Set<String>> getTranslations() {
+			return this.translations;
+		}
+		
+		public void addTranslation(String language, String translation) {
+			if (this.translations == null) {
+				this.translations = new HashMap<String, Set<String>>();
+			}
+			Set<String> set = this.translations.get(language);
+			if (set == null) {
+				set = new HashSet<String>();
+				this.translations.put(language, set);
+			}
+			set.add(translation);
+		}
+		
+		public Translation(String term, String language, String category) {
+			this.term = term;
+			this.language = language;
+			this.category = category;
+		}
+
+		public boolean equals(Object object) {
+			if (object instanceof Translation) {
+				Translation translation = (Translation) object;
+				return this.term.equals(translation.getTerm()) 
+						&& this.language.equals(translation.getLanguage())
+						&& this.category.equals(translation.getCategory());
+			} else {
+				return false;
+			}
+		}
+		
+	}
+	
 }

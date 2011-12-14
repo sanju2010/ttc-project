@@ -3,14 +3,15 @@ package eu.project.ttc.engines;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 
+import uima.sandbox.matcher.engines.Matcher;
+
 import eu.project.ttc.models.Term;
 import eu.project.ttc.types.MultiWordTermAnnotation;
 import eu.project.ttc.types.SingleWordTermAnnotation;
 import eu.project.ttc.types.TermAnnotation;
 import eu.project.ttc.types.WordAnnotation;
-import fr.free.rocheteau.jerome.engines.PatternMatcher;
 
-public class RuleBasedTermDetector extends PatternMatcher {
+public class RuleBasedTermDetector extends Matcher {
 			
 	@Override
 	protected void annotate(JCas cas, String id, int begin, int end,Annotation[] annotations) {

@@ -135,15 +135,15 @@
         <fileResourceSpecifier>
           <fileUrl>eu/project/ttc/all/engines/IndexWriter.xml</fileUrl>
         </fileResourceSpecifier>
-        <implementationName>fr.free.rocheteau.jerome.models.DefaultIndex</implementationName>
+        <implementationName>uima.sandbox.indexer.resources.DefaultIndex</implementationName>
       </externalResource>
       <externalResource>
         <name>FrenchFilter</name>
         <description/>
         <fileResourceSpecifier>
-          <fileUrl>eu/project/ttc/french/resources/Filter.French</fileUrl>
+          <fileUrl>eu/project/ttc/french/resources/french-stop-word-filter.xml</fileUrl>
         </fileResourceSpecifier>
-        <implementationName>fr.free.rocheteau.jerome.models.FilterResource</implementationName>
+        <implementationName>uima.sandbox.filter.resources.FilterResource</implementationName>
       </externalResource>
     </externalResources>
     <externalResourceBindings>

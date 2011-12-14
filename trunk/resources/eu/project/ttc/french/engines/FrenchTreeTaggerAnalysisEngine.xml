@@ -6,8 +6,17 @@
     <delegateAnalysisEngine key="FrenchStemmer">
       <import name="eu.project.ttc.french.engines.FrenchStemmer"/>
     </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="FrenchTreeTaggerTenseNormalizer">
+      <import name="eu.project.ttc.french.engines.FrenchTreeTaggerTenseNormalizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="FrenchTreeTaggerSubcategoryNormalizer">
+      <import name="eu.project.ttc.french.engines.FrenchTreeTaggerSubcategoryNormalizer"/>
+    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="FrenchWordTokenizer">
       <import name="eu.project.ttc.french.engines.FrenchWordTokenizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="FrenchTreeTaggerMoodNormalizer">
+      <import name="eu.project.ttc.french.engines.FrenchTreeTaggerMoodNormalizer"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="XmiCasConsumer">
       <import name="eu.project.ttc.all.engines.XmiCasConsumer"/>
@@ -63,6 +72,9 @@
         <node>FrenchWordTokenizer</node>
         <node>FrenchTreeTaggerWrapper</node>
         <node>FrenchTreeTaggerCategoryNormalizer</node>
+        <node>FrenchTreeTaggerSubcategoryNormalizer</node>
+        <node>FrenchTreeTaggerMoodNormalizer</node>
+        <node>FrenchTreeTaggerTenseNormalizer</node>
         <node>FrenchStemmer</node>
         <node>XmiCasConsumer</node>
       </fixedFlow>

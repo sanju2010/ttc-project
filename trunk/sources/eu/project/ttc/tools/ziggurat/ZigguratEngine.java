@@ -68,10 +68,14 @@ public class ZigguratEngine extends SwingWorker<CpeDescription,Void> {
 		CpeComponentDescriptor desc = CpeDescriptorFactory.produceComponentDescriptor(url.toURI().toString());
 		termSuiteTranslator.setCpeComponentDescriptor(desc);
 		CasProcessorConfigurationParameterSettings settings = CpeDescriptorFactory.produceCasProcessorConfigurationParameterSettings();
+		settings.setParameterValue("SourceLanguage",parameters.getParameterValue("SourceLanguage"));
+		settings.setParameterValue("TargetLanguage",parameters.getParameterValue("TargetLanguage"));
 		settings.setParameterValue("SimilarityDistanceClassName",parameters.getParameterValue("SimilarityDistanceClassName"));
 		settings.setParameterValue("DictionaryFile",parameters.getParameterValue("DictionaryFile"));
 		settings.setParameterValue("SourceTermContextIndexFile",parameters.getParameterValue("SourceTermContextIndexFile"));
 		settings.setParameterValue("TargetTermContextIndexFile",parameters.getParameterValue("TargetTermContextIndexFile"));
+		settings.setParameterValue("SourceTerminologyFile",parameters.getParameterValue("SourceTerminologyFile"));
+		settings.setParameterValue("TargetTerminologyFile",parameters.getParameterValue("TargetTerminologyFile"));
 		termSuiteTranslator.setConfigurationParameterSettings(settings);
 		this.collectionProcessingEngine.addCasProcessor(termSuiteTranslator);
 	}

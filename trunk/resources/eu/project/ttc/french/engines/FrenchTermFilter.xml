@@ -2,7 +2,7 @@
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>true</primitive>
-  <annotatorImplementationName>fr.free.rocheteau.jerome.engines.Filter</annotatorImplementationName>
+  <annotatorImplementationName>uima.sandbox.filter.engines.Filter</annotatorImplementationName>
   <analysisEngineMetaData>
     <name>French Term Filter</name>
     <description/>
@@ -10,7 +10,7 @@
     <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
     <configurationParameters>
       <configurationParameter>
-        <name>Type</name>
+        <name>Feature</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
@@ -42,7 +42,7 @@
         </value>
       </nameValuePair>
       <nameValuePair>
-        <name>Type</name>
+        <name>Feature</name>
         <value>
           <string>eu.project.ttc.types.TermAnnotation</string>
         </value>
@@ -76,7 +76,7 @@
     <externalResourceDependency>
       <key>Filter</key>
       <description/>
-      <interfaceName>fr.free.rocheteau.jerome.models.Filter</interfaceName>
+      <interfaceName>uima.sandbox.filter.resources.Filter</interfaceName>
       <optional>false</optional>
     </externalResourceDependency>
   </externalResourceDependencies>
@@ -86,9 +86,9 @@
         <name>FrenchFilter</name>
         <description/>
         <fileResourceSpecifier>
-          <fileUrl>eu/project/ttc/french/resources/Filter.French</fileUrl>
+          <fileUrl>eu/project/ttc/french/resources/french-stop-word-filter.xml</fileUrl>
         </fileResourceSpecifier>
-        <implementationName>fr.free.rocheteau.jerome.models.FilterResource</implementationName>
+        <implementationName>uima.sandbox.filter.resources.FilterResource</implementationName>
       </externalResource>
     </externalResources>
     <externalResourceBindings>
