@@ -104,7 +104,7 @@
         <name>GermanTreeTaggerParameter</name>
         <description/>
         <fileResourceSpecifier>
-          <fileUrl>eu/project/ttc/german/resources/TreeTagger.German</fileUrl>
+          <fileUrl>eu/project/ttc/german/resources/german-treetagger.xml</fileUrl>
         </fileResourceSpecifier>
         <implementationName>fr.univnantes.lina.uima.models.TreeTaggerParameter</implementationName>
       </externalResource>

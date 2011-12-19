@@ -104,7 +104,7 @@
         <name>DanishTreeTaggerParameter</name>
         <description/>
         <fileResourceSpecifier>
-          <fileUrl>eu/project/ttc/danish/resources/TreeTagger.Danish</fileUrl>
+          <fileUrl>eu/project/ttc/danish/resources/danish-treetagger.xml</fileUrl>
         </fileResourceSpecifier>
         <implementationName>fr.univnantes.lina.uima.models.TreeTaggerParameter</implementationName>
       </externalResource>

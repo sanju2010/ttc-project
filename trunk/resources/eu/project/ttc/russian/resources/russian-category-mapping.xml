@@ -328,6 +328,7 @@
   <map key="Npfsdy" value="name" />
   <map key="Npfsgy" value="name" />
   <map key="Npfsiy" value="name" />
+  <map key="Npfsln" value="name" />
   <map key="Npfsly" value="name" />
   <map key="Npfsny" value="name" />
   <map key="Npmpay" value="name" />
@@ -336,11 +337,13 @@
   <map key="Npmpiy" value="name" />
   <map key="Npmply" value="name" />
   <map key="Npmpny" value="name" />
+  <map key="Npmsan" value="name" />
   <map key="Npmsay" value="name" />
   <map key="Npmsdy" value="name" />
   <map key="Npmsgy" value="name" />
   <map key="Npmsiy" value="name" />
   <map key="Npmsly" value="name" />
+  <map key="Npmsnn" value="name" />
   <map key="Npmsny" value="name" />
   <map key="P-1-pa" value="pronoun" />
   <map key="P-1-pd" value="pronoun" />
@@ -717,4 +720,7 @@
   <map key="Vm-s-snpse" value="verb" />
   <map key="Vm-s-snpsp" value="verb" />
   <map key="Vm" value="verb" />
+  <map key="," value="punctuation" />
+  <map key="-" value="punctuation" />
+  <map key="SENT" value="punctuation" />
 </mapping>

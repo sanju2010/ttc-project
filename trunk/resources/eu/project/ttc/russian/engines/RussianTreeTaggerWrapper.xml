@@ -104,7 +104,7 @@
         <name>RussianTreeTaggerParameter</name>
         <description/>
         <fileResourceSpecifier>
-          <fileUrl>eu/project/ttc/russian/resources/TreeTagger.Russian</fileUrl>
+          <fileUrl>eu/project/ttc/russian/resources/russian-treetagger.xml</fileUrl>
         </fileResourceSpecifier>
         <implementationName>fr.univnantes.lina.uima.models.TreeTaggerParameter</implementationName>
       </externalResource>

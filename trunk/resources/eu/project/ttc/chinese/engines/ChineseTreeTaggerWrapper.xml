@@ -104,7 +104,7 @@
         <name>ChineseTreeTaggerParameter</name>
         <description/>
         <fileResourceSpecifier>
-          <fileUrl>eu/project/ttc/chinese/resources/TreeTagger.Chinese</fileUrl>
+          <fileUrl>eu/project/ttc/chinese/resources/chinese-treetagger.xml</fileUrl>
         </fileResourceSpecifier>
         <implementationName>fr.univnantes.lina.uima.models.TreeTaggerParameter</implementationName>
       </externalResource>
