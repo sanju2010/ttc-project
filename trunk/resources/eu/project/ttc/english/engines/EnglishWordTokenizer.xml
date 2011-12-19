@@ -2,7 +2,7 @@
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>true</primitive>
-  <annotatorImplementationName>fr.free.rocheteau.jerome.engines.Tokenizer</annotatorImplementationName>
+  <annotatorImplementationName>uima.sandbox.tokenizer.engines.Tokenizer</annotatorImplementationName>
   <analysisEngineMetaData>
     <name>English Word Tokenizer</name>
     <description/>
@@ -10,7 +10,7 @@
     <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
     <configurationParameters>
       <configurationParameter>
-        <name>AnnotationType</name>
+        <name>Type</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
@@ -18,7 +18,7 @@
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
-        <name>AnnotationType</name>
+        <name>Type</name>
         <value>
           <string>eu.project.ttc.types.WordAnnotation</string>
         </value>
@@ -50,45 +50,27 @@
   </analysisEngineMetaData>
   <externalResourceDependencies>
     <externalResourceDependency>
-      <key>CompoundWordBank</key>
+      <key>Bank</key>
       <description/>
-      <interfaceName>fr.free.rocheteau.jerome.models.CompoundWordBank</interfaceName>
-      <optional>false</optional>
-    </externalResourceDependency>
-    <externalResourceDependency>
-      <key>WordComponentBank</key>
-      <description/>
-      <interfaceName>fr.free.rocheteau.jerome.models.WordComponentBank</interfaceName>
+      <interfaceName>uima.sandbox.tokenizer.resources.SegmentBank</interfaceName>
       <optional>false</optional>
     </externalResourceDependency>
   </externalResourceDependencies>
   <resourceManagerConfiguration>
     <externalResources>
       <externalResource>
-        <name>EnglishCompoundWordBank</name>
+        <name>EnglishSegmentBank</name>
         <description/>
         <fileResourceSpecifier>
-          <fileUrl>eu/project/ttc/english/resources/CompoundWordBank.English</fileUrl>
+          <fileUrl>eu/project/ttc/english/resources/english-segment-bank.xml</fileUrl>
         </fileResourceSpecifier>
-        <implementationName>fr.free.rocheteau.jerome.models.CompoundWordBankResource</implementationName>
-      </externalResource>
-      <externalResource>
-        <name>EnglishWordComponentBank</name>
-        <description/>
-        <fileResourceSpecifier>
-          <fileUrl>eu/project/ttc/english/resources/WordComponentBank.English</fileUrl>
-        </fileResourceSpecifier>
-        <implementationName>fr.free.rocheteau.jerome.models.WordComponentBankResource</implementationName>
+        <implementationName>uima.sandbox.tokenizer.resources.SegmentBankResource</implementationName>
       </externalResource>
     </externalResources>
     <externalResourceBindings>
       <externalResourceBinding>
-        <key>CompoundWordBank</key>
-        <resourceName>EnglishCompoundWordBank</resourceName>
-      </externalResourceBinding>
-      <externalResourceBinding>
-        <key>WordComponentBank</key>
-        <resourceName>EnglishWordComponentBank</resourceName>
+        <key>Bank</key>
+        <resourceName>EnglishSegmentBank</resourceName>
       </externalResourceBinding>
     </externalResourceBindings>
   </resourceManagerConfiguration>

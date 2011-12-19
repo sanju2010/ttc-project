@@ -3,23 +3,26 @@
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>false</primitive>
   <delegateAnalysisEngineSpecifiers>
+    <delegateAnalysisEngine key="GermanTermIndexer">
+      <import name="eu.project.ttc.german.engines.GermanTermIndexer"/>
+    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="GermanTermDetector">
       <import name="eu.project.ttc.german.engines.GermanTermDetector"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="IndexWriter">
-      <import name="eu.project.ttc.all.engines.IndexWriter"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="GermanTermFilter">
       <import name="eu.project.ttc.german.engines.GermanTermFilter"/>
     </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="IndexWriter">
+      <import name="eu.project.ttc.all.engines.IndexWriter"/>
+    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="XmiCasConsumer">
       <import name="eu.project.ttc.all.engines.XmiCasConsumer"/>
     </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="GermanLemmaFilter">
+      <import name="eu.project.ttc.german.engines.GermanLemmaFilter"/>
+    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="TermIndexer">
       <import name="eu.project.ttc.all.engines.TermIndexer"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="GermanTermIndexer">
-      <import name="eu.project.ttc.german.engines.GermanTermIndexer"/>
     </delegateAnalysisEngine>
   </delegateAnalysisEngineSpecifiers>
   <analysisEngineMetaData>
@@ -95,6 +98,7 @@
       <fixedFlow>
         <node>GermanTermDetector</node>
         <node>GermanTermFilter</node>
+        <node>GermanLemmaFilter</node>
         <node>TermIndexer</node>
         <node>GermanTermIndexer</node>
         <node>IndexWriter</node>
@@ -131,7 +135,15 @@
         <fileResourceSpecifier>
           <fileUrl>eu/project/ttc/all/engines/IndexWriter.xml</fileUrl>
         </fileResourceSpecifier>
-        <implementationName>fr.free.rocheteau.jerome.models.DefaultIndex</implementationName>
+        <implementationName>uima.sandbox.indexer.resources.DefaultIndex</implementationName>
+      </externalResource>
+      <externalResource>
+        <name>GermanFilter</name>
+        <description/>
+        <fileResourceSpecifier>
+          <fileUrl>eu/project/ttc/german/resources/german-stop-word-filter.xml</fileUrl>
+        </fileResourceSpecifier>
+        <implementationName>uima.sandbox.filter.resources.FilterResource</implementationName>
       </externalResource>
     </externalResources>
     <externalResourceBindings>
@@ -146,6 +158,14 @@
       <externalResourceBinding>
         <key>IndexWriter/Index</key>
         <resourceName>DefaultIndex</resourceName>
+      </externalResourceBinding>
+      <externalResourceBinding>
+        <key>GermanTermFilter/Filter</key>
+        <resourceName>GermanFilter</resourceName>
+      </externalResourceBinding>
+      <externalResourceBinding>
+        <key>GermanLemmaFilter/Filter</key>
+        <resourceName>GermanFilter</resourceName>
       </externalResourceBinding>
     </externalResourceBindings>
   </resourceManagerConfiguration>

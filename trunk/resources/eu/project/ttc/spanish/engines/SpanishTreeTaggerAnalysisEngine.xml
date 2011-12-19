@@ -3,20 +3,29 @@
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>false</primitive>
   <delegateAnalysisEngineSpecifiers>
-    <delegateAnalysisEngine key="SpanishTreeTaggerWrapper">
-      <import name="eu.project.ttc.spanish.engines.SpanishTreeTaggerWrapper"/>
-    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="SpanishStemmer">
       <import name="eu.project.ttc.spanish.engines.SpanishStemmer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="SpanishTreeTaggerTenseNormalizer">
+      <import name="eu.project.ttc.spanish.engines.SpanishTreeTaggerTenseNormalizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="SpanishTreeTaggerSubcategoryNormalizer">
+      <import name="eu.project.ttc.spanish.engines.SpanishTreeTaggerSubcategoryNormalizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="SpanishWordTokenizer">
+      <import name="eu.project.ttc.spanish.engines.SpanishWordTokenizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="SpanishTreeTaggerMoodNormalizer">
+      <import name="eu.project.ttc.spanish.engines.SpanishTreeTaggerMoodNormalizer"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="XmiCasConsumer">
       <import name="eu.project.ttc.all.engines.XmiCasConsumer"/>
     </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="SpanishTreeTaggerWrapper">
+      <import name="eu.project.ttc.spanish.engines.SpanishTreeTaggerWrapper"/>
+    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="SpanishTreeTaggerCategoryNormalizer">
       <import name="eu.project.ttc.spanish.engines.SpanishTreeTaggerCategoryNormalizer"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="SpanishWordTokenizer">
-      <import name="eu.project.ttc.spanish.engines.SpanishWordTokenizer"/>
     </delegateAnalysisEngine>
   </delegateAnalysisEngineSpecifiers>
   <analysisEngineMetaData>
@@ -63,6 +72,9 @@
         <node>SpanishWordTokenizer</node>
         <node>SpanishTreeTaggerWrapper</node>
         <node>SpanishTreeTaggerCategoryNormalizer</node>
+        <node>SpanishTreeTaggerSubcategoryNormalizer</node>
+        <node>SpanishTreeTaggerMoodNormalizer</node>
+        <node>SpanishTreeTaggerTenseNormalizer</node>
         <node>SpanishStemmer</node>
         <node>XmiCasConsumer</node>
       </fixedFlow>

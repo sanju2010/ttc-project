@@ -213,5 +213,22 @@
         </featureDescription>
       </features>
     </typeDescription>
+    <typeDescription>
+      <name>eu.project.ttc.types.TermVariationAnnotation</name>
+      <description/>
+      <supertypeName>uima.tcas.Annotation</supertypeName>
+      <features>
+        <featureDescription>
+          <name>base</name>
+          <description/>
+          <rangeTypeName>eu.project.ttc.types.TermAnnotation</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>variant</name>
+          <description/>
+          <rangeTypeName>eu.project.ttc.types.TermAnnotation</rangeTypeName>
+        </featureDescription>
+      </features>
+    </typeDescription>
   </types>
 </typeSystemDescription>

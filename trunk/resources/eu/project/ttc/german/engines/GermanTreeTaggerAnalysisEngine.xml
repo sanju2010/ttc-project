@@ -6,17 +6,26 @@
     <delegateAnalysisEngine key="GermanStemmer">
       <import name="eu.project.ttc.german.engines.GermanStemmer"/>
     </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="GermanTreeTaggerTenseNormalizer">
+      <import name="eu.project.ttc.german.engines.GermanTreeTaggerTenseNormalizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="GermanTreeTaggerSubcategoryNormalizer">
+      <import name="eu.project.ttc.german.engines.GermanTreeTaggerSubcategoryNormalizer"/>
+    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="GermanWordTokenizer">
       <import name="eu.project.ttc.german.engines.GermanWordTokenizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="GermanTreeTaggerMoodNormalizer">
+      <import name="eu.project.ttc.german.engines.GermanTreeTaggerMoodNormalizer"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="XmiCasConsumer">
       <import name="eu.project.ttc.all.engines.XmiCasConsumer"/>
     </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="GermanTreeTaggerCategoryNormalizer">
-      <import name="eu.project.ttc.german.engines.GermanTreeTaggerCategoryNormalizer"/>
-    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="GermanTreeTaggerWrapper">
       <import name="eu.project.ttc.german.engines.GermanTreeTaggerWrapper"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="GermanTreeTaggerCategoryNormalizer">
+      <import name="eu.project.ttc.german.engines.GermanTreeTaggerCategoryNormalizer"/>
     </delegateAnalysisEngine>
   </delegateAnalysisEngineSpecifiers>
   <analysisEngineMetaData>
@@ -63,6 +72,9 @@
         <node>GermanWordTokenizer</node>
         <node>GermanTreeTaggerWrapper</node>
         <node>GermanTreeTaggerCategoryNormalizer</node>
+        <node>GermanTreeTaggerSubcategoryNormalizer</node>
+        <node>GermanTreeTaggerMoodNormalizer</node>
+        <node>GermanTreeTaggerTenseNormalizer</node>
         <node>GermanStemmer</node>
         <node>XmiCasConsumer</node>
       </fixedFlow>

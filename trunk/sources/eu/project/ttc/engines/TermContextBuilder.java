@@ -4,11 +4,12 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.tcas.Annotation;
 
+import uima.sandbox.contextualizer.engines.Contextualizer;
+
 import eu.project.ttc.types.TermAnnotation;
 import eu.project.ttc.types.TermContextAnnotation;
-import fr.free.rocheteau.jerome.engines.ContextBuilder;
 
-public class TermContextBuilder extends ContextBuilder {
+public class TermContextBuilder extends Contextualizer {
 
 	@Override
 	protected void annotate(JCas cas, Annotation annotation,Annotation[] annotations) {

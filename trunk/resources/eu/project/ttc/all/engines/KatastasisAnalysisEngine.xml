@@ -25,7 +25,7 @@
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
         <overrides>
-          <parameter>TermContextBuilder/AnnotationType</parameter>
+          <parameter>TermContextBuilder/Type</parameter>
         </overrides>
       </configurationParameter>
       <configurationParameter>
@@ -34,7 +34,7 @@
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
         <overrides>
-          <parameter>TermContextBuilder/ScopeSize</parameter>
+          <parameter>TermContextBuilder/Size</parameter>
         </overrides>
       </configurationParameter>
       <configurationParameter>
@@ -147,7 +147,7 @@
         <fileResourceSpecifier>
           <fileUrl>eu/project/ttc/all/engines/TermContextIndexWriter.xml</fileUrl>
         </fileResourceSpecifier>
-        <implementationName>fr.free.rocheteau.jerome.models.DefaultIndex</implementationName>
+        <implementationName>uima.sandbox.indexer.resources.DefaultIndex</implementationName>
       </externalResource>
     </externalResources>
     <externalResourceBindings>

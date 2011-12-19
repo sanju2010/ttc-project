@@ -3,6 +3,9 @@
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>false</primitive>
   <delegateAnalysisEngineSpecifiers>
+    <delegateAnalysisEngine key="RussianTermIndexer">
+      <import name="eu.project.ttc.russian.engines.RussianTermIndexer"/>
+    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="RussianTermDetector">
       <import name="eu.project.ttc.russian.engines.RussianTermDetector"/>
     </delegateAnalysisEngine>
@@ -15,8 +18,8 @@
     <delegateAnalysisEngine key="XmiCasConsumer">
       <import name="eu.project.ttc.all.engines.XmiCasConsumer"/>
     </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="RussianTermIndexer">
-      <import name="eu.project.ttc.russian.engines.RussianTermIndexer"/>
+    <delegateAnalysisEngine key="RussianLemmaFilter">
+      <import name="eu.project.ttc.russian.engines.RussianLemmaFilter"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="TermIndexer">
       <import name="eu.project.ttc.all.engines.TermIndexer"/>
@@ -95,6 +98,7 @@
       <fixedFlow>
         <node>RussianTermDetector</node>
         <node>RussianTermFilter</node>
+        <node>RussianLemmaFilter</node>
         <node>TermIndexer</node>
         <node>RussianTermIndexer</node>
         <node>IndexWriter</node>
@@ -131,10 +135,22 @@
         <fileResourceSpecifier>
           <fileUrl>eu/project/ttc/all/engines/IndexWriter.xml</fileUrl>
         </fileResourceSpecifier>
-        <implementationName>fr.free.rocheteau.jerome.models.DefaultIndex</implementationName>
+        <implementationName>uima.sandbox.indexer.resources.DefaultIndex</implementationName>
+      </externalResource>
+      <externalResource>
+        <name>RussianFilter</name>
+        <description/>
+        <fileResourceSpecifier>
+          <fileUrl>eu/project/ttc/russian/resources/russian-stop-word-filter.xml</fileUrl>
+        </fileResourceSpecifier>
+        <implementationName>uima.sandbox.filter.resources.FilterResource</implementationName>
       </externalResource>
     </externalResources>
     <externalResourceBindings>
+      <externalResourceBinding>
+        <key>RussianTermIndexer/Index</key>
+        <resourceName>DefaultIndex</resourceName>
+      </externalResourceBinding>
       <externalResourceBinding>
         <key>TermIndexer/Index</key>
         <resourceName>DefaultIndex</resourceName>
@@ -144,8 +160,12 @@
         <resourceName>DefaultIndex</resourceName>
       </externalResourceBinding>
       <externalResourceBinding>
-        <key>RussianTermIndexer/Index</key>
-        <resourceName>DefaultIndex</resourceName>
+        <key>RussianTermFilter/Filter</key>
+        <resourceName>RussianFilter</resourceName>
+      </externalResourceBinding>
+      <externalResourceBinding>
+        <key>RussianLemmaFilter/Filter</key>
+        <resourceName>RussianFilter</resourceName>
       </externalResourceBinding>
     </externalResourceBindings>
   </resourceManagerConfiguration>

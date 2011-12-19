@@ -3,17 +3,26 @@
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>false</primitive>
   <delegateAnalysisEngineSpecifiers>
-    <delegateAnalysisEngine key="EnglishWordTokenizer">
-      <import name="eu.project.ttc.english.engines.EnglishWordTokenizer"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="EnglishTreeTaggerWrapper">
-      <import name="eu.project.ttc.english.engines.EnglishTreeTaggerWrapper"/>
-    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="EnglishStemmer">
       <import name="eu.project.ttc.english.engines.EnglishStemmer"/>
     </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="EnglishTreeTaggerTenseNormalizer">
+      <import name="eu.project.ttc.english.engines.EnglishTreeTaggerTenseNormalizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="EnglishTreeTaggerSubcategoryNormalizer">
+      <import name="eu.project.ttc.english.engines.EnglishTreeTaggerSubcategoryNormalizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="EnglishWordTokenizer">
+      <import name="eu.project.ttc.english.engines.EnglishWordTokenizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="EnglishTreeTaggerMoodNormalizer">
+      <import name="eu.project.ttc.english.engines.EnglishTreeTaggerMoodNormalizer"/>
+    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="XmiCasConsumer">
       <import name="eu.project.ttc.all.engines.XmiCasConsumer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="EnglishTreeTaggerWrapper">
+      <import name="eu.project.ttc.english.engines.EnglishTreeTaggerWrapper"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="EnglishTreeTaggerCategoryNormalizer">
       <import name="eu.project.ttc.english.engines.EnglishTreeTaggerCategoryNormalizer"/>
@@ -63,6 +72,9 @@
         <node>EnglishWordTokenizer</node>
         <node>EnglishTreeTaggerWrapper</node>
         <node>EnglishTreeTaggerCategoryNormalizer</node>
+        <node>EnglishTreeTaggerSubcategoryNormalizer</node>
+        <node>EnglishTreeTaggerMoodNormalizer</node>
+        <node>EnglishTreeTaggerTenseNormalizer</node>
         <node>EnglishStemmer</node>
         <node>XmiCasConsumer</node>
       </fixedFlow>

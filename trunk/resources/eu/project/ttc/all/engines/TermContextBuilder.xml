@@ -10,13 +10,13 @@
     <vendor/>
     <configurationParameters>
       <configurationParameter>
-        <name>AnnotationType</name>
+        <name>Type</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>ScopeSize</name>
+        <name>Size</name>
         <type>Integer</type>
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
@@ -24,13 +24,13 @@
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
-        <name>AnnotationType</name>
+        <name>Type</name>
         <value>
           <string>eu.project.ttc.types.SingleWordTermAnnotation</string>
         </value>
       </nameValuePair>
       <nameValuePair>
-        <name>ScopeSize</name>
+        <name>Size</name>
         <value>
           <integer>3</integer>
         </value>

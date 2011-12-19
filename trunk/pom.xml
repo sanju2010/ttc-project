@@ -47,8 +47,8 @@
     	<version>1.0</version>
     </dependency>
     <dependency>
-    	<groupId>fr.free.rocheteau.jerome</groupId>
-    	<artifactId>context-builder</artifactId>
+    	<groupId>uima.sandbox</groupId>
+    	<artifactId>contextualizer</artifactId>
     	<version>1.0</version>
     </dependency>
     <dependency>
@@ -74,6 +74,11 @@
     <dependency>
     	<groupId>uima.sandbox</groupId>
     	<artifactId>stemmer</artifactId>
+    	<version>1.0</version>
+    </dependency>
+    <dependency>
+    	<groupId>uima.sandbox</groupId>
+    	<artifactId>catcher</artifactId>
     	<version>1.0</version>
     </dependency>
   </dependencies>

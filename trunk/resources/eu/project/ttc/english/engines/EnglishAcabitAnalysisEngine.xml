@@ -3,6 +3,12 @@
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>false</primitive>
   <delegateAnalysisEngineSpecifiers>
+    <delegateAnalysisEngine key="EnglishTermIndexer">
+      <import name="eu.project.ttc.english.engines.EnglishTermIndexer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="EnglishTermDetector">
+      <import name="eu.project.ttc.english.engines.EnglishTermDetector"/>
+    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="EnglishTermFilter">
       <import name="eu.project.ttc.english.engines.EnglishTermFilter"/>
     </delegateAnalysisEngine>
@@ -14,12 +20,6 @@
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="EnglishLemmaFilter">
       <import name="eu.project.ttc.english.engines.EnglishLemmaFilter"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="EnglishTermIndexer">
-      <import name="eu.project.ttc.english.engines.EnglishTermIndexer"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="EnglishTermDetector">
-      <import name="eu.project.ttc.english.engines.EnglishTermDetector"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="TermIndexer">
       <import name="eu.project.ttc.all.engines.TermIndexer"/>
@@ -135,15 +135,15 @@
         <fileResourceSpecifier>
           <fileUrl>eu/project/ttc/all/engines/IndexWriter.xml</fileUrl>
         </fileResourceSpecifier>
-        <implementationName>fr.free.rocheteau.jerome.models.DefaultIndex</implementationName>
+        <implementationName>uima.sandbox.indexer.resources.DefaultIndex</implementationName>
       </externalResource>
       <externalResource>
         <name>EnglishFilter</name>
         <description/>
         <fileResourceSpecifier>
-          <fileUrl>eu/project/ttc/english/resources/Filter.English</fileUrl>
+          <fileUrl>eu/project/ttc/english/resources/english-stop-word-filter.xml</fileUrl>
         </fileResourceSpecifier>
-        <implementationName>fr.free.rocheteau.jerome.models.FilterResource</implementationName>
+        <implementationName>uima.sandbox.filter.resources.FilterResource</implementationName>
       </externalResource>
     </externalResources>
     <externalResourceBindings>

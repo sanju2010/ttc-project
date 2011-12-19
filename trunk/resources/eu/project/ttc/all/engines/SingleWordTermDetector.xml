@@ -10,19 +10,19 @@
     <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
     <configurationParameters>
       <configurationParameter>
-        <name>AnnotationType</name>
+        <name>Type</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>RuleSystemFile</name>
+        <name>File</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>OverrideRuleSystem</name>
+        <name>Override</name>
         <type>Boolean</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
@@ -30,13 +30,13 @@
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
-        <name>AnnotationType</name>
+        <name>Type</name>
         <value>
           <string>eu.project.ttc.types.WordAnnotation</string>
         </value>
       </nameValuePair>
       <nameValuePair>
-        <name>OverrideRuleSystem</name>
+        <name>Override</name>
         <value>
           <boolean>false</boolean>
         </value>
@@ -78,7 +78,7 @@
     <externalResourceDependency>
       <key>RuleSystem</key>
       <description/>
-      <interfaceName>fr.free.rocheteau.jerome.models.RuleSystem</interfaceName>
+      <interfaceName>uima.sandbox.matcher.resources.RuleSystem</interfaceName>
       <optional>false</optional>
     </externalResourceDependency>
   </externalResourceDependencies>
@@ -88,9 +88,9 @@
         <name>DefaultRuleSystem</name>
         <description/>
         <fileResourceSpecifier>
-          <fileUrl>eu/project/ttc/all/resources/RuleSystem.Default</fileUrl>
+          <fileUrl>eu/project/ttc/all/resources/all-single-word-rule-system.xml</fileUrl>
         </fileResourceSpecifier>
-        <implementationName>fr.free.rocheteau.jerome.models.RuleSystemResource</implementationName>
+        <implementationName>uima.sandbox.matcher.resources.RuleSystemResource</implementationName>
       </externalResource>
     </externalResources>
     <externalResourceBindings>

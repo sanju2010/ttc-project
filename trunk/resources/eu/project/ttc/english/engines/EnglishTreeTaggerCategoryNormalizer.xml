@@ -2,7 +2,7 @@
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>true</primitive>
-  <annotatorImplementationName>fr.free.rocheteau.jerome.engines.Mapper</annotatorImplementationName>
+  <annotatorImplementationName>uima.sandbox.mapper.engines.Mapper</annotatorImplementationName>
   <analysisEngineMetaData>
     <name>English TreeTagger Category Normalizer</name>
     <description/>
@@ -10,17 +10,47 @@
     <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
     <configurationParameters>
       <configurationParameter>
-        <name>Feature</name>
+        <name>Source</name>
         <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+      </configurationParameter>
+      <configurationParameter>
+        <name>Target</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+      </configurationParameter>
+      <configurationParameter>
+        <name>Update</name>
+        <type>Boolean</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
-        <name>Feature</name>
+        <name>Source</name>
+        <value>
+          <string>eu.project.ttc.types.WordAnnotation:tag</string>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>Target</name>
         <value>
           <string>eu.project.ttc.types.WordAnnotation:category</string>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>Target</name>
+        <value>
+          <string>eu.project.ttc.types.WordAnnotation:category</string>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>Update</name>
+        <value>
+          <boolean>true</boolean>
         </value>
       </nameValuePair>
     </configurationParameterSettings>
@@ -34,10 +64,12 @@
     <capabilities>
       <capability>
         <inputs>
-          <type allAnnotatorFeatures="true">org.apache.uima.WordAnnotation</type>
+          <type>eu.project.ttc.types.WordAnnotation</type>
+          <feature>eu.project.ttc.types.WordAnnotation:tag</feature>
         </inputs>
         <outputs>
-          <type allAnnotatorFeatures="true">org.apache.uima.WordAnnotation</type>
+          <type>eu.project.ttc.types.WordAnnotation</type>
+          <feature>eu.project.ttc.types.WordAnnotation:category</feature>
         </outputs>
         <languagesSupported>
           <language>en</language>
@@ -54,25 +86,25 @@
     <externalResourceDependency>
       <key>Mapping</key>
       <description/>
-      <interfaceName>fr.free.rocheteau.jerome.models.Mapping</interfaceName>
+      <interfaceName>uima.sandbox.mapper.resources.Mapping</interfaceName>
       <optional>false</optional>
     </externalResourceDependency>
   </externalResourceDependencies>
   <resourceManagerConfiguration>
     <externalResources>
       <externalResource>
-        <name>EnglishFeatureMapping</name>
+        <name>EnglishCategoryMapping</name>
         <description/>
         <fileResourceSpecifier>
-          <fileUrl>eu/project/ttc/english/resources/CategoryMapping.English</fileUrl>
+          <fileUrl>eu/project/ttc/english/resources/english-category-mapping.xml</fileUrl>
         </fileResourceSpecifier>
-        <implementationName>fr.free.rocheteau.jerome.models.Mapping</implementationName>
+        <implementationName>uima.sandbox.mapper.resources.MappingResource</implementationName>
       </externalResource>
     </externalResources>
     <externalResourceBindings>
       <externalResourceBinding>
         <key>Mapping</key>
-        <resourceName>EnglishFeatureMapping</resourceName>
+        <resourceName>EnglishCategoryMapping</resourceName>
       </externalResourceBinding>
     </externalResourceBindings>
   </resourceManagerConfiguration>

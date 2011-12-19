@@ -3,20 +3,23 @@
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>false</primitive>
   <delegateAnalysisEngineSpecifiers>
-    <delegateAnalysisEngine key="SpanishTermFilter">
-      <import name="eu.project.ttc.spanish.engines.SpanishTermFilter"/>
+    <delegateAnalysisEngine key="SpanishTermIndexer">
+      <import name="eu.project.ttc.spanish.engines.SpanishTermIndexer"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="SpanishTermDetector">
       <import name="eu.project.ttc.spanish.engines.SpanishTermDetector"/>
     </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="SpanishTermIndexer">
-      <import name="eu.project.ttc.spanish.engines.SpanishTermIndexer"/>
+    <delegateAnalysisEngine key="SpanishTermFilter">
+      <import name="eu.project.ttc.spanish.engines.SpanishTermFilter"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="IndexWriter">
       <import name="eu.project.ttc.all.engines.IndexWriter"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="XmiCasConsumer">
       <import name="eu.project.ttc.all.engines.XmiCasConsumer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="SpanishLemmaFilter">
+      <import name="eu.project.ttc.spanish.engines.SpanishLemmaFilter"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="TermIndexer">
       <import name="eu.project.ttc.all.engines.TermIndexer"/>
@@ -95,6 +98,7 @@
       <fixedFlow>
         <node>SpanishTermDetector</node>
         <node>SpanishTermFilter</node>
+        <node>SpanishLemmaFilter</node>
         <node>TermIndexer</node>
         <node>SpanishTermIndexer</node>
         <node>IndexWriter</node>
@@ -131,10 +135,22 @@
         <fileResourceSpecifier>
           <fileUrl>eu/project/ttc/all/engines/IndexWriter.xml</fileUrl>
         </fileResourceSpecifier>
-        <implementationName>fr.free.rocheteau.jerome.models.DefaultIndex</implementationName>
+        <implementationName>uima.sandbox.indexer.resources.DefaultIndex</implementationName>
+      </externalResource>
+      <externalResource>
+        <name>SpanishFilter</name>
+        <description/>
+        <fileResourceSpecifier>
+          <fileUrl>eu/project/ttc/spanish/resources/spanish-stop-word-filter.xml</fileUrl>
+        </fileResourceSpecifier>
+        <implementationName>uima.sandbox.filter.resources.FilterResource</implementationName>
       </externalResource>
     </externalResources>
     <externalResourceBindings>
+      <externalResourceBinding>
+        <key>SpanishTermIndexer/Index</key>
+        <resourceName>DefaultIndex</resourceName>
+      </externalResourceBinding>
       <externalResourceBinding>
         <key>TermIndexer/Index</key>
         <resourceName>DefaultIndex</resourceName>
@@ -144,8 +160,12 @@
         <resourceName>DefaultIndex</resourceName>
       </externalResourceBinding>
       <externalResourceBinding>
-        <key>SpanishTermIndexer/Index</key>
-        <resourceName>DefaultIndex</resourceName>
+        <key>SpanishTermFilter/Filter</key>
+        <resourceName>SpanishFilter</resourceName>
+      </externalResourceBinding>
+      <externalResourceBinding>
+        <key>SpanishLemmaFilter/Filter</key>
+        <resourceName>SpanishFilter</resourceName>
       </externalResourceBinding>
     </externalResourceBindings>
   </resourceManagerConfiguration>
