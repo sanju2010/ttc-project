@@ -3,6 +3,11 @@
 
 = Change Log =
 
+== Version 1.0-rc8 ==
+
+  * Danish support for Tagger and Termer
+  * XML format for resources (tokenizer, tree-tagger, stop-word, rule-based term detection)
+
 == Version 1.0-rc7 ==
 
   * refactoring taggers: a tagger button and one tagger engine per tab
