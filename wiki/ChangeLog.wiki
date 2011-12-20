@@ -7,6 +7,7 @@
 
   * Danish support for Tagger and Termer
   * XML format for resources (tokenizer, tree-tagger, stop-word, rule-based term detection)
+  * neoclassical compound alignment
 
 == Version 1.0-rc7 ==
 
