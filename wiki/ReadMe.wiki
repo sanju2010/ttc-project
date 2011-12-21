@@ -1,5 +1,5 @@
 #labels Phase-Support
-# the README file of the TTC Term Suite tool
+#summery: read me.
 
 = ReadMe =
 
