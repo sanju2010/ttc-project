@@ -1,4 +1,4 @@
-#summary This is the help page of the tool TTC TermSuite
+#summary help
 
 = Help =
 
