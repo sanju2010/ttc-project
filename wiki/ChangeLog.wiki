@@ -1,5 +1,4 @@
 #summary the change log of TTC TermSuite.
-#labels Featured
 
 = Change Log =
 
