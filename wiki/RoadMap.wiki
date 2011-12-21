@@ -1,5 +1,5 @@
 #summary the RoadMap of the TTC TermSuite.
-#labels Featured,Phase-Requirements
+#labels Phase-Requirements
 
 = Road Map =
 
