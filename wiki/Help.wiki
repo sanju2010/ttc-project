@@ -1,5 +1,4 @@
 #summary This is the help page of the tool TTC TermSuite
-#labels Featured
 
 = Help =
 
