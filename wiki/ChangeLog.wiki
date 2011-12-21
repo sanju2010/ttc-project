@@ -1,4 +1,4 @@
-#summary the change log of TTC TermSuite.
+#summary change log.
 
 = Change Log =
 
