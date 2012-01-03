@@ -2,6 +2,11 @@
 
 = Change Log =
 
+== Version 1.0-rc9 ==
+
+  * added Relater for computing similarity distances between context vectors of a monolingual contextual terminology
+  * fixed issue 7
+
 == Version 1.0-rc8 ==
 
   * Danish support for Tagger and Termer
