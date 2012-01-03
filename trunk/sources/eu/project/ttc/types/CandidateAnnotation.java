@@ -11,7 +11,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
- * Updated by JCasGen Thu Dec 15 23:50:28 CET 2011
+ * Updated by JCasGen Tue Jan 03 14:27:16 CET 2012
  * XML source: /home/rocheteau-j/Repositories/GoogleCode/ttc-term-suite/trunk/resources/eu/project/ttc/types/TermSuiteTypeSystem.xml
  * @generated */
 public class CandidateAnnotation extends Annotation {
@@ -28,7 +28,7 @@ public class CandidateAnnotation extends Annotation {
  
   /** Never called.  Disable default constructor
    * @generated */
-  protected CandidateAnnotation() {}
+  protected CandidateAnnotation() {/* intentionally empty block */}
     
   /** Internal - constructor used by generator 
    * @generated */

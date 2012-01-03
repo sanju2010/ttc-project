@@ -42,12 +42,6 @@
         </value>
       </nameValuePair>
       <nameValuePair>
-        <name>Target</name>
-        <value>
-          <string>eu.project.ttc.types.WordAnnotation:category</string>
-        </value>
-      </nameValuePair>
-      <nameValuePair>
         <name>Update</name>
         <value>
           <boolean>true</boolean>

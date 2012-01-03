@@ -2,49 +2,49 @@
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>true</primitive>
-  <annotatorImplementationName>uima.sandbox.mapper.engines.Mapper</annotatorImplementationName>
+  <annotatorImplementationName>eu.project.ttc.engines.MimesisAnalysisEngine</annotatorImplementationName>
   <analysisEngineMetaData>
-    <name>German TreeTagger Category Normalizer</name>
+    <name>Interlingual Similarity Annotator</name>
     <description/>
     <version>1.0</version>
-    <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
+    <vendor/>
     <configurationParameters>
       <configurationParameter>
-        <name>Source</name>
+        <name>Language</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>Target</name>
+        <name>SimilarityDistanceClassName</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>Update</name>
-        <type>Boolean</type>
+        <name>File</name>
+        <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
-        <name>Source</name>
+        <name>Language</name>
         <value>
-          <string>eu.project.ttc.types.WordAnnotation:tag</string>
+          <string>x-unspecified</string>
         </value>
       </nameValuePair>
       <nameValuePair>
-        <name>Target</name>
+        <name>SimilarityDistanceClassName</name>
         <value>
-          <string>eu.project.ttc.types.WordAnnotation:category</string>
+          <string>eu.project.ttc.metrics.Cosinus</string>
         </value>
       </nameValuePair>
       <nameValuePair>
-        <name>Update</name>
+        <name>File</name>
         <value>
-          <boolean>true</boolean>
+          <string>index.xmi</string>
         </value>
       </nameValuePair>
     </configurationParameterSettings>
@@ -57,17 +57,9 @@
     <fsIndexCollection/>
     <capabilities>
       <capability>
-        <inputs>
-          <type>eu.project.ttc.types.WordAnnotation</type>
-          <feature>eu.project.ttc.types.WordAnnotation:tag</feature>
-        </inputs>
-        <outputs>
-          <type>eu.project.ttc.types.WordAnnotation</type>
-          <feature>eu.project.ttc.types.WordAnnotation:category</feature>
-        </outputs>
-        <languagesSupported>
-          <language>de</language>
-        </languagesSupported>
+        <inputs/>
+        <outputs/>
+        <languagesSupported/>
       </capability>
     </capabilities>
     <operationalProperties>
@@ -78,27 +70,27 @@
   </analysisEngineMetaData>
   <externalResourceDependencies>
     <externalResourceDependency>
-      <key>Mapping</key>
+      <key>Index</key>
       <description/>
-      <interfaceName>uima.sandbox.mapper.resources.Mapping</interfaceName>
+      <interfaceName>eu.project.ttc.models.TermContextIndex</interfaceName>
       <optional>false</optional>
     </externalResourceDependency>
   </externalResourceDependencies>
   <resourceManagerConfiguration>
     <externalResources>
       <externalResource>
-        <name>GermanCategoryMapping</name>
+        <name>TermContextIndex</name>
         <description/>
         <fileResourceSpecifier>
-          <fileUrl>eu/project/ttc/german/resources/german-category-mapping.xml</fileUrl>
+          <fileUrl>eu/project/ttc/models/TermContextIndexListener.class</fileUrl>
         </fileResourceSpecifier>
-        <implementationName>uima.sandbox.mapper.resources.MappingResource</implementationName>
+        <implementationName>eu.project.ttc.models.TermContextIndexListener</implementationName>
       </externalResource>
     </externalResources>
     <externalResourceBindings>
       <externalResourceBinding>
-        <key>Mapping</key>
-        <resourceName>GermanCategoryMapping</resourceName>
+        <key>Index</key>
+        <resourceName>TermContextIndex</resourceName>
       </externalResourceBinding>
     </externalResourceBindings>
   </resourceManagerConfiguration>

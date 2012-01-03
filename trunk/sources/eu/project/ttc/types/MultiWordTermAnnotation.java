@@ -11,7 +11,7 @@ import org.apache.uima.jcas.cas.FSArray;
 
 
 /** 
- * Updated by JCasGen Thu Dec 15 23:50:29 CET 2011
+ * Updated by JCasGen Tue Jan 03 14:27:17 CET 2012
  * XML source: /home/rocheteau-j/Repositories/GoogleCode/ttc-term-suite/trunk/resources/eu/project/ttc/types/TermSuiteTypeSystem.xml
  * @generated */
 public class MultiWordTermAnnotation extends TermAnnotation {
@@ -28,7 +28,7 @@ public class MultiWordTermAnnotation extends TermAnnotation {
  
   /** Never called.  Disable default constructor
    * @generated */
-  protected MultiWordTermAnnotation() {}
+  protected MultiWordTermAnnotation() {/* intentionally empty block */}
     
   /** Internal - constructor used by generator 
    * @generated */

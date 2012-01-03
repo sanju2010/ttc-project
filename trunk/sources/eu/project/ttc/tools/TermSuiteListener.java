@@ -14,6 +14,7 @@ import javax.swing.SwingUtilities;
 import eu.project.ttc.tools.acabit.Acabit;
 import eu.project.ttc.tools.converter.Converter;
 import eu.project.ttc.tools.katastasis.Katastasis;
+import eu.project.ttc.tools.mimesis.Mimesis;
 import eu.project.ttc.tools.tagger.Tagger;
 import eu.project.ttc.tools.ziggurat.Ziggurat;
 
@@ -75,6 +76,12 @@ public class TermSuiteListener implements ActionListener {
 		SwingUtilities.invokeLater(katastasis);
 	}
 	
+	private void doMimesis() {
+		Mimesis mimesis = new Mimesis(false);
+		mimesis.setParent(this.getTermSuite());
+		SwingUtilities.invokeLater(mimesis);
+	}
+	
 	private void doZiggurat() {
 		Ziggurat ziggurat = new Ziggurat(false);
 		ziggurat.setParent(this.getTermSuite());
@@ -105,6 +112,8 @@ public class TermSuiteListener implements ActionListener {
 				this.doAcabit();
 			} else if (action.equals("katastasis")) {
 				this.doKatastasis();
+			} else if (action.equals("mimesis")) {
+				this.doMimesis();
 			} else if (action.equals("ziggurat")) {
 				this.doZiggurat();
 			} else if (action.equals("converter")) {

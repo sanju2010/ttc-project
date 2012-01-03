@@ -1,24 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <collectionReaderDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
-  <implementationName>eu.project.ttc.engines.TextCollectionReader</implementationName>
+  <implementationName>eu.project.ttc.engines.MimesisCollectionReader</implementationName>
   <processingResourceMetaData>
-    <name>Text Collection Reader</name>
+    <name>Mimesis Collection Reader</name>
     <description/>
     <version>1.0</version>
     <vendor/>
     <configurationParameters>
       <configurationParameter>
-        <name>Directory</name>
+        <name>Language</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>Language</name>
-        <description>This is the language code for processing Treetagger.
-
-values:en|fr|da|de|es|ru|zh</description>
+        <name>File</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
@@ -35,10 +32,7 @@ values:en|fr|da|de|es|ru|zh</description>
     <capabilities>
       <capability>
         <inputs/>
-        <outputs>
-          <type allAnnotatorFeatures="true">uima.tcas.DocumentAnnotation</type>
-          <type allAnnotatorFeatures="true">org.apache.uima.examples.SourceDocumentInformation</type>
-        </outputs>
+        <outputs/>
         <languagesSupported/>
       </capability>
     </capabilities>

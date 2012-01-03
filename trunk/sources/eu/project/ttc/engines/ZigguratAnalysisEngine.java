@@ -341,7 +341,11 @@ public class ZigguratAnalysisEngine extends JCasAnnotator_ImplBase {
 		TermContext termContext = new TermContext();
 		for (String sourceCoTerm : sourceContext.getCoOccurrences().keySet()) {
 			Double sourceCoOcc = sourceContext.getCoOccurrences().get(sourceCoTerm);
-			Set<String> resultTerms = this.getDictionary().map().get(sourceCoTerm);
+			Set<String> resultTerms = null;
+			// don't transfer the term if it appears in its own term context
+			if (!sourceTerm.equals(sourceCoTerm)) {
+				resultTerms = this.getDictionary().map().get(sourceCoTerm);
+			}
 			if (resultTerms == null) { 
 				// TODO
 			} else {

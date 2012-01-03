@@ -11,7 +11,7 @@ import org.apache.uima.cas.impl.TypeImpl;
 import org.apache.uima.cas.Type;
 
 /** 
- * Updated by JCasGen Thu Dec 15 23:50:29 CET 2011
+ * Updated by JCasGen Tue Jan 03 14:27:17 CET 2012
  * @generated */
 public class SingleWordTermAnnotation_Type extends TermAnnotation_Type {
   /** @generated */

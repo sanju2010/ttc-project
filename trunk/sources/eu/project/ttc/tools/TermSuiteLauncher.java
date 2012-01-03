@@ -98,6 +98,22 @@ public class TermSuiteLauncher {
 		return this.katastasis;
 	}
 	
+	private JButton mimesis;
+	
+	private void setMimesis() {
+		this.mimesis = new JButton("Relater");
+		this.mimesis.setActionCommand("mimesis");
+		this.mimesis.setEnabled(true);
+		this.mimesis.setPreferredSize(dimension);
+		this.mimesis.setMargin(insets);
+		this.mimesis.setBackground(color);
+		this.mimesis.setBorderPainted(false);
+	}
+	
+	public JButton getMimesis() {
+		return this.mimesis;
+	}
+	
 	private JButton ziggurat;
 	
 	private void setZiggurat() {
@@ -166,14 +182,16 @@ public class TermSuiteLauncher {
 		c.gridx = 0; c.gridy = 5;
 		this.component.add(this.getKatastasis(),c);
 		c.gridx = 0; c.gridy = 6;
-		this.component.add(this.getZiggurat(),c);
+		this.component.add(this.getMimesis(),c);
 		c.gridx = 0; c.gridy = 7;
+		this.component.add(this.getZiggurat(),c);
+		c.gridx = 0; c.gridy = 8;
 		this.component.add(new JSeparator(JSeparator.VERTICAL),c);
-		c.gridx = 0; c.gridy = 8;		
-		this.component.add(this.getConverter(),c);
 		c.gridx = 0; c.gridy = 9;		
-		this.component.add(new JSeparator(JSeparator.VERTICAL),c);
+		this.component.add(this.getConverter(),c);
 		c.gridx = 0; c.gridy = 10;		
+		this.component.add(new JSeparator(JSeparator.VERTICAL),c);
+		c.gridx = 0; c.gridy = 11;		
 		this.component.add(this.getQuit(),c);
 	}
 	
@@ -188,6 +206,7 @@ public class TermSuiteLauncher {
 		this.getTagger().addActionListener(listener);
 		this.getAcabit().addActionListener(listener);
 		this.getKatastasis().addActionListener(listener);
+		this.getMimesis().addActionListener(listener);
 		this.getZiggurat().addActionListener(listener);
 		this.getConverter().addActionListener(listener);
 	}
@@ -198,6 +217,7 @@ public class TermSuiteLauncher {
 		this.setAbout();
 		this.setAcabit();
 		this.setKatastasis();
+		this.setMimesis();
 		this.setZiggurat();
 		this.setTagger();
 		this.setConverter();

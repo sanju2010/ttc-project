@@ -14,7 +14,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /** 
- * Updated by JCasGen Thu Dec 15 23:50:29 CET 2011
+ * Updated by JCasGen Tue Jan 03 14:27:17 CET 2012
  * @generated */
 public class VectorAnnotation_Type extends Annotation_Type {
   /** @generated */

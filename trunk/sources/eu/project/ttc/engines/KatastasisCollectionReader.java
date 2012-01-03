@@ -24,6 +24,7 @@ import org.apache.uima.cas.impl.XmiCasDeserializer;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.collection.CollectionException;
 import org.apache.uima.collection.CollectionReader_ImplBase;
+import org.apache.uima.examples.SourceDocumentInformation;
 import org.apache.uima.jcas.tcas.Annotation;
 
 import org.apache.uima.resource.ResourceInitializationException;
@@ -205,6 +206,12 @@ public class KatastasisCollectionReader extends CollectionReader_ImplBase {
 			for (Annotation annotation : annotations) {
 				annotation.removeFromIndexes();
 			}
+			SourceDocumentInformation sdi = new SourceDocumentInformation(cas.getJCas(), 0, cas.getDocumentText().length());
+			sdi.setDocumentSize(cas.getDocumentText().length());
+			sdi.setLastSegment(!this.hasNext());
+			sdi.setOffsetInSource(0);
+			sdi.setUri(file.toURI().toString());
+			sdi.addToIndexes();
 			UIMAFramework.getLogger().log(Level.INFO, "Processing " + file.getAbsolutePath());
 			this.incrIndex();
 		} catch (Exception e) {
