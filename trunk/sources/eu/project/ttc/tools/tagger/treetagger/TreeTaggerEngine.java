@@ -38,6 +38,7 @@ public class TreeTaggerEngine extends SwingWorker<CpeDescription,Void> implement
 		this.collectionProcessingEngine = CpeDescriptorFactory.produceDescriptor();
 		Runtime runtime = Runtime.getRuntime();
         int threads = runtime.availableProcessors();
+        threads = threads <= 1 ? 1 : threads - 1;
 		this.collectionProcessingEngine.setProcessingUnitThreadCount(threads);
 		this.collectionProcessingEngine.getCpeCasProcessors().setPoolSize(threads);
 		this.collectionProcessingEngine.getCpeCasProcessors().setConcurrentPUCount(threads);

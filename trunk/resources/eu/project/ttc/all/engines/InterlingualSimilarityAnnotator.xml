@@ -27,6 +27,18 @@
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
+      <configurationParameter>
+        <name>DictionaryFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
+      <configurationParameter>
+        <name>Reverse</name>
+        <type>Boolean</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+      </configurationParameter>
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
@@ -45,6 +57,12 @@
         <name>File</name>
         <value>
           <string>index.xmi</string>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>Reverse</name>
+        <value>
+          <boolean>false</boolean>
         </value>
       </nameValuePair>
     </configurationParameterSettings>
@@ -75,9 +93,23 @@
       <interfaceName>eu.project.ttc.models.TermContextIndex</interfaceName>
       <optional>false</optional>
     </externalResourceDependency>
+    <externalResourceDependency>
+      <key>Dictionary</key>
+      <description/>
+      <interfaceName>fr.univnantes.lina.uima.dictionaries.Dictionary</interfaceName>
+      <optional>false</optional>
+    </externalResourceDependency>
   </externalResourceDependencies>
   <resourceManagerConfiguration>
     <externalResources>
+      <externalResource>
+        <name>DefaultDictionary</name>
+        <description/>
+        <fileResourceSpecifier>
+          <fileUrl>fr/univnantes/lina/uima/resources/Dictionary.Default</fileUrl>
+        </fileResourceSpecifier>
+        <implementationName>fr.univnantes.lina.uima.dictionaries.DictionaryResource</implementationName>
+      </externalResource>
       <externalResource>
         <name>TermContextIndex</name>
         <description/>
@@ -91,6 +123,10 @@
       <externalResourceBinding>
         <key>Index</key>
         <resourceName>TermContextIndex</resourceName>
+      </externalResourceBinding>
+      <externalResourceBinding>
+        <key>Dictionary</key>
+        <resourceName>DefaultDictionary</resourceName>
       </externalResourceBinding>
     </externalResourceBindings>
   </resourceManagerConfiguration>

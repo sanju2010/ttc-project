@@ -34,6 +34,7 @@ public class ZigguratEngine extends SwingWorker<CpeDescription,Void> {
 		this.collectionProcessingEngine = CpeDescriptorFactory.produceDescriptor();
 		Runtime runtime = Runtime.getRuntime();
         int threads = runtime.availableProcessors();
+        threads = threads <= 1 ? 1 : threads - 1;
 		this.collectionProcessingEngine.setProcessingUnitThreadCount(threads);
 		this.collectionProcessingEngine.getCpeCasProcessors().setPoolSize(threads);
 		this.collectionProcessingEngine.getCpeCasProcessors().setConcurrentPUCount(threads);
@@ -70,12 +71,16 @@ public class ZigguratEngine extends SwingWorker<CpeDescription,Void> {
 		CasProcessorConfigurationParameterSettings settings = CpeDescriptorFactory.produceCasProcessorConfigurationParameterSettings();
 		settings.setParameterValue("SourceLanguage",parameters.getParameterValue("SourceLanguage"));
 		settings.setParameterValue("TargetLanguage",parameters.getParameterValue("TargetLanguage"));
+		settings.setParameterValue("InterlingualSimilarity",parameters.getParameterValue("InterlingualSimilarity"));
+		settings.setParameterValue("InterlingualSimilaritySize",parameters.getParameterValue("InterlingualSimilaritySize"));
 		settings.setParameterValue("SimilarityDistanceClassName",parameters.getParameterValue("SimilarityDistanceClassName"));
 		settings.setParameterValue("DictionaryFile",parameters.getParameterValue("DictionaryFile"));
 		settings.setParameterValue("SourceTermContextIndexFile",parameters.getParameterValue("SourceTermContextIndexFile"));
 		settings.setParameterValue("TargetTermContextIndexFile",parameters.getParameterValue("TargetTermContextIndexFile"));
 		settings.setParameterValue("SourceTerminologyFile",parameters.getParameterValue("SourceTerminologyFile"));
 		settings.setParameterValue("TargetTerminologyFile",parameters.getParameterValue("TargetTerminologyFile"));
+		settings.setParameterValue("SourceTermSimilarityDirectory",parameters.getParameterValue("SourceTermSimilarityDirectory"));
+		settings.setParameterValue("TargetTermSimilarityDirectory",parameters.getParameterValue("TargetTermSimilarityDirectory"));
 		termSuiteTranslator.setConfigurationParameterSettings(settings);
 		this.collectionProcessingEngine.addCasProcessor(termSuiteTranslator);
 	}

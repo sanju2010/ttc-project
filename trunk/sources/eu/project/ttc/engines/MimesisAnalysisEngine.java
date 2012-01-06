@@ -1,6 +1,9 @@
 package eu.project.ttc.engines;
 
 import java.io.File;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
@@ -17,6 +20,7 @@ import eu.project.ttc.models.TermContext;
 import eu.project.ttc.models.TermContextIndex;
 import eu.project.ttc.types.SimilarityAnnotation;
 import eu.project.ttc.types.VectorAnnotation;
+import fr.univnantes.lina.uima.dictionaries.Dictionary;
 
 public class MimesisAnalysisEngine extends JCasAnnotator_ImplBase {
 	
@@ -49,18 +53,61 @@ public class MimesisAnalysisEngine extends JCasAnnotator_ImplBase {
 		return this.index;
 	}
 	
+	private Dictionary dictionary;
+	
+	private void setDictionary(Dictionary dictionary) {
+		this.dictionary = dictionary;
+	}
+	
+	private Dictionary getDictionary() {
+		return this.dictionary;
+	}
+	
+	private void shrink(boolean reverse) {
+		Set<String> filter = new HashSet<String>();
+		if (reverse) {
+			Collection<Set<String>> filters = this.getDictionary().map().values();
+			for (Set<String> f : filters) {
+				filter.addAll(f);
+			}
+		} else {
+			filter.addAll(this.getDictionary().map().keySet());
+		}
+		this.getIndex().doShrink(filter);				
+	}
+	
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
 		try {
-			String name = (String) context.getConfigParameterValue("SimilarityDistanceClassName");
-			this.setSimilarityDistance(name);
-			TermContextIndex index = (TermContextIndex) context.getResourceObject("Index");
-			this.setIndex(index);
-			String path = (String) context.getConfigParameterValue("File");
-			if (path != null) {
-				File file = new File(path);
-				this.getIndex().doLoad(file.toURI());
+			if (this.getSimilarityDistance() == null) {
+				String name = (String) context.getConfigParameterValue("SimilarityDistanceClassName");
+				this.setSimilarityDistance(name);				
+			}
+			
+			if (this.getIndex() == null) {
+				TermContextIndex index = (TermContextIndex) context.getResourceObject("Index");
+				this.setIndex(index);
+				String path = (String) context.getConfigParameterValue("File");
+				if (path != null) {
+					File file = new File(path);
+					this.getContext().getLogger().log(Level.INFO,"Loading Term Context Index from " + path);
+					this.getIndex().doLoad(file.toURI());
+				}				
+			}
+			
+			if (this.getDictionary() == null) {
+				Dictionary dictionary = (Dictionary) context.getResourceObject("Dictionary");
+				this.setDictionary(dictionary);				
+				String path = (String) context.getConfigParameterValue("DictionaryFile");
+				if (path != null) {
+					File file = new File(path);
+					this.getContext().getLogger().log(Level.INFO,"Loading Dictionary from " + path);
+					this.getDictionary().doLoad(file.toURI());
+				}
+				Boolean reverse = (Boolean) context.getConfigParameterValue("Reverse");
+				this.getContext().getLogger().log(Level.INFO,"Shrinking Index " + (reverse == null ? "Domain" : reverse ? "CoDomain" : "Domain"));
+				this.shrink(reverse == null ? false : reverse.booleanValue());
 			}
 		} catch (Exception e) {
 			throw new ResourceInitializationException(e);

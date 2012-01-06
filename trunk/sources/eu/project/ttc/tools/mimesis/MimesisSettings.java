@@ -13,8 +13,10 @@ public class MimesisSettings extends Parameters {
 
 	protected void setMetaData(ConfigurationParameterDeclarations declarations) {
 		this.addParameter(declarations, "Language", ConfigurationParameter.TYPE_STRING, false, true, "values:en|fr|de|ru|es|lv|zh");
-		this.addParameter(declarations, "File", ConfigurationParameter.TYPE_STRING, false, true);
-		this.addParameter(declarations, "Directory", ConfigurationParameter.TYPE_STRING, false, true);
+		this.addParameter(declarations, "TermContextIndexFile", ConfigurationParameter.TYPE_STRING, false, true);
+		this.addParameter(declarations, "OutputDirectory", ConfigurationParameter.TYPE_STRING, false, true);
+		this.addParameter(declarations, "DictionaryFile", ConfigurationParameter.TYPE_STRING, false, true);
+		this.addParameter(declarations, "Reverse", ConfigurationParameter.TYPE_BOOLEAN, false, true);
 		this.addParameter(declarations, "SimilarityDistanceClassName", ConfigurationParameter.TYPE_STRING, false, false, "values:eu.project.ttc.metrics.Jaccard|eu.project.ttc.metrics.Cosinus");
 	}
 		

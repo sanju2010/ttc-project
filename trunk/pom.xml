@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>eu.project.ttc</groupId>
   <artifactId>ttc-term-suite</artifactId>
-  <version>1.0-rc1</version>
+  <version>1.0</version>
   <packaging>jar</packaging>
   <name>TTC TermSuite</name>
   <dependencies>
@@ -38,7 +38,7 @@
     </dependency>
     <dependency>
       <groupId>uima.sandbox</groupId>
-      <artifactId>tokenizer</artifactId>
+      <artifactId>lexer</artifactId>
       <version>1.0</version>
     </dependency>
     <dependency>

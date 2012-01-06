@@ -57,12 +57,48 @@
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
+      <configurationParameter>
+        <name>InterlingualSimilarity</name>
+        <type>Boolean</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+      </configurationParameter>
+      <configurationParameter>
+        <name>SourceTermSimilarityDirectory</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
+      <configurationParameter>
+        <name>TargetTermSimilarityDirectory</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
+      <configurationParameter>
+        <name>InterlingualSimilaritySize</name>
+        <type>Integer</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+      </configurationParameter>
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
         <name>SimilarityDistanceClassName</name>
         <value>
           <string>eu.project.ttc.metrics.Cosinus</string>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>InterlingualSimilarity</name>
+        <value>
+          <boolean>false</boolean>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>InterlingualSimilaritySize</name>
+        <value>
+          <integer>50</integer>
         </value>
       </nameValuePair>
     </configurationParameterSettings>

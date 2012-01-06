@@ -15,7 +15,7 @@
     <description/>
     <version>1.0</version>
     <vendor/>
-    <configurationParameters>
+    <configurationParameters searchStrategy="language_fallback">
       <configurationParameter>
         <name>SimilarityDistanceClassName</name>
         <type>String</type>
@@ -43,6 +43,24 @@
           <parameter>XmiCasConsumer/Directory</parameter>
         </overrides>
       </configurationParameter>
+      <configurationParameter>
+        <name>DictionaryFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>InterlingualSimilarityAnnotator/DictionaryFile</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>Reverse</name>
+        <type>Boolean</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>InterlingualSimilarityAnnotator/Reverse</parameter>
+        </overrides>
+      </configurationParameter>
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
@@ -61,6 +79,12 @@
         <name>Directory</name>
         <value>
           <string>tmp</string>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>Reverse</name>
+        <value>
+          <boolean>false</boolean>
         </value>
       </nameValuePair>
     </configurationParameterSettings>
@@ -84,5 +108,34 @@
       <outputsNewCASes>false</outputsNewCASes>
     </operationalProperties>
   </analysisEngineMetaData>
-  <resourceManagerConfiguration/>
+  <resourceManagerConfiguration>
+    <externalResources>
+      <externalResource>
+        <name>DefaultDictionary</name>
+        <description/>
+        <fileResourceSpecifier>
+          <fileUrl>fr/univnantes/lina/uima/resources/Dictionary.Default</fileUrl>
+        </fileResourceSpecifier>
+        <implementationName>fr.univnantes.lina.uima.dictionaries.DictionaryResource</implementationName>
+      </externalResource>
+      <externalResource>
+        <name>TermContextIndex</name>
+        <description/>
+        <fileResourceSpecifier>
+          <fileUrl>eu/project/ttc/models/TermContextIndexListener.class</fileUrl>
+        </fileResourceSpecifier>
+        <implementationName>eu.project.ttc.models.TermContextIndexListener</implementationName>
+      </externalResource>
+    </externalResources>
+    <externalResourceBindings>
+      <externalResourceBinding>
+        <key>InterlingualSimilarityAnnotator/Index</key>
+        <resourceName>TermContextIndex</resourceName>
+      </externalResourceBinding>
+      <externalResourceBinding>
+        <key>InterlingualSimilarityAnnotator/Dictionary</key>
+        <resourceName>DefaultDictionary</resourceName>
+      </externalResourceBinding>
+    </externalResourceBindings>
+  </resourceManagerConfiguration>
 </analysisEngineDescription>

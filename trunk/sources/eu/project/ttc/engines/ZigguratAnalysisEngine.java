@@ -2,12 +2,14 @@ package eu.project.ttc.engines;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -41,6 +43,7 @@ import eu.project.ttc.models.TermContextIndex;
 import eu.project.ttc.types.CandidateAnnotation;
 import eu.project.ttc.types.MultiWordTermAnnotation;
 import eu.project.ttc.types.NeoClassicalCompoundTermAnnotation;
+import eu.project.ttc.types.SimilarityAnnotation;
 import eu.project.ttc.types.SingleWordTermAnnotation;
 import eu.project.ttc.types.TermAnnotation;
 import eu.project.ttc.types.TermComponentAnnotation;
@@ -66,7 +69,7 @@ public class ZigguratAnalysisEngine extends JCasAnnotator_ImplBase {
 			Object obj = cl.newInstance();
 			if (obj instanceof SimilarityDistance) {
 				this.similarityDistance = (SimilarityDistance) obj;
-				// UIMAFramework.getLogger().log(Level.INFO,"Setting Similarity Distance: " + this.similarityDistance.getClass().getSimpleName());
+				UIMAFramework.getLogger().log(Level.INFO,"Setting Similarity Distance: " + this.similarityDistance.getClass().getSimpleName());
 			} else {
 				throw new ClassCastException("Class name '" + name + "' doesn't comply " + SimilarityDistance.class.getCanonicalName());
 			}
@@ -96,17 +99,7 @@ public class ZigguratAnalysisEngine extends JCasAnnotator_ImplBase {
 	private TermContextIndex getTargetIndex() {
 		return this.targetIndex;
 	}
-	
-	private Map<Double, String> candidates;
-	
-	private void setCandidtates() {
-		this.candidates = new TreeMap<Double, String>(new ScoreComparator());
-	}
-	
-	private Map<Double, String> getCandidates() {
-		return this.candidates;
-	}
-	
+		
 	private static boolean shrinked = false;
 	
 	private void doShrink() {
@@ -152,6 +145,7 @@ public class ZigguratAnalysisEngine extends JCasAnnotator_ImplBase {
 		TypeSystemDescription ts = parser.parseTypeSystemDescription(source); 
 		this.sourceTerminology = CasCreationUtils.createCas(ts,null,new FsIndexDescription[0]);
 	}
+	
 	private void setSourceTerminology(File file) throws Exception {
 		InputStream stream = new FileInputStream(file);
 		Locale locale = new Locale(this.getSourceLanguage());
@@ -160,8 +154,8 @@ public class ZigguratAnalysisEngine extends JCasAnnotator_ImplBase {
 		XmiCasDeserializer.deserialize(stream, this.sourceTerminology);
 	}
 	
-	private JCas getSourceTerminology() throws CASException {
-		return this.sourceTerminology.getJCas();
+	private CAS getSourceTerminology() {
+		return this.sourceTerminology;
 	}
 	
 	private CAS targetTerminology;
@@ -180,11 +174,11 @@ public class ZigguratAnalysisEngine extends JCasAnnotator_ImplBase {
 		String lang = locale.getDisplayLanguage(Locale.ENGLISH);
 		UIMAFramework.getLogger().log(Level.INFO, "Loading " + lang + " Terminology");
 		XmiCasDeserializer.deserialize(stream, this.targetTerminology);
-		this.setTargetTerms(this.getTargetTerminology());
+		this.setTargetTerms(this.getTargetTerminology().getJCas());
 	}
 	
-	private JCas getTargetTerminology() throws CASException {
-		return this.targetTerminology.getJCas();
+	private CAS getTargetTerminology() {
+		return this.targetTerminology;
 	}
 
 	private Set<String> targetTerms;
@@ -192,6 +186,7 @@ public class ZigguratAnalysisEngine extends JCasAnnotator_ImplBase {
 	private void setTargetTerms() {
 		this.targetTerms = new HashSet<String>();
 	}
+	
 	private void setTargetTerms(JCas cas) throws CASRuntimeException, CASException {
 		AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TermAnnotation.type);
 		AnnotationIndex<Annotation> idx = cas.getAnnotationIndex(TermComponentAnnotation.type);
@@ -224,52 +219,170 @@ public class ZigguratAnalysisEngine extends JCasAnnotator_ImplBase {
 		return this.targetTerms;
 	}
 	
+	private File sourceDirectory;
+	
+	private void setSourceDirectory(String path) throws IOException {
+		File directory = new File(path);
+		if (directory.exists() && directory.isDirectory()) {
+			this.sourceDirectory = directory;
+		} else {
+			throw new IOException(path);
+		}
+	}
+	
+	private File getSourceDirectory() {
+		return this.sourceDirectory;
+	}
+	
+	private File targetDirectory;
+	
+	private void setTargetDirectory(String path) throws IOException {
+		File directory = new File(path);
+		if (directory.exists() && directory.isDirectory()) {
+			this.targetDirectory = directory;
+		} else {
+			throw new IOException(path);
+		}
+	}
+	
+	private File getTargetDirectory() {
+		return this.targetDirectory;
+	}
+	
+	private Map<String, Double> getSimilarityOf(String term, boolean src) throws Exception {
+		Map<String, Double> terms = new HashMap<String, Double>();
+		File file = new File(src ? this.getSourceDirectory(): this.getTargetDirectory(), term + ".xmi");
+		URL url = this.getClass().getClassLoader().getResource("eu/project/ttc/types/TermSuiteTypeSystem.xml");
+		XMLInputSource source = new XMLInputSource(url);
+		XMLParser parser = UIMAFramework.getXMLParser();
+		TypeSystemDescription ts = parser.parseTypeSystemDescription(source); 
+		CAS cas = CasCreationUtils.createCas(ts,null,new FsIndexDescription[0]);
+		InputStream stream = new FileInputStream(file);
+		UIMAFramework.getLogger().log(Level.INFO, "Loading '" + term + "'");
+		XmiCasDeserializer.deserialize(stream, cas);
+		AnnotationIndex<Annotation> index = cas.getJCas().getAnnotationIndex(SimilarityAnnotation.type);
+		FSIterator<Annotation> iterator = index.iterator();
+		while (iterator.hasNext()) {
+			SimilarityAnnotation annotation = (SimilarityAnnotation) iterator.next();
+			if (annotation.getSource().equals(term)) {
+				String key = annotation.getTarget();
+				Double value = new Double(annotation.getScore());
+				terms.put(key, value);
+			}
+		}
+		ScoreComparator comparator = new ScoreComparator();
+		comparator.set(terms);
+		Map<String, Double> result = new TreeMap<String, Double>(comparator);
+		result.putAll(terms);
+		return result;
+	}
+	
+	private boolean interlingualSimilarity;
+	
+	private void enableInterlingualSimilarity(boolean enabled) {
+		this.interlingualSimilarity = enabled;
+	}
+	
+	private boolean interlingualSimilarity() {
+		return this.interlingualSimilarity;
+	}
+	
+	private int similaritySize;
+	
+	private void setSimilaritySize(int size) {
+		this.similaritySize = size;
+	}
+	
+	private int getSimilaritySize() {
+		return this.similaritySize;
+	}
+	
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
 		try {
-			this.setCandidtates();
-			this.setTargetTerms();
+			if (this.getTargetTerms() == null) {
+				this.setTargetTerms();				
+			}
+			
 			String sourceLanguage = (String) context.getConfigParameterValue("SourceLanguage");
 			this.setSourceLanguage(sourceLanguage);
+			
 			String targetLanguage = (String) context.getConfigParameterValue("TargetLanguage");
 			this.setTargetLanguage(targetLanguage);
+			
 			String name = (String) context.getConfigParameterValue("SimilarityDistanceClassName");
 			this.setSimilarityDistance(name);
-			Dictionary dictionary = (Dictionary) context.getResourceObject("Dictionary");
-			this.setDictionary(dictionary);
-			TermContextIndex sourceIndex = (TermContextIndex) context.getResourceObject("SourceIndex");
-			this.setSourceIndex(sourceIndex);
-			TermContextIndex targetIndex = (TermContextIndex) context.getResourceObject("TargetIndex");
-			this.setTargetIndex(targetIndex);
-			String path = (String) context.getConfigParameterValue("DictionaryFile");
-			if (path != null) {
-				File file = new File(path);
-				this.getDictionary().doLoad(file.toURI());
+			
+			if (this.getSourceIndex() == null) {
+				TermContextIndex sourceIndex = (TermContextIndex) context.getResourceObject("SourceIndex");
+				this.setSourceIndex(sourceIndex);				
+				String sourceIndexFile = (String) context.getConfigParameterValue("SourceTermContextIndexFile");
+				if (sourceIndexFile != null) {
+					File file = new File(sourceIndexFile);
+					this.getSourceIndex().doLoad(file.toURI());
+				}
 			}
-			this.doShrink();
-			String sourceIndexFile = (String) context.getConfigParameterValue("SourceTermContextIndexFile");
-			if (sourceIndexFile != null) {
-				File file = new File(sourceIndexFile);
-				this.getSourceIndex().doLoad(file.toURI());
+			
+			if (this.getTargetIndex() == null) {
+				TermContextIndex targetIndex = (TermContextIndex) context.getResourceObject("TargetIndex");
+				this.setTargetIndex(targetIndex);				
+				String targetIndexFile = (String) context.getConfigParameterValue("TargetTermContextIndexFile");
+				if (targetIndexFile != null) {
+					File file = new File(targetIndexFile);
+					this.getTargetIndex().doLoad(file.toURI());
+				}
 			}
-			String targetIndexFile = (String) context.getConfigParameterValue("TargetTermContextIndexFile");
-			if (targetIndexFile != null) {
-				File file = new File(targetIndexFile);
-				this.getTargetIndex().doLoad(file.toURI());
+			
+			if (this.getSourceTerminology() == null) {
+				this.setSourceTerminology();
+				String sourceTerminologyFile = (String) context.getConfigParameterValue("SourceTerminologyFile");
+				if (sourceTerminologyFile != null) {
+					File file = new File(sourceTerminologyFile);
+					this.setSourceTerminology(file);
+				}				
 			}
-			this.setSourceTerminology();
-			this.setTargetTerminology();
-			String sourceTerminologyFile = (String) context.getConfigParameterValue("SourceTerminologyFile");
-			if (sourceTerminologyFile != null) {
-				File file = new File(sourceTerminologyFile);
-				this.setSourceTerminology(file);
+			
+			if (this.getTargetTerminology() == null) {
+				this.setTargetTerminology();
+				String targetTerminologyFile = (String) context.getConfigParameterValue("TargetTerminologyFile");
+				if (targetTerminologyFile != null) {
+					File file = new File(targetTerminologyFile);
+					this.setTargetTerminology(file);
+				}				
 			}
-			String targetTerminologyFile = (String) context.getConfigParameterValue("TargetTerminologyFile");
-			if (targetTerminologyFile != null) {
-				File file = new File(targetTerminologyFile);
-				this.setTargetTerminology(file);
+			
+			if (this.getDictionary() == null) {
+				Dictionary dictionary = (Dictionary) context.getResourceObject("Dictionary");
+				this.setDictionary(dictionary);				
+				String path = (String) context.getConfigParameterValue("DictionaryFile");
+				if (path != null) {
+					File file = new File(path);
+					this.getDictionary().doLoad(file.toURI());
+				}
+				this.doShrink();
 			}
+			
+			Boolean interlingualSimilarity = (Boolean) context.getConfigParameterValue("InterlingualSimilarity");
+			this.enableInterlingualSimilarity(interlingualSimilarity == null ? false : interlingualSimilarity.booleanValue());
+			
+			if (this.getSourceDirectory() == null) {
+				String sourceDirectory = (String) context.getConfigParameterValue("SourceTermSimilarityDirectory");
+				if (sourceDirectory != null) {
+					this.setSourceDirectory(sourceDirectory);
+				}				
+			}
+			
+			if (this.getTargetDirectory() == null) {
+				String targetDirectory = (String) context.getConfigParameterValue("TargetTermSimilarityDirectory");
+				if (targetDirectory != null) {
+					this.setTargetDirectory(targetDirectory);
+				}				
+			}
+			
+			Integer similaritySize = (Integer) context.getConfigParameterValue("InterlingualSimilaritySize");
+			this.setSimilaritySize(similaritySize == null ? 50 : similaritySize.intValue());
+			
 		} catch (Exception e) {
 			throw new ResourceInitializationException(e);
 		}
@@ -279,11 +392,6 @@ public class ZigguratAnalysisEngine extends JCasAnnotator_ImplBase {
 	public void process(JCas cas) throws AnalysisEngineProcessException {
 		try {
 			String term = cas.getDocumentText();
-			if (term.equals("wind energy")) {
-				flag = true;
-			} else {
-				flag = false;
-			}
 			String language = cas.getDocumentLanguage();
 			AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TermAnnotation.type);
 			FSIterator<Annotation> iterator = index.iterator();
@@ -293,38 +401,21 @@ public class ZigguratAnalysisEngine extends JCasAnnotator_ImplBase {
 					if (!this.getSourceIndex().getLanguage().equals(language)) {
 						throw new Exception("Skiping " + term +  " because of language clash between CAS " + language + " and term content index " + this.getSourceIndex().getLanguage());
 					} 
-					TermContext context = this.getSourceIndex().getTermContexts().get(term);
-					if (context == null) {
-						UIMAFramework.getLogger().log(Level.WARNING,"Skiping " + term +  " as it doesn't belong to the source index");
+					
+					if (this.interlingualSimilarity()) {
+						this.alignSimilarSingleWordTerm(cas, term, this.getSimilaritySize());
 					} else {
-						TermContext transfer = this.transfer(term, context);
-						this.align(term, transfer);
-						this.annotate(cas);
+						this.alignSingleWordTerm(cas, term);
 					}
 				} else {
-					JCas terminology = this.getSourceTerminology();
+					JCas terminology = this.getSourceTerminology().getJCas();
 					if (!terminology.getDocumentLanguage().equals(language)) {
 						throw new Exception("Skiping " + term +  " because of language clash between CAS " + language + " and Terminology " + this.getSourceIndex().getLanguage());
 					} 
-					TermAnnotation termEntry = null;
 					if (annotation instanceof MultiWordTermAnnotation) {
-						termEntry = (MultiWordTermAnnotation) this.retrieve(terminology, MultiWordTermAnnotation.type, term);
-						List<String> components = this.extract(this.getSourceTerminology(), termEntry, false);
-						List<List<String>> candidates = this.transfer(components);
-						candidates = this.combine(candidates);
-						candidates = this.generate(candidates);
-						components = this.flatten(candidates, " ");
-						components = this.select(components);
-						this.annotate(cas, components);
+						this.alignMultiWordTerm(cas, terminology, term);
 					} else if (annotation instanceof NeoClassicalCompoundTermAnnotation) {
-						termEntry = this.retrieve(terminology, NeoClassicalCompoundTermAnnotation.type, term);
-						List<String> components = this.extract(this.getSourceTerminology(), termEntry, true);
-						components = this.reshape(components);
-						List<List<String>> candidates = this.transfer(components);
-						candidates = this.combine(candidates);
-						components = this.flatten(candidates, "");
-						components = this.select(components);
-						this.annotate(cas, components);
+						this.alignNeoClassicalCompound(cas, terminology, term);
 					} else {
 						throw new Exception("Don't know what to do with " + term + " that all terms of this type: " + annotation.getType());
 					}
@@ -336,19 +427,75 @@ public class ZigguratAnalysisEngine extends JCasAnnotator_ImplBase {
 			throw new AnalysisEngineProcessException(e);
 		}
 	}
+
+	private void alignSimilarSingleWordTerm(JCas cas, String term, int size) throws Exception {
+		Map<String, Double> sim = this.getSimilarityOf(term, true);
+		int i = 0;
+		Map<String, Double> candidates = new HashMap<String, Double>();
+		for (String t : sim.keySet()) {
+			TermContext context = this.getSourceIndex().getTermContexts().get(t);
+			TermContext transfer = this.transfer(t, context);
+			Map<String, Double> c = this.align(term, transfer);
+			for (String translation : c.keySet()) {
+				Double s = c.get(translation);
+				if (candidates.containsKey(translation)) {
+					Double score = candidates.get(translation);
+					if (score.compareTo(s) < 0) {
+						candidates.put(translation, s);
+					}
+				} else {
+					candidates.put(translation, s);
+				}
+			}
+			if (i++ > size) {
+				break;
+			}
+		}
+		this.annotate(cas, candidates);
+	}
+
+	private void alignSingleWordTerm(JCas cas, String term) {
+		TermContext context = this.getSourceIndex().getTermContexts().get(term);
+		if (context == null) {
+			UIMAFramework.getLogger().log(Level.WARNING,"Skiping " + term +  " as it doesn't belong to the source index");
+		} else {
+			TermContext transfer = this.transfer(term, context);
+			Map<String, Double> candidates = this.align(term, transfer);
+			this.annotate(cas, candidates);
+		}
+	}
+
+	private void alignMultiWordTerm(JCas cas, JCas terminology, String term) throws Exception, CASException {
+		TermAnnotation termEntry = (MultiWordTermAnnotation) this.retrieve(terminology, MultiWordTermAnnotation.type, term);
+		List<String> components = this.extract(this.getSourceTerminology().getJCas(), termEntry, false);
+		List<List<String>> candidates = this.transfer(components);
+		candidates = this.combine(candidates);
+		candidates = this.generate(candidates);
+		components = this.flatten(candidates, " ");
+		components = this.select(components);
+		this.annotate(cas, components);
+	}
+
+	private void alignNeoClassicalCompound(JCas cas, JCas terminology, String term) throws Exception, CASException {
+		TermAnnotation termEntry = this.retrieve(terminology, NeoClassicalCompoundTermAnnotation.type, term);
+		List<String> components = this.extract(this.getSourceTerminology().getJCas(), termEntry, true);
+		components = this.reshape(components);
+		List<List<String>> candidates = this.transfer(components);
+		candidates = this.combine(candidates);
+		components = this.flatten(candidates, "");
+		components = this.select(components);
+		this.annotate(cas, components);
+	}
 	
 	private TermContext transfer(String sourceTerm, TermContext sourceContext) {
 		TermContext termContext = new TermContext();
 		for (String sourceCoTerm : sourceContext.getCoOccurrences().keySet()) {
 			Double sourceCoOcc = sourceContext.getCoOccurrences().get(sourceCoTerm);
 			Set<String> resultTerms = null;
-			// don't transfer the term if it appears in its own term context
 			if (!sourceTerm.equals(sourceCoTerm)) {
 				resultTerms = this.getDictionary().map().get(sourceCoTerm);
 			}
-			if (resultTerms == null) { 
-				// TODO
-			} else {
+			if (resultTerms != null) { 
 				int totalOcc = 0;
 				for (String resultTerm : resultTerms) {
 					Integer occ = this.getTargetIndex().getOccurrences().get(resultTerm);
@@ -367,22 +514,28 @@ public class ZigguratAnalysisEngine extends JCasAnnotator_ImplBase {
 		return termContext;
 	}
 	
-	private void align(String term, TermContext termContext) {
-		this.getCandidates().clear();
+	private Map<String, Double> align(String term, TermContext termContext) {
+		Map<String, Double> candidates = new HashMap<String, Double>();
 		for (String targetTerm : this.getTargetIndex().getTermContexts().keySet()) {
 			TermContext targetContext = this.getTargetIndex().getTermContexts().get(targetTerm);
 			double score = this.getSimilarityDistance().getValue(termContext.getCoOccurrences(),targetContext.getCoOccurrences());
 			if (!Double.isInfinite(score) && !Double.isNaN(score)) {
-				this.getCandidates().put(new Double(score), targetTerm);
+				candidates.put(targetTerm, new Double(score));
 			}
 		}
+		return candidates;
 	}
 	
-	private void annotate(JCas cas) {
+	private void annotate(JCas cas, Map<String, Double> scores) {
+		try {
+		ScoreComparator comparator = new ScoreComparator();
+		comparator.set(scores);
+		Map<String, Double> candidates = new TreeMap<String, Double>(comparator);
+		candidates.putAll(scores);
 		int rank = 0;
-		for (Double score : this.getCandidates().keySet()) {
+		for (String translation : candidates.keySet()) {
 			rank++;
-			String translation = this.getCandidates().get(score);
+			Double score = candidates.get(translation);
 			CandidateAnnotation annotation = new CandidateAnnotation(cas,0,cas.getDocumentText().length());
 			annotation.setTranslation(translation);
 			annotation.setScore(score.doubleValue());
@@ -391,6 +544,9 @@ public class ZigguratAnalysisEngine extends JCasAnnotator_ImplBase {
 			if (rank >= 100) {
 				break;
 			}
+		}
+		} catch (Throwable t) {
+			t.printStackTrace();
 		}
 	}
 	
@@ -411,7 +567,7 @@ public class ZigguratAnalysisEngine extends JCasAnnotator_ImplBase {
 				return (TermAnnotation) annotation;
 			}
 		}
-		throw new Exception("Term " + term + "  not found");
+		throw new Exception("Term " + term + " not found");
 	}
 	
 	/**
@@ -491,9 +647,7 @@ public class ZigguratAnalysisEngine extends JCasAnnotator_ImplBase {
 		}
 		return candidates;
 	}
-	
-	boolean flag = false;
-	
+		
 	/**
 	 * provides the permutation list 
 	 * 
@@ -660,8 +814,6 @@ public class ZigguratAnalysisEngine extends JCasAnnotator_ImplBase {
 		for (String candidate : candidates) {
 			if (this.getTargetTerms().contains(candidate)) {
 				selection.add(candidate);
-			} else {
-				if (flag) System.out.println("Skiping " + candidate);
 			}
 		}
 		return selection;
@@ -683,13 +835,30 @@ public class ZigguratAnalysisEngine extends JCasAnnotator_ImplBase {
 		}
 	}
 	
-	private class ScoreComparator implements Comparator<Double> {
+	private class ScoreComparator implements Comparator<String> {
 
+		private Map<String, Double> map;
+		
+		public void set(Map<String, Double> map) {
+			this.map = map;
+		}
+		
 		@Override
-		public int compare(Double sourceKey,Double targetKey) {
-			return targetKey.compareTo(sourceKey);
+		public int compare(String sourceKey,String targetKey) {
+			Double sourceValue = this.map.get(sourceKey);
+			Double targetValue = this.map.get(targetKey);
+			if (sourceValue == null && targetValue == null) {
+				return sourceKey.compareTo(targetKey);
+			} else if (sourceValue == null) {
+				return -1;
+			} else if (targetValue == null) {
+				return 1;
+			} else {
+				return targetValue.compareTo(sourceValue);
+			}
 		}
 		
 	}
+
 	
 }

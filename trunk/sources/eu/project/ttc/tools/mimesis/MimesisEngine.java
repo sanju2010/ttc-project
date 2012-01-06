@@ -34,6 +34,7 @@ public class MimesisEngine extends SwingWorker<CpeDescription,Void> {
 		this.collectionProcessingEngine = CpeDescriptorFactory.produceDescriptor();
 		Runtime runtime = Runtime.getRuntime();
         int threads = runtime.availableProcessors();
+        threads = threads <= 1 ? 1 : threads - 1;
 		this.collectionProcessingEngine.setProcessingUnitThreadCount(threads);
 		this.collectionProcessingEngine.getCpeCasProcessors().setPoolSize(threads);
 		this.collectionProcessingEngine.getCpeCasProcessors().setConcurrentPUCount(threads);
@@ -57,7 +58,7 @@ public class MimesisEngine extends SwingWorker<CpeDescription,Void> {
 		CpeCollectionReader termSuiteCollector = CpeDescriptorFactory.produceCollectionReader(url.toURI().toString());
 		CasProcessorConfigurationParameterSettings settings = CpeDescriptorFactory.produceCasProcessorConfigurationParameterSettings();
 		settings.setParameterValue("Language", parameters.getParameterValue("Language"));
-		settings.setParameterValue("File",parameters.getParameterValue("File"));
+		settings.setParameterValue("File",parameters.getParameterValue("TermContextIndexFile"));
 		termSuiteCollector.setConfigurationParameterSettings(settings);
 		this.collectionProcessingEngine.addCollectionReader(termSuiteCollector);
 	}
@@ -70,8 +71,10 @@ public class MimesisEngine extends SwingWorker<CpeDescription,Void> {
 		termSuiteTranslator.setCpeComponentDescriptor(desc);
 		CasProcessorConfigurationParameterSettings settings = CpeDescriptorFactory.produceCasProcessorConfigurationParameterSettings();
 		settings.setParameterValue("SimilarityDistanceClassName",parameters.getParameterValue("SimilarityDistanceClassName"));
-		settings.setParameterValue("File",parameters.getParameterValue("File"));
-		settings.setParameterValue("Directory",parameters.getParameterValue("Directory"));
+		settings.setParameterValue("File",parameters.getParameterValue("TermContextIndexFile"));
+		settings.setParameterValue("Directory",parameters.getParameterValue("OutputDirectory"));
+		settings.setParameterValue("DictionaryFile",parameters.getParameterValue("DictionaryFile"));
+		settings.setParameterValue("Reverse",parameters.getParameterValue("Reverse"));
 		termSuiteTranslator.setConfigurationParameterSettings(settings);
 		this.collectionProcessingEngine.addCasProcessor(termSuiteTranslator);
 	}
