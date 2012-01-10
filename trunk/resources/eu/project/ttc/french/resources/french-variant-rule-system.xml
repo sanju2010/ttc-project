@@ -1,58 +1,171 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <rules>
-	<rule id="noun-adjective-adjective">
-		<parameters>
-			<parameter name="a" type="eu.project.ttc.types.TermAnnotation" />
-		</parameters>
-		<constraint>
-			<eq>
-				<left>
-					<feature name="category" >
-						<element>
-							<variable name="a" />
-						</element>
-					</feature>	
-				</left>
-				<right>
-					<string value="noun-adjective-adjective" />
-				</right>
-			</eq>
-		</constraint>
-	</rule>
 	<rule id="noun-adjective-variant">
 		<parameters>
-			<parameter name="a" type="eu.project.ttc.types.TermAnnotation" />
-			<parameter name="b" type="eu.project.ttc.types.TermAnnotation" />
+			<parameter name="base" type="eu.project.ttc.types.TermAnnotation" />
+			<parameter name="variant" type="eu.project.ttc.types.TermAnnotation" />
 		</parameters>
 		<constraint>
 			<and>
 				<left>
-					<eq>
+					<and>
 						<left>
-							<feature name="category" >
-								<element>
-									<variable name="a" />
-								</element>
-							</feature>	
+							<eq>
+								<left>
+									<feature name="category" >
+										<element>
+											<variable name="base" />
+										</element>
+									</feature>	
+								</left>
+								<right>
+									<string value="noun-adjective" />
+								</right>
+							</eq>
 						</left>
 						<right>
-							<string value="noun-adjective" />
+							<eq>
+								<left>
+									<feature name="category" >
+										<element>
+											<variable name="variant" />
+										</element>
+									</feature>	
+								</left>
+								<right>
+									<string value="noun-adjective-adjective" />
+								</right>
+							</eq>
 						</right>
-					</eq>
+					</and>
 				</left>
 				<right>
-					<eq>
+					<and>
 						<left>
-							<feature name="category" >
-								<element>
-									<variable name="b" />
-								</element>
-							</feature>	
+							<eq>
+								<left>
+									<feature name="coveredText">
+										<element>
+											<get>
+												<left>
+													<sub type="eu.project.ttc.types.TermComponentAnnotation">
+														<element>
+															<variable name="base" />
+														</element>
+													</sub>
+												</left>
+												<right>
+													<integer value="0" />
+												</right>
+											</get>
+										</element>
+									</feature>
+								</left>
+								<right>
+									<feature name="coveredText">
+										<element>
+											<get>
+												<left>
+													<sub type="eu.project.ttc.types.TermComponentAnnotation">
+														<element>
+															<variable name="variant" />
+														</element>
+													</sub>
+												</left>
+												<right>
+													<integer value="0" />
+												</right>
+											</get>
+										</element>
+									</feature>
+								</right>
+							</eq>
 						</left>
 						<right>
-							<string value="noun-adjective-adjective" />
+							<or>
+								<left>
+									<eq>
+										<left>
+											<feature name="coveredText">
+												<element>
+													<get>
+														<left>
+															<sub type="eu.project.ttc.types.TermComponentAnnotation">
+																<element>
+																	<variable name="base" />
+																</element>
+															</sub>
+														</left>
+														<right>
+															<integer value="1" />
+														</right>
+													</get>
+												</element>
+											</feature>
+										</left>
+										<right>
+											<feature name="coveredText">
+												<element>
+													<get>
+														<left>
+															<sub type="eu.project.ttc.types.TermComponentAnnotation">
+																<element>
+																	<variable name="variant" />
+																</element>
+															</sub>
+														</left>
+														<right>
+															<integer value="1" />
+														</right>
+													</get>
+												</element>
+											</feature>
+										</right>
+									</eq>
+								</left>
+								<right>
+									<eq>
+										<left>
+											<feature name="coveredText">
+												<element>
+													<get>
+														<left>
+															<sub type="eu.project.ttc.types.TermComponentAnnotation">
+																<element>
+																	<variable name="base" />
+																</element>
+															</sub>
+														</left>
+														<right>
+															<integer value="1" />
+														</right>
+													</get>
+												</element>
+											</feature>
+										</left>
+										<right>
+											<feature name="coveredText">
+												<element>
+													<get>
+														<left>
+															<sub type="eu.project.ttc.types.TermComponentAnnotation">
+																<element>
+																	<variable name="variant" />
+																</element>
+															</sub>
+														</left>
+														<right>
+															<integer value="2" />
+														</right>
+													</get>
+												</element>
+											</feature>
+										</right>
+									</eq>
+								</right>
+							</or>
 						</right>
-					</eq>
+					</and>
 				</right>
 			</and>
 		</constraint>

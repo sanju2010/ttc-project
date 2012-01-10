@@ -88,6 +88,7 @@ public class AcabitViewer {
 			while (iterator.hasNext()) {
 				TermAnnotation annotation = (TermAnnotation) iterator.next();
 				double frequency = annotation.getFrequency();
+				// TODO specificifty
 				Set<TermAnnotation> terms = annotations.get(frequency);
 				if (terms == null) {
 					terms = new HashSet<TermAnnotation>();
@@ -103,12 +104,33 @@ public class AcabitViewer {
 					this.getRoot().add(node);
 					this.addNotes(node, term);
 					this.addComponents(node, cas, term);
+					this.addVariants(node, cas, term);
 				}
 			}
 			this.getModel().reload();
 		} catch (CASRuntimeException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private void addVariants(DefaultMutableTreeNode root, JCas cas, TermAnnotation annotation) {
+		if (annotation.getVariants() != null) {
+			DefaultMutableTreeNode node = new DefaultMutableTreeNode();
+			node.setUserObject("variants");
+			root.add(node);
+			int length = annotation.getVariants().size();
+			for (int index = 0; index < length; index++) {
+				TermAnnotation variant = annotation.getVariants(index);
+				this.addVariant(node, cas, variant);
+			}
+		}
+	}
+	
+	private void addVariant(DefaultMutableTreeNode root, JCas cas, TermAnnotation annotation) {
+		DefaultMutableTreeNode node = new DefaultMutableTreeNode();
+		node.setUserObject(annotation.getCoveredText());
+		root.add(node);
+		this.addNotes(node, annotation);
 	}
 	
 	private void addComponents(DefaultMutableTreeNode root, JCas cas, TermAnnotation annotation) {

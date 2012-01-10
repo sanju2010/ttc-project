@@ -88,7 +88,7 @@
     <typeDescription>
       <name>eu.project.ttc.types.TermAnnotation</name>
       <description/>
-      <supertypeName>eu.project.ttc.types.TermComponentAnnotation</supertypeName>
+      <supertypeName>uima.tcas.Annotation</supertypeName>
       <features>
         <featureDescription>
           <name>complexity</name>
@@ -104,6 +104,22 @@
           <name>specificity</name>
           <description/>
           <rangeTypeName>uima.cas.Double</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>category</name>
+          <description/>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>lemma</name>
+          <description/>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>variants</name>
+          <description/>
+          <rangeTypeName>uima.cas.FSArray</rangeTypeName>
+          <elementType>eu.project.ttc.types.TermAnnotation</elementType>
         </featureDescription>
       </features>
     </typeDescription>

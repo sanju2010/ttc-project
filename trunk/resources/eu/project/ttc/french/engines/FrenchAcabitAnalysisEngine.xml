@@ -9,6 +9,9 @@
     <delegateAnalysisEngine key="FrenchTermDetector">
       <import name="eu.project.ttc.french.engines.FrenchTermDetector"/>
     </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="FrenchTermGatherer">
+      <import name="eu.project.ttc.french.engines.FrenchTermGatherer"/>
+    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="FrenchTermFilter">
       <import name="eu.project.ttc.french.engines.FrenchTermFilter"/>
     </delegateAnalysisEngine>
@@ -101,6 +104,7 @@
         <node>FrenchLemmaFilter</node>
         <node>TermIndexer</node>
         <node>FrenchTermIndexer</node>
+        <node>FrenchTermGatherer</node>
         <node>IndexWriter</node>
         <node>XmiCasConsumer</node>
       </fixedFlow>
@@ -147,6 +151,10 @@
       </externalResource>
     </externalResources>
     <externalResourceBindings>
+      <externalResourceBinding>
+        <key>FrenchTermGatherer/Index</key>
+        <resourceName>DefaultIndex</resourceName>
+      </externalResourceBinding>
       <externalResourceBinding>
         <key>FrenchTermIndexer/Index</key>
         <resourceName>DefaultIndex</resourceName>

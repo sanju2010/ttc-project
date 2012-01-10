@@ -2,13 +2,19 @@
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>true</primitive>
-  <annotatorImplementationName>eu.project.ttc.engines.TermGatherer</annotatorImplementationName>
+  <annotatorImplementationName>uima.sandbox.indexer.engines.Indexer</annotatorImplementationName>
   <analysisEngineMetaData>
     <name>French Term Gatherer</name>
     <description/>
     <version>1.0</version>
     <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
     <configurationParameters>
+      <configurationParameter>
+        <name>Type</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
       <configurationParameter>
         <name>File</name>
         <type>String</type>
@@ -23,6 +29,12 @@
       </configurationParameter>
     </configurationParameters>
     <configurationParameterSettings>
+      <nameValuePair>
+        <name>Type</name>
+        <value>
+          <string>eu.project.ttc.types.TermAnnotation</string>
+        </value>
+      </nameValuePair>
       <nameValuePair>
         <name>Override</name>
         <value>
@@ -41,18 +53,13 @@
       <capability>
         <inputs>
           <type allAnnotatorFeatures="true">org.apache.uima.examples.SourceDocumentInformation</type>
-          <type allAnnotatorFeatures="true">eu.project.ttc.types.WordAnnotation</type>
+          <type allAnnotatorFeatures="true">eu.project.ttc.types.TermAnnotation</type>
         </inputs>
         <outputs>
-          <type allAnnotatorFeatures="true">eu.project.ttc.types.SingleWordTermAnnotation</type>
+          <type allAnnotatorFeatures="true">eu.project.ttc.types.TermAnnotation</type>
         </outputs>
         <languagesSupported>
           <language>fr</language>
-          <language>en</language>
-          <language>de</language>
-          <language>es</language>
-          <language>ru</language>
-          <language>zh</language>
         </languagesSupported>
       </capability>
     </capabilities>
@@ -64,24 +71,60 @@
   </analysisEngineMetaData>
   <externalResourceDependencies>
     <externalResourceDependency>
+      <key>Index</key>
+      <description/>
+      <interfaceName>uima.sandbox.indexer.resources.Index</interfaceName>
+      <optional>false</optional>
+    </externalResourceDependency>
+    <externalResourceDependency>
+      <key>Listener</key>
+      <description/>
+      <interfaceName>uima.sandbox.indexer.resources.IndexListener</interfaceName>
+      <optional>false</optional>
+    </externalResourceDependency>
+    <externalResourceDependency>
       <key>RuleSystem</key>
       <description/>
-      <interfaceName>uima.sandbox.linker.resources.RuleSystem</interfaceName>
+      <interfaceName>uima.sandbox.catcher.resources.RuleSystem</interfaceName>
       <optional>false</optional>
     </externalResourceDependency>
   </externalResourceDependencies>
   <resourceManagerConfiguration>
     <externalResources>
       <externalResource>
+        <name>DefaultIndex</name>
+        <description/>
+        <fileResourceSpecifier>
+          <fileUrl>eu/project/ttc/all/engines/IndexWriter.xml</fileUrl>
+        </fileResourceSpecifier>
+        <implementationName>uima.sandbox.indexer.resources.DefaultIndex</implementationName>
+      </externalResource>
+      <externalResource>
+        <name>TermVariantListener</name>
+        <description/>
+        <fileResourceSpecifier>
+          <fileUrl>eu/project/ttc/models/TermVariantListener.class</fileUrl>
+        </fileResourceSpecifier>
+        <implementationName>eu.project.ttc.models.TermVariantListener</implementationName>
+      </externalResource>
+      <externalResource>
         <name>FrenchVariantRuleSystem</name>
         <description/>
         <fileResourceSpecifier>
           <fileUrl>eu/project/ttc/french/resources/french-variant-rule-system.xml</fileUrl>
         </fileResourceSpecifier>
-        <implementationName>uima.sandbox.linker.resources.RuleSystemResource</implementationName>
+        <implementationName>uima.sandbox.catcher.resources.RuleSystemResource</implementationName>
       </externalResource>
     </externalResources>
     <externalResourceBindings>
+    <externalResourceBinding>
+        <key>Index</key>
+        <resourceName>DefaultIndex</resourceName>
+      </externalResourceBinding>
+      <externalResourceBinding>
+        <key>Listener</key>
+        <resourceName>TermVariantListener</resourceName>
+      </externalResourceBinding>
       <externalResourceBinding>
         <key>RuleSystem</key>
         <resourceName>FrenchVariantRuleSystem</resourceName>

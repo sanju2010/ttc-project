@@ -23,6 +23,7 @@ import eu.project.ttc.types.NeoClassicalCompoundTermAnnotation;
 import eu.project.ttc.types.SingleWordTermAnnotation;
 import eu.project.ttc.types.TermAnnotation;
 import eu.project.ttc.types.TermComponentAnnotation;
+import eu.project.ttc.types.WordAnnotation;
 
 
 public class TermIndexListener implements IndexListener {
@@ -116,11 +117,11 @@ public class TermIndexListener implements IndexListener {
 		private void addComponents(TermAnnotation annotation, String term) {
 			try {
 				JCas cas = annotation.getCAS().getJCas();
-				AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TermComponentAnnotation.type);
+				AnnotationIndex<Annotation> index = cas.getAnnotationIndex(WordAnnotation.type);
 				FSIterator<Annotation> iterator = index.subiterator(annotation);
 				List<Component> components = new ArrayList<Component>();
 				while (iterator.hasNext()) {
-					TermComponentAnnotation component = (TermComponentAnnotation) iterator.next();
+					WordAnnotation component = (WordAnnotation) iterator.next();
 					if (component.getBegin() == annotation.getBegin() && component.getEnd() == annotation.getEnd()) {
 						continue;
 					} else {
@@ -229,8 +230,6 @@ public class TermIndexListener implements IndexListener {
 	
 	@Override
 	public void release(JCas cas) {
-		System.out.println("term index");
-		System.out.flush();
 		cas.setDocumentLanguage(this.getLanguage());
 		StringBuilder builder = new StringBuilder();
 		this.release(cas, builder, this.getSingleWordTermFrequency());
@@ -304,7 +303,7 @@ public class TermIndexListener implements IndexListener {
 			annotation.setLemma(this.lemma);
 		}
 		
-		public void update(TermComponentAnnotation annotation,int offset) {
+		public void update(WordAnnotation annotation,int offset) {
 			this.category = annotation.getCategory();
 			this.lemma = annotation.getLemma();
 			this.begin = annotation.getBegin() - offset;

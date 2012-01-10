@@ -10,8 +10,11 @@ import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.impl.TypeImpl;
 import org.apache.uima.cas.Type;
 
+import org.apache.uima.cas.impl.FeatureImpl;
+import org.apache.uima.cas.Feature;
+
 /** 
- * Updated by JCasGen Tue Jan 03 14:27:17 CET 2012
+ * Updated by JCasGen Tue Jan 10 16:01:52 CET 2012
  * @generated */
 public class SingleWordTermAnnotation_Type extends TermAnnotation_Type {
   /** @generated */

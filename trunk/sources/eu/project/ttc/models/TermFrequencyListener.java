@@ -81,8 +81,6 @@ public class TermFrequencyListener implements IndexListener {
 	
 	@Override
 	public void release(JCas cas) { 
-		System.out.println("term frequency");
-		System.out.flush();
 		if (!this.done) {
 			this.done = true;
 			this.set(cas);

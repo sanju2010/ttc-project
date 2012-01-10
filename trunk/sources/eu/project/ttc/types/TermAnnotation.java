@@ -9,11 +9,15 @@ import org.apache.uima.jcas.cas.TOP_Type;
 
 
 
+import org.apache.uima.jcas.cas.FSArray;
+import org.apache.uima.jcas.tcas.Annotation;
+
+
 /** 
- * Updated by JCasGen Tue Jan 03 14:27:17 CET 2012
+ * Updated by JCasGen Tue Jan 10 16:01:52 CET 2012
  * XML source: /home/rocheteau-j/Repositories/GoogleCode/ttc-term-suite/trunk/resources/eu/project/ttc/types/TermSuiteTypeSystem.xml
  * @generated */
-public class TermAnnotation extends TermComponentAnnotation {
+public class TermAnnotation extends Annotation {
   /** @generated
    * @ordered 
    */
@@ -110,6 +114,76 @@ public class TermAnnotation extends TermComponentAnnotation {
     if (TermAnnotation_Type.featOkTst && ((TermAnnotation_Type)jcasType).casFeat_specificity == null)
       jcasType.jcas.throwFeatMissing("specificity", "eu.project.ttc.types.TermAnnotation");
     jcasType.ll_cas.ll_setDoubleValue(addr, ((TermAnnotation_Type)jcasType).casFeatCode_specificity, v);}    
+   
+    
+  //*--------------*
+  //* Feature: category
+
+  /** getter for category - gets 
+   * @generated */
+  public String getCategory() {
+    if (TermAnnotation_Type.featOkTst && ((TermAnnotation_Type)jcasType).casFeat_category == null)
+      jcasType.jcas.throwFeatMissing("category", "eu.project.ttc.types.TermAnnotation");
+    return jcasType.ll_cas.ll_getStringValue(addr, ((TermAnnotation_Type)jcasType).casFeatCode_category);}
+    
+  /** setter for category - sets  
+   * @generated */
+  public void setCategory(String v) {
+    if (TermAnnotation_Type.featOkTst && ((TermAnnotation_Type)jcasType).casFeat_category == null)
+      jcasType.jcas.throwFeatMissing("category", "eu.project.ttc.types.TermAnnotation");
+    jcasType.ll_cas.ll_setStringValue(addr, ((TermAnnotation_Type)jcasType).casFeatCode_category, v);}    
+   
+    
+  //*--------------*
+  //* Feature: lemma
+
+  /** getter for lemma - gets 
+   * @generated */
+  public String getLemma() {
+    if (TermAnnotation_Type.featOkTst && ((TermAnnotation_Type)jcasType).casFeat_lemma == null)
+      jcasType.jcas.throwFeatMissing("lemma", "eu.project.ttc.types.TermAnnotation");
+    return jcasType.ll_cas.ll_getStringValue(addr, ((TermAnnotation_Type)jcasType).casFeatCode_lemma);}
+    
+  /** setter for lemma - sets  
+   * @generated */
+  public void setLemma(String v) {
+    if (TermAnnotation_Type.featOkTst && ((TermAnnotation_Type)jcasType).casFeat_lemma == null)
+      jcasType.jcas.throwFeatMissing("lemma", "eu.project.ttc.types.TermAnnotation");
+    jcasType.ll_cas.ll_setStringValue(addr, ((TermAnnotation_Type)jcasType).casFeatCode_lemma, v);}    
+   
+    
+  //*--------------*
+  //* Feature: variants
+
+  /** getter for variants - gets 
+   * @generated */
+  public FSArray getVariants() {
+    if (TermAnnotation_Type.featOkTst && ((TermAnnotation_Type)jcasType).casFeat_variants == null)
+      jcasType.jcas.throwFeatMissing("variants", "eu.project.ttc.types.TermAnnotation");
+    return (FSArray)(jcasType.ll_cas.ll_getFSForRef(jcasType.ll_cas.ll_getRefValue(addr, ((TermAnnotation_Type)jcasType).casFeatCode_variants)));}
+    
+  /** setter for variants - sets  
+   * @generated */
+  public void setVariants(FSArray v) {
+    if (TermAnnotation_Type.featOkTst && ((TermAnnotation_Type)jcasType).casFeat_variants == null)
+      jcasType.jcas.throwFeatMissing("variants", "eu.project.ttc.types.TermAnnotation");
+    jcasType.ll_cas.ll_setRefValue(addr, ((TermAnnotation_Type)jcasType).casFeatCode_variants, jcasType.ll_cas.ll_getFSRef(v));}    
+    
+  /** indexed getter for variants - gets an indexed value - 
+   * @generated */
+  public TermAnnotation getVariants(int i) {
+    if (TermAnnotation_Type.featOkTst && ((TermAnnotation_Type)jcasType).casFeat_variants == null)
+      jcasType.jcas.throwFeatMissing("variants", "eu.project.ttc.types.TermAnnotation");
+    jcasType.jcas.checkArrayBounds(jcasType.ll_cas.ll_getRefValue(addr, ((TermAnnotation_Type)jcasType).casFeatCode_variants), i);
+    return (TermAnnotation)(jcasType.ll_cas.ll_getFSForRef(jcasType.ll_cas.ll_getRefArrayValue(jcasType.ll_cas.ll_getRefValue(addr, ((TermAnnotation_Type)jcasType).casFeatCode_variants), i)));}
+
+  /** indexed setter for variants - sets an indexed value - 
+   * @generated */
+  public void setVariants(int i, TermAnnotation v) { 
+    if (TermAnnotation_Type.featOkTst && ((TermAnnotation_Type)jcasType).casFeat_variants == null)
+      jcasType.jcas.throwFeatMissing("variants", "eu.project.ttc.types.TermAnnotation");
+    jcasType.jcas.checkArrayBounds(jcasType.ll_cas.ll_getRefValue(addr, ((TermAnnotation_Type)jcasType).casFeatCode_variants), i);
+    jcasType.ll_cas.ll_setRefArrayValue(jcasType.ll_cas.ll_getRefValue(addr, ((TermAnnotation_Type)jcasType).casFeatCode_variants), i, jcasType.ll_cas.ll_getFSRef(v));}
   }
 
     
