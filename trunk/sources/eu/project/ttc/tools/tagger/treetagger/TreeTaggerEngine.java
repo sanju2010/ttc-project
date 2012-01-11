@@ -79,6 +79,12 @@ public class TreeTaggerEngine extends SwingWorker<CpeDescription,Void> implement
         CasProcessorConfigurationParameterSettings settings = CpeDescriptorFactory.produceCasProcessorConfigurationParameterSettings();
         settings.setParameterValue("TreeTaggerHomeDirectory", (String) parameters.getParameterValue("TreeTaggerHomeDirectory"));
         settings.setParameterValue("Directory", (String) parameters.getParameterValue("OutputDirectory"));
+        settings.setParameterValue("TreeTaggerParameterFile", (String) parameters.getParameterValue("TreeTaggerParameterFile"));
+        settings.setParameterValue("SegmentFile", (String) parameters.getParameterValue("SegmentFile"));
+        settings.setParameterValue("CategoryMappingFile", (String) parameters.getParameterValue("CategoryMappingFile"));
+        settings.setParameterValue("SubcategoryMappingFile", (String) parameters.getParameterValue("SubcategoryMappingFile"));
+        settings.setParameterValue("MoodMappingFile", (String) parameters.getParameterValue("MoodMappingFile"));
+        settings.setParameterValue("Te,seMappingFile", (String) parameters.getParameterValue("TenseMappingFile"));
         termMateAnnotator.setConfigurationParameterSettings(settings);
         this.collectionProcessingEngine.addCasProcessor(termMateAnnotator);
 	}

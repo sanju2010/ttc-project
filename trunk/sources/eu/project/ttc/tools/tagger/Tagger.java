@@ -117,6 +117,8 @@ public class Tagger implements Runnable {
 		return this.treeTagger;
 	}
 	
+	/*
+	
 	private TildeTagger tildeTagger;
 	
 	private void setTildeTagger() {
@@ -150,15 +152,17 @@ public class Tagger implements Runnable {
 		return this.freeLing;
 	}
 	
+	*/
+	
 	private JTabbedPane content;
 	
 	private void setContent() {
 		this.content = new JTabbedPane();
 		this.content.setTabPlacement(JTabbedPane.TOP);
 		this.content.addTab("  TreeTagger  ",this.getTreeTagger().getComponent());
-		this.content.addTab(" Tilde Tagger ",this.getTildeTagger().getComponent());
-		this.content.addTab("   RFTagger   ",this.getRFTagger().getComponent());
-		this.content.addTab("   FreeLing   ",this.getFreeLing().getComponent());
+		// this.content.addTab(" Tilde Tagger ",this.getTildeTagger().getComponent());
+		// this.content.addTab("   RFTagger   ",this.getRFTagger().getComponent());
+		// this.content.addTab("   FreeLing   ",this.getFreeLing().getComponent());
 		this.content.addTab("  Documents   ",this.getDocuments().getComponent());
 		Listener listener = new Listener();
 		listener.setTagger(this);
@@ -168,6 +172,8 @@ public class Tagger implements Runnable {
 	private JTabbedPane getContent() {
 		return this.content;
 	}
+	
+	/*
 	
 	public boolean isTreeTaggerSelected() {
 		return this.getContent().getSelectedIndex() == 0;
@@ -184,6 +190,8 @@ public class Tagger implements Runnable {
 	public boolean isFreeLingSelected() {
 		return this.getContent().getSelectedIndex() == 3;
 	}
+	
+	*/
 	
 	private JSplitPane component;
 	
@@ -237,9 +245,9 @@ public class Tagger implements Runnable {
 		this.enableCommandLineInterface(cli);
 		this.setToolBar();
 		this.setTreeTagger();
-		this.setTildeTagger();
-		this.setRFTagger();
-		this.setFreeLing();
+		// this.setTildeTagger();
+		// this.setRFTagger();
+		// this.setFreeLing();
 		this.setDocuments();
 		this.setContent();
 		this.setComponent();
@@ -262,14 +270,14 @@ public class Tagger implements Runnable {
 	}
 	
 	public void enableListsners() {
-		if (this.isTreeTaggerSelected()) {
+		// if (this.isTreeTaggerSelected()) {
 			this.setPreferences(this.getTreeTagger().getPreferences());
 			this.setAbout(this.getTreeTagger().getAbout());
 			this.listener.setTaggerTool(this.getTreeTagger());
 			TreeTaggerEngine engine = new TreeTaggerEngine();
 			engine.setTaggerTool(this.getTreeTagger());
 			this.listener.setTaggerEngine(engine);
-		} else if (this.isTildeTaggerSelected()) {
+		/* } else if (this.isTildeTaggerSelected()) {
 			this.setPreferences(this.getTildeTagger().getPreferences());
 			this.setAbout(this.getTildeTagger().getAbout());
 			this.listener.setTaggerTool(this.getTildeTagger());
@@ -290,7 +298,7 @@ public class Tagger implements Runnable {
 			FreeLingEngine engine = new FreeLingEngine();
 			engine.setTaggerTool(this.getFreeLing());
 			this.listener.setTaggerEngine(engine);
-		}
+		} */
 	}
 	
 	private void process() {
@@ -312,7 +320,7 @@ public class Tagger implements Runnable {
 	private void save() {
 		try {
 			this.getTreeTagger().getSettings().doSave();
-			this.getTildeTagger().getSettings().doSave();
+			// this.getTildeTagger().getSettings().doSave();
 		} catch (Exception e) {
 			this.error(e);
 		}
