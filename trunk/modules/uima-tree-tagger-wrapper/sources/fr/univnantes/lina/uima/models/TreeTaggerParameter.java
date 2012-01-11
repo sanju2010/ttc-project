@@ -36,29 +36,15 @@ public class TreeTaggerParameter implements SharedResourceObject {
 	private void doLoad(InputStream inputStream) throws IOException {
 		this.getProperties().loadFromXML(inputStream);
 	}
-
-	private boolean loaded;
-	
-	private void enableLoaded(boolean enabled) {
-		this.loaded = enabled;
-	}
-	
-	private boolean isLoaded() {
-		return this.loaded;
-	}
 	
 	public TreeTaggerParameter() {
-		this.enableLoaded(false);
 		this.setProperties();
 	}
 	
 	@Override
 	public void load(DataResource data) throws ResourceInitializationException {
 		try {
-			if (!this.isLoaded()) {
-				this.enableLoaded(true);
-				this.doLoad(data.getInputStream());
-			}
+			this.doLoad(data.getInputStream());
 		} catch (Exception e) {
 			throw new ResourceInitializationException(e);
 		}
