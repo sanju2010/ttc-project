@@ -320,6 +320,7 @@ public class Converter implements Runnable {
 		try {
 			this.getXmiTsvConverter().getSettings().doSave();
 			this.getTsvXmiConverter().getSettings().doSave();
+			this.getXmiCsvConverter().getSettings().doSave();
 			this.getXmiTbxConverter().getSettings().doSave();
 			this.getTbxXmiConverter().getSettings().doSave();
 		} catch (Exception e) {
