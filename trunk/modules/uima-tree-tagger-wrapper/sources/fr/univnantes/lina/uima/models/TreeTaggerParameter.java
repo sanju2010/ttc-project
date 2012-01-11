@@ -5,9 +5,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import org.apache.uima.UIMAFramework;
 import org.apache.uima.resource.DataResource;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.SharedResourceObject;
+import org.apache.uima.util.Level;
 
 public class TreeTaggerParameter implements SharedResourceObject {
 
@@ -53,6 +55,7 @@ public class TreeTaggerParameter implements SharedResourceObject {
 	public void override(String parameter) throws IOException {
 		if (parameter != null) {
 			InputStream inputStream = new FileInputStream(parameter);
+			UIMAFramework.getLogger().log(Level.INFO, "Loading " + parameter);
 			this.doLoad(inputStream);			
 		}
 	}
