@@ -18,6 +18,8 @@ import org.apache.uima.UIMAFramework;
 import org.apache.uima.util.Level;
 
 import eu.project.ttc.tools.TermSuite;
+import eu.project.ttc.tools.converter.csv.XmiCsvConverter;
+import eu.project.ttc.tools.converter.csv.XmiCsvConverterEngine;
 import eu.project.ttc.tools.converter.tbx.TbxXmiConverter;
 import eu.project.ttc.tools.converter.tbx.TbxXmiConverterEngine;
 import eu.project.ttc.tools.converter.tbx.XmiTbxConverter;
@@ -130,6 +132,17 @@ public class Converter implements Runnable {
 		return this.tsvXmiConverter;
 	}
 	
+	private XmiCsvConverter xmiCsvConverter;
+	
+	private void setXmiCsvConverter() {
+		this.xmiCsvConverter = new XmiCsvConverter();
+		this.xmiCsvConverter.setParent(this);
+	}
+	
+	private XmiCsvConverter getXmiCsvConverter() {
+		return this.xmiCsvConverter;
+	}
+	
 	private XmiTbxConverter xmiTbxConverter;
 	
 	private void setXmiTbxConverter() {
@@ -159,6 +172,7 @@ public class Converter implements Runnable {
 		this.content.setTabPlacement(JTabbedPane.TOP);
 		this.content.addTab(" XMI -> TSV ",this.getXmiTsvConverter().getComponent());
 		this.content.addTab(" TSV -> XMI ",this.getTsvXmiConverter().getComponent());
+		this.content.addTab(" XMI -> CSV ",this.getXmiCsvConverter().getComponent());
 		this.content.addTab(" XMI -> TBX ",this.getXmiTbxConverter().getComponent());
 		this.content.addTab(" TBX -> XMI ",this.getTbxXmiConverter().getComponent());
 		Listener listener = new Listener();
@@ -178,12 +192,16 @@ public class Converter implements Runnable {
 		return this.getContent().getSelectedIndex() == 1;
 	}
 	
-	public boolean isXmiTbxSelected() {
+	public boolean isXmiCsvSelected() {
 		return this.getContent().getSelectedIndex() == 2;
 	}
 	
-	public boolean isTbxXmiSelected() {
+	public boolean isXmiTbxSelected() {
 		return this.getContent().getSelectedIndex() == 3;
+	}
+	
+	public boolean isTbxXmiSelected() {
+		return this.getContent().getSelectedIndex() == 4;
 	}
 
 	private JSplitPane component;
@@ -233,6 +251,7 @@ public class Converter implements Runnable {
 		this.setToolBar();
 		this.setXmiTsvConverter();
 		this.setTsvXmiConverter();
+		this.setXmiCsvConverter();
 		this.setXmiTbxConverter();
 		this.setTbxXmiConverter();
 		this.setContent();
@@ -263,7 +282,12 @@ public class Converter implements Runnable {
 			TsvXmiConverterEngine engine = new TsvXmiConverterEngine();
 			engine.setConverterTool(this.getTsvXmiConverter());
 			this.listener.setConverterEngine(engine);
-		} else if (this.isXmiTbxSelected()) {
+		} else if (this.isXmiCsvSelected()) {
+			this.listener.setConverterTool(this.getXmiCsvConverter());
+			XmiCsvConverterEngine engine = new XmiCsvConverterEngine();
+			engine.setConverterTool(this.getXmiCsvConverter());
+			this.listener.setConverterEngine(engine);
+		}  else if (this.isXmiTbxSelected()) {
 			this.listener.setConverterTool(this.getXmiTbxConverter());
 			XmiTbxConverterEngine engine = new XmiTbxConverterEngine();
 			engine.setConverterTool(this.getXmiTbxConverter());
