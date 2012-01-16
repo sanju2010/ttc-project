@@ -1,0 +1,5 @@
+#surefire
+#Tue Dec 13 13:42:53 CET 2011
+user.dir=/home/rocheteau-j/Repositories/SandBox/mapper
+localRepository=/home/rocheteau-j/.m2/repository
+basedir=/home/rocheteau-j/Repositories/SandBox/mapper
