@@ -29,29 +29,20 @@ public class FileField implements Field {
 		return this.name;
 	}
 		
-	private String value;
-	
 	@Override
 	public void setValue(Object value) {
-		if (this.value == null) {
-			this.doModify(false);
-		} else {
-			this.doModify(true);
-		}
-		if (value == null) {
-			this.value = "";
-		} else {
-			this.value = value.toString();
-		}
-		this.getText().setText(this.value);
+		this.getText().setText(value == null ? null : value.toString());
 	}
 	
 	@Override
 	public String getValue() {
-		if (this.value.isEmpty()) {
+		String value = this.text.getText();
+		if (value == null) {
+			return null;
+		} else if (value.isEmpty()) {
 			return null;
 		} else {
-			return this.value;			
+			return value;
 		}
 	}
 
@@ -119,17 +110,6 @@ public class FileField implements Field {
 		return this.component;
 	}
 	
-	private boolean modified;
-	
-	private void doModify(boolean enabled) {
-		this.modified = enabled;
-	}
-	
-	@Override
-	public boolean isModified() {
-		return this.modified;
-	}
-
 	private void enableListsners() {
 		Listener listener = new Listener();
 		listener.setFileField(this);
@@ -167,6 +147,11 @@ public class FileField implements Field {
 			}
 		}
 		
+	}
+
+	@Override
+	public boolean isModified() {
+		return true;
 	}
 	
 }
