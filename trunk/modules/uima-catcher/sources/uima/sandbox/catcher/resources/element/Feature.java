@@ -73,15 +73,15 @@ public class Feature implements Element {
 		while (iterator.hasNext()) {
 			Type dom = iterator.next();
 			if (!dom.isPrimitive() && !type.isArray()) {
+				// System.out.println(this.term + " vs " + dom.getName());
 				if (this.term.check(cas, variables, dom)) {
 					org.apache.uima.cas.Feature feat = dom.getFeatureByBaseName(this.name);
 					if (feat != null) {
-						Type cod = feat.getRange();
-						// System.out.println("check: " + this + " vs " + cod.getName());
+						Type cod = feat.getRange();	
 						if (cas.getTypeSystem().subsumes(cod, type)) {
 							return true;
 						}
-					}
+					} 
 				}				
 			}
 		}

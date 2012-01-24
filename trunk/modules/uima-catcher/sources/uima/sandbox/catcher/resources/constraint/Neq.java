@@ -32,26 +32,16 @@ public class Neq implements Constraint {
 	@Override
 	public int compareTo(Constraint constraint) {
 		if (constraint instanceof Eq) {
-			return -1;
-		} else if (constraint instanceof Lt) {
-			return -1;
-		} else if (constraint instanceof Leq) {
-			return -1;
-		} else if (constraint instanceof Gt) {
-			return -1;
-		} else if (constraint instanceof Geq) {
-			return -1;
-		} else if (constraint instanceof Neq) {
-			Neq neq = (Neq) constraint;
-			int diff = this.left.compareTo(neq.left());
+			Eq eq = (Eq) constraint;
+			int diff = this.left.compareTo(eq.left());
 			if (diff == 0) {
-				return this.right.compareTo(neq.right());
+				return this.right.compareTo(eq.right());
 			} else {
 				return diff;
 			}
 		} else {
 			return 1;
-		}
+		} 
 	}
 
 	@Override
@@ -71,9 +61,12 @@ public class Neq implements Constraint {
 		Iterator<Type> iterator = cas.getTypeSystem().getTypeIterator();
 		while (iterator.hasNext()) {
 			Type type = iterator.next();
-			if (this.left.check(cas, parameters, type) && this.right.check(cas, parameters, type)) {
-				return true;
-			}
+			if (type.isPrimitive()) {
+				if (this.left.check(cas, parameters, type) && this.right.check(cas, parameters, type)) {
+					// System.out.println("check OK: " + this);
+					return true;
+				}
+			} 
 		}
 		return false;
 	}
@@ -82,26 +75,34 @@ public class Neq implements Constraint {
 	public boolean match(JCas cas, Map<String, Annotation> values) {
 		Object left = this.left.match(cas, values);
 		Object right = this.right.match(cas, values);
-		if (left instanceof Type && right instanceof Type) {
+		if (left == null) {
+			System.out.println("Null " + this.left);
+			return false;
+		} else if (right == null) {
+			System.out.println("Null " + this.right);
+			return false;
+		} else if (left instanceof Type && right instanceof Type) {
 			Type first = (Type) left;
 			Type second = (Type) right;
-			return !first.getName().equals(second.getName());
+			return first.getName().equals(second.getName());
 		} else if (left instanceof Integer && right instanceof Integer) {
 			Integer first = (Integer) left;
 			Integer second = (Integer) right;
 			return first.compareTo(second) != 0;
 		} else 	if (left instanceof String && right instanceof String) {
+			// System.out.println("match " + this + "\t\t" + left + " == " + right);
 			String first = (String) left;
 			String second = (String) right;
 			return first.compareTo(second) != 0;
 		} else {
+			System.out.println("Not implemented " + left.getClass()  + " " + right.getClass());
 			return false;
 		}
 	}
 	
 	@Override
 	public String toString() {
-		return this.left.toString() + " != " + this.right.toString();
+		return this.left.toString() + " == " + this.right.toString();
 	}
 	
 }

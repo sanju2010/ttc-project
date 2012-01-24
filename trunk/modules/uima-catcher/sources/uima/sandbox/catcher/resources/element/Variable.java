@@ -57,7 +57,7 @@ public class Variable implements Element {
 			return false;
 		} else {
 			// TODO array, etc
-			// System.out.println("check: " + this + " vs " + ty.getName() + " < " + type.getName());
+			// System.out.println("check: " + this + " vs " + ty.getName() + " < " + type.getName() + " " + cas.getTypeSystem().subsumes(type, ty));
 			return cas.getTypeSystem().subsumes(type, ty);
 			// return ty.getName().equals(type.getName());
 		}

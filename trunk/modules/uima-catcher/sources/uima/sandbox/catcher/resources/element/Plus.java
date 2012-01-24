@@ -76,6 +76,7 @@ public class Plus implements Element {
 			java.lang.Integer second = (java.lang.Integer) right;
 			return new java.lang.Integer(first + second);
 		} else if (left instanceof java.lang.String && right instanceof java.lang.String) {
+			// System.out.println("match " + this + "\t\t" + left + " + " + right);
 			java.lang.String first = (java.lang.String) left;
 			java.lang.String second = (java.lang.String) right;
 			return new java.lang.String(first + second);

@@ -75,7 +75,13 @@ public class Eq implements Constraint {
 	public boolean match(JCas cas, Map<String, Annotation> values) {
 		Object left = this.left.match(cas, values);
 		Object right = this.right.match(cas, values);
-		if (left instanceof Type && right instanceof Type) {
+		if (left == null) {
+			System.out.println("Null " + this.left);
+			return false;
+		} else if (right == null) {
+			System.out.println("Null " + this.right);
+			return false;
+		} else if (left instanceof Type && right instanceof Type) {
 			Type first = (Type) left;
 			Type second = (Type) right;
 			return first.getName().equals(second.getName());
@@ -89,7 +95,7 @@ public class Eq implements Constraint {
 			String second = (String) right;
 			return first.compareTo(second) == 0;
 		} else {
-			System.out.println("Not implemented " + this.left.getClass()  + " " + this.right.getClass());
+			System.out.println("Not implemented " + left.getClass()  + " " + right.getClass());
 			return false;
 		}
 	}

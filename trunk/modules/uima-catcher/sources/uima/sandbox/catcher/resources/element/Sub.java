@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Type;
@@ -66,9 +67,10 @@ public class Sub implements Element {
 		if (type.isArray()) {
 			Type ty = type.getComponentType();
 			Type tau = cas.getTypeSystem().getType(this.type);
+			// System.out.println("check: " + this + " vs " + type.getName() + " / " + tau.getName());
 			if (tau != null && cas.getTypeSystem().subsumes(ty, tau)) {
-				// System.out.println("checked: " + tau.getName() + " < " + ty.getName());
-				return this.term.check(cas, variables, ty);
+				// System.out.println("check: " + this.term + " vs " + tau.getName() + " < " + ty.getName());
+				return this.term.check(cas, variables, cas.getTypeSystem().getType(CAS.TYPE_NAME_ANNOTATION));
 			} else {
 				return false;
 			}
