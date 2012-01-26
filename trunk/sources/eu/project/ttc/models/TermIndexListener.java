@@ -114,7 +114,7 @@ public class TermIndexListener implements IndexListener {
 			}
 		}
 		
-		private void addComponents(TermAnnotation annotation, String term) {
+		private void addComponents(MultiWordTermAnnotation annotation, String term) {
 			try {
 				JCas cas = annotation.getCAS().getJCas();
 				AnnotationIndex<Annotation> index = cas.getAnnotationIndex(WordAnnotation.type);
@@ -135,6 +135,29 @@ public class TermIndexListener implements IndexListener {
 				UIMAFramework.getLogger().log(Level.WARNING,e.getMessage());
 			}
 		}
+
+		private void addComponents(NeoClassicalCompoundTermAnnotation annotation, String term) {
+			try {
+				JCas cas = annotation.getCAS().getJCas();
+				AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TermComponentAnnotation.type);
+				FSIterator<Annotation> iterator = index.subiterator(annotation);
+				List<Component> components = new ArrayList<Component>();
+				while (iterator.hasNext()) {
+					TermComponentAnnotation component = (TermComponentAnnotation) iterator.next();
+					if (component.getBegin() == annotation.getBegin() && component.getEnd() == annotation.getEnd()) {
+						continue;
+					} else {
+						Component c = new Component();
+						c.update(component, annotation.getBegin());
+						components.add(c);
+					}
+				}
+				this.getComponents().put(term, components);
+			} catch (CASException e) {
+				UIMAFramework.getLogger().log(Level.WARNING,e.getMessage());
+			}
+		}
+
 		
 	}	
 	
@@ -250,6 +273,7 @@ public class TermIndexListener implements IndexListener {
 				TermAnnotation annotation = new SingleWordTermAnnotation(cas,begin,end);
 				annotation.setFrequency(freq);
 				annotation.setCategory(category);
+				annotation.setLemma(entry);
 				annotation.setComplexity(Term.SINGLE_WORD);
 				annotation.addToIndexes();
 			}
@@ -293,6 +317,7 @@ public class TermIndexListener implements IndexListener {
 		
 		private String category;
 		private String lemma;
+		private String stem;
 		private int begin;
 		private int end;
 		
@@ -301,14 +326,25 @@ public class TermIndexListener implements IndexListener {
 			annotation.setEnd(offset + this.end);
 			annotation.setCategory(this.category);
 			annotation.setLemma(this.lemma);
+			annotation.setStem(this.stem);
 		}
 		
 		public void update(WordAnnotation annotation,int offset) {
 			this.category = annotation.getCategory();
 			this.lemma = annotation.getLemma();
+			this.stem = annotation.getStem();
 			this.begin = annotation.getBegin() - offset;
 			this.end = annotation.getEnd() - offset;
 		}
+
+		public void update(TermComponentAnnotation annotation,int offset) {
+			this.category = annotation.getCategory();
+			this.lemma = annotation.getLemma();
+			this.stem = annotation.getStem();
+			this.begin = annotation.getBegin() - offset;
+			this.end = annotation.getEnd() - offset;
+		}
+
 		
 	}
 		

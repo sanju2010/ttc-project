@@ -14,7 +14,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /** 
- * Updated by JCasGen Tue Jan 10 16:01:52 CET 2012
+ * Updated by JCasGen Mon Jan 23 23:36:27 CET 2012
  * @generated */
 public class TermComponentAnnotation_Type extends Annotation_Type {
   /** @generated */
@@ -76,6 +76,24 @@ public class TermComponentAnnotation_Type extends Annotation_Type {
     ll_cas.ll_setStringValue(addr, casFeatCode_lemma, v);}
     
   
+ 
+  /** @generated */
+  final Feature casFeat_stem;
+  /** @generated */
+  final int     casFeatCode_stem;
+  /** @generated */ 
+  public String getStem(int addr) {
+        if (featOkTst && casFeat_stem == null)
+      jcas.throwFeatMissing("stem", "eu.project.ttc.types.TermComponentAnnotation");
+    return ll_cas.ll_getStringValue(addr, casFeatCode_stem);
+  }
+  /** @generated */    
+  public void setStem(int addr, String v) {
+        if (featOkTst && casFeat_stem == null)
+      jcas.throwFeatMissing("stem", "eu.project.ttc.types.TermComponentAnnotation");
+    ll_cas.ll_setStringValue(addr, casFeatCode_stem, v);}
+    
+  
 
 
 
@@ -92,6 +110,10 @@ public class TermComponentAnnotation_Type extends Annotation_Type {
  
     casFeat_lemma = jcas.getRequiredFeatureDE(casType, "lemma", "uima.cas.String", featOkTst);
     casFeatCode_lemma  = (null == casFeat_lemma) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_lemma).getCode();
+
+ 
+    casFeat_stem = jcas.getRequiredFeatureDE(casType, "stem", "uima.cas.String", featOkTst);
+    casFeatCode_stem  = (null == casFeat_stem) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_stem).getCode();
 
   }
 }

@@ -11,7 +11,7 @@ import org.apache.uima.cas.impl.TypeImpl;
 import org.apache.uima.cas.Type;
 
 /** 
- * Updated by JCasGen Tue Jan 10 16:01:52 CET 2012
+ * Updated by JCasGen Mon Jan 23 23:36:27 CET 2012
  * @generated */
 public class NeoClassicalCompoundTermAnnotation_Type extends TermAnnotation_Type {
   /** @generated */

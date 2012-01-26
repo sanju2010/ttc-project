@@ -96,17 +96,27 @@ public class TermVariantListener implements IndexListener {
 	void process(JCas cas) {
 		try {
 			for (Rule rule : this.getRuleSystem().get()) {
+				UIMAFramework.getLogger().log(Level.INFO,"Checking: " + rule.id());
+				try {
 				if (rule.check(cas)) {
+					UIMAFramework.getLogger().log(Level.INFO,"Applying: " + rule.id());
+					try {
 					if (rule.match(cas)) {
 						this.release(cas, rule.id(), rule.get());
 					} else {
 						UIMAFramework.getLogger().log(Level.WARNING,"Annotation Match Failure: " + rule.id());	
 					}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				} else {
 					UIMAFramework.getLogger().log(Level.WARNING,"Type Check Failure: " + rule.id());		
 				}
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+				}
 			}
-		} catch (Exception e) {
+		} catch (Throwable e) {
 			UIMAFramework.getLogger().log(Level.SEVERE,e.getMessage());
 		}
 	}
@@ -120,7 +130,8 @@ public class TermVariantListener implements IndexListener {
 	}
 
 	protected void release(JCas cas, String id, Annotation[] annotations) {
-		// String message = "Found " + annotations.length + " annotations with the rule: " + id;
+		String message = "Found " + annotations.length + " annotations with the rule: " + id;
+		
 		TermAnnotation base = null;
 		Set<TermAnnotation> variants = new HashSet<TermAnnotation>();
 		for (Annotation annotation : annotations) {
@@ -136,6 +147,13 @@ public class TermVariantListener implements IndexListener {
 				}
 			}
 		}
+		FSArray old = base.getVariants();
+		if (old != null) {
+			for (int i = 0; i < base.getVariants().size(); i++) {
+				TermAnnotation variant = base.getVariants(i);
+				variants.add(variant);
+			}
+		}
 		FSArray ar = new FSArray(cas, variants.size());
 		base.setVariants(ar);
 		int i = 0;
@@ -143,13 +161,11 @@ public class TermVariantListener implements IndexListener {
 			base.setVariants(i, variant);
 			i++;
 		}
-		/*
 		message += "\nbase = " + base.getCoveredText();
 		for (int index = 0; index < base.getVariants().size(); index++) {
 			message += "\n\tvariant = " + base.getVariants(index).getCoveredText();
 		}
-		UIMAFramework.getLogger().log(Level.INFO, message);
-		*/
+		System.out.println(message);
 	}
 
 }

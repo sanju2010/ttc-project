@@ -17,6 +17,10 @@ public class AcabitSettings extends Parameters {
 		this.addParameter(declarations, "OutputDirectory", ConfigurationParameter.TYPE_STRING, false, true);
 		this.addParameter(declarations, "TerminologyFile", ConfigurationParameter.TYPE_STRING, false, true);
 		this.addParameter(declarations, "TermAnnotationType", ConfigurationParameter.TYPE_STRING, false, true, "values:eu.project.ttc.types.TermAnnotation|eu.project.ttc.types.SingleWordTermAnnotation|eu.project.ttc.types.MultiWordTermAnnotation|eu.project.ttc.types.NeoClassicalCompoundTermAnnotation");
+		this.addParameter(declarations, "MultiWordPatternRuleFile", ConfigurationParameter.TYPE_STRING, false, true);
+		this.addParameter(declarations, "TermVariationRuleFile", ConfigurationParameter.TYPE_STRING, false, true);
+		this.addParameter(declarations, "NeoclassicalElementFile", ConfigurationParameter.TYPE_STRING, false, true);
+		this.addParameter(declarations, "EditDistanceClassName", ConfigurationParameter.TYPE_STRING, false, true, "values:eu.project.ttc.metrics.LevenshteinDistance");
 	}
 		
 }

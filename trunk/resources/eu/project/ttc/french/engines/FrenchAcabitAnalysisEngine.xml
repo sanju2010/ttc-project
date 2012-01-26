@@ -6,20 +6,26 @@
     <delegateAnalysisEngine key="FrenchTermIndexer">
       <import name="eu.project.ttc.french.engines.FrenchTermIndexer"/>
     </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="EditDistanceGathering">
+      <import name="eu.project.ttc.all.engines.EditDistanceGathering"/>
+    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="FrenchTermDetector">
       <import name="eu.project.ttc.french.engines.FrenchTermDetector"/>
     </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="FrenchTermGatherer">
-      <import name="eu.project.ttc.french.engines.FrenchTermGatherer"/>
-    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="FrenchTermFilter">
       <import name="eu.project.ttc.french.engines.FrenchTermFilter"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="FrenchCompoundSplitter">
+      <import name="eu.project.ttc.french.engines.FrenchCompoundSplitter"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="IndexWriter">
       <import name="eu.project.ttc.all.engines.IndexWriter"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="XmiCasConsumer">
       <import name="eu.project.ttc.all.engines.XmiCasConsumer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="FrenchTermGatherer">
+      <import name="eu.project.ttc.french.engines.FrenchTermGatherer"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="FrenchLemmaFilter">
       <import name="eu.project.ttc.french.engines.FrenchLemmaFilter"/>
@@ -38,7 +44,7 @@
         <name>Directory</name>
         <type>String</type>
         <multiValued>false</multiValued>
-        <mandatory>false</mandatory>
+        <mandatory>true</mandatory>
         <overrides>
           <parameter>XmiCasConsumer/Directory</parameter>
         </overrides>
@@ -70,6 +76,51 @@
           <parameter>TermIndexer/Language</parameter>
         </overrides>
       </configurationParameter>
+      <configurationParameter>
+        <name>TermVariationRuleFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>FrenchTermGatherer/File</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>MultiWordPatternRuleFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>FrenchTermDetector/MultiWordPatternRuleFile</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>NeoclassicalElementFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>FrenchTermDetector/NeoclassicalElementFile</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>Dictionary</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>FrenchCompoundSplitter/File</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>EditDistanceClassName</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>EditDistanceGathering/EditDistanceClassName</parameter>
+        </overrides>
+      </configurationParameter>
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
@@ -81,7 +132,7 @@
       <nameValuePair>
         <name>File</name>
         <value>
-          <string>terminology.index</string>
+          <string>fr-terminology.xmi</string>
         </value>
       </nameValuePair>
       <nameValuePair>
@@ -93,7 +144,13 @@
       <nameValuePair>
         <name>Language</name>
         <value>
-          <string>x-unspecified</string>
+          <string>fr</string>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>EditDistanceClassName</name>
+        <value>
+          <string>EditDistanceClassName</string>
         </value>
       </nameValuePair>
     </configurationParameterSettings>
@@ -104,6 +161,8 @@
         <node>FrenchLemmaFilter</node>
         <node>TermIndexer</node>
         <node>FrenchTermIndexer</node>
+        <node>FrenchCompoundSplitter</node>
+        <node>EditDistanceGathering</node>
         <node>FrenchTermGatherer</node>
         <node>IndexWriter</node>
         <node>XmiCasConsumer</node>
@@ -115,9 +174,9 @@
       <capability>
         <inputs>
           <type allAnnotatorFeatures="true">org.apache.uima.examples.SourceDocumentInformation</type>
+          <type allAnnotatorFeatures="true">eu.project.ttc.types.WordAnnotation</type>
         </inputs>
         <outputs>
-          <type allAnnotatorFeatures="true">eu.project.ttc.types.WordAnnotation</type>
           <type allAnnotatorFeatures="true">org.apache.uima.TermAnnotation</type>
         </outputs>
         <languagesSupported>
@@ -174,6 +233,14 @@
       <externalResourceBinding>
         <key>FrenchLemmaFilter/Filter</key>
         <resourceName>FrenchFilter</resourceName>
+      </externalResourceBinding>
+      <externalResourceBinding>
+        <key>FrenchCompoundSplitter/Index</key>
+        <resourceName>DefaultIndex</resourceName>
+      </externalResourceBinding>
+      <externalResourceBinding>
+        <key>EditDistanceGathering/Index</key>
+        <resourceName>DefaultIndex</resourceName>
       </externalResourceBinding>
     </externalResourceBindings>
   </resourceManagerConfiguration>

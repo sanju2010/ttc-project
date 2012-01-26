@@ -88,7 +88,6 @@ public class AcabitViewer {
 			while (iterator.hasNext()) {
 				TermAnnotation annotation = (TermAnnotation) iterator.next();
 				double frequency = annotation.getFrequency();
-				// TODO specificifty
 				Set<TermAnnotation> terms = annotations.get(frequency);
 				if (terms == null) {
 					terms = new HashSet<TermAnnotation>();
@@ -115,9 +114,12 @@ public class AcabitViewer {
 	
 	private void addVariants(DefaultMutableTreeNode root, JCas cas, TermAnnotation annotation) {
 		if (annotation.getVariants() != null) {
-			DefaultMutableTreeNode node = new DefaultMutableTreeNode();
-			node.setUserObject("variants");
-			root.add(node);
+			DefaultMutableTreeNode node = this.getvariants(root);
+			if (node == null) {
+				node = new DefaultMutableTreeNode();
+				node.setUserObject("variants");
+				root.add(node);				
+			}
 			int length = annotation.getVariants().size();
 			for (int index = 0; index < length; index++) {
 				TermAnnotation variant = annotation.getVariants(index);
@@ -136,14 +138,32 @@ public class AcabitViewer {
 	private void addComponents(DefaultMutableTreeNode root, JCas cas, TermAnnotation annotation) {
 		AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TermComponentAnnotation.type);
 		FSIterator<Annotation> iterator = index.subiterator(annotation);
+		DefaultMutableTreeNode node = null;
 		while (iterator.hasNext()) {
+			if (node == null) {
+				node = new DefaultMutableTreeNode();
+				node.setUserObject("components");
+				root.add(node);
+			}
 			TermComponentAnnotation component = (TermComponentAnnotation) iterator.next();
-			DefaultMutableTreeNode node = new DefaultMutableTreeNode();
-			node.setUserObject(component.getCoveredText());
-			root.add(node);
-			this.addNote(node, "category", component.getCategory());
-			this.addNote(node, "lemma", component.getLemma());
+			DefaultMutableTreeNode child = new DefaultMutableTreeNode();
+			child.setUserObject(component.getCoveredText());
+			node.add(child);
+			this.addNote(child, "category", component.getCategory());
+			this.addNote(child, "lemma", component.getLemma());
+			this.addNote(child, "stem", component.getStem());
 		}
+	}
+
+	private DefaultMutableTreeNode getvariants(DefaultMutableTreeNode root) {
+		int count = root.getChildCount();
+		for (int index = 0; index < count; index++) {
+			DefaultMutableTreeNode child = (DefaultMutableTreeNode) root.getChildAt(index);
+			if (child.getUserObject().toString().equals("variants")) {
+				return (DefaultMutableTreeNode ) child;
+			}
+		}
+		return null;
 	}
 
 	private void addNotes(DefaultMutableTreeNode root,TermAnnotation annotation) {

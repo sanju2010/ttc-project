@@ -2,21 +2,21 @@
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>true</primitive>
-  <annotatorImplementationName>fr.free.rocheteau.jerome.engines.Copier</annotatorImplementationName>
+  <annotatorImplementationName>uima.sandbox.mapper.engines.Mapper</annotatorImplementationName>
   <analysisEngineMetaData>
-    <name>Chinese TreeTagger Lemma Normalizer</name>
+    <name>Chinese Stem Normalizer</name>
     <description/>
     <version>1.0</version>
     <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
     <configurationParameters>
       <configurationParameter>
-        <name>SourceFeature</name>
+        <name>Source</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>TargetFeature</name>
+        <name>Target</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
@@ -24,13 +24,13 @@
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
-        <name>SourceFeature</name>
+        <name>Source</name>
         <value>
-          <string>eu.project.ttc.types.WordAnnotation:coveredText</string>
+          <string>eu.project.ttc.types.WordAnnotation</string>
         </value>
       </nameValuePair>
       <nameValuePair>
-        <name>TargetFeature</name>
+        <name>Target</name>
         <value>
           <string>eu.project.ttc.types.WordAnnotation:stem</string>
         </value>
@@ -62,5 +62,29 @@
       <outputsNewCASes>false</outputsNewCASes>
     </operationalProperties>
   </analysisEngineMetaData>
-  <resourceManagerConfiguration/>
-</analysisEngineDescription>
+  <externalResourceDependencies>
+    <externalResourceDependency>
+      <key>Mapping</key>
+      <description/>
+      <interfaceName>uima.sandbox.mapper.resources.Mapping</interfaceName>
+      <optional>false</optional>
+    </externalResourceDependency>
+  </externalResourceDependencies>
+  <resourceManagerConfiguration>
+    <externalResources>
+      <externalResource>
+        <name>ChineseStemMapping</name>
+        <description/>
+        <fileResourceSpecifier>
+          <fileUrl>eu/project/ttc/chinese/resources/chinese-lemma-mapping.xml</fileUrl>
+        </fileResourceSpecifier>
+        <implementationName>uima.sandbox.mapper.resources.MappingResource</implementationName>
+      </externalResource>
+    </externalResources>
+    <externalResourceBindings>
+      <externalResourceBinding>
+        <key>Mapping</key>
+        <resourceName>ChineseStemMapping</resourceName>
+      </externalResourceBinding>
+    </externalResourceBindings>
+  </resourceManagerConfiguration></analysisEngineDescription>

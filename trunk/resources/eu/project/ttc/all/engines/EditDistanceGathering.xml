@@ -2,21 +2,21 @@
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>true</primitive>
-  <annotatorImplementationName>uima.sandbox.mapper.engines.Mapper</annotatorImplementationName>
+  <annotatorImplementationName>uima.sandbox.indexer.engines.Indexer</annotatorImplementationName>
   <analysisEngineMetaData>
-    <name>Chinese Lemma Normalizer</name>
+    <name>Edit Distance Gathering</name>
     <description/>
     <version>1.0</version>
-    <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
+    <vendor/>
     <configurationParameters>
       <configurationParameter>
-        <name>Source</name>
+        <name>Type</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>Target</name>
+        <name>EditDistanceClassName</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
@@ -24,15 +24,15 @@
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
-        <name>Source</name>
+        <name>Type</name>
         <value>
-          <string>eu.project.ttc.types.WordAnnotation</string>
+          <string>eu.project.ttc.types.TermAnnotation</string>
         </value>
       </nameValuePair>
       <nameValuePair>
-        <name>Target</name>
+        <name>EditDistanceClassName</name>
         <value>
-          <string>eu.project.ttc.types.WordAnnotation:lemma</string>
+          <string>eu.project.ttc.metrics.LevenshteinDistance</string>
         </value>
       </nameValuePair>
     </configurationParameterSettings>
@@ -45,15 +45,9 @@
     <fsIndexCollection/>
     <capabilities>
       <capability>
-        <inputs>
-          <type allAnnotatorFeatures="true">org.apache.uima.WordAnnotation</type>
-        </inputs>
-        <outputs>
-          <type allAnnotatorFeatures="true">org.apache.uima.WordAnnotation</type>
-        </outputs>
-        <languagesSupported>
-          <language>zh</language>
-        </languagesSupported>
+        <inputs/>
+        <outputs/>
+        <languagesSupported/>
       </capability>
     </capabilities>
     <operationalProperties>
@@ -64,27 +58,46 @@
   </analysisEngineMetaData>
   <externalResourceDependencies>
     <externalResourceDependency>
-      <key>Mapping</key>
+      <key>Index</key>
       <description/>
-      <interfaceName>uima.sandbox.mapper.resources.Mapping</interfaceName>
+      <interfaceName>uima.sandbox.indexer.resources.Index</interfaceName>
+      <optional>false</optional>
+    </externalResourceDependency>
+    <externalResourceDependency>
+      <key>Listener</key>
+      <description/>
+      <interfaceName>uima.sandbox.indexer.resources.IndexListener</interfaceName>
       <optional>false</optional>
     </externalResourceDependency>
   </externalResourceDependencies>
   <resourceManagerConfiguration>
     <externalResources>
       <externalResource>
-        <name>ChineseLemmaMapping</name>
+        <name>DefaultIndex</name>
         <description/>
         <fileResourceSpecifier>
-          <fileUrl>eu/project/ttc/chinese/resources/chinese-lemma-mapping.xml</fileUrl>
+          <fileUrl>eu/project/ttc/all/engines/IndexWriter.xml</fileUrl>
         </fileResourceSpecifier>
-        <implementationName>uima.sandbox.mapper.resources.MappingResource</implementationName>
+        <implementationName>uima.sandbox.indexer.resources.DefaultIndex</implementationName>
+      </externalResource>
+      <externalResource>
+        <name>EditDistanceGathering</name>
+        <description/>
+        <fileResourceSpecifier>
+          <fileUrl>eu/project/ttc/models/EditDistanceGathering.class</fileUrl>
+        </fileResourceSpecifier>
+        <implementationName>eu.project.ttc.models.EditDistanceGathering</implementationName>
       </externalResource>
     </externalResources>
     <externalResourceBindings>
       <externalResourceBinding>
-        <key>Mapping</key>
-        <resourceName>ChineseLemmaMapping</resourceName>
+        <key>Index</key>
+        <resourceName>DefaultIndex</resourceName>
+      </externalResourceBinding>
+      <externalResourceBinding>
+        <key>Listener</key>
+        <resourceName>EditDistanceGathering</resourceName>
       </externalResourceBinding>
     </externalResourceBindings>
-  </resourceManagerConfiguration></analysisEngineDescription>
+  </resourceManagerConfiguration>
+</analysisEngineDescription>

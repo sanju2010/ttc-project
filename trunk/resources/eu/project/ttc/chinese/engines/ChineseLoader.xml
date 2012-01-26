@@ -3,47 +3,62 @@
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>false</primitive>
   <delegateAnalysisEngineSpecifiers>
-    <delegateAnalysisEngine key="FrenchNeoClassicalTermDetector">
-      <import name="eu.project.ttc.french.engines.FrenchNeoClassicalTermDetector"/>
+    <delegateAnalysisEngine key="ChineseLemmaNormalizer">
+      <import name="eu.project.ttc.chinese.engines.ChineseLemmaNormalizer"/>
     </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="FrenchMultiWordTermDetector">
-      <import name="eu.project.ttc.french.engines.FrenchMultiWordTermDetector"/>
+    <delegateAnalysisEngine key="ChineseTreeTaggerWrapper">
+      <import name="eu.project.ttc.chinese.engines.ChineseTreeTaggerWrapper"/>
     </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="SingleWordTermDetector">
-      <import name="eu.project.ttc.all.engines.SingleWordTermDetector"/>
+    <delegateAnalysisEngine key="ChineseStemNormalizer">
+      <import name="eu.project.ttc.chinese.engines.ChineseStemNormalizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="XmiCasConsumer">
+      <import name="eu.project.ttc.all.engines.XmiCasConsumer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="ChineseTreeTaggerCategoryNormalizer">
+      <import name="eu.project.ttc.chinese.engines.ChineseTreeTaggerCategoryNormalizer"/>
     </delegateAnalysisEngine>
   </delegateAnalysisEngineSpecifiers>
   <analysisEngineMetaData>
-    <name>French Term Detector</name>
+    <name>Chinese Loader</name>
     <description/>
     <version>1.0</version>
     <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
     <configurationParameters searchStrategy="language_fallback">
       <configurationParameter>
-        <name>MultiWordPatternRuleFile</name>
+        <name>TreeTaggerHomeDirectory</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
         <overrides>
-          <parameter>FrenchMultiWordTermDetector/File</parameter>
+          <parameter>ChineseTreeTaggerWrapper/TreeTaggerHomeDirectory</parameter>
         </overrides>
       </configurationParameter>
       <configurationParameter>
-        <name>NeoclassicalElementFile</name>
+        <name>Directory</name>
         <type>String</type>
         <multiValued>false</multiValued>
-        <mandatory>false</mandatory>
+        <mandatory>true</mandatory>
         <overrides>
-          <parameter>FrenchNeoClassicalTermDetector/RootBankFile</parameter>
+          <parameter>XmiCasConsumer/Directory</parameter>
         </overrides>
       </configurationParameter>
     </configurationParameters>
-    <configurationParameterSettings/>
+    <configurationParameterSettings>
+      <nameValuePair>
+        <name>Directory</name>
+        <value>
+          <string>output</string>
+        </value>
+      </nameValuePair>
+    </configurationParameterSettings>
     <flowConstraints>
       <fixedFlow>
-        <node>SingleWordTermDetector</node>
-        <node>FrenchMultiWordTermDetector</node>
-        <node>FrenchNeoClassicalTermDetector</node>
+        <node>ChineseTreeTaggerWrapper</node>
+        <node>ChineseTreeTaggerCategoryNormalizer</node>
+        <node>ChineseLemmaNormalizer</node>
+        <node>ChineseStemNormalizer</node>
+        <node>XmiCasConsumer</node>
       </fixedFlow>
     </flowConstraints>
     <typePriorities/>
@@ -51,14 +66,13 @@
     <capabilities>
       <capability>
         <inputs>
-          <type allAnnotatorFeatures="true">eu.project.ttc.types.WordAnnotation</type>
           <type allAnnotatorFeatures="true">org.apache.uima.examples.SourceDocumentInformation</type>
         </inputs>
         <outputs>
-          <type allAnnotatorFeatures="true">eu.project.ttc.types.TermAnnotation</type>
+          <type allAnnotatorFeatures="true">eu.project.ttc.types.WordAnnotation</type>
         </outputs>
         <languagesSupported>
-          <language>fr</language>
+          <language>zh</language>
         </languagesSupported>
       </capability>
     </capabilities>

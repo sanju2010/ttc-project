@@ -33,9 +33,11 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.metadata.FsIndexDescription;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 import org.apache.uima.util.CasCreationUtils;
+import org.apache.uima.util.InvalidXMLException;
 import org.apache.uima.util.Level;
 import org.apache.uima.util.XMLInputSource;
 import org.apache.uima.util.XMLParser;
+import org.xml.sax.SAXException;
 
 import eu.project.ttc.metrics.SimilarityDistance;
 import eu.project.ttc.models.TermContext;
@@ -249,7 +251,7 @@ public class ZigguratAnalysisEngine extends JCasAnnotator_ImplBase {
 		return this.targetDirectory;
 	}
 	
-	private Map<String, Double> getSimilarityOf(String term, boolean src) throws Exception {
+	private Map<String, Double> getSimilarityOf(String term, boolean src) throws InvalidXMLException, ResourceInitializationException, IOException, SAXException, CASRuntimeException, CASException {
 		Map<String, Double> terms = new HashMap<String, Double>();
 		File file = new File(src ? this.getSourceDirectory(): this.getTargetDirectory(), term + ".xmi");
 		URL url = this.getClass().getClassLoader().getResource("eu/project/ttc/types/TermSuiteTypeSystem.xml");
@@ -392,15 +394,16 @@ public class ZigguratAnalysisEngine extends JCasAnnotator_ImplBase {
 	public void process(JCas cas) throws AnalysisEngineProcessException {
 		try {
 			String term = cas.getDocumentText();
-			String language = cas.getDocumentLanguage();
+			// String language = cas.getDocumentLanguage();
 			AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TermAnnotation.type);
 			FSIterator<Annotation> iterator = index.iterator();
 			if (iterator.hasNext()) {
 				TermAnnotation annotation = (TermAnnotation) iterator.next();
 				if (annotation instanceof SingleWordTermAnnotation) {
+					/*
 					if (!this.getSourceIndex().getLanguage().equals(language)) {
 						throw new Exception("Skiping " + term +  " because of language clash between CAS " + language + " and term content index " + this.getSourceIndex().getLanguage());
-					} 
+					} */
 					
 					if (this.interlingualSimilarity()) {
 						this.alignSimilarSingleWordTerm(cas, term, this.getSimilaritySize());
@@ -409,26 +412,40 @@ public class ZigguratAnalysisEngine extends JCasAnnotator_ImplBase {
 					}
 				} else {
 					JCas terminology = this.getSourceTerminology().getJCas();
+					/*
 					if (!terminology.getDocumentLanguage().equals(language)) {
 						throw new Exception("Skiping " + term +  " because of language clash between CAS " + language + " and Terminology " + this.getSourceIndex().getLanguage());
 					} 
+					*/
 					if (annotation instanceof MultiWordTermAnnotation) {
 						this.alignMultiWordTerm(cas, terminology, term);
 					} else if (annotation instanceof NeoClassicalCompoundTermAnnotation) {
 						this.alignNeoClassicalCompound(cas, terminology, term);
 					} else {
-						throw new Exception("Don't know what to do with " + term + " that all terms of this type: " + annotation.getType());
+						String message = "Don't know what to do with " + term + " that all terms of this type: " + annotation.getType();
+						UIMAFramework.getLogger().log(Level.WARNING,message);
+						// throw new Exception("Don't know what to do with " + term + " that all terms of this type: " + annotation.getType());
 					}
 				}
 			} else {
 				UIMAFramework.getLogger().log(Level.WARNING,"Skiping " + term +  " because it isn't a term.");
 			}
-		} catch (Exception e) {
+		} catch (CASException e) {
+			throw new AnalysisEngineProcessException(e);
+		} catch (CASRuntimeException e) {
+			throw new AnalysisEngineProcessException(e);
+		} catch (InvalidXMLException e) {
+			throw new AnalysisEngineProcessException(e);
+		} catch (ResourceInitializationException e) {
+			throw new AnalysisEngineProcessException(e);
+		} catch (IOException e) {
+			throw new AnalysisEngineProcessException(e);
+		} catch (SAXException e) {
 			throw new AnalysisEngineProcessException(e);
 		}
 	}
 
-	private void alignSimilarSingleWordTerm(JCas cas, String term, int size) throws Exception {
+	private void alignSimilarSingleWordTerm(JCas cas, String term, int size) throws CASRuntimeException, InvalidXMLException, ResourceInitializationException, CASException, IOException, SAXException {
 		Map<String, Double> sim = this.getSimilarityOf(term, true);
 		int i = 0;
 		Map<String, Double> candidates = new HashMap<String, Double>();
@@ -465,26 +482,31 @@ public class ZigguratAnalysisEngine extends JCasAnnotator_ImplBase {
 		}
 	}
 
-	private void alignMultiWordTerm(JCas cas, JCas terminology, String term) throws Exception, CASException {
+	private void alignMultiWordTerm(JCas cas, JCas terminology, String term) throws CASException {
 		TermAnnotation termEntry = (MultiWordTermAnnotation) this.retrieve(terminology, MultiWordTermAnnotation.type, term);
-		List<String> components = this.extract(this.getSourceTerminology().getJCas(), termEntry, false);
-		List<List<String>> candidates = this.transfer(components);
-		candidates = this.combine(candidates);
-		candidates = this.generate(candidates);
-		components = this.flatten(candidates, " ");
-		components = this.select(components);
-		this.annotate(cas, components);
+		if (termEntry != null) {
+			List<String> components = this.extract(this.getSourceTerminology().getJCas(), termEntry, false);
+			List<List<String>> candidates = this.transfer(components);
+			candidates = this.combine(candidates);
+			candidates = this.generate(candidates);
+			components = this.flatten(candidates, " ");
+			components = this.select(components);
+			this.annotate(cas, components);
+		}
 	}
 
-	private void alignNeoClassicalCompound(JCas cas, JCas terminology, String term) throws Exception, CASException {
+	private void alignNeoClassicalCompound(JCas cas, JCas terminology, String term) throws CASException {
 		TermAnnotation termEntry = this.retrieve(terminology, NeoClassicalCompoundTermAnnotation.type, term);
-		List<String> components = this.extract(this.getSourceTerminology().getJCas(), termEntry, true);
-		components = this.reshape(components);
-		List<List<String>> candidates = this.transfer(components);
-		candidates = this.combine(candidates);
-		components = this.flatten(candidates, "");
-		components = this.select(components);
-		this.annotate(cas, components);
+		if (termEntry != null) {
+			List<String> components = this.extract(this.getSourceTerminology().getJCas(), termEntry, true);
+			components = this.reshape(components);
+			List<List<String>> candidates = this.transfer(components);
+			candidates = this.combine(candidates);
+			// TODO generate
+			components = this.flatten(candidates, "");
+			components = this.select(components);
+			this.annotate(cas, components);			
+		}
 	}
 	
 	private TermContext transfer(String sourceTerm, TermContext sourceContext) {
@@ -558,7 +580,7 @@ public class ZigguratAnalysisEngine extends JCasAnnotator_ImplBase {
 	 * @return
 	 * @throws Exception 
 	 */
-	private TermAnnotation retrieve(JCas cas, int type, String term) throws Exception {
+	private TermAnnotation retrieve(JCas cas, int type, String term) {
 		AnnotationIndex<Annotation> index = cas.getAnnotationIndex(type);
 		FSIterator<Annotation> iterator = index.iterator();
 		while (iterator.hasNext()) {
@@ -567,7 +589,8 @@ public class ZigguratAnalysisEngine extends JCasAnnotator_ImplBase {
 				return (TermAnnotation) annotation;
 			}
 		}
-		throw new Exception("Term " + term + " not found");
+		return null;
+		// throw new Exception("Term " + term + " not found");
 	}
 	
 	/**
@@ -579,7 +602,7 @@ public class ZigguratAnalysisEngine extends JCasAnnotator_ImplBase {
 	 * @return
 	 * @throws Exception
 	 */
-	private List<String> extract(JCas cas, TermAnnotation annotation, boolean check) throws Exception {
+	private List<String> extract(JCas cas, TermAnnotation annotation, boolean check) {
 		List<String> components = new ArrayList<String>();
 		List<TermComponentAnnotation> subAnnotations = new ArrayList<TermComponentAnnotation>();
 		AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TermComponentAnnotation.type);
@@ -588,16 +611,17 @@ public class ZigguratAnalysisEngine extends JCasAnnotator_ImplBase {
 		while (iterator.hasNext()) {
 			TermComponentAnnotation subAnnotation = (TermComponentAnnotation) iterator.next();
 			if (check && subAnnotation.getBegin() != offset) {
-				throw new Exception(annotation.getCoveredText());
+				// throw new Exception(annotation.getCoveredText());
 			}
 			offset = subAnnotation.getEnd();
 			subAnnotations.add(subAnnotation);
 		}
 		if (check && offset != annotation.getEnd()) {
-			throw new Exception(annotation.getCoveredText() + " " + annotation.getEnd() + " != " + offset);
+			// throw new Exception(annotation.getCoveredText() + " " + annotation.getEnd() + " != " + offset);
 		}
 		for (TermComponentAnnotation a : subAnnotations) {
 			components.add(a.getCoveredText());
+			// TODO lemma
 		}
 		return components;
 	}
@@ -611,7 +635,7 @@ public class ZigguratAnalysisEngine extends JCasAnnotator_ImplBase {
 	 * @return
 	 * @throws Exception
 	 */
-	private List<String> reshape(List<String> components) throws Exception {
+	private List<String> reshape(List<String> components) {
 		if (components == null || components.isEmpty() || components.size() == 1) {
 			return Collections.emptyList();
 		} else {

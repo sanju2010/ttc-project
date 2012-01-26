@@ -33,7 +33,9 @@ public class XmiCasConsumer extends JCasAnnotator_ImplBase {
 				throw new IOException("This path '" + path + "' isn't a directory");
 			}
 		} else {
-			throw new FileNotFoundException(path);
+			if (!directory.mkdirs()) {
+				throw new FileNotFoundException(path);				
+			}
 		}
 	}
 	
@@ -80,8 +82,8 @@ public class XmiCasConsumer extends JCasAnnotator_ImplBase {
 				File file = new File(this.getDirectory(), name);
 				OutputStream stream = new FileOutputStream(file);
 				try {
+					this.getContext().getLogger().log(Level.INFO,"Serializing " + file.getAbsolutePath());
 					XmiCasSerializer.serialize(cas.getCas(), cas.getTypeSystem(), stream);
-					this.getContext().getLogger().log(Level.CONFIG,"Serializing " + file.getAbsolutePath());
 				} catch (SAXParseException e) {
 					this.getContext().getLogger().log(Level.WARNING,"Failure while serializing " + file + "\nCaused by " + e.getClass().getCanonicalName() + ": " + e.getMessage());
 				} finally {

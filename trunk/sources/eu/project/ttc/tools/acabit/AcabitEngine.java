@@ -77,6 +77,10 @@ public class AcabitEngine extends SwingWorker<CpeDescription,Void> {
         settings.setParameterValue("Directory", (String) parameters.getParameterValue("OutputDirectory"));
         settings.setParameterValue("File", (String) parameters.getParameterValue("TerminologyFile"));
         settings.setParameterValue("Type", (String) parameters.getParameterValue("TermAnnotationType"));
+        settings.setParameterValue("MultiWordPatternRuleFile", (String) parameters.getParameterValue("MultiWordPatternRuleFile"));
+        settings.setParameterValue("TermVariationRuleFile", (String) parameters.getParameterValue("TermVariationRuleFile"));
+        settings.setParameterValue("NeoclassicalElementFile", (String) parameters.getParameterValue("NeoclassicalElementFile"));
+        settings.setParameterValue("EditDistanceClassName", (String) parameters.getParameterValue("EditDistanceClassName"));
         termMateAnnotator.setConfigurationParameterSettings(settings);
         this.collectionProcessingEngine.addCasProcessor(termMateAnnotator);
 	}
