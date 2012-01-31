@@ -86,7 +86,7 @@ public class RuleSystemResource implements RuleSystem {
 		tree.enableOptional(true);
 		tree.setConstraint(null);
 		this.compile(tree, id, loop.getPattern());
-		tree.fill(tree,false);
+		// tree.fill(tree,false);
 		root.fill(tree,false);
 	}
 
