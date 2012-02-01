@@ -1,3 +1,0 @@
-# This is the patterns for term detection in Chinese
-
-nn	eu.project.ttc.types.WordAnnotation[category=noun]	eu.project.ttc.types.WordAnnotation[category=noun]

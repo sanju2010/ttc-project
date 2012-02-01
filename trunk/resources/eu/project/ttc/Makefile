@@ -1,22 +1,24 @@
 #!/usr/bin/make -f
 
 source=French
-target=Russian
+target=Latvian
 
 src=$(shell echo $(source) | tr A-Z a-z)
 tgt=$(shell echo $(target) | tr A-Z a-z)
 
-code=ru
+code=lv
 srcCode=fr
 tgtCode=$(code)
 
 files=AcabitAnalysisEngine.xml
+files+=CompoundSplitter.xml
 files+=LemmaFilter.xml
 files+=MultiWordTermDetector.xml
 files+=NeoClassicalAdjectiveDetector.xml
 files+=NeoClassicalNounDetector.xml
 files+=NeoClassicalTermDetector.xml
 files+=Stemmer.xml
+files+=TermGatherer.xml
 files+=TermDetector.xml
 files+=TermFilter.xml
 files+=TermIndexer.xml
@@ -43,7 +45,7 @@ targets = $(addprefix $(tgt)/engines/$(target),$(files))
 sourceResources = $(addprefix $(src)/resources/$(src)-,$(resources))
 targetResources = $(addprefix $(tgt)/resources/$(tgt)-,$(resources))
 
-all: copy-files copy-resources
+all: copy-files
 
 copy-files: $(sources)
 	@for file in $(files) ; do make -s copy-file file=$$file ; done
@@ -56,6 +58,7 @@ edit-file: $(addprefix $(tgt)/engines/$(target),$(file))
 	@sed -i 's/$(source)/$(target)/g' $(addprefix $(tgt)/engines/$(target),$(file))
 	@sed -i 's/$(src)/$(tgt)/g' $(addprefix $(tgt)/engines/$(target),$(file))
 	@sed -i 's/language>$(srcCode)/language>$(tgtCode)/g' $(addprefix $(tgt)/engines/$(target),$(file))
+	@sed -i 's/string>$(srcCode)/string>$(tgtCode)/g' $(addprefix $(tgt)/engines/$(target),$(file))
 
 copy-resources: $(sourceResources)
 	@for file in $(resources) ; do make -s copy-resource resource=$$file ; done

@@ -44,6 +44,60 @@
         </overrides>
       </configurationParameter>
       <configurationParameter>
+        <name>TreeTaggerParameterFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>EnglishTreeTaggerWrapper/TreeTaggerParameterFile</parameter>
+        </overrides>
+      </configurationParameter>      
+      <configurationParameter>
+        <name>SegmentFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>EnglishWordTokenizer/File</parameter>
+        </overrides>
+      </configurationParameter>      
+      <configurationParameter>
+        <name>CategoryMappingFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>EnglishTreeTaggerCategoryNormalizer/File</parameter>
+        </overrides>
+      </configurationParameter>      
+      <configurationParameter>
+        <name>SubcategoryMappingFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>EnglishTreeTaggerSubcategoryNormalizer/File</parameter>
+        </overrides>
+      </configurationParameter>      
+      <configurationParameter>
+        <name>MoodMappingFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>EnglishTreeTaggerMoodNormalizer/File</parameter>
+        </overrides>
+      </configurationParameter>      
+      <configurationParameter>
+        <name>TenseMappingFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>EnglishTreeTaggerTenseNormalizer/File</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
         <name>Directory</name>
         <type>String</type>
         <multiValued>false</multiValued>

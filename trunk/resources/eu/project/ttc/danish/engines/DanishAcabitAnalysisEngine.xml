@@ -6,17 +6,26 @@
     <delegateAnalysisEngine key="DanishTermIndexer">
       <import name="eu.project.ttc.danish.engines.DanishTermIndexer"/>
     </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="EditDistanceGathering">
+      <import name="eu.project.ttc.all.engines.EditDistanceGathering"/>
+    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="DanishTermDetector">
       <import name="eu.project.ttc.danish.engines.DanishTermDetector"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="DanishTermFilter">
       <import name="eu.project.ttc.danish.engines.DanishTermFilter"/>
     </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="DanishCompoundSplitter">
+      <import name="eu.project.ttc.danish.engines.DanishCompoundSplitter"/>
+    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="IndexWriter">
       <import name="eu.project.ttc.all.engines.IndexWriter"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="XmiCasConsumer">
       <import name="eu.project.ttc.all.engines.XmiCasConsumer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="DanishTermGatherer">
+      <import name="eu.project.ttc.danish.engines.DanishTermGatherer"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="DanishLemmaFilter">
       <import name="eu.project.ttc.danish.engines.DanishLemmaFilter"/>
@@ -35,7 +44,7 @@
         <name>Directory</name>
         <type>String</type>
         <multiValued>false</multiValued>
-        <mandatory>false</mandatory>
+        <mandatory>true</mandatory>
         <overrides>
           <parameter>XmiCasConsumer/Directory</parameter>
         </overrides>
@@ -67,6 +76,51 @@
           <parameter>TermIndexer/Language</parameter>
         </overrides>
       </configurationParameter>
+      <configurationParameter>
+        <name>TermVariationRuleFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>DanishTermGatherer/File</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>MultiWordPatternRuleFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>DanishTermDetector/MultiWordPatternRuleFile</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>NeoclassicalElementFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>DanishTermDetector/NeoclassicalElementFile</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>Dictionary</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>DanishCompoundSplitter/File</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>EditDistanceClassName</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>EditDistanceGathering/EditDistanceClassName</parameter>
+        </overrides>
+      </configurationParameter>
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
@@ -78,7 +132,7 @@
       <nameValuePair>
         <name>File</name>
         <value>
-          <string>terminology.index</string>
+          <string>da-terminology.xmi</string>
         </value>
       </nameValuePair>
       <nameValuePair>
@@ -90,7 +144,13 @@
       <nameValuePair>
         <name>Language</name>
         <value>
-          <string>x-unspecified</string>
+          <string>da</string>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>EditDistanceClassName</name>
+        <value>
+          <string>EditDistanceClassName</string>
         </value>
       </nameValuePair>
     </configurationParameterSettings>
@@ -101,6 +161,9 @@
         <node>DanishLemmaFilter</node>
         <node>TermIndexer</node>
         <node>DanishTermIndexer</node>
+        <node>DanishCompoundSplitter</node>
+        <node>EditDistanceGathering</node>
+        <node>DanishTermGatherer</node>
         <node>IndexWriter</node>
         <node>XmiCasConsumer</node>
       </fixedFlow>
@@ -111,13 +174,13 @@
       <capability>
         <inputs>
           <type allAnnotatorFeatures="true">org.apache.uima.examples.SourceDocumentInformation</type>
+          <type allAnnotatorFeatures="true">eu.project.ttc.types.WordAnnotation</type>
         </inputs>
         <outputs>
-          <type allAnnotatorFeatures="true">eu.project.ttc.types.WordAnnotation</type>
           <type allAnnotatorFeatures="true">org.apache.uima.TermAnnotation</type>
         </outputs>
         <languagesSupported>
-          <language>dk</language>
+          <language>da</language>
         </languagesSupported>
       </capability>
     </capabilities>
@@ -148,6 +211,10 @@
     </externalResources>
     <externalResourceBindings>
       <externalResourceBinding>
+        <key>DanishTermGatherer/Index</key>
+        <resourceName>DefaultIndex</resourceName>
+      </externalResourceBinding>
+      <externalResourceBinding>
         <key>DanishTermIndexer/Index</key>
         <resourceName>DefaultIndex</resourceName>
       </externalResourceBinding>
@@ -166,6 +233,14 @@
       <externalResourceBinding>
         <key>DanishLemmaFilter/Filter</key>
         <resourceName>DanishFilter</resourceName>
+      </externalResourceBinding>
+      <externalResourceBinding>
+        <key>DanishCompoundSplitter/Index</key>
+        <resourceName>DefaultIndex</resourceName>
+      </externalResourceBinding>
+      <externalResourceBinding>
+        <key>EditDistanceGathering/Index</key>
+        <resourceName>DefaultIndex</resourceName>
       </externalResourceBinding>
     </externalResourceBindings>
   </resourceManagerConfiguration>

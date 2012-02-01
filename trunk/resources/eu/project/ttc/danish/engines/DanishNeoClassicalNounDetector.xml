@@ -59,7 +59,7 @@
           <type allAnnotatorFeatures="true">eu.project.ttc.types.CompoundWordTermAnnotation</type>
         </outputs>
         <languagesSupported>
-          <language>dk</language>
+          <language>da</language>
         </languagesSupported>
       </capability>
     </capabilities>

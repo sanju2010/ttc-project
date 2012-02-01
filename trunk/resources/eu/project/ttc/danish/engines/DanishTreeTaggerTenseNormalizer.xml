@@ -27,6 +27,12 @@
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
+      <configurationParameter>
+        <name>File</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
@@ -72,7 +78,7 @@
           <feature>eu.project.ttc.types.WordAnnotation:tense</feature>
         </outputs>
         <languagesSupported>
-          <language>dk</language>
+          <language>da</language>
         </languagesSupported>
       </capability>
     </capabilities>

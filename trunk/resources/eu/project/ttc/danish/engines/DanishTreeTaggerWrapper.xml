@@ -16,6 +16,12 @@
         <mandatory>false</mandatory>
       </configurationParameter>
       <configurationParameter>
+        <name>TreeTaggerParameterFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
+      <configurationParameter>
         <name>AnnotationType</name>
         <type>String</type>
         <multiValued>false</multiValued>
@@ -80,7 +86,7 @@
         </inputs>
         <outputs/>
         <languagesSupported>
-          <language>dk</language>
+          <language>da</language>
         </languagesSupported>
       </capability>
     </capabilities>

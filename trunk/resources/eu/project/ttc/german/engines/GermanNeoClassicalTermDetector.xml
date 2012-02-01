@@ -15,7 +15,18 @@
     <description/>
     <version>1.0</version>
     <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
-    <configurationParameters/>
+    <configurationParameters searchStrategy="language_fallback">
+      <configurationParameter>
+        <name>RootBankFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>GermanNeoClassicalNounDetector/RootBankFile</parameter>
+          <parameter>GermanNeoClassicalAdjectiveDetector/RootBankFile</parameter>
+        </overrides>
+      </configurationParameter>
+    </configurationParameters>
     <configurationParameterSettings/>
     <flowConstraints>
       <fixedFlow>

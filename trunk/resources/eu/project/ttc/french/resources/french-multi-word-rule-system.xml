@@ -7,7 +7,7 @@
 					<annotation type="eu.project.ttc.types.WordAnnotation">
 					<constraint>
 						<eq key="category" value="noun" />
-						</constraint>
+					</constraint>
 					</annotation>
 				</pattern>
 				<pattern>
@@ -38,6 +38,37 @@
 						<eq key="category" value="noun" />
 						</constraint>
 					</annotation>
+				</pattern>
+				<pattern>
+					<annotation type="eu.project.ttc.types.WordAnnotation">
+					<constraint>
+						<eq key="category" value="adjective" />
+						</constraint>
+					</annotation>
+				</pattern>
+			</patterns>
+		</sequence>
+	</pattern>
+	<pattern id="noun-adverb-adjective">
+		<sequence>
+			<patterns>
+				<pattern>
+					<annotation type="eu.project.ttc.types.WordAnnotation">
+					<constraint>
+						<eq key="category" value="noun" />
+						</constraint>
+					</annotation>
+				</pattern>
+				<pattern>
+					<loop  mandatory="true">
+						<pattern>
+							<annotation type="eu.project.ttc.types.WordAnnotation">
+							<constraint>
+								<eq key="category" value="adverb" />
+								</constraint>
+							</annotation>
+						</pattern>
+					</loop>
 				</pattern>
 				<pattern>
 					<annotation type="eu.project.ttc.types.WordAnnotation">
@@ -136,9 +167,65 @@
 				</pattern>
 				<!-- TODO option determiner for some preposition "dans sous avant après chez " + det déf "sur"   + dét déf? "en pour par" no dét -->
 				<pattern>
+					<option>
+						<pattern>
+							<annotation type="eu.project.ttc.types.WordAnnotation">
+								<constraint>
+									<or>
+										<constraints>
+											<constraint>
+												<eq key="category" value="determiner" />
+											</constraint>
+											<constraint>
+												<eq key="category" value="article" />
+											</constraint>
+										</constraints>
+									</or>
+								</constraint>
+							</annotation>
+						</pattern>
+					</option>
+				</pattern>
+				<pattern>
 					<annotation type="eu.project.ttc.types.WordAnnotation">
 						<constraint>
-							<eq key="category" value="noun" />
+							<and>
+								<constraints>
+									<constraint>
+										<eq key="category" value="noun" />
+									</constraint>
+									<constraint>
+										<neq key="lemma" value="type" />
+									</constraint>
+									<constraint>
+										<neq key="lemma" value="chair" />
+									</constraint>
+									<constraint>
+										<neq key="lemma" value="phase" />
+									</constraint>
+									<constraint>
+										<neq key="lemma" value="genre" />
+									</constraint>
+									<constraint>
+										<neq key="lemma" value="origine" />
+									</constraint>
+									<constraint>
+										<neq key="lemma" value="état" />
+									</constraint>
+									<constraint>
+										<neq key="lemma" value="couleur" />
+									</constraint>
+									<constraint>
+										<neq key="lemma" value="pâte" />
+									</constraint>
+									<constraint>
+										<neq key="lemma" value="voie" />
+									</constraint>
+									<constraint>
+										<neq key="lemma" value="face" />
+									</constraint>
+								</constraints>
+							</and>
 						</constraint>
 					</annotation>
 				</pattern>
@@ -146,6 +233,103 @@
 		</sequence>
 	</pattern>
 	<pattern id="noun-preposition-noun-noun">
+		<sequence>
+			<patterns>
+				<pattern>
+					<annotation type="eu.project.ttc.types.WordAnnotation">
+						<constraint>
+							<eq key="category" value="noun" />
+						</constraint>
+					</annotation>
+				</pattern>
+				<pattern>
+					<annotation type="eu.project.ttc.types.WordAnnotation">
+						<constraint>
+							<and>
+								<constraints>
+									<constraint>
+										<eq key="category" value="adposition" />
+									</constraint>
+									<constraint>
+										<eq key="subCategory" value="preposition" />
+									</constraint>
+								</constraints>
+							</and>
+						</constraint>
+					</annotation>
+				</pattern>
+				<pattern>
+					<annotation type="eu.project.ttc.types.WordAnnotation">
+						<constraint>
+							<and>
+								<constraints>
+									<constraint>
+										<eq key="category" value="noun" />
+									</constraint>
+									<constraint>
+										<or>
+											<constraints>
+												<constraint>
+													<eq key="lemma" value="type" />
+												</constraint>
+												<constraint>
+													<eq key="lemma" value="chair" />
+												</constraint>
+												<constraint>
+													<eq key="lemma" value="phase" />
+												</constraint>
+												<constraint>
+													<eq key="lemma" value="genre" />
+												</constraint>
+												<constraint>
+													<eq key="lemma" value="origine" />
+												</constraint>
+												<constraint>
+													<eq key="lemma" value="état" />
+												</constraint>
+												<constraint>
+													<eq key="lemma" value="couleur" />
+												</constraint>
+												<constraint>
+													<eq key="lemma" value="pâte" />
+												</constraint>
+												<constraint>
+													<eq key="lemma" value="voie" />
+												</constraint>
+												<constraint>
+													<eq key="lemma" value="face" />
+												</constraint>
+											</constraints>
+										</or>
+									</constraint>
+								</constraints>
+							</and>
+						</constraint>
+					</annotation>
+				</pattern>
+				<pattern>
+					<annotation type="eu.project.ttc.types.WordAnnotation">
+						<constraint>
+							<or>
+								<constraints>
+									<constraint>
+										<eq key="category" value="noun" />
+									</constraint>
+									<constraint>
+										<eq key="category" value="name" />
+									</constraint>
+									<constraint>
+										<eq key="category" value="numeral" />
+									</constraint>
+								</constraints>
+							</or>
+						</constraint>
+					</annotation>
+				</pattern>
+			</patterns>
+		</sequence>
+	</pattern>
+	<pattern id="noun-preposition-noun-noun-alt">
 		<sequence>
 			<patterns>
 				<pattern>
@@ -197,6 +381,22 @@
 					</annotation>
 				</pattern>
 				<pattern>
+							<annotation type="eu.project.ttc.types.WordAnnotation">
+								<constraint>
+									<or>
+										<constraints>
+											<constraint>
+												<eq key="coveredText" value='"' />
+											</constraint>
+											<constraint>
+												<eq key="coveredText" value='«' />
+											</constraint>
+										</constraints>
+									</or>
+								</constraint>
+							</annotation>
+				</pattern>
+				<pattern>
 					<annotation type="eu.project.ttc.types.WordAnnotation">
 						<constraint>
 							<or>
@@ -207,10 +407,29 @@
 									<constraint>
 										<eq key="category" value="name" />
 									</constraint>
+									<constraint>
+										<eq key="category" value="numeral" />
+									</constraint>
 								</constraints>
 							</or>
 						</constraint>
 					</annotation>
+				</pattern>
+				<pattern>
+							<annotation type="eu.project.ttc.types.WordAnnotation">
+								<constraint>
+									<or>
+										<constraints>
+											<constraint>
+												<eq key="coveredText" value='"' />
+											</constraint>
+											<constraint>
+												<eq key="coveredText" value='»' />
+											</constraint>
+										</constraints>
+									</or>
+								</constraint>
+							</annotation>
 				</pattern>
 			</patterns>
 		</sequence>

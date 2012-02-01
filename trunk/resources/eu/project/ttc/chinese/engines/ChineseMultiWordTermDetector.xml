@@ -4,7 +4,7 @@
   <primitive>true</primitive>
   <annotatorImplementationName>eu.project.ttc.engines.RuleBasedTermDetector</annotatorImplementationName>
   <analysisEngineMetaData>
-    <name>Chinese Rule Based Term Detector</name>
+    <name>Chinese MultiWord Term Detector</name>
     <description/>
     <version>1.0</version>
     <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
@@ -73,7 +73,7 @@
     <externalResourceDependency>
       <key>RuleSystem</key>
       <description/>
-      <interfaceName>fr.free.rocheteau.jerome.models.RuleSystem</interfaceName>
+      <interfaceName>uima.sandbox.matcher.resources.RuleSystem</interfaceName>
       <optional>false</optional>
     </externalResourceDependency>
   </externalResourceDependencies>
@@ -85,7 +85,7 @@
         <fileResourceSpecifier>
           <fileUrl>eu/project/ttc/resources/chinese/RuleSystem.Chinese</fileUrl>
         </fileResourceSpecifier>
-        <implementationName>fr.free.rocheteau.jerome.models.RuleSystemResource</implementationName>
+        <implementationName>uima.sandbox.matcher.resources.RuleSystemResource</implementationName>
       </externalResource>
     </externalResources>
     <externalResourceBindings>

@@ -1,32 +1,32 @@
 [greek:aero]	aéro-
 [greek:agro]	agro-
-[greek:algie]	algo-	-algie	-algies
+[greek:algie]	algo-	-algie
 [greek:allo]	allo-
-[greek:anthropos]	anthropo-	-anthrope	-anthropie	-anthropies
-[greek:archeo]	archéo-	-archie	-arque	-arques
+[greek:anthropos]	anthropo-	-anthrope	-anthropie
+[greek:archeo]	archéo-	-archie	-arque
 [greek:auto]	auto-
 [greek:bio]	bio-	-bie	-bies
-[greek:cardio]	cardio-	-carde	-cardie	-cardies
-[greek:cephalo]	céphalo-	-céphale	-céphalie	-céphalies	-céphales
-[greek:chromato]	chromato-	-chromo	-chrome	-chromie	-chromes	-chromies
-[greek:chrono]	chrono-	-chrone	-chrones
+[greek:cardio]	cardio-	-carde	-cardie
+[greek:cephalo]	céphalo-	-céphale	-céphalie
+[greek:chromato]	chromato-	-chromo	-chrome	-chromie
+[greek:chrono]	chrono-	-chrone
 [greek:cinema]	cinéma-	cinémato-
-[greek:cosmo]	cosmo-	-cosme	-cosmes
-[greek:crate]	crate-	-cratie	-ctraties	-cratique	-cratiques
+[greek:cosmo]	cosmo-	-cosme
+[greek:crate]	crate-	-cratie	-cratique
 [greek:crypto]	crypto-
 [greek:cyclo]	cyclo-	-cycle
-[greek:crto]	crto-	-cyte	-cytes
-[greek:dactylo]	dactylo-	-dactyle	-dactyles
+[greek:crto]	crto-	-cyte
+[greek:dactylo]	dactylo-	-dactyle
 [greek:deca]	déca-
 [greek:demo]	démo-
-[greek:drome]	-drome	-dromes
+[greek:drome]	-drome
 [greek:electro]	électro-
-[greek:game]	-game	-gamie	-games	-gamies
-[greek:geno]	-géno	-gène	-gènes
+[greek:game]	-game	-gamie
+[greek:geno]	géno-	-gène
 [greek:geo]	géo-
-[greek:gonio]	gonio-	-gone	-gones
-[greek:gram]	-gramme	-grammes
-[greek:grapho]	ghrapho-	-graphe	-graphie	-graphes	-graphies
+[greek:gonio]	gonio-	-gone
+[greek:gram]	-gramme
+[greek:grapho]	ghrapho-	-graphe		-graphie
 [greek:hecto]	hecto-
 [greek:helio]	hélio-
 [greek:hemato]	hémato-	hémo-	-émie
@@ -35,66 +35,66 @@
 [greek:histo]	histio-	histo-
 [greek:homo]	homéo-	homo-
 [greek:hydro]	hydro-
-[greek:iatre]	-iatre	-iatrie	-iatres	-iatries
-[greek:ide]	-ide	-ïde	-ides	-ïdes
+[greek:iatre]	-iatre	-iatrie
+[greek:ide]	-ide	-ïde
 [greek:iso]	iso-
 [greek:kilo]	kilo-
-[greek:latre]	-lâtre	-lâtrie	-lâtres	-lâtries
+[greek:latre]	-lâtre	-lâtrie
 [greek:leuc]	leuc-	leuco-
 [greek:lipo]	lipo-
-[greek:litho]	litho-	-lithe	-lithes
-[greek:logo]	logo-	-logue	-logues
-[greek:logie]	-logie	-logies	-logique	-logiques
-[greek:lyse]	-lyse	-lyses
+[greek:litho]	litho-	-lithe
+[greek:logo]	logo-	-logue
+[greek:logie]	-logie
+[greek:lyse]	-lyse
 [greek:macro]	macro-
-[greek:mane]	-mane	-manie	-manes	-manies
+[greek:mane]	-mane	-manie
 [greek:mega]	méga-	mégalo-
-[greek:metro]	métro-	-mètre	-métrie	-mètres	-métries
+[greek:metro]	métro-	-mètre	-métrie
 [greek:micro]	micro-
 [greek:mono]	mono-
-[greek:morpho]	morpho-	-morphe	-morphes
+[greek:morpho]	morpho-	-morphe
 [greek:neo]	néo-
 [greek:neuro]	neuro-	névro-
-[greek:nome]	nome-	-nomie	-nomes	-nomies
-[greek:onyme]	-onyme	-onymie	-onymes	-onymies
+[greek:nome]	nome-	-nomie
+[greek:onyme]	-onyme	-onymie
 [greek:ophtalmo]	ophtalmo-
 [greek:ortho]	ortho-
 [greek:ostéo]	ostéo-
 [greek:pan]	pan-	panto-
-[greek:patho]	patho-	-pathe	-pathie	-pathies	-pathes
-[greek:pedo]	péd-	pédo-	-pédie	-pédies
-[greek:phago]	phago-	-phage	-phages
-[greek:phil]	phil-	philo-	-phile	-philes
-[greek:phobe]	-phobe	-phobie	-phobes	-phobies
-[greek:phone]	phon-	phono-	-phone	-phonie	-phones	-phonies
+[greek:patho]	patho-	-pathe	-pathie
+[greek:pedo]	péd-	pédo-	-pédie
+[greek:phago]	phago-	-phage
+[greek:phil]	phil-	philo-	-phile
+[greek:phobe]	-phobe	-phobie
+[greek:phone]	phon-	phono-	-phone	-phonie
 [greek:photo]	photo-
 [greek:physio]	physio-
-[greek:podo]	podo-	-pode	-podes
-[greek:pole]	-pole	-poles	
+[greek:podo]	podo-	-pode
+[greek:pole]	-pole	
 [greek:poly]	poly-
 [greek:proto]	prot-	proto-
 [greek:pseudo]	pseud-	pseudo-
 [greek:psycho]	psych-	psycho-
 [greek:pyro]	pyro-
-[greek:scaph]	scaph-	-scaphie	-scaphies
+[greek:scaph]	scaph-	-scaphie
 [greek:scope]	-scope	-scopie
-[greek:techno]	techno-	-technie	-technique	-technies
+[greek:techno]	techno-	-technie	-technique
 [greek:tele]	télé-
 [greek:theque]	-thèque
 [greek:therapie]	-thérapie
 [greek:thermo]	thermo-	-therme	-thermie
-[greek:tomie]	-tomie	-tomies
+[greek:tomie]	-tomie
 [greek:topo]	topo-	-tope
 [greek:typo]	typo-	-type	-typie
 [greek:zoo]	zoo-	-zoaire
 [latin:agri]	agri-
 [latin:calori]	calori-
 [latin:centi]	centi-
-[latin:cide]	-cide	-cides
-[latin:cole]	-cole	-coles
+[latin:cide]	-cide
+[latin:cole]	-cole
 [latin:culteur]	-culteur
 [latin:deci]	déci-
-[latin:fere]	-fère	-fères
+[latin:fere]	-fère
 [latin:fique]	-fique
 [latin:forme]	-forme
 [latin:fuge]	-fuge

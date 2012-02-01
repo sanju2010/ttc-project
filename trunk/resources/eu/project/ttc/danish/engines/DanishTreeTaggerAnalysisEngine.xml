@@ -44,6 +44,60 @@
         </overrides>
       </configurationParameter>
       <configurationParameter>
+        <name>TreeTaggerParameterFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>DanishTreeTaggerWrapper/TreeTaggerParameterFile</parameter>
+        </overrides>
+      </configurationParameter>      
+      <configurationParameter>
+        <name>SegmentFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>DanishWordTokenizer/File</parameter>
+        </overrides>
+      </configurationParameter>      
+      <configurationParameter>
+        <name>CategoryMappingFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>DanishTreeTaggerCategoryNormalizer/File</parameter>
+        </overrides>
+      </configurationParameter>      
+      <configurationParameter>
+        <name>SubcategoryMappingFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>DanishTreeTaggerSubcategoryNormalizer/File</parameter>
+        </overrides>
+      </configurationParameter>      
+      <configurationParameter>
+        <name>MoodMappingFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>DanishTreeTaggerMoodNormalizer/File</parameter>
+        </overrides>
+      </configurationParameter>      
+      <configurationParameter>
+        <name>TenseMappingFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>DanishTreeTaggerTenseNormalizer/File</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
         <name>Directory</name>
         <type>String</type>
         <multiValued>false</multiValued>
@@ -88,7 +142,7 @@
           <type allAnnotatorFeatures="true">eu.project.ttc.types.WordAnnotation</type>
         </outputs>
         <languagesSupported>
-          <language>dk</language>
+          <language>da</language>
         </languagesSupported>
       </capability>
     </capabilities>

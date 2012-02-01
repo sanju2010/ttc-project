@@ -44,6 +44,60 @@
         </overrides>
       </configurationParameter>
       <configurationParameter>
+        <name>TreeTaggerParameterFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>GermanTreeTaggerWrapper/TreeTaggerParameterFile</parameter>
+        </overrides>
+      </configurationParameter>      
+      <configurationParameter>
+        <name>SegmentFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>GermanWordTokenizer/File</parameter>
+        </overrides>
+      </configurationParameter>      
+      <configurationParameter>
+        <name>CategoryMappingFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>GermanTreeTaggerCategoryNormalizer/File</parameter>
+        </overrides>
+      </configurationParameter>      
+      <configurationParameter>
+        <name>SubcategoryMappingFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>GermanTreeTaggerSubcategoryNormalizer/File</parameter>
+        </overrides>
+      </configurationParameter>      
+      <configurationParameter>
+        <name>MoodMappingFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>GermanTreeTaggerMoodNormalizer/File</parameter>
+        </overrides>
+      </configurationParameter>      
+      <configurationParameter>
+        <name>TenseMappingFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>GermanTreeTaggerTenseNormalizer/File</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
         <name>Directory</name>
         <type>String</type>
         <multiValued>false</multiValued>

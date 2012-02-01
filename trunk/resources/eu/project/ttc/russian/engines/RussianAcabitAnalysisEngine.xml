@@ -6,17 +6,26 @@
     <delegateAnalysisEngine key="RussianTermIndexer">
       <import name="eu.project.ttc.russian.engines.RussianTermIndexer"/>
     </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="EditDistanceGathering">
+      <import name="eu.project.ttc.all.engines.EditDistanceGathering"/>
+    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="RussianTermDetector">
       <import name="eu.project.ttc.russian.engines.RussianTermDetector"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="RussianTermFilter">
       <import name="eu.project.ttc.russian.engines.RussianTermFilter"/>
     </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="RussianCompoundSplitter">
+      <import name="eu.project.ttc.russian.engines.RussianCompoundSplitter"/>
+    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="IndexWriter">
       <import name="eu.project.ttc.all.engines.IndexWriter"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="XmiCasConsumer">
       <import name="eu.project.ttc.all.engines.XmiCasConsumer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="RussianTermGatherer">
+      <import name="eu.project.ttc.russian.engines.RussianTermGatherer"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="RussianLemmaFilter">
       <import name="eu.project.ttc.russian.engines.RussianLemmaFilter"/>
@@ -35,7 +44,7 @@
         <name>Directory</name>
         <type>String</type>
         <multiValued>false</multiValued>
-        <mandatory>false</mandatory>
+        <mandatory>true</mandatory>
         <overrides>
           <parameter>XmiCasConsumer/Directory</parameter>
         </overrides>
@@ -67,6 +76,51 @@
           <parameter>TermIndexer/Language</parameter>
         </overrides>
       </configurationParameter>
+      <configurationParameter>
+        <name>TermVariationRuleFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>RussianTermGatherer/File</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>MultiWordPatternRuleFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>RussianTermDetector/MultiWordPatternRuleFile</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>NeoclassicalElementFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>RussianTermDetector/NeoclassicalElementFile</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>Dictionary</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>RussianCompoundSplitter/File</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>EditDistanceClassName</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>EditDistanceGathering/EditDistanceClassName</parameter>
+        </overrides>
+      </configurationParameter>
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
@@ -78,7 +132,7 @@
       <nameValuePair>
         <name>File</name>
         <value>
-          <string>terminology.index</string>
+          <string>ru-terminology.xmi</string>
         </value>
       </nameValuePair>
       <nameValuePair>
@@ -90,7 +144,13 @@
       <nameValuePair>
         <name>Language</name>
         <value>
-          <string>x-unspecified</string>
+          <string>ru</string>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>EditDistanceClassName</name>
+        <value>
+          <string>EditDistanceClassName</string>
         </value>
       </nameValuePair>
     </configurationParameterSettings>
@@ -101,6 +161,9 @@
         <node>RussianLemmaFilter</node>
         <node>TermIndexer</node>
         <node>RussianTermIndexer</node>
+        <node>RussianCompoundSplitter</node>
+        <node>EditDistanceGathering</node>
+        <node>RussianTermGatherer</node>
         <node>IndexWriter</node>
         <node>XmiCasConsumer</node>
       </fixedFlow>
@@ -111,9 +174,9 @@
       <capability>
         <inputs>
           <type allAnnotatorFeatures="true">org.apache.uima.examples.SourceDocumentInformation</type>
+          <type allAnnotatorFeatures="true">eu.project.ttc.types.WordAnnotation</type>
         </inputs>
         <outputs>
-          <type allAnnotatorFeatures="true">eu.project.ttc.types.WordAnnotation</type>
           <type allAnnotatorFeatures="true">org.apache.uima.TermAnnotation</type>
         </outputs>
         <languagesSupported>
@@ -148,6 +211,10 @@
     </externalResources>
     <externalResourceBindings>
       <externalResourceBinding>
+        <key>RussianTermGatherer/Index</key>
+        <resourceName>DefaultIndex</resourceName>
+      </externalResourceBinding>
+      <externalResourceBinding>
         <key>RussianTermIndexer/Index</key>
         <resourceName>DefaultIndex</resourceName>
       </externalResourceBinding>
@@ -166,6 +233,14 @@
       <externalResourceBinding>
         <key>RussianLemmaFilter/Filter</key>
         <resourceName>RussianFilter</resourceName>
+      </externalResourceBinding>
+      <externalResourceBinding>
+        <key>RussianCompoundSplitter/Index</key>
+        <resourceName>DefaultIndex</resourceName>
+      </externalResourceBinding>
+      <externalResourceBinding>
+        <key>EditDistanceGathering/Index</key>
+        <resourceName>DefaultIndex</resourceName>
       </externalResourceBinding>
     </externalResourceBindings>
   </resourceManagerConfiguration>

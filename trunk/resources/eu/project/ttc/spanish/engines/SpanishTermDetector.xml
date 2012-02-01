@@ -18,7 +18,26 @@
     <description/>
     <version>1.0</version>
     <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
-    <configurationParameters searchStrategy="language_fallback"/>
+    <configurationParameters searchStrategy="language_fallback">
+      <configurationParameter>
+        <name>MultiWordPatternRuleFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>SpanishMultiWordTermDetector/File</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>NeoclassicalElementFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>SpanishNeoClassicalTermDetector/RootBankFile</parameter>
+        </overrides>
+      </configurationParameter>
+    </configurationParameters>
     <configurationParameterSettings/>
     <flowConstraints>
       <fixedFlow>

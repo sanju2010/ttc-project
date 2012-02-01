@@ -15,7 +15,18 @@
     <description/>
     <version>1.0</version>
     <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
-    <configurationParameters/>
+    <configurationParameters searchStrategy="language_fallback">
+      <configurationParameter>
+        <name>RootBankFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>DanishNeoClassicalNounDetector/RootBankFile</parameter>
+          <parameter>DanishNeoClassicalAdjectiveDetector/RootBankFile</parameter>
+        </overrides>
+      </configurationParameter>
+    </configurationParameters>
     <configurationParameterSettings/>
     <flowConstraints>
       <fixedFlow>
@@ -33,7 +44,7 @@
           <type allAnnotatorFeatures="true">eu.project.ttc.types.CompoundWordTermAnnotation</type>
         </outputs>
         <languagesSupported>
-          <language>dk</language>
+          <language>da</language>
         </languagesSupported>
       </capability>
     </capabilities>
