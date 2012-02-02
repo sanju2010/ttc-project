@@ -6,9 +6,6 @@
     <delegateAnalysisEngine key="FrenchTermIndexer">
       <import name="eu.project.ttc.french.engines.FrenchTermIndexer"/>
     </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="EditDistanceGathering">
-      <import name="eu.project.ttc.all.engines.EditDistanceGathering"/>
-    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="FrenchTermDetector">
       <import name="eu.project.ttc.french.engines.FrenchTermDetector"/>
     </delegateAnalysisEngine>
@@ -118,7 +115,16 @@
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
         <overrides>
-          <parameter>EditDistanceGathering/EditDistanceClassName</parameter>
+          <parameter>FrenchTermGatherer/EditDistanceClassName</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>EnableTermGathering</name>
+        <type>Boolean</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>FrenchTermGatherer/Enable</parameter>
         </overrides>
       </configurationParameter>
     </configurationParameters>
@@ -150,7 +156,13 @@
       <nameValuePair>
         <name>EditDistanceClassName</name>
         <value>
-          <string>EditDistanceClassName</string>
+          <string>eu.project.ttc.metrics.LevenshteinDistance</string>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>EnableTermGathering</name>
+        <value>
+          <boolean>false</boolean>
         </value>
       </nameValuePair>
     </configurationParameterSettings>
@@ -162,7 +174,6 @@
         <node>TermIndexer</node>
         <node>FrenchTermIndexer</node>
         <node>FrenchCompoundSplitter</node>
-        <node>EditDistanceGathering</node>
         <node>FrenchTermGatherer</node>
         <node>IndexWriter</node>
         <node>XmiCasConsumer</node>
@@ -176,9 +187,7 @@
           <type allAnnotatorFeatures="true">org.apache.uima.examples.SourceDocumentInformation</type>
           <type allAnnotatorFeatures="true">eu.project.ttc.types.WordAnnotation</type>
         </inputs>
-        <outputs>
-          <type allAnnotatorFeatures="true">org.apache.uima.TermAnnotation</type>
-        </outputs>
+        <outputs/>
         <languagesSupported>
           <language>fr</language>
         </languagesSupported>
@@ -236,10 +245,6 @@
       </externalResourceBinding>
       <externalResourceBinding>
         <key>FrenchCompoundSplitter/Index</key>
-        <resourceName>DefaultIndex</resourceName>
-      </externalResourceBinding>
-      <externalResourceBinding>
-        <key>EditDistanceGathering/Index</key>
         <resourceName>DefaultIndex</resourceName>
       </externalResourceBinding>
     </externalResourceBindings>

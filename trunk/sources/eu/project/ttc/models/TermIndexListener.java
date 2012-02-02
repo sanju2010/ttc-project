@@ -14,6 +14,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.DataResource;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.apache.uima.util.CasCopier;
 import org.apache.uima.util.Level;
 
 import uima.sandbox.indexer.resources.IndexListener;
@@ -259,6 +260,7 @@ public class TermIndexListener implements IndexListener {
 		this.release(cas, builder, this.getMultiWordTermFrequency(), Term.MULTI_WORD);
 		this.release(cas, builder, this.getNeoClassicalCompoundFrequency(), Term.NEO_CLASSICAL_COMPOUND);
 		cas.setDocumentText(builder.toString());
+		// this.index(cas);
 	}
 
 	private void release(JCas cas, StringBuilder builder, SimpleTermFrequency frequency) {
@@ -311,6 +313,48 @@ public class TermIndexListener implements IndexListener {
 				}
 			}
 		}
+	}
+
+	private void index(JCas cas) {
+		AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TermAnnotation.type); 
+		FSIterator<Annotation> iterator = index.iterator();
+		while (iterator.hasNext()) {
+			TermAnnotation annotation = (TermAnnotation) iterator.next();
+			String key = null;
+			if (annotation instanceof SingleWordTermAnnotation) {
+				String term = annotation.getCoveredText();
+				int end = term.length() < 3 ? term.length() : 3;
+				key = annotation.getCoveredText().substring(0, end);
+			} else if (annotation instanceof MultiWordTermAnnotation)  {
+				key = this.head((MultiWordTermAnnotation) annotation);
+			}
+			try {
+				JCas view = this.get(cas, key);
+				this.copy(annotation, view);
+			} catch (Exception e) {
+				// FIXME
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	private JCas get(JCas cas, String key) throws CASException {
+		try {
+			return cas.getView(key);
+		} catch (CASException e) {
+			JCas view = cas.createView(key);
+			return view;
+		}
+	}
+
+	private void copy(TermAnnotation annotation, JCas view) {
+		CasCopier copier = new CasCopier(annotation.getCAS(), view.getCas());
+		
+	}
+
+	private String head(MultiWordTermAnnotation annotation) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	private class Component {

@@ -17,27 +17,33 @@ files+=MultiWordTermDetector.xml
 files+=NeoClassicalAdjectiveDetector.xml
 files+=NeoClassicalNounDetector.xml
 files+=NeoClassicalTermDetector.xml
+files+=RuleBasedGathering.xml
 files+=Stemmer.xml
 files+=TermGatherer.xml
 files+=TermDetector.xml
 files+=TermFilter.xml
 files+=TermIndexer.xml
-files+=TreeTaggerCategoryNormalizer.xml
+files+=TreeTaggerNormalizer.xml
 files+=TreeTaggerSubcategoryNormalizer.xml
 files+=TreeTaggerMoodNormalizer.xml
 files+=TreeTaggerTenseNormalizer.xml
+files+=TreeTaggerGenderNormalizer.xml
+files+=TreeTaggerNumberNormalizer.xml
+files+=TreeTaggerCaseNormalizer.xml
 files+=TreeTaggerWrapper.xml
 files+=TreeTaggerAnalysisEngine.xml
 files+=WordTokenizer.xml
 
-resources =category-mapping.xml 
-resources+=mood-mapping.xml
-resources+=multi-word-rule-system.xml
-resources+=segment-bank.xml
-resources+=stop-word-filter.xml
-resources+=subcategory-mapping.xml
-resources+=tense-mapping.xml
-resources+=variant-rule-system.xml
+# resources =category-mapping.xml 
+# resources+=mood-mapping.xml
+# resources+=multi-word-rule-system.xml
+# resources+=segment-bank.xml
+# resources+=stop-word-filter.xml
+# resources+=subcategory-mapping.xml
+# resources+=tense-mapping.xml
+# resources+=variant-rule-system.xml
+
+resources=gender-mapping.xml number-mapping.xml case-mapping.xml
 
 sources = $(addprefix $(src)/engines/$(source),$(files))
 targets = $(addprefix $(tgt)/engines/$(target),$(files))
@@ -45,7 +51,8 @@ targets = $(addprefix $(tgt)/engines/$(target),$(files))
 sourceResources = $(addprefix $(src)/resources/$(src)-,$(resources))
 targetResources = $(addprefix $(tgt)/resources/$(tgt)-,$(resources))
 
-all: copy-files
+help: 
+	@echo "make copy-files target=<Uppercase directory> code=<2-letter language code>"
 
 copy-files: $(sources)
 	@for file in $(files) ; do make -s copy-file file=$$file ; done

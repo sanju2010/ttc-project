@@ -12,7 +12,7 @@ public class AcabitSettings extends Parameters {
 	}
 
 	protected void setMetaData(ConfigurationParameterDeclarations declarations) {
-		this.addParameter(declarations, "Language", ConfigurationParameter.TYPE_STRING, false, true, "values:en|fr|da|de|es|ru|lv|zh");
+		this.addParameter(declarations, "Language", ConfigurationParameter.TYPE_STRING, false, true, "values:en|fr|de|es|ru|da|lv|zh");
 		this.addParameter(declarations, "InputDirectory", ConfigurationParameter.TYPE_STRING, false, true);
 		this.addParameter(declarations, "OutputDirectory", ConfigurationParameter.TYPE_STRING, false, true);
 		this.addParameter(declarations, "TerminologyFile", ConfigurationParameter.TYPE_STRING, false, true);
@@ -21,6 +21,7 @@ public class AcabitSettings extends Parameters {
 		this.addParameter(declarations, "TermVariationRuleFile", ConfigurationParameter.TYPE_STRING, false, true);
 		this.addParameter(declarations, "NeoclassicalElementFile", ConfigurationParameter.TYPE_STRING, false, true);
 		this.addParameter(declarations, "EditDistanceClassName", ConfigurationParameter.TYPE_STRING, false, true, "values:eu.project.ttc.metrics.LevenshteinDistance");
+		this.addParameter(declarations, "EnableTermGathering", ConfigurationParameter.TYPE_BOOLEAN, false, true);
 	}
 		
 }

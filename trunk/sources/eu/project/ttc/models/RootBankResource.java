@@ -244,7 +244,7 @@ public class RootBankResource implements RootBank {
     					throw new IOException("Wrong classical root resource format at: " + line);
     				}
     			} else {
-    				throw new IOException("Wrong classical root resource format at: " + line);
+    				throw new IOException("Wrong classical root resource format of '" + form + "' at: " + line);
     			}
     		}
     	} else {

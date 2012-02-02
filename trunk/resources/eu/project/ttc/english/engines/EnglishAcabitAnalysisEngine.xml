@@ -3,11 +3,11 @@
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>false</primitive>
   <delegateAnalysisEngineSpecifiers>
-    <delegateAnalysisEngine key="EditDistanceGathering">
-      <import name="eu.project.ttc.all.engines.EditDistanceGathering"/>
+    <delegateAnalysisEngine key="EnglishTermIndexer">
+      <import name="eu.project.ttc.english.engines.EnglishTermIndexer"/>
     </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="EnglishTermGatherer">
-      <import name="eu.project.ttc.english.engines.EnglishTermGatherer"/>
+    <delegateAnalysisEngine key="EnglishTermDetector">
+      <import name="eu.project.ttc.english.engines.EnglishTermDetector"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="EnglishTermFilter">
       <import name="eu.project.ttc.english.engines.EnglishTermFilter"/>
@@ -21,14 +21,11 @@
     <delegateAnalysisEngine key="XmiCasConsumer">
       <import name="eu.project.ttc.all.engines.XmiCasConsumer"/>
     </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="EnglishTermIndexer">
-      <import name="eu.project.ttc.english.engines.EnglishTermIndexer"/>
+    <delegateAnalysisEngine key="EnglishTermGatherer">
+      <import name="eu.project.ttc.english.engines.EnglishTermGatherer"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="EnglishLemmaFilter">
       <import name="eu.project.ttc.english.engines.EnglishLemmaFilter"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="EnglishTermDetector">
-      <import name="eu.project.ttc.english.engines.EnglishTermDetector"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="TermIndexer">
       <import name="eu.project.ttc.all.engines.TermIndexer"/>
@@ -118,7 +115,16 @@
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
         <overrides>
-          <parameter>EditDistanceGathering/EditDistanceClassName</parameter>
+          <parameter>EnglishTermGatherer/EditDistanceClassName</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>EnableTermGathering</name>
+        <type>Boolean</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>EnglishTermGatherer/Enable</parameter>
         </overrides>
       </configurationParameter>
     </configurationParameters>
@@ -150,7 +156,13 @@
       <nameValuePair>
         <name>EditDistanceClassName</name>
         <value>
-          <string>EditDistanceClassName</string>
+          <string>eu.project.ttc.metrics.LevenshteinDistance</string>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>EnableTermGathering</name>
+        <value>
+          <boolean>false</boolean>
         </value>
       </nameValuePair>
     </configurationParameterSettings>
@@ -162,7 +174,6 @@
         <node>TermIndexer</node>
         <node>EnglishTermIndexer</node>
         <node>EnglishCompoundSplitter</node>
-        <node>EditDistanceGathering</node>
         <node>EnglishTermGatherer</node>
         <node>IndexWriter</node>
         <node>XmiCasConsumer</node>
@@ -176,9 +187,7 @@
           <type allAnnotatorFeatures="true">org.apache.uima.examples.SourceDocumentInformation</type>
           <type allAnnotatorFeatures="true">eu.project.ttc.types.WordAnnotation</type>
         </inputs>
-        <outputs>
-          <type allAnnotatorFeatures="true">org.apache.uima.TermAnnotation</type>
-        </outputs>
+        <outputs/>
         <languagesSupported>
           <language>en</language>
         </languagesSupported>
@@ -236,10 +245,6 @@
       </externalResourceBinding>
       <externalResourceBinding>
         <key>EnglishCompoundSplitter/Index</key>
-        <resourceName>DefaultIndex</resourceName>
-      </externalResourceBinding>
-      <externalResourceBinding>
-        <key>EditDistanceGathering/Index</key>
         <resourceName>DefaultIndex</resourceName>
       </externalResourceBinding>
     </externalResourceBindings>

@@ -12,11 +12,11 @@ public class ZigguratSettings extends Parameters {
 	}
 
 	protected void setMetaData(ConfigurationParameterDeclarations declarations) {
-		this.addParameter(declarations, "SourceLanguage", ConfigurationParameter.TYPE_STRING, false, true, "values:en|fr|de|ru|es|lv|zh");
+		this.addParameter(declarations, "SourceLanguage", ConfigurationParameter.TYPE_STRING, false, true, "values:en|fr|de|es|ru|da|lv|zh");
 		this.addParameter(declarations, "SourceTerminologyFile", ConfigurationParameter.TYPE_STRING, false, true);
 		this.addParameter(declarations, "SourceTermContextIndexFile", ConfigurationParameter.TYPE_STRING, false, true);
 		this.addParameter(declarations, "SourceTermSimilarityDirectory", ConfigurationParameter.TYPE_STRING, false, true);
-		this.addParameter(declarations, "TargetLanguage", ConfigurationParameter.TYPE_STRING, false, true, "values:en|fr|de|ru|es|lv|zh");
+		this.addParameter(declarations, "TargetLanguage", ConfigurationParameter.TYPE_STRING, false, true, "values:en|fr|de|es|ru|da|lv|zh");
 		this.addParameter(declarations, "TargetTerminologyFile", ConfigurationParameter.TYPE_STRING, false, true);
 		this.addParameter(declarations, "TargetTermContextIndexFile", ConfigurationParameter.TYPE_STRING, false, true);
 		this.addParameter(declarations, "TargetTermSimilarityDirectory", ConfigurationParameter.TYPE_STRING, false, true);

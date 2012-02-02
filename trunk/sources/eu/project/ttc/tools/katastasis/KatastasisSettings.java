@@ -12,7 +12,7 @@ public class KatastasisSettings extends Parameters {
 	}
 
 	protected void setMetaData(ConfigurationParameterDeclarations declarations) {
-		this.addParameter(declarations, "Language", ConfigurationParameter.TYPE_STRING, false, true, "values:en|fr|de|ru|es|lv|zh");
+		this.addParameter(declarations, "Language", ConfigurationParameter.TYPE_STRING, false, true, "values:en|fr|de|es|ru|da|lv|zh");
 		this.addParameter(declarations, "Directory", ConfigurationParameter.TYPE_STRING, false, true);
 		this.addParameter(declarations, "TerminologyFile", ConfigurationParameter.TYPE_STRING, false, true);
 		this.addParameter(declarations, "File", ConfigurationParameter.TYPE_STRING, false, true);

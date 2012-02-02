@@ -33,12 +33,21 @@ public class EditDistanceGathering implements IndexListener {
 		return this.editDistance;
 	}
 	
+	private boolean enable;
+	
+	private void enable(boolean enabled) {
+		this.enable = enabled;
+	}
+	
 	@Override 
 	public void configure(UimaContext context) throws ResourceInitializationException {
 		try {
-			
-			String editDistance = (String) context.getConfigParameterValue("EditDistanceClassName");
-			this.setEditDistance(editDistance);
+			Boolean enabled = (Boolean) context.getConfigParameterValue("Enable");
+			this.enable(enabled == null ? false : enabled.booleanValue());
+			if (this.enable) {
+				String editDistance = (String) context.getConfigParameterValue("EditDistanceClassName");
+				this.setEditDistance(editDistance);				
+			}
 		} catch (Exception e) {
 			throw new ResourceInitializationException(e);
 		}
@@ -56,6 +65,9 @@ public class EditDistanceGathering implements IndexListener {
 	public void release(JCas cas) { 
 		if (!this.done) {
 			this.done = true;
+			if (this.enable) {
+				
+			}
 		}
 	}
 	

@@ -21,6 +21,12 @@
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
+      <configurationParameter>
+        <name>Enable</name>
+        <type>Boolean</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+      </configurationParameter>
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
@@ -33,6 +39,12 @@
         <name>EditDistanceClassName</name>
         <value>
           <string>eu.project.ttc.metrics.LevenshteinDistance</string>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>Enable</name>
+        <value>
+          <boolean>false</boolean>
         </value>
       </nameValuePair>
     </configurationParameterSettings>

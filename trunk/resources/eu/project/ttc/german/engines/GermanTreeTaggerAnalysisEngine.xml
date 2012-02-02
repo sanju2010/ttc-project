@@ -6,26 +6,17 @@
     <delegateAnalysisEngine key="GermanStemmer">
       <import name="eu.project.ttc.german.engines.GermanStemmer"/>
     </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="GermanTreeTaggerTenseNormalizer">
-      <import name="eu.project.ttc.german.engines.GermanTreeTaggerTenseNormalizer"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="GermanTreeTaggerSubcategoryNormalizer">
-      <import name="eu.project.ttc.german.engines.GermanTreeTaggerSubcategoryNormalizer"/>
+    <delegateAnalysisEngine key="GermanTreeTaggerNormalizer">
+      <import name="eu.project.ttc.german.engines.GermanTreeTaggerNormalizer"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="GermanWordTokenizer">
       <import name="eu.project.ttc.german.engines.GermanWordTokenizer"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="GermanTreeTaggerMoodNormalizer">
-      <import name="eu.project.ttc.german.engines.GermanTreeTaggerMoodNormalizer"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="XmiCasConsumer">
       <import name="eu.project.ttc.all.engines.XmiCasConsumer"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="GermanTreeTaggerWrapper">
       <import name="eu.project.ttc.german.engines.GermanTreeTaggerWrapper"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="GermanTreeTaggerCategoryNormalizer">
-      <import name="eu.project.ttc.german.engines.GermanTreeTaggerCategoryNormalizer"/>
     </delegateAnalysisEngine>
   </delegateAnalysisEngineSpecifiers>
   <analysisEngineMetaData>
@@ -51,7 +42,7 @@
         <overrides>
           <parameter>GermanTreeTaggerWrapper/TreeTaggerParameterFile</parameter>
         </overrides>
-      </configurationParameter>      
+      </configurationParameter>
       <configurationParameter>
         <name>SegmentFile</name>
         <type>String</type>
@@ -59,42 +50,6 @@
         <mandatory>false</mandatory>
         <overrides>
           <parameter>GermanWordTokenizer/File</parameter>
-        </overrides>
-      </configurationParameter>      
-      <configurationParameter>
-        <name>CategoryMappingFile</name>
-        <type>String</type>
-        <multiValued>false</multiValued>
-        <mandatory>false</mandatory>
-        <overrides>
-          <parameter>GermanTreeTaggerCategoryNormalizer/File</parameter>
-        </overrides>
-      </configurationParameter>      
-      <configurationParameter>
-        <name>SubcategoryMappingFile</name>
-        <type>String</type>
-        <multiValued>false</multiValued>
-        <mandatory>false</mandatory>
-        <overrides>
-          <parameter>GermanTreeTaggerSubcategoryNormalizer/File</parameter>
-        </overrides>
-      </configurationParameter>      
-      <configurationParameter>
-        <name>MoodMappingFile</name>
-        <type>String</type>
-        <multiValued>false</multiValued>
-        <mandatory>false</mandatory>
-        <overrides>
-          <parameter>GermanTreeTaggerMoodNormalizer/File</parameter>
-        </overrides>
-      </configurationParameter>      
-      <configurationParameter>
-        <name>TenseMappingFile</name>
-        <type>String</type>
-        <multiValued>false</multiValued>
-        <mandatory>false</mandatory>
-        <overrides>
-          <parameter>GermanTreeTaggerTenseNormalizer/File</parameter>
         </overrides>
       </configurationParameter>
       <configurationParameter>
@@ -104,6 +59,69 @@
         <mandatory>true</mandatory>
         <overrides>
           <parameter>XmiCasConsumer/Directory</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>CategoryMappingFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>GermanTreeTaggerNormalizer/CategoryMappingFile</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>SubcategoryMappingFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>GermanTreeTaggerNormalizer/SubcategoryMappingFile</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>TenseMappingFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>GermanTreeTaggerNormalizer/TenseMappingFile</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>MoodMappingFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>GermanTreeTaggerNormalizer/MoodMappingFile</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>GenderMappingFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>GermanTreeTaggerNormalizer/GenderMappingFile</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>NumberMappingFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>GermanTreeTaggerNormalizer/NumberMappingFile</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>CaseMappingFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>GermanTreeTaggerNormalizer/CaseMappingFile</parameter>
         </overrides>
       </configurationParameter>
     </configurationParameters>
@@ -125,10 +143,7 @@
       <fixedFlow>
         <node>GermanWordTokenizer</node>
         <node>GermanTreeTaggerWrapper</node>
-        <node>GermanTreeTaggerCategoryNormalizer</node>
-        <node>GermanTreeTaggerSubcategoryNormalizer</node>
-        <node>GermanTreeTaggerMoodNormalizer</node>
-        <node>GermanTreeTaggerTenseNormalizer</node>
+        <node>GermanTreeTaggerNormalizer</node>
         <node>GermanStemmer</node>
         <node>XmiCasConsumer</node>
       </fixedFlow>

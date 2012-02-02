@@ -84,7 +84,10 @@ public class TreeTaggerEngine extends SwingWorker<CpeDescription,Void> implement
         settings.setParameterValue("CategoryMappingFile", (String) parameters.getParameterValue("CategoryMappingFile"));
         settings.setParameterValue("SubcategoryMappingFile", (String) parameters.getParameterValue("SubcategoryMappingFile"));
         settings.setParameterValue("MoodMappingFile", (String) parameters.getParameterValue("MoodMappingFile"));
-        settings.setParameterValue("Te,seMappingFile", (String) parameters.getParameterValue("TenseMappingFile"));
+        settings.setParameterValue("TenseMappingFile", (String) parameters.getParameterValue("TenseMappingFile"));
+        settings.setParameterValue("GenderMappingFile", (String) parameters.getParameterValue("GenderMappingFile"));
+        settings.setParameterValue("NumberMappingFile", (String) parameters.getParameterValue("NumberMappingFile"));
+        settings.setParameterValue("CaseMappingFile", (String) parameters.getParameterValue("CaseMappingFile"));
         termMateAnnotator.setConfigurationParameterSettings(settings);
         this.collectionProcessingEngine.addCasProcessor(termMateAnnotator);
 	}

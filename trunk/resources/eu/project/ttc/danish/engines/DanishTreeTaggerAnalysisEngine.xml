@@ -6,26 +6,17 @@
     <delegateAnalysisEngine key="DanishStemmer">
       <import name="eu.project.ttc.danish.engines.DanishStemmer"/>
     </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="DanishTreeTaggerTenseNormalizer">
-      <import name="eu.project.ttc.danish.engines.DanishTreeTaggerTenseNormalizer"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="DanishTreeTaggerSubcategoryNormalizer">
-      <import name="eu.project.ttc.danish.engines.DanishTreeTaggerSubcategoryNormalizer"/>
+    <delegateAnalysisEngine key="DanishTreeTaggerNormalizer">
+      <import name="eu.project.ttc.danish.engines.DanishTreeTaggerNormalizer"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="DanishWordTokenizer">
       <import name="eu.project.ttc.danish.engines.DanishWordTokenizer"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="DanishTreeTaggerMoodNormalizer">
-      <import name="eu.project.ttc.danish.engines.DanishTreeTaggerMoodNormalizer"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="XmiCasConsumer">
       <import name="eu.project.ttc.all.engines.XmiCasConsumer"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="DanishTreeTaggerWrapper">
       <import name="eu.project.ttc.danish.engines.DanishTreeTaggerWrapper"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="DanishTreeTaggerCategoryNormalizer">
-      <import name="eu.project.ttc.danish.engines.DanishTreeTaggerCategoryNormalizer"/>
     </delegateAnalysisEngine>
   </delegateAnalysisEngineSpecifiers>
   <analysisEngineMetaData>
@@ -51,7 +42,7 @@
         <overrides>
           <parameter>DanishTreeTaggerWrapper/TreeTaggerParameterFile</parameter>
         </overrides>
-      </configurationParameter>      
+      </configurationParameter>
       <configurationParameter>
         <name>SegmentFile</name>
         <type>String</type>
@@ -59,42 +50,6 @@
         <mandatory>false</mandatory>
         <overrides>
           <parameter>DanishWordTokenizer/File</parameter>
-        </overrides>
-      </configurationParameter>      
-      <configurationParameter>
-        <name>CategoryMappingFile</name>
-        <type>String</type>
-        <multiValued>false</multiValued>
-        <mandatory>false</mandatory>
-        <overrides>
-          <parameter>DanishTreeTaggerCategoryNormalizer/File</parameter>
-        </overrides>
-      </configurationParameter>      
-      <configurationParameter>
-        <name>SubcategoryMappingFile</name>
-        <type>String</type>
-        <multiValued>false</multiValued>
-        <mandatory>false</mandatory>
-        <overrides>
-          <parameter>DanishTreeTaggerSubcategoryNormalizer/File</parameter>
-        </overrides>
-      </configurationParameter>      
-      <configurationParameter>
-        <name>MoodMappingFile</name>
-        <type>String</type>
-        <multiValued>false</multiValued>
-        <mandatory>false</mandatory>
-        <overrides>
-          <parameter>DanishTreeTaggerMoodNormalizer/File</parameter>
-        </overrides>
-      </configurationParameter>      
-      <configurationParameter>
-        <name>TenseMappingFile</name>
-        <type>String</type>
-        <multiValued>false</multiValued>
-        <mandatory>false</mandatory>
-        <overrides>
-          <parameter>DanishTreeTaggerTenseNormalizer/File</parameter>
         </overrides>
       </configurationParameter>
       <configurationParameter>
@@ -104,6 +59,69 @@
         <mandatory>true</mandatory>
         <overrides>
           <parameter>XmiCasConsumer/Directory</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>CategoryMappingFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>DanishTreeTaggerNormalizer/CategoryMappingFile</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>SubcategoryMappingFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>DanishTreeTaggerNormalizer/SubcategoryMappingFile</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>TenseMappingFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>DanishTreeTaggerNormalizer/TenseMappingFile</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>MoodMappingFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>DanishTreeTaggerNormalizer/MoodMappingFile</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>GenderMappingFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>DanishTreeTaggerNormalizer/GenderMappingFile</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>NumberMappingFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>DanishTreeTaggerNormalizer/NumberMappingFile</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>CaseMappingFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>DanishTreeTaggerNormalizer/CaseMappingFile</parameter>
         </overrides>
       </configurationParameter>
     </configurationParameters>
@@ -125,10 +143,7 @@
       <fixedFlow>
         <node>DanishWordTokenizer</node>
         <node>DanishTreeTaggerWrapper</node>
-        <node>DanishTreeTaggerCategoryNormalizer</node>
-        <node>DanishTreeTaggerSubcategoryNormalizer</node>
-        <node>DanishTreeTaggerMoodNormalizer</node>
-        <node>DanishTreeTaggerTenseNormalizer</node>
+        <node>DanishTreeTaggerNormalizer</node>
         <node>DanishStemmer</node>
         <node>XmiCasConsumer</node>
       </fixedFlow>

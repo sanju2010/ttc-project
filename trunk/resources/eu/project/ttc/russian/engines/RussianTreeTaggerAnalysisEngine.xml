@@ -6,26 +6,17 @@
     <delegateAnalysisEngine key="RussianStemmer">
       <import name="eu.project.ttc.russian.engines.RussianStemmer"/>
     </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="RussianTreeTaggerTenseNormalizer">
-      <import name="eu.project.ttc.russian.engines.RussianTreeTaggerTenseNormalizer"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="RussianTreeTaggerSubcategoryNormalizer">
-      <import name="eu.project.ttc.russian.engines.RussianTreeTaggerSubcategoryNormalizer"/>
+    <delegateAnalysisEngine key="RussianTreeTaggerNormalizer">
+      <import name="eu.project.ttc.russian.engines.RussianTreeTaggerNormalizer"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="RussianWordTokenizer">
       <import name="eu.project.ttc.russian.engines.RussianWordTokenizer"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="RussianTreeTaggerMoodNormalizer">
-      <import name="eu.project.ttc.russian.engines.RussianTreeTaggerMoodNormalizer"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="XmiCasConsumer">
       <import name="eu.project.ttc.all.engines.XmiCasConsumer"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="RussianTreeTaggerWrapper">
       <import name="eu.project.ttc.russian.engines.RussianTreeTaggerWrapper"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="RussianTreeTaggerCategoryNormalizer">
-      <import name="eu.project.ttc.russian.engines.RussianTreeTaggerCategoryNormalizer"/>
     </delegateAnalysisEngine>
   </delegateAnalysisEngineSpecifiers>
   <analysisEngineMetaData>
@@ -51,7 +42,7 @@
         <overrides>
           <parameter>RussianTreeTaggerWrapper/TreeTaggerParameterFile</parameter>
         </overrides>
-      </configurationParameter>      
+      </configurationParameter>
       <configurationParameter>
         <name>SegmentFile</name>
         <type>String</type>
@@ -59,42 +50,6 @@
         <mandatory>false</mandatory>
         <overrides>
           <parameter>RussianWordTokenizer/File</parameter>
-        </overrides>
-      </configurationParameter>      
-      <configurationParameter>
-        <name>CategoryMappingFile</name>
-        <type>String</type>
-        <multiValued>false</multiValued>
-        <mandatory>false</mandatory>
-        <overrides>
-          <parameter>RussianTreeTaggerCategoryNormalizer/File</parameter>
-        </overrides>
-      </configurationParameter>      
-      <configurationParameter>
-        <name>SubcategoryMappingFile</name>
-        <type>String</type>
-        <multiValued>false</multiValued>
-        <mandatory>false</mandatory>
-        <overrides>
-          <parameter>RussianTreeTaggerSubcategoryNormalizer/File</parameter>
-        </overrides>
-      </configurationParameter>      
-      <configurationParameter>
-        <name>MoodMappingFile</name>
-        <type>String</type>
-        <multiValued>false</multiValued>
-        <mandatory>false</mandatory>
-        <overrides>
-          <parameter>RussianTreeTaggerMoodNormalizer/File</parameter>
-        </overrides>
-      </configurationParameter>      
-      <configurationParameter>
-        <name>TenseMappingFile</name>
-        <type>String</type>
-        <multiValued>false</multiValued>
-        <mandatory>false</mandatory>
-        <overrides>
-          <parameter>RussianTreeTaggerTenseNormalizer/File</parameter>
         </overrides>
       </configurationParameter>
       <configurationParameter>
@@ -104,6 +59,69 @@
         <mandatory>true</mandatory>
         <overrides>
           <parameter>XmiCasConsumer/Directory</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>CategoryMappingFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>RussianTreeTaggerNormalizer/CategoryMappingFile</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>SubcategoryMappingFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>RussianTreeTaggerNormalizer/SubcategoryMappingFile</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>TenseMappingFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>RussianTreeTaggerNormalizer/TenseMappingFile</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>MoodMappingFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>RussianTreeTaggerNormalizer/MoodMappingFile</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>GenderMappingFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>RussianTreeTaggerNormalizer/GenderMappingFile</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>NumberMappingFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>RussianTreeTaggerNormalizer/NumberMappingFile</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>CaseMappingFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>RussianTreeTaggerNormalizer/CaseMappingFile</parameter>
         </overrides>
       </configurationParameter>
     </configurationParameters>
@@ -125,10 +143,7 @@
       <fixedFlow>
         <node>RussianWordTokenizer</node>
         <node>RussianTreeTaggerWrapper</node>
-        <node>RussianTreeTaggerCategoryNormalizer</node>
-        <node>RussianTreeTaggerSubcategoryNormalizer</node>
-        <node>RussianTreeTaggerMoodNormalizer</node>
-        <node>RussianTreeTaggerTenseNormalizer</node>
+        <node>RussianTreeTaggerNormalizer</node>
         <node>RussianStemmer</node>
         <node>XmiCasConsumer</node>
       </fixedFlow>

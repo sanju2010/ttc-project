@@ -6,26 +6,17 @@
     <delegateAnalysisEngine key="FrenchStemmer">
       <import name="eu.project.ttc.french.engines.FrenchStemmer"/>
     </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="FrenchTreeTaggerTenseNormalizer">
-      <import name="eu.project.ttc.french.engines.FrenchTreeTaggerTenseNormalizer"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="FrenchTreeTaggerSubcategoryNormalizer">
-      <import name="eu.project.ttc.french.engines.FrenchTreeTaggerSubcategoryNormalizer"/>
+    <delegateAnalysisEngine key="FrenchTreeTaggerNormalizer">
+      <import name="eu.project.ttc.french.engines.FrenchTreeTaggerNormalizer"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="FrenchWordTokenizer">
       <import name="eu.project.ttc.french.engines.FrenchWordTokenizer"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="FrenchTreeTaggerMoodNormalizer">
-      <import name="eu.project.ttc.french.engines.FrenchTreeTaggerMoodNormalizer"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="XmiCasConsumer">
       <import name="eu.project.ttc.all.engines.XmiCasConsumer"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="FrenchTreeTaggerWrapper">
       <import name="eu.project.ttc.french.engines.FrenchTreeTaggerWrapper"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="FrenchTreeTaggerCategoryNormalizer">
-      <import name="eu.project.ttc.french.engines.FrenchTreeTaggerCategoryNormalizer"/>
     </delegateAnalysisEngine>
   </delegateAnalysisEngineSpecifiers>
   <analysisEngineMetaData>
@@ -51,7 +42,7 @@
         <overrides>
           <parameter>FrenchTreeTaggerWrapper/TreeTaggerParameterFile</parameter>
         </overrides>
-      </configurationParameter>      
+      </configurationParameter>
       <configurationParameter>
         <name>SegmentFile</name>
         <type>String</type>
@@ -59,42 +50,6 @@
         <mandatory>false</mandatory>
         <overrides>
           <parameter>FrenchWordTokenizer/File</parameter>
-        </overrides>
-      </configurationParameter>      
-      <configurationParameter>
-        <name>CategoryMappingFile</name>
-        <type>String</type>
-        <multiValued>false</multiValued>
-        <mandatory>false</mandatory>
-        <overrides>
-          <parameter>FrenchTreeTaggerCategoryNormalizer/File</parameter>
-        </overrides>
-      </configurationParameter>      
-      <configurationParameter>
-        <name>SubcategoryMappingFile</name>
-        <type>String</type>
-        <multiValued>false</multiValued>
-        <mandatory>false</mandatory>
-        <overrides>
-          <parameter>FrenchTreeTaggerSubcategoryNormalizer/File</parameter>
-        </overrides>
-      </configurationParameter>      
-      <configurationParameter>
-        <name>MoodMappingFile</name>
-        <type>String</type>
-        <multiValued>false</multiValued>
-        <mandatory>false</mandatory>
-        <overrides>
-          <parameter>FrenchTreeTaggerMoodNormalizer/File</parameter>
-        </overrides>
-      </configurationParameter>      
-      <configurationParameter>
-        <name>TenseMappingFile</name>
-        <type>String</type>
-        <multiValued>false</multiValued>
-        <mandatory>false</mandatory>
-        <overrides>
-          <parameter>FrenchTreeTaggerTenseNormalizer/File</parameter>
         </overrides>
       </configurationParameter>
       <configurationParameter>
@@ -104,6 +59,69 @@
         <mandatory>true</mandatory>
         <overrides>
           <parameter>XmiCasConsumer/Directory</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>CategoryMappingFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>FrenchTreeTaggerNormalizer/CategoryMappingFile</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>SubcategoryMappingFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>FrenchTreeTaggerNormalizer/SubcategoryMappingFile</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>TenseMappingFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>FrenchTreeTaggerNormalizer/TenseMappingFile</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>MoodMappingFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>FrenchTreeTaggerNormalizer/MoodMappingFile</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>GenderMappingFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>FrenchTreeTaggerNormalizer/GenderMappingFile</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>NumberMappingFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>FrenchTreeTaggerNormalizer/NumberMappingFile</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>CaseMappingFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>FrenchTreeTaggerNormalizer/CaseMappingFile</parameter>
         </overrides>
       </configurationParameter>
     </configurationParameters>
@@ -125,10 +143,7 @@
       <fixedFlow>
         <node>FrenchWordTokenizer</node>
         <node>FrenchTreeTaggerWrapper</node>
-        <node>FrenchTreeTaggerCategoryNormalizer</node>
-        <node>FrenchTreeTaggerSubcategoryNormalizer</node>
-        <node>FrenchTreeTaggerMoodNormalizer</node>
-        <node>FrenchTreeTaggerTenseNormalizer</node>
+        <node>FrenchTreeTaggerNormalizer</node>
         <node>FrenchStemmer</node>
         <node>XmiCasConsumer</node>
       </fixedFlow>

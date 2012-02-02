@@ -81,6 +81,7 @@ public class AcabitEngine extends SwingWorker<CpeDescription,Void> {
         settings.setParameterValue("TermVariationRuleFile", (String) parameters.getParameterValue("TermVariationRuleFile"));
         settings.setParameterValue("NeoclassicalElementFile", (String) parameters.getParameterValue("NeoclassicalElementFile"));
         settings.setParameterValue("EditDistanceClassName", (String) parameters.getParameterValue("EditDistanceClassName"));
+        settings.setParameterValue("EnableTermGathering", (Boolean) parameters.getParameterValue("EnableTermGathering"));
         termMateAnnotator.setConfigurationParameterSettings(settings);
         this.collectionProcessingEngine.addCasProcessor(termMateAnnotator);
 	}

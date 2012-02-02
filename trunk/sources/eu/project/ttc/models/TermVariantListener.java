@@ -59,18 +59,28 @@ public class TermVariantListener implements IndexListener {
 		return this.override;
 	}
 	
+	private boolean enable;
+	
+	private void enable(boolean enabled) {
+		this.enable = enabled;
+	}
+	
 	@Override 
 	public void configure(UimaContext context) throws ResourceInitializationException {
 		try {
-			RuleSystem ruleSystem = (RuleSystem) context.getResourceObject("RuleSystem");
-			this.setRuleSystem(ruleSystem);
+			Boolean enabled = (Boolean) context.getConfigParameterValue("Enable");
+			this.enable(enabled == null ? false : enabled.booleanValue());
+			if (this.enable) {
+				RuleSystem ruleSystem = (RuleSystem) context.getResourceObject("RuleSystem");
+				this.setRuleSystem(ruleSystem);
 			
-			Boolean override = (Boolean) context.getConfigParameterValue("Override");
-			this.enableOverride(override.booleanValue());
+				Boolean override = (Boolean) context.getConfigParameterValue("Override");
+				this.enableOverride(override.booleanValue());
 			
-			String path = (String) context.getConfigParameterValue("File");
-			if (path != null && this.getPath() == null) {
-				this.setPath(path);
+				String path = (String) context.getConfigParameterValue("File");
+				if (path != null && this.getPath() == null) {
+					this.setPath(path);
+				}
 			}
 		} catch (Exception e) {
 			throw new ResourceInitializationException(e);
@@ -89,29 +99,32 @@ public class TermVariantListener implements IndexListener {
 	public void release(JCas cas) { 
 		if (!this.done) {
 			this.done = true;
-			this.process(cas);
+			if (this.enable) {
+				this.process(cas);				
+			}
 		}
 	}
 	
 	void process(JCas cas) {
 		try {
+			// TODO walking through CAS views but indexing this
 			for (Rule rule : this.getRuleSystem().get()) {
 				UIMAFramework.getLogger().log(Level.INFO,"Checking: " + rule.id());
 				try {
-				if (rule.check(cas)) {
-					UIMAFramework.getLogger().log(Level.INFO,"Applying: " + rule.id());
-					try {
-					if (rule.match(cas)) {
-						this.release(cas, rule.id(), rule.get());
+					if (rule.check(cas)) {
+						UIMAFramework.getLogger().log(Level.INFO,"Applying: " + rule.id());
+						try {
+							if (rule.match(cas)) {
+								this.release(cas, rule.id(), rule.get());
+							} else {
+								UIMAFramework.getLogger().log(Level.WARNING,"Annotation Match Failure: " + rule.id());
+							}
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
 					} else {
-						UIMAFramework.getLogger().log(Level.WARNING,"Annotation Match Failure: " + rule.id());	
+						UIMAFramework.getLogger().log(Level.WARNING,"Type Check Failure: " + rule.id());		
 					}
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				} else {
-					UIMAFramework.getLogger().log(Level.WARNING,"Type Check Failure: " + rule.id());		
-				}
 				} catch (Exception e) {
 					System.out.println(e.getMessage());
 				}

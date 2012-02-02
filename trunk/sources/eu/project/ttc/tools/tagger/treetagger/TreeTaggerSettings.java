@@ -13,7 +13,7 @@ public class TreeTaggerSettings extends Parameters implements TaggerSettings {
 	}
 
 	protected void setMetaData(ConfigurationParameterDeclarations declarations) {
-		this.addParameter(declarations, "Language", ConfigurationParameter.TYPE_STRING, false, true, "values:en|fr|de|es|da|ru|zh");
+		this.addParameter(declarations, "Language", ConfigurationParameter.TYPE_STRING, false, true, "values:en|fr|de|es|ru|da|lv|zh");
 		this.addParameter(declarations, "InputDirectory", ConfigurationParameter.TYPE_STRING, false, true);
 		this.addParameter(declarations, "OutputDirectory", ConfigurationParameter.TYPE_STRING, false, true);
 		this.addParameter(declarations, "TreeTaggerHomeDirectory", ConfigurationParameter.TYPE_STRING, false, true);
@@ -23,6 +23,9 @@ public class TreeTaggerSettings extends Parameters implements TaggerSettings {
 		this.addParameter(declarations, "SubcategoryMappingFile", ConfigurationParameter.TYPE_STRING, false, true);
 		this.addParameter(declarations, "MoodMappingFile", ConfigurationParameter.TYPE_STRING, false, true);
 		this.addParameter(declarations, "TenseMappingFile", ConfigurationParameter.TYPE_STRING, false, true);
+		this.addParameter(declarations, "GenderMappingFile", ConfigurationParameter.TYPE_STRING, false, true);
+		this.addParameter(declarations, "NumberMappingFile", ConfigurationParameter.TYPE_STRING, false, true);
+		this.addParameter(declarations, "CaseMappingFile", ConfigurationParameter.TYPE_STRING, false, true);
 	}
 		
 }

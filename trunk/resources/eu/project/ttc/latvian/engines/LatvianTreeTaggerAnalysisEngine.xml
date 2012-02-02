@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
+  <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
+  <primitive>false</primitive>
+  <delegateAnalysisEngineSpecifiers>
+    <delegateAnalysisEngine key="LatvianStemmer">
+      <import name="eu.project.ttc.latvian.engines.LatvianStemmer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="LatvianTreeTaggerNormalizer">
+      <import name="eu.project.ttc.latvian.engines.LatvianTreeTaggerNormalizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="LatvianWordTokenizer">
+      <import name="eu.project.ttc.latvian.engines.LatvianWordTokenizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="XmiCasConsumer">
+      <import name="eu.project.ttc.all.engines.XmiCasConsumer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="LatvianTreeTaggerWrapper">
+      <import name="eu.project.ttc.latvian.engines.LatvianTreeTaggerWrapper"/>
+    </delegateAnalysisEngine>
+  </delegateAnalysisEngineSpecifiers>
+  <analysisEngineMetaData>
+    <name>Latvian TreeTagger Analysis Engine</name>
+    <description/>
+    <version>1.0</version>
+    <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
+    <configurationParameters searchStrategy="language_fallback">
+      <configurationParameter>
+        <name>TreeTaggerHomeDirectory</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>LatvianTreeTaggerWrapper/TreeTaggerHomeDirectory</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>TreeTaggerParameterFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>LatvianTreeTaggerWrapper/TreeTaggerParameterFile</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>SegmentFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>LatvianWordTokenizer/File</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>Directory</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>XmiCasConsumer/Directory</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>CategoryMappingFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>LatvianTreeTaggerNormalizer/CategoryMappingFile</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>SubcategoryMappingFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>LatvianTreeTaggerNormalizer/SubcategoryMappingFile</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>TenseMappingFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>LatvianTreeTaggerNormalizer/TenseMappingFile</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>MoodMappingFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>LatvianTreeTaggerNormalizer/MoodMappingFile</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>GenderMappingFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>LatvianTreeTaggerNormalizer/GenderMappingFile</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>NumberMappingFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>LatvianTreeTaggerNormalizer/NumberMappingFile</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>CaseMappingFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>LatvianTreeTaggerNormalizer/CaseMappingFile</parameter>
+        </overrides>
+      </configurationParameter>
+    </configurationParameters>
+    <configurationParameterSettings>
+      <nameValuePair>
+        <name>TreeTaggerHomeDirectory</name>
+        <value>
+          <string>/usr/share/tree-tagger</string>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>Directory</name>
+        <value>
+          <string>/tmp</string>
+        </value>
+      </nameValuePair>
+    </configurationParameterSettings>
+    <flowConstraints>
+      <fixedFlow>
+        <node>LatvianWordTokenizer</node>
+        <node>LatvianTreeTaggerWrapper</node>
+        <node>LatvianTreeTaggerNormalizer</node>
+        <node>LatvianStemmer</node>
+        <node>XmiCasConsumer</node>
+      </fixedFlow>
+    </flowConstraints>
+    <typePriorities/>
+    <fsIndexCollection/>
+    <capabilities>
+      <capability>
+        <inputs/>
+        <outputs>
+          <type allAnnotatorFeatures="true">eu.project.ttc.types.WordAnnotation</type>
+        </outputs>
+        <languagesSupported>
+          <language>lv</language>
+        </languagesSupported>
+      </capability>
+    </capabilities>
+    <operationalProperties>
+      <modifiesCas>true</modifiesCas>
+      <multipleDeploymentAllowed>true</multipleDeploymentAllowed>
+      <outputsNewCASes>false</outputsNewCASes>
+    </operationalProperties>
+  </analysisEngineMetaData>
+  <resourceManagerConfiguration/>
+</analysisEngineDescription>

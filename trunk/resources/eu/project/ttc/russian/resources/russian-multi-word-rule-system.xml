@@ -1,15 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <patterns>
-	<pattern id="noun-adjective">
+	<pattern id="adjective-noun">
 		<sequence>
 			<patterns>
-				<pattern>
-					<annotation type="eu.project.ttc.types.WordAnnotation">
-					<constraint>
-						<eq key="category" value="noun" />
-						</constraint>
-					</annotation>
-				</pattern>
 				<pattern>
 					<annotation type="eu.project.ttc.types.WordAnnotation">
 					<constraint>
@@ -17,12 +10,35 @@
 						</constraint>
 					</annotation>
 				</pattern>
+				<pattern>
+					<annotation type="eu.project.ttc.types.WordAnnotation">
+					<constraint>
+						<eq key="category" value="noun" />
+						</constraint>
+					</annotation>
+				</pattern>
 			</patterns>
 		</sequence>
 	</pattern>
-	<pattern id="noun-adjective-adjective">
+	<pattern id="participle-noun">
 		<sequence>
 			<patterns>
+				<pattern>
+					<annotation type="eu.project.ttc.types.WordAnnotation">
+						<constraint>
+							<and>
+								<constraints>
+									<constraint>
+										<eq key="category" value="verb" />
+									</constraint>
+									<constraint>
+										<eq key="mood" value="participle" />
+									</constraint>
+								</constraints>
+							</and>
+						</constraint>
+					</annotation>
+				</pattern>
 				<pattern>
 					<annotation type="eu.project.ttc.types.WordAnnotation">
 						<constraint>
@@ -30,24 +46,10 @@
 						</constraint>
 					</annotation>
 				</pattern>
-				<pattern>
-					<annotation type="eu.project.ttc.types.WordAnnotation">
-						<constraint>
-							<eq key="category" value="adjective" />
-						</constraint>
-					</annotation>
-				</pattern>
-				<pattern>
-					<annotation type="eu.project.ttc.types.WordAnnotation">
-						<constraint>
-							<eq key="category" value="adjective" />
-						</constraint>
-					</annotation>
-				</pattern>
 			</patterns>
 		</sequence>
 	</pattern>
-	<pattern id="noun-preposition-noun">
+	<pattern id="noun-noun">
 		<sequence>
 			<patterns>
 				<pattern>
@@ -62,14 +64,42 @@
 						<constraint>
 							<and>
 								<constraints>
-								<constraint>
-									<eq key="category" value="adposition" />
-								</constraint>
-								<constraint>
-									<eq key="subCategory" value="preposition" />
-								</constraint>
-																</constraints>
-								
+									<constraint>
+										<eq key="category" value="noun" />
+									</constraint>
+									<constraint>
+										<eq key="case" value="genitive" />
+									</constraint> 
+								</constraints>
+							</and>
+						</constraint>
+					</annotation>
+				</pattern>
+			</patterns>
+		</sequence>
+	</pattern>
+	<pattern id="noun-adjective-noun">
+		<sequence>
+			<patterns>
+				<pattern>
+					<annotation type="eu.project.ttc.types.WordAnnotation">
+						<constraint>
+							<eq key="category" value="noun" />
+						</constraint>
+					</annotation>
+				</pattern>
+				<pattern>
+					<annotation type="eu.project.ttc.types.WordAnnotation">
+						<constraint>
+							<and>
+								<constraints>
+									<constraint>
+										<eq key="category" value="adjective" />
+									</constraint>
+									<constraint>
+										<eq key="case" value="genitive" />
+									</constraint>
+								</constraints>
 							</and>
 						</constraint>
 					</annotation>
@@ -77,7 +107,48 @@
 				<pattern>
 					<annotation type="eu.project.ttc.types.WordAnnotation">
 						<constraint>
-							<eq key="category" value="adjective" />
+							<and>
+								<constraints>
+									<constraint>
+										<eq key="category" value="noun" />
+									</constraint>
+									<constraint>
+										<eq key="case" value="genitive" />
+									</constraint>
+								</constraints>
+							</and>
+						</constraint>
+					</annotation>
+				</pattern>
+			</patterns>
+		</sequence>
+	</pattern>
+	<pattern id="noun-participle">
+		<sequence>
+			<patterns>
+				<pattern>
+					<annotation type="eu.project.ttc.types.WordAnnotation">
+						<constraint>
+							<eq key="category" value="noun" />
+						</constraint>
+					</annotation>
+				</pattern>
+				<pattern>
+					<annotation type="eu.project.ttc.types.WordAnnotation">
+						<constraint>
+							<and>
+								<constraints>
+									<constraint>
+										<eq key="category" value="verb" />
+									</constraint>
+									<constraint>
+										<eq key="mood" value="participle" />
+									</constraint>
+									<constraint>
+										<eq key="case" value="genitive" />
+									</constraint>
+								</constraints>
+							</and>
 						</constraint>
 					</annotation>
 				</pattern>

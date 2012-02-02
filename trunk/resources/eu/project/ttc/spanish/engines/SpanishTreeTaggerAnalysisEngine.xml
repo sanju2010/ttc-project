@@ -6,26 +6,17 @@
     <delegateAnalysisEngine key="SpanishStemmer">
       <import name="eu.project.ttc.spanish.engines.SpanishStemmer"/>
     </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="SpanishTreeTaggerTenseNormalizer">
-      <import name="eu.project.ttc.spanish.engines.SpanishTreeTaggerTenseNormalizer"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="SpanishTreeTaggerSubcategoryNormalizer">
-      <import name="eu.project.ttc.spanish.engines.SpanishTreeTaggerSubcategoryNormalizer"/>
+    <delegateAnalysisEngine key="SpanishTreeTaggerNormalizer">
+      <import name="eu.project.ttc.spanish.engines.SpanishTreeTaggerNormalizer"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="SpanishWordTokenizer">
       <import name="eu.project.ttc.spanish.engines.SpanishWordTokenizer"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="SpanishTreeTaggerMoodNormalizer">
-      <import name="eu.project.ttc.spanish.engines.SpanishTreeTaggerMoodNormalizer"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="XmiCasConsumer">
       <import name="eu.project.ttc.all.engines.XmiCasConsumer"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="SpanishTreeTaggerWrapper">
       <import name="eu.project.ttc.spanish.engines.SpanishTreeTaggerWrapper"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="SpanishTreeTaggerCategoryNormalizer">
-      <import name="eu.project.ttc.spanish.engines.SpanishTreeTaggerCategoryNormalizer"/>
     </delegateAnalysisEngine>
   </delegateAnalysisEngineSpecifiers>
   <analysisEngineMetaData>
@@ -51,7 +42,7 @@
         <overrides>
           <parameter>SpanishTreeTaggerWrapper/TreeTaggerParameterFile</parameter>
         </overrides>
-      </configurationParameter>      
+      </configurationParameter>
       <configurationParameter>
         <name>SegmentFile</name>
         <type>String</type>
@@ -59,42 +50,6 @@
         <mandatory>false</mandatory>
         <overrides>
           <parameter>SpanishWordTokenizer/File</parameter>
-        </overrides>
-      </configurationParameter>      
-      <configurationParameter>
-        <name>CategoryMappingFile</name>
-        <type>String</type>
-        <multiValued>false</multiValued>
-        <mandatory>false</mandatory>
-        <overrides>
-          <parameter>SpanishTreeTaggerCategoryNormalizer/File</parameter>
-        </overrides>
-      </configurationParameter>      
-      <configurationParameter>
-        <name>SubcategoryMappingFile</name>
-        <type>String</type>
-        <multiValued>false</multiValued>
-        <mandatory>false</mandatory>
-        <overrides>
-          <parameter>SpanishTreeTaggerSubcategoryNormalizer/File</parameter>
-        </overrides>
-      </configurationParameter>      
-      <configurationParameter>
-        <name>MoodMappingFile</name>
-        <type>String</type>
-        <multiValued>false</multiValued>
-        <mandatory>false</mandatory>
-        <overrides>
-          <parameter>SpanishTreeTaggerMoodNormalizer/File</parameter>
-        </overrides>
-      </configurationParameter>      
-      <configurationParameter>
-        <name>TenseMappingFile</name>
-        <type>String</type>
-        <multiValued>false</multiValued>
-        <mandatory>false</mandatory>
-        <overrides>
-          <parameter>SpanishTreeTaggerTenseNormalizer/File</parameter>
         </overrides>
       </configurationParameter>
       <configurationParameter>
@@ -104,6 +59,69 @@
         <mandatory>true</mandatory>
         <overrides>
           <parameter>XmiCasConsumer/Directory</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>CategoryMappingFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>SpanishTreeTaggerNormalizer/CategoryMappingFile</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>SubcategoryMappingFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>SpanishTreeTaggerNormalizer/SubcategoryMappingFile</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>TenseMappingFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>SpanishTreeTaggerNormalizer/TenseMappingFile</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>MoodMappingFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>SpanishTreeTaggerNormalizer/MoodMappingFile</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>GenderMappingFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>SpanishTreeTaggerNormalizer/GenderMappingFile</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>NumberMappingFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>SpanishTreeTaggerNormalizer/NumberMappingFile</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>CaseMappingFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>SpanishTreeTaggerNormalizer/CaseMappingFile</parameter>
         </overrides>
       </configurationParameter>
     </configurationParameters>
@@ -125,10 +143,7 @@
       <fixedFlow>
         <node>SpanishWordTokenizer</node>
         <node>SpanishTreeTaggerWrapper</node>
-        <node>SpanishTreeTaggerCategoryNormalizer</node>
-        <node>SpanishTreeTaggerSubcategoryNormalizer</node>
-        <node>SpanishTreeTaggerMoodNormalizer</node>
-        <node>SpanishTreeTaggerTenseNormalizer</node>
+        <node>SpanishTreeTaggerNormalizer</node>
         <node>SpanishStemmer</node>
         <node>XmiCasConsumer</node>
       </fixedFlow>
