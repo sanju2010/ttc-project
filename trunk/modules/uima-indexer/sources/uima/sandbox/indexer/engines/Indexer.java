@@ -15,7 +15,6 @@ import org.apache.uima.resource.ResourceInitializationException;
 import uima.sandbox.indexer.resources.Index;
 import uima.sandbox.indexer.resources.IndexListener;
 
-
 public class Indexer extends JCasAnnotator_ImplBase {
 		
 	private Index index;
@@ -68,7 +67,7 @@ public class Indexer extends JCasAnnotator_ImplBase {
 			if (this.getType() == null) {
 				String type = (String) context.getConfigParameterValue("Type");
 				this.setType(type);				
-			}
+			}			
 		} catch (Exception e) {
 			throw new ResourceInitializationException(e);
 		}

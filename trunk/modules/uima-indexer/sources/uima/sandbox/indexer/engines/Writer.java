@@ -68,7 +68,6 @@ public class Writer extends JCasAnnotator_ImplBase {
 				try {
 					this.getContext().getLogger().log(Level.INFO, "Serializing " + this.getFile());
 					this.getIndex().store(stream);
-					// this.getContext().getLogger().log(Level.INFO, "Written " + this.getFile());
 				} finally {
 					stream.close();
 				}
