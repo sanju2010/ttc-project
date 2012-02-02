@@ -119,6 +119,14 @@ public class ObjectFactory {
     public Eq createEq() {
         return new Eq();
     }
+    
+    /**
+     * Create an instance of {@link Eq }
+     * 
+     */
+    public Neq createNeq() {
+        return new Neq();
+    }
 
     /**
      * Create an instance of {@link And }

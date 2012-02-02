@@ -51,11 +51,16 @@
   <xs:complexType name="Constraint">
     <xs:choice>
       <xs:element name="eq" type="Eq"/>
+      <xs:element name="neq" type="Neq"/>
       <xs:element name="and" type="And"/>
       <xs:element name="or" type="Or"/>
     </xs:choice>
   </xs:complexType>
   <xs:complexType name="Eq">
+    <xs:attribute name="key" type="xs:string" use="required" />
+    <xs:attribute name="value" type="xs:string" use="required" />   
+  </xs:complexType>
+    <xs:complexType name="Neq">
     <xs:attribute name="key" type="xs:string" use="required" />
     <xs:attribute name="value" type="xs:string" use="required" />   
   </xs:complexType>

@@ -18,6 +18,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 
 import uima.sandbox.matcher.constraints.AndConstraint;
 import uima.sandbox.matcher.constraints.EqConstraint;
+import uima.sandbox.matcher.constraints.NeqConstraint;
 import uima.sandbox.matcher.constraints.OrConstraint;
 import uima.sandbox.matcher.constraints.TypeConstraint;
 import uima.sandbox.matcher.models.Alternative;
@@ -26,6 +27,7 @@ import uima.sandbox.matcher.models.Annotation;
 import uima.sandbox.matcher.models.Constraint;
 import uima.sandbox.matcher.models.Eq;
 import uima.sandbox.matcher.models.Loop;
+import uima.sandbox.matcher.models.Neq;
 import uima.sandbox.matcher.models.ObjectFactory;
 import uima.sandbox.matcher.models.Option;
 import uima.sandbox.matcher.models.Or;
@@ -134,6 +136,8 @@ public class RuleSystemResource implements RuleSystem {
 	private uima.sandbox.matcher.constraints.Constraint get(Constraint constraint, String type) { 
 		if (constraint.getEq() != null) {
 			return this.get(constraint.getEq(), type);
+		} else if (constraint.getNeq() != null) {
+			return this.get(constraint.getNeq(), type);
 		} else if (constraint.getAnd() != null) {
 			return this.get(constraint.getAnd(), type);
 		} else if (constraint.getOr() != null) {
@@ -156,6 +160,14 @@ public class RuleSystemResource implements RuleSystem {
 		for (Constraint c : and.getConstraints().getConstraint()) {
 			constraint.getConstraints().add(this.get(c, type));
 		}
+		return constraint;
+	}
+	
+	private uima.sandbox.matcher.constraints.Constraint get(Neq neq, String type) { 
+		String name = neq.getKey();
+		String value = neq.getValue(); 
+		NeqConstraint constraint = new NeqConstraint(name, value);
+		constraint.setType(type);
 		return constraint;
 	}
 	

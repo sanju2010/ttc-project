@@ -37,12 +37,14 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "Constraint", propOrder = {
     "eq",
+    "neq",
     "and",
     "or"
 })
 public class Constraint {
 
     protected Eq eq;
+    protected Neq neq;
     protected And and;
     protected Or or;
 
@@ -57,7 +59,7 @@ public class Constraint {
     public Eq getEq() {
         return eq;
     }
-
+    
     /**
      * Sets the value of the eq property.
      * 
@@ -70,6 +72,30 @@ public class Constraint {
         this.eq = value;
     }
 
+    /**
+     * Gets the value of the neq property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link Neq }
+     *     
+     */
+    public Neq getNeq() {
+        return neq;
+    }
+
+    /**
+     * Sets the value of the neq property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link Neq }
+     *     
+     */
+    public void setNeq(Neq value) {
+        this.neq = value;
+    }
+    
     /**
      * Gets the value of the and property.
      * 
