@@ -32,33 +32,33 @@
     	<version>1.0</version>
     </dependency>
     <dependency>
-    	<groupId>uima.sandbox</groupId>
-    	<artifactId>matcher</artifactId>
+    	<groupId>eu.project.ttc</groupId>
+    	<artifactId>uima-pattern-matcher</artifactId>
     	<version>1.0</version>
     </dependency>
     <dependency>
-      <groupId>uima.sandbox</groupId>
-      <artifactId>lexer</artifactId>
+      <groupId>eu.project.ttc</groupId>
+      <artifactId>uima-tokenizer</artifactId>
       <version>1.0</version>
     </dependency>
     <dependency>
-    	<groupId>uima.sandbox</groupId>
-    	<artifactId>filter</artifactId>
+    	<groupId>eu.project.ttc</groupId>
+    	<artifactId>uima-filter</artifactId>
     	<version>1.0</version>
     </dependency>
     <dependency>
-    	<groupId>uima.sandbox</groupId>
-    	<artifactId>contextualizer</artifactId>
+    	<groupId>eu.project.ttc</groupId>
+    	<artifactId>uima-contextualizer</artifactId>
     	<version>1.0</version>
     </dependency>
     <dependency>
-    	<groupId>fr.free.rocheteau.jerome</groupId>
-    	<artifactId>dunamis</artifactId>
+    	<groupId>eu.project.ttc</groupId>
+    	<artifactId>uima-dunamis</artifactId>
     	<version>1.0</version>
     </dependency>
     <dependency>
-    	<groupId>uima.sandbox</groupId>
-    	<artifactId>mapper</artifactId>
+    	<groupId>eu.project.ttc</groupId>
+    	<artifactId>uima-mapper</artifactId>
     	<version>1.0</version>
     </dependency>
     <dependency>
@@ -67,18 +67,18 @@
     	<version>1.0</version>
     </dependency>
     <dependency>
-    	<groupId>uima.sandbox</groupId>
-    	<artifactId>indexer</artifactId>
+    	<groupId>eu.project.ttc</groupId>
+    	<artifactId>uima-indexer</artifactId>
     	<version>1.0</version>
     </dependency>
     <dependency>
-    	<groupId>uima.sandbox</groupId>
-    	<artifactId>stemmer</artifactId>
+    	<groupId>eu.project.ttc</groupId>
+    	<artifactId>uima-stemmer</artifactId>
     	<version>1.0</version>
     </dependency>
     <dependency>
-    	<groupId>uima.sandbox</groupId>
-    	<artifactId>catcher</artifactId>
+    	<groupId>eu.project.ttc</groupId>
+    	<artifactId>uima-catcher</artifactId>
     	<version>1.0</version>
     </dependency>
   </dependencies>
@@ -153,6 +153,11 @@
     	<id>annolab</id>
     	<name>AnnoLab</name>
     	<url>http://annolab.org/m2/releases/</url>
+    </repository>
+    <repository>
+    	<id>uima-sandbox</id>
+    	<name>UIMA SandBox</name>
+    	<url>http://uima-sandbox.googlecode.com/svn/maven-repository/</url>
     </repository>
   </repositories>
 </project>
