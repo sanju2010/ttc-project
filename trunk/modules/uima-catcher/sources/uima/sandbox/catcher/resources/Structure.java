@@ -110,12 +110,16 @@ public class Structure {
 		this.names = new ArrayList<String>();
 		this.results = new ArrayList<List<Annotation>>();
 		this.values = new ArrayList<Map<String, Annotation>>();
-		this.indexes = new ArrayList<FSIterator<Annotation>>();
-		for (String parameter : parameters.keySet()) {
-			Type type = cas.getRequiredType(parameters.get(parameter));
-			 AnnotationIndex<Annotation> index = cas.getAnnotationIndex(type);
-			this.indexes.add(index.iterator().copy());
-			this.names.add(parameter);
+		if (this.indexes == null) {
+			this.indexes = new ArrayList<FSIterator<Annotation>>();
+			for (String parameter : parameters.keySet()) {
+				Type type = cas.getRequiredType(parameters.get(parameter));
+				AnnotationIndex<Annotation> index = cas.getAnnotationIndex(type);
+				this.indexes.add(index.iterator().copy());
+				this.names.add(parameter);
+			}
+		} else {
+				
 		}
 	}
 	
