@@ -496,6 +496,7 @@ public class ZigguratAnalysisEngine extends JCasAnnotator_ImplBase {
 	}
 
 	private void alignNeoClassicalCompound(JCas cas, JCas terminology, String term) throws CASException {
+		try {
 		TermAnnotation termEntry = this.retrieve(terminology, NeoClassicalCompoundTermAnnotation.type, term);
 		if (termEntry != null) {
 			List<String> components = this.extract(this.getSourceTerminology().getJCas(), termEntry, true);
@@ -506,6 +507,9 @@ public class ZigguratAnalysisEngine extends JCasAnnotator_ImplBase {
 			components = this.flatten(candidates, "");
 			components = this.select(components);
 			this.annotate(cas, components);			
+		}
+		} catch (Exception e) {
+			this.getContext().getLogger().log(Level.WARNING, "Unable to align '" + term +"'");
 		}
 	}
 	
@@ -644,11 +648,13 @@ public class ZigguratAnalysisEngine extends JCasAnnotator_ImplBase {
 				String component = components.get(index);
 				if (this.getDictionary().map().keySet().contains(component)) {
 					continue;
-				} else {
+				} else if (index > 1) {
 					String prefix = components.remove(index - 2);
 					String suffix = components.remove(index - 1);
 					components.add(prefix + suffix);
 					return this.reshape(components);
+				} else {
+					throw new NullPointerException();
 				}
 			}
 		return components;
