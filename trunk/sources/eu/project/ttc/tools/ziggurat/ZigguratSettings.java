@@ -20,7 +20,7 @@ public class ZigguratSettings extends Parameters {
 		this.addParameter(declarations, "TargetTerminologyFile", ConfigurationParameter.TYPE_STRING, false, true);
 		this.addParameter(declarations, "TargetTermContextIndexFile", ConfigurationParameter.TYPE_STRING, false, true);
 		this.addParameter(declarations, "TargetTermSimilarityDirectory", ConfigurationParameter.TYPE_STRING, false, true);
-		this.addParameter(declarations, "SimilarityDistanceClassName", ConfigurationParameter.TYPE_STRING, false, false, "values:eu.project.ttc.metrics.Jaccard|eu.project.ttc.metrics.Cosinus");
+		this.addParameter(declarations, "SimilarityDistanceClassName", ConfigurationParameter.TYPE_STRING, false, false, "values:eu.project.ttc.metrics.Jaccard|eu.project.ttc.metrics.Cosine");
 		this.addParameter(declarations, "InterlingualSimilarity", ConfigurationParameter.TYPE_BOOLEAN, false, false);
 		this.addParameter(declarations, "InterlingualSimilaritySize", ConfigurationParameter.TYPE_INTEGER, false, false);
 		this.addParameter(declarations, "DictionaryFile", ConfigurationParameter.TYPE_STRING, false, false);
