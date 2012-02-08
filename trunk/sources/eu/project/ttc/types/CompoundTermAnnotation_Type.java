@@ -1,5 +1,5 @@
 
-/* First created by JCasGen Thu Oct 20 17:03:42 CEST 2011 */
+/* First created by JCasGen Wed Feb 08 15:55:05 CET 2012 */
 package eu.project.ttc.types;
 
 import org.apache.uima.jcas.JCas;
@@ -9,40 +9,43 @@ import org.apache.uima.cas.impl.FSGenerator;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.impl.TypeImpl;
 import org.apache.uima.cas.Type;
-import org.apache.uima.cas.impl.FeatureImpl;
-import org.apache.uima.cas.Feature;
 
 /** 
  * Updated by JCasGen Wed Feb 08 15:55:05 CET 2012
  * @generated */
-public class MultiWordTermAnnotation_Type extends TermAnnotation_Type {
+public class CompoundTermAnnotation_Type extends TermAnnotation_Type {
   /** @generated */
+  @Override
   protected FSGenerator getFSGenerator() {return fsGenerator;}
   /** @generated */
   private final FSGenerator fsGenerator = 
     new FSGenerator() {
       public FeatureStructure createFS(int addr, CASImpl cas) {
-  			 if (MultiWordTermAnnotation_Type.this.useExistingInstance) {
+  			 if (CompoundTermAnnotation_Type.this.useExistingInstance) {
   			   // Return eq fs instance if already created
-  		     FeatureStructure fs = MultiWordTermAnnotation_Type.this.jcas.getJfsFromCaddr(addr);
+  		     FeatureStructure fs = CompoundTermAnnotation_Type.this.jcas.getJfsFromCaddr(addr);
   		     if (null == fs) {
-  		       fs = new MultiWordTermAnnotation(addr, MultiWordTermAnnotation_Type.this);
-  			   MultiWordTermAnnotation_Type.this.jcas.putJfsFromCaddr(addr, fs);
+  		       fs = new CompoundTermAnnotation(addr, CompoundTermAnnotation_Type.this);
+  			   CompoundTermAnnotation_Type.this.jcas.putJfsFromCaddr(addr, fs);
   			   return fs;
   		     }
   		     return fs;
-        } else return new MultiWordTermAnnotation(addr, MultiWordTermAnnotation_Type.this);
+        } else return new CompoundTermAnnotation(addr, CompoundTermAnnotation_Type.this);
   	  }
     };
   /** @generated */
-  public final static int typeIndexID = MultiWordTermAnnotation.typeIndexID;
+  @SuppressWarnings ("hiding")
+  public final static int typeIndexID = CompoundTermAnnotation.typeIndexID;
   /** @generated 
      @modifiable */
-  public final static boolean featOkTst = JCasRegistry.getFeatOkTst("eu.project.ttc.types.MultiWordTermAnnotation");
- 
+  @SuppressWarnings ("hiding")
+  public final static boolean featOkTst = JCasRegistry.getFeatOkTst("eu.project.ttc.types.CompoundTermAnnotation");
+
+
+
   /** initialize variables to correspond with Cas Type and Features
 	* @generated */
-  public MultiWordTermAnnotation_Type(JCas jcas, Type casType) {
+  public CompoundTermAnnotation_Type(JCas jcas, Type casType) {
     super(jcas, casType);
     casImpl.getFSClassRegistry().addGeneratorForType((TypeImpl)this.casType, getFSGenerator());
 

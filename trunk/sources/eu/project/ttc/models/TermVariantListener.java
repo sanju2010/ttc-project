@@ -3,12 +3,18 @@ package eu.project.ttc.models;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.UimaContext;
+import org.apache.uima.cas.CASException;
+import org.apache.uima.cas.FSIterator;
+import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.tcas.Annotation;
@@ -16,7 +22,12 @@ import org.apache.uima.resource.DataResource;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Level;
 
+import eu.project.ttc.types.CompoundTermAnnotation;
+import eu.project.ttc.types.MultiWordTermAnnotation;
+import eu.project.ttc.types.NeoClassicalCompoundTermAnnotation;
+import eu.project.ttc.types.SingleWordTermAnnotation;
 import eu.project.ttc.types.TermAnnotation;
+import eu.project.ttc.types.TermComponentAnnotation;
 
 import uima.sandbox.catcher.resources.Rule;
 import uima.sandbox.catcher.resources.RuleSystem;
@@ -93,44 +104,130 @@ public class TermVariantListener implements IndexListener {
 	@Override
 	public void index(Annotation annotation) { }
 	
-	private boolean done = false;
-
 	@Override
 	public void release(JCas cas) { 
-		if (!this.done) {
-			this.done = true;
-			if (this.enable) {
-				this.process(cas);				
+		if (this.enable) {
+			if (this.getAnnotations() == null) {
+				this.setAnnotations();
+				this.index(cas);
+				for (Rule rule : this.getRuleSystem().get()) {
+					this.gather(cas, rule);
+				}
 			}
 		}
 	}
 	
-	void process(JCas cas) {
-		try {
-			// TODO walking through CAS views but indexing this
-			for (Rule rule : this.getRuleSystem().get()) {
-				UIMAFramework.getLogger().log(Level.INFO,"Checking: " + rule.id());
-				try {
-					if (rule.check(cas)) {
-						UIMAFramework.getLogger().log(Level.INFO,"Applying: " + rule.id());
-						try {
-							if (rule.match(cas)) {
-								this.release(cas, rule.id(), rule.get());
-							} else {
-								UIMAFramework.getLogger().log(Level.WARNING,"Annotation Match Failure: " + rule.id());
-							}
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-					} else {
-						UIMAFramework.getLogger().log(Level.WARNING,"Type Check Failure: " + rule.id());		
+	private Map<String, List<TermAnnotation>> annotations;
+	
+	private void setAnnotations() {
+		this.annotations = new HashMap<String, List<TermAnnotation>>();
+	}
+	
+	private Map<String, List<TermAnnotation>> getAnnotations() {
+		return this.annotations;
+	}
+	
+	private List<String> getKeys(TermAnnotation annotation) {
+		List<String> keys = new ArrayList<String>();
+		if (annotation instanceof SingleWordTermAnnotation) {
+			keys.add(annotation.getCoveredText());
+		} else if (annotation instanceof CompoundTermAnnotation) {
+			CompoundTermAnnotation compound = (CompoundTermAnnotation) annotation;
+			try {
+				JCas cas = annotation.getCAS().getJCas();
+				AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TermComponentAnnotation.type);
+				FSIterator<Annotation> iterator = index.subiterator(compound);
+				while (iterator.hasNext()) {
+					TermComponentAnnotation component = (TermComponentAnnotation) iterator.next();
+					if (component.getCategory().equals("noun")) {
+						keys.add(component.getCoveredText());
 					}
-				} catch (Exception e) {
-					System.out.println(e.getMessage());
+				}
+			} catch (CASException e) {
+				// ignore
+			}
+		} else if (annotation instanceof NeoClassicalCompoundTermAnnotation) {
+			NeoClassicalCompoundTermAnnotation ncc = (NeoClassicalCompoundTermAnnotation) annotation;
+			try {
+				JCas cas = annotation.getCAS().getJCas();
+				AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TermComponentAnnotation.type);
+				FSIterator<Annotation> iterator = index.subiterator(ncc);
+				while (iterator.hasNext()) {
+					TermComponentAnnotation component = (TermComponentAnnotation) iterator.next();
+					if (component.getCategory().equals("word")) {
+						keys.add(component.getCoveredText());
+					}
+				}
+			} catch (CASException e) {
+				// ignore
+			}
+		} else if (annotation instanceof MultiWordTermAnnotation) {
+			MultiWordTermAnnotation mwt = (MultiWordTermAnnotation) annotation;
+			try {
+				JCas cas = annotation.getCAS().getJCas();
+				AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TermComponentAnnotation.type);
+				FSIterator<Annotation> iterator = index.subiterator(mwt);
+				while (iterator.hasNext()) {
+					TermComponentAnnotation component = (TermComponentAnnotation) iterator.next();
+					if (component.getCategory().equals("noun")) {
+						keys.add(component.getStem());
+					}
+				}
+			} catch (CASException e) {
+				// ignore
+			}
+		}
+		return keys;
+	}
+	
+	private void index(JCas cas) {
+		AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TermAnnotation.type);
+		FSIterator<Annotation> iterator = index.iterator();
+		while (iterator.hasNext()) {
+			TermAnnotation annotation = (TermAnnotation) iterator.next();
+			List<String> keys = this.getKeys(annotation);
+			for (String key : keys) {
+				List<TermAnnotation> list = this.getAnnotations().get(key);
+				if (list == null) {
+					list = new ArrayList<TermAnnotation>();
+					this.getAnnotations().put(key, list);				
+				}
+				list.add(annotation);				
+			}
+		}
+	}
+	
+	private void gather(JCas cas, Rule rule) {
+		for (String key : this.getAnnotations().keySet()) {
+			List<TermAnnotation> list = this.getAnnotations().get(key);
+			for (int i = 0; i < list.size(); i++) {
+				for (int j = 0; j < list.size(); j++) {
+					if (i == j) {
+						continue;
+					} else {
+						TermAnnotation source = list.get(i);
+						TermAnnotation target = list.get(j);
+						this.process(cas, rule, source, target);
+					}
 				}
 			}
-		} catch (Throwable e) {
-			UIMAFramework.getLogger().log(Level.SEVERE,e.getMessage());
+		}
+	}
+	
+	private void process(JCas cas, Rule rule, Annotation first, Annotation second) {
+		if (rule.check(cas, first, second)) {
+			// UIMAFramework.getLogger().log(Level.INFO,"Applying: " + rule.id());
+			try {
+				if (rule.match(cas, first, second)) {
+					this.release(cas, rule.id(), rule.get());
+				} else {
+					// UIMAFramework.getLogger().log(Level.WARNING,"Annotation Match Failure: " + rule.id());
+				}
+			} catch (Exception e) {
+				UIMAFramework.getLogger().log(Level.WARNING,"Term Gathering Failure: " + e.getMessage());
+			}
+		} else {
+			// UIMAFramework.getLogger().log(Level.WARNING,"Type Check Failure: " + rule.id());		
 		}
 	}
 
@@ -143,7 +240,7 @@ public class TermVariantListener implements IndexListener {
 	}
 
 	protected void release(JCas cas, String id, Annotation[] annotations) {
-		String message = "Found " + annotations.length + " annotations with the rule: " + id;
+		// String message = "Found " + annotations.length + " annotations with the rule: " + id;
 		
 		TermAnnotation base = null;
 		Set<TermAnnotation> variants = new HashSet<TermAnnotation>();
@@ -174,11 +271,13 @@ public class TermVariantListener implements IndexListener {
 			base.setVariants(i, variant);
 			i++;
 		}
+		/*
 		message += "\nbase = " + base.getCoveredText();
 		for (int index = 0; index < base.getVariants().size(); index++) {
 			message += "\n\tvariant = " + base.getVariants(index).getCoveredText();
 		}
 		System.out.println(message);
+		*/
 	}
 
 }

@@ -1,50 +1,52 @@
 
 
-/* First created by JCasGen Thu Oct 20 17:03:42 CEST 2011 */
+/* First created by JCasGen Wed Feb 08 15:55:05 CET 2012 */
 package eu.project.ttc.types;
 
 import org.apache.uima.jcas.JCas; 
 import org.apache.uima.jcas.JCasRegistry;
 import org.apache.uima.jcas.cas.TOP_Type;
 
-import org.apache.uima.jcas.cas.FSArray;
 
 
 /** 
  * Updated by JCasGen Wed Feb 08 15:55:05 CET 2012
  * XML source: /home/rocheteau-j/Repositories/GoogleCode/ttc-term-suite/trunk/resources/eu/project/ttc/types/TermSuiteTypeSystem.xml
  * @generated */
-public class MultiWordTermAnnotation extends TermAnnotation {
+public class CompoundTermAnnotation extends TermAnnotation {
   /** @generated
    * @ordered 
    */
-  public final static int typeIndexID = JCasRegistry.register(MultiWordTermAnnotation.class);
+  @SuppressWarnings ("hiding")
+  public final static int typeIndexID = JCasRegistry.register(CompoundTermAnnotation.class);
   /** @generated
    * @ordered 
    */
+  @SuppressWarnings ("hiding")
   public final static int type = typeIndexID;
   /** @generated  */
+  @Override
   public              int getTypeIndexID() {return typeIndexID;}
  
   /** Never called.  Disable default constructor
    * @generated */
-  protected MultiWordTermAnnotation() {/* intentionally empty block */}
+  protected CompoundTermAnnotation() {/* intentionally empty block */}
     
   /** Internal - constructor used by generator 
    * @generated */
-  public MultiWordTermAnnotation(int addr, TOP_Type type) {
+  public CompoundTermAnnotation(int addr, TOP_Type type) {
     super(addr, type);
     readObject();
   }
   
   /** @generated */
-  public MultiWordTermAnnotation(JCas jcas) {
+  public CompoundTermAnnotation(JCas jcas) {
     super(jcas);
     readObject();   
   } 
 
   /** @generated */  
-  public MultiWordTermAnnotation(JCas jcas, int begin, int end) {
+  public CompoundTermAnnotation(JCas jcas, int begin, int end) {
     super(jcas);
     setBegin(begin);
     setEnd(end);
@@ -55,10 +57,8 @@ public class MultiWordTermAnnotation extends TermAnnotation {
     * Write your own initialization here
     * <!-- end-user-doc -->
   @generated modifiable */
-  private void readObject() {}
+  private void readObject() {/*default - does nothing empty block */}
      
- 
-    
 }
 
     

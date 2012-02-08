@@ -5,8 +5,8 @@
   <map key="DT" value="determiner" />
   <map key="EX" value="unknown" />
   <map key="FW" value="noun" />
-  <map key="IN" value="preposition" />
-  <map key="IN/that" value="preposition" />
+  <map key="IN" value="adposition" />
+  <map key="IN/that" value="adposition" />
   <map key="JJ" value="adjective" />
   <map key="JJR" value="adjective" />
   <map key="JJS" value="adjective" />
@@ -26,7 +26,7 @@
   <map key="RP" value="article" />
   <map key="SENT" value="sentence" />
   <map key="SYM" value="symbol" />
-  <map key="TO" value="preposition" />
+  <map key="TO" value="adposition" />
   <map key="UH" value="interjection" />
   <map key="VB" value="verb" />
   <map key="VBD" value="verb" />

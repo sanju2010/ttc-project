@@ -63,6 +63,24 @@
           <parameter>EditDistanceGathering/Enable</parameter>
         </overrides>
       </configurationParameter>
+      <configurationParameter>
+        <name>Threshold</name>
+        <type>Float</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>EditDistanceGathering/Threshold</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>Ngrams</name>
+        <type>Integer</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>EditDistanceGathering/Ngrams</parameter>
+        </overrides>
+      </configurationParameter>
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
@@ -87,6 +105,18 @@
         <name>Enable</name>
         <value>
           <boolean>false</boolean>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>Threshold</name>
+        <value>
+          <float>0.5</float>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>Ngrams</name>
+        <value>
+          <integer>1</integer>
         </value>
       </nameValuePair>
     </configurationParameterSettings>

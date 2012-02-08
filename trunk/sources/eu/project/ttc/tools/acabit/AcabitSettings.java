@@ -20,8 +20,10 @@ public class AcabitSettings extends Parameters {
 		this.addParameter(declarations, "MultiWordPatternRuleFile", ConfigurationParameter.TYPE_STRING, false, true);
 		this.addParameter(declarations, "TermVariationRuleFile", ConfigurationParameter.TYPE_STRING, false, true);
 		this.addParameter(declarations, "NeoclassicalElementFile", ConfigurationParameter.TYPE_STRING, false, true);
-		this.addParameter(declarations, "EditDistanceClassName", ConfigurationParameter.TYPE_STRING, false, true, "values:eu.project.ttc.metrics.LevenshteinDistance");
 		this.addParameter(declarations, "EnableTermGathering", ConfigurationParameter.TYPE_BOOLEAN, false, true);
+		this.addParameter(declarations, "EditDistanceClassName", ConfigurationParameter.TYPE_STRING, false, true, "values:eu.project.ttc.metrics.Levenshtein|eu.project.ttc.metrics.LongestCommonSubsequence");
+		this.addParameter(declarations, "EditDistanceThreshold", ConfigurationParameter.TYPE_FLOAT, false, true);
+		this.addParameter(declarations, "EditDistanceNgrams", ConfigurationParameter.TYPE_INTEGER, false, true);
 	}
 		
 }

@@ -20,6 +20,101 @@
 			</patterns>
 		</sequence>
 	</pattern>
+	<pattern id="adjective-adjective-noun">
+		<sequence>
+			<patterns>
+				<pattern>
+					<annotation type="eu.project.ttc.types.WordAnnotation">
+					<constraint>
+						<eq key="category" value="adjective" />
+						</constraint>
+					</annotation>
+				</pattern>
+				<pattern>
+					<annotation type="eu.project.ttc.types.WordAnnotation">
+					<constraint>
+						<eq key="category" value="adjective" />
+						</constraint>
+					</annotation>
+				</pattern>
+				<pattern>
+					<annotation type="eu.project.ttc.types.WordAnnotation">
+					<constraint>
+						<eq key="category" value="noun" />
+						</constraint>
+					</annotation>
+				</pattern>
+			</patterns>
+		</sequence>
+	</pattern>
+	<pattern id="adjective-adjective-conjunction-adjective-noun">
+		<sequence>
+			<patterns>
+				<pattern>
+					<annotation type="eu.project.ttc.types.WordAnnotation">
+					<constraint>
+						<eq key="category" value="adjective" />
+						</constraint>
+					</annotation>
+				</pattern>
+				<pattern>
+					<annotation type="eu.project.ttc.types.WordAnnotation">
+					<constraint>
+						<eq key="category" value="adjective" />
+						</constraint>
+					</annotation>
+				</pattern>
+				<pattern>
+					<annotation type="eu.project.ttc.types.WordAnnotation">
+					<constraint>
+						<eq key="category" value="conjunction" />
+						</constraint>
+					</annotation>
+				</pattern>
+				<pattern>
+					<annotation type="eu.project.ttc.types.WordAnnotation">
+					<constraint>
+						<eq key="category" value="adjective" />
+						</constraint>
+					</annotation>
+				</pattern>
+				<pattern>
+					<annotation type="eu.project.ttc.types.WordAnnotation">
+					<constraint>
+						<eq key="category" value="noun" />
+						</constraint>
+					</annotation>
+				</pattern>
+			</patterns>
+		</sequence>
+	</pattern>
+	<pattern id="adjective-noun-noun">
+		<sequence>
+			<patterns>
+				<pattern>
+					<annotation type="eu.project.ttc.types.WordAnnotation">
+					<constraint>
+						<eq key="category" value="adjective" />
+						</constraint>
+					</annotation>
+				</pattern>
+				<pattern>
+					<annotation type="eu.project.ttc.types.WordAnnotation">
+					<constraint>
+						<eq key="category" value="noun" />
+						</constraint>
+					</annotation>
+				</pattern>
+				<pattern>
+					<annotation type="eu.project.ttc.types.WordAnnotation">
+					<constraint>
+						<eq key="category" value="noun" />
+						</constraint>
+					</annotation>
+				</pattern>
+			</patterns>
+		</sequence>
+	</pattern>
 	<pattern id="participle-noun">
 		<sequence>
 			<patterns>
@@ -72,6 +167,33 @@
 									</constraint> 
 								</constraints>
 							</and>
+						</constraint>
+					</annotation>
+				</pattern>
+			</patterns>
+		</sequence>
+	</pattern>
+	<pattern id="noun-noun-noun">
+		<sequence>
+			<patterns>
+				<pattern>
+					<annotation type="eu.project.ttc.types.WordAnnotation">
+						<constraint>
+							<eq key="category" value="noun" />
+						</constraint>
+					</annotation>
+				</pattern>
+				<pattern>
+					<annotation type="eu.project.ttc.types.WordAnnotation">
+						<constraint>
+							<eq key="category" value="noun" />
+						</constraint>
+					</annotation>
+				</pattern>
+				<pattern>
+					<annotation type="eu.project.ttc.types.WordAnnotation">
+						<constraint>
+							<eq key="category" value="noun" />
 						</constraint>
 					</annotation>
 				</pattern>

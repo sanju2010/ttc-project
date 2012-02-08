@@ -127,6 +127,24 @@
           <parameter>FrenchTermGatherer/Enable</parameter>
         </overrides>
       </configurationParameter>
+      <configurationParameter>
+        <name>EditDistanceThreshold</name>
+        <type>Float</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>FrenchTermGatherer/Threshold</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>EditDistanceNgrams</name>
+        <type>Integer</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>FrenchTermGatherer/Ngrams</parameter>
+        </overrides>
+      </configurationParameter>
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
@@ -163,6 +181,18 @@
         <name>EnableTermGathering</name>
         <value>
           <boolean>false</boolean>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>EditDistanceThreshold</name>
+        <value>
+          <float>0.5</float>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>EditDistanceNgrams</name>
+        <value>
+          <integer>1</integer>
         </value>
       </nameValuePair>
     </configurationParameterSettings>

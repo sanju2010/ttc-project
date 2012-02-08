@@ -3,11 +3,16 @@ package eu.project.ttc.models;
 import java.net.URI;
 
 import org.apache.uima.UimaContext;
+import org.apache.uima.cas.FSIterator;
+import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.DataResource;
 import org.apache.uima.resource.ResourceInitializationException;
 
+import eu.project.ttc.types.CompoundTermAnnotation;
+import eu.project.ttc.types.SingleWordTermAnnotation;
+import eu.project.ttc.types.TermComponentAnnotation;
 import fr.univnantes.lina.uima.dictionaries.Dictionary;
 
 import uima.sandbox.indexer.resources.IndexListener;
@@ -62,6 +67,39 @@ public class CompoundSplitter implements IndexListener {
 	@Override
 	public void release(JCas cas) { 
 		if (!this.done) {
+			this.dash(cas);
+		}
+	}
+	
+	private void dash(JCas cas) {
+		AnnotationIndex<Annotation> index = cas.getAnnotationIndex(SingleWordTermAnnotation.type);
+		FSIterator<Annotation> iterator = index.iterator();
+		while (iterator.hasNext()) {
+			SingleWordTermAnnotation annotation = (SingleWordTermAnnotation) iterator.next();
+			// System.out.println(annotation.getCoveredText());
+			int first = annotation.getCoveredText().indexOf('-');
+			if (first != -1) {
+				int last = annotation.getCoveredText().lastIndexOf('-');
+				if (first == last) {
+					int begin = annotation.getBegin();
+					int end = annotation.getEnd();
+					CompoundTermAnnotation compound = new CompoundTermAnnotation(cas, begin, end);
+					compound.setComplexity("compound");
+					compound.setCategory(annotation.getCategory());
+					compound.setLemma(annotation.getLemma());
+					compound.setFrequency(annotation.getFrequency());
+					compound.setSpecificity(annotation.getSpecificity());
+					compound.addToIndexes();
+					TermComponentAnnotation a = new TermComponentAnnotation(cas, begin, begin + first);
+					a.setCategory(annotation.getCategory());
+					a.setLemma(a.getCoveredText());
+					a.addToIndexes();
+					TermComponentAnnotation b = new TermComponentAnnotation(cas, begin + first + 1, end);
+					b.setCategory(annotation.getCategory());
+					b.setLemma(b.getCoveredText());
+					b.addToIndexes();
+				}
+			}
 		}
 	}
 	

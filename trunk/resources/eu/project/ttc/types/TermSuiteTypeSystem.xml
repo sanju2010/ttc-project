@@ -134,6 +134,11 @@
       <supertypeName>eu.project.ttc.types.TermAnnotation</supertypeName>
     </typeDescription>
     <typeDescription>
+      <name>eu.project.ttc.types.CompoundTermAnnotation</name>
+      <description/>
+      <supertypeName>eu.project.ttc.types.TermAnnotation</supertypeName>
+    </typeDescription>
+    <typeDescription>
       <name>eu.project.ttc.types.NeoClassicalCompoundTermAnnotation</name>
       <description/>
       <supertypeName>eu.project.ttc.types.TermAnnotation</supertypeName>
