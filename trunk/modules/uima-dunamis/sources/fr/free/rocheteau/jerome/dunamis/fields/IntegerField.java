@@ -109,7 +109,7 @@ public class IntegerField implements Field {
 		DecimalFormat format = editor.getFormat();
 		format.setParseIntegerOnly(true);
 		this.spinner.setEditor(editor);
-		this.spinner.setPreferredSize(new Dimension(100,25));
+		this.spinner.setPreferredSize(new Dimension(300,25));
 	}
 	
 	private JSpinner getSpinner() {

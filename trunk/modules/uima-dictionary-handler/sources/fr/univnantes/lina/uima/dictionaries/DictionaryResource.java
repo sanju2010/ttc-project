@@ -32,7 +32,15 @@ public class DictionaryResource implements Dictionary {
 	
 	private String source;
 	
+	public String source() {
+		return this.source;
+	}
+	
 	private String target;
+	
+	public String target() {
+		return this.target;
+	}
 	
 	private Map<String,Set<String>> entries;
 	
@@ -64,7 +72,7 @@ public class DictionaryResource implements Dictionary {
 		this.setEntries();
 	}
 
-	private void add(String sourceLanguage,String targetLanguage,String sourceEntry,String targetEntry) {
+	public void add(String sourceLanguage,String targetLanguage,String sourceEntry,String targetEntry) {
 		if (this.source == null && this.target == null) {
 			this.source = sourceLanguage;
 			this.target = targetLanguage;

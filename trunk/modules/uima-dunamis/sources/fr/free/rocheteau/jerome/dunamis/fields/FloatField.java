@@ -1,8 +1,17 @@
 package fr.free.rocheteau.jerome.dunamis.fields;
 
+import java.awt.Dimension;
+import java.awt.GridBagLayout;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
+
 import javax.swing.BorderFactory;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.JSpinner;
+import javax.swing.JSpinner.NumberEditor;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
@@ -25,16 +34,27 @@ public class FloatField implements Field {
 	
 	@Override
 	public void setValue(Object value) {
-		if (value instanceof Integer) {
+		if (value instanceof Float) {
 			this.value = (Float) value;
-			this.getText().setText(this.value.toString());
+			// this.getText().setText(this.value.toString());
+			JComponent editor = this.getSpinner().getEditor();
+			if (editor instanceof JSpinner.NumberEditor) {
+	            ((JSpinner.NumberEditor) editor).getTextField().setText(value.toString());
+	        }
 		}
 	}
 	
 	@Override
 	public Float getValue() {
-		String value = this.getText().getText();
+		String value = null;
+		JComponent editor = this.getSpinner().getEditor();
+        if (editor instanceof JSpinner.NumberEditor) {
+            value = ((JSpinner.NumberEditor) editor).getTextField().getText();
+        } else {        	
+            return null;
+        }
 		try {
+			// value = value.replace(',','.');
 			return Float.valueOf(value);
 		} catch (Exception e) {
 			return null;
@@ -43,7 +63,9 @@ public class FloatField implements Field {
 
 	public FloatField() {
 		this.setBorder();
-		this.setText();
+		// this.setText();
+		this.setModel();
+		this.setSpinner();
 		this.setComponent();
 	}
 	
@@ -60,6 +82,7 @@ public class FloatField implements Field {
 		return this.border;
 	}
 
+	/*
 	private JTextField text;
 	
 	private void setText() {
@@ -69,13 +92,44 @@ public class FloatField implements Field {
 	public JTextField getText() {
 		return this.text;
 	}
+	*/
+	
+	private SpinnerNumberModel model;
+	
+	private void setModel() {
+		this.model = new SpinnerNumberModel(0,0,1,0.1);
+	}
+	
+	private SpinnerNumberModel getModel() {
+		return this.model;
+	}
+	
+	private JSpinner spinner;
+	
+	private void setSpinner() {
+		this.spinner = new JSpinner(this.getModel());
+		
+		NumberEditor editor = new JSpinner.NumberEditor(this.spinner);
+		DecimalFormat format = editor.getFormat();
+		format.setDecimalFormatSymbols(new DecimalFormatSymbols(Locale.ENGLISH));
+		format.setMaximumFractionDigits(2);
+        format.setMinimumFractionDigits(1);
+        format.setMinimumIntegerDigits(1);
+		this.spinner.setEditor(editor);
+		
+		this.spinner.setPreferredSize(new Dimension(300,25));
+	}
+	
+	private JSpinner getSpinner() {
+		return this.spinner;
+	}
 	
 	private JPanel component;
 	
 	private void setComponent() {
-		this.component = new JPanel();
+		this.component = new JPanel(new GridBagLayout());
 		this.component.setBorder(this.getBorder());
-		this.component.add(this.getText());
+		this.component.add(this.getSpinner());
 	}
 
 	@Override
@@ -85,7 +139,11 @@ public class FloatField implements Field {
 	
 	@Override
 	public boolean isModified() {
-		return !this.getValue().equals(this.value);
+		if (this.getValue() == null) {
+			return false;
+		} else {
+			return !this.getValue().equals(this.value);
+		}
 	}
 
 }

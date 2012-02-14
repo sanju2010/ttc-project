@@ -1,5 +1,6 @@
 package uima.sandbox.catcher.resources;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -69,5 +70,52 @@ public class Rule {
 		return result;
 	}
 
+	public boolean check(JCas cas, List<Annotation> annotations) {
+		try {
+			int index = 0;
+			Map<String, Type> parameters = new HashMap<String, Type>();
+			for (String name : this.parameters().keySet()) {
+				Annotation annotation = annotations.get(index);
+				parameters.put(name, annotation.getType());
+				index++;
+			}
+			return this.constraint().check(cas, parameters);
+		} catch (Exception e) {
+			return false;
+		}
+	}
+	
+	public boolean match(JCas cas, List<Annotation> annotations) {
+		try {
+			int index = 0;
+			Map<String, Annotation> values = new HashMap<String, Annotation>();
+			for (String name : this.parameters().keySet()) {
+				Annotation annotation = annotations.get(index);
+				values.put(name, annotation);
+				index++;
+			}
+			boolean match = this.constraint().match(cas, values);
+			ArrayList<List<Annotation>> list = new ArrayList<List<Annotation>>();
+			list.add(annotations);
+			this.set(list);
+			return match;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+	
+	public boolean check(JCas cas, Annotation first, Annotation second) {
+		List<Annotation> annotations = new ArrayList<Annotation>();
+		annotations.add(first);
+		annotations.add(second);
+		return this.check(cas, annotations);
+	}
+	
+	public boolean match(JCas cas, Annotation first, Annotation second) {
+		List<Annotation> annotations = new ArrayList<Annotation>();
+		annotations.add(first);
+		annotations.add(second);
+		return this.match(cas, annotations);
+	}
 	
 }
