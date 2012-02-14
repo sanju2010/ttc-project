@@ -139,7 +139,8 @@ public class TermVariantListener implements IndexListener {
 				FSIterator<Annotation> iterator = index.subiterator(compound);
 				while (iterator.hasNext()) {
 					TermComponentAnnotation component = (TermComponentAnnotation) iterator.next();
-					if (component.getCategory().equals("noun")) {
+					String category = component.getCategory();
+					if (category.equals("noun") || category.equals("adjective")) {
 						keys.add(component.getCoveredText());
 					}
 				}
@@ -154,7 +155,8 @@ public class TermVariantListener implements IndexListener {
 				FSIterator<Annotation> iterator = index.subiterator(ncc);
 				while (iterator.hasNext()) {
 					TermComponentAnnotation component = (TermComponentAnnotation) iterator.next();
-					if (component.getCategory().equals("word")) {
+					String category = component.getCategory();
+					if (category.equals("noun") || category.equals("adjective")) {
 						keys.add(component.getCoveredText());
 					}
 				}
@@ -169,7 +171,8 @@ public class TermVariantListener implements IndexListener {
 				FSIterator<Annotation> iterator = index.subiterator(mwt);
 				while (iterator.hasNext()) {
 					TermComponentAnnotation component = (TermComponentAnnotation) iterator.next();
-					if (component.getCategory().equals("noun")) {
+					String category = component.getCategory();
+					if (category.equals("noun") || category.equals("adjective")) {
 						keys.add(component.getStem());
 					}
 				}

@@ -226,7 +226,7 @@ public class NeoClassicalTermDetector extends JCasAnnotator_ImplBase {
 
 	private void addComponent(JCas cas,int begin,int end) {
 		TermComponentAnnotation annotation = new TermComponentAnnotation(cas,begin,end);
-		annotation.setCategory("word");
+		annotation.setCategory(this.getValue());
 		annotation.addToIndexes();
 		this.getComponents().add(annotation);
 	}
