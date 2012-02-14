@@ -228,7 +228,7 @@
 			<parameter name="base"
 				type="eu.project.ttc.types.MultiWordTermAnnotation" />
 			<parameter name="variant"
-				type="eu.project.ttc.types.CompoundTermAnnotation" />
+				type="eu.project.ttc.types.SingleWordTermAnnotation" />
 		</parameters>
 		<constraint>
 			<and>
@@ -453,7 +453,7 @@
 			</and>
 		</constraint>
 	</rule>
-	<rule id="noun-adjective">
+	<rule id="adjective-noun">
 		<parameters>
 			<parameter name="base"
 				type="eu.project.ttc.types.MultiWordTermAnnotation" />
