@@ -2,3 +2,15 @@
 #labels Featured,Phase-Support
 
 = User Guide =
+
+== Installation == 
+
+=== Compilation from Sources ===
+
+Just launch these command lines:
+
+  svn checkout http://ttc-project.googlecode.com/svn/trunk/ ttc-term-suite
+  cd ttc-term-suite/modules
+  for module in * ; do cd $module ; mvn install ; cd .. ; done
+  cd ..
+  mvn -f pom-term-suite.xml package
