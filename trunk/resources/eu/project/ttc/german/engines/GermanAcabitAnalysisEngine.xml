@@ -3,29 +3,32 @@
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>false</primitive>
   <delegateAnalysisEngineSpecifiers>
-    <delegateAnalysisEngine key="GermanTermIndexer">
-      <import name="eu.project.ttc.german.engines.GermanTermIndexer"/>
-    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="GermanTermDetector">
       <import name="eu.project.ttc.german.engines.GermanTermDetector"/>
     </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="GermanTermFilter">
-      <import name="eu.project.ttc.german.engines.GermanTermFilter"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="GermanCompoundSplitter">
-      <import name="eu.project.ttc.german.engines.GermanCompoundSplitter"/>
+    <delegateAnalysisEngine key="GermanLemmaFilter">
+      <import name="eu.project.ttc.german.engines.GermanLemmaFilter"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="IndexWriter">
       <import name="eu.project.ttc.all.engines.IndexWriter"/>
     </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="GermanTermFilter">
+      <import name="eu.project.ttc.german.engines.GermanTermFilter"/>
+    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="XmiCasConsumer">
       <import name="eu.project.ttc.all.engines.XmiCasConsumer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="TermCleaner">
+      <import name="eu.project.ttc.all.engines.TermCleaner"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="GermanTermGatherer">
       <import name="eu.project.ttc.german.engines.GermanTermGatherer"/>
     </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="GermanLemmaFilter">
-      <import name="eu.project.ttc.german.engines.GermanLemmaFilter"/>
+    <delegateAnalysisEngine key="GermanTermIndexer">
+      <import name="eu.project.ttc.german.engines.GermanTermIndexer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="GermanCompoundSplitter">
+      <import name="eu.project.ttc.german.engines.GermanCompoundSplitter"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="TermIndexer">
       <import name="eu.project.ttc.all.engines.TermIndexer"/>
@@ -62,6 +65,7 @@
         <mandatory>true</mandatory>
         <overrides>
           <parameter>TermIndexer/Type</parameter>
+          <parameter>TermCleaner/Type</parameter>
         </overrides>
       </configurationParameter>
       <configurationParameter>
@@ -175,6 +179,7 @@
         <node>GermanTermIndexer</node>
         <node>GermanCompoundSplitter</node>
         <node>GermanTermGatherer</node>
+        <node>TermCleaner</node>
         <node>IndexWriter</node>
         <node>XmiCasConsumer</node>
       </fixedFlow>
@@ -245,6 +250,10 @@
       </externalResourceBinding>
       <externalResourceBinding>
         <key>GermanCompoundSplitter/Index</key>
+        <resourceName>DefaultIndex</resourceName>
+      </externalResourceBinding>
+      <externalResourceBinding>
+        <key>TermCleaner/Index</key>
         <resourceName>DefaultIndex</resourceName>
       </externalResourceBinding>
     </externalResourceBindings>

@@ -2,8 +2,11 @@ package eu.project.ttc.models;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.UimaContext;
@@ -99,6 +102,12 @@ public class EditDistanceGathering implements IndexListener {
 		this.annotations = new HashMap<String, List<SingleWordTermAnnotation>>();
 	}
 	
+	private void setAnnotations(Map<String, List<SingleWordTermAnnotation>> annotations) {
+		Map<String, List<SingleWordTermAnnotation>> a = new TreeMap<String, List<SingleWordTermAnnotation>>();
+		a.putAll(annotations);
+		this.annotations = a;
+	}
+	
 	private Map<String, List<SingleWordTermAnnotation>> getAnnotations() {
 		return this.annotations;
 	}
@@ -142,9 +151,28 @@ public class EditDistanceGathering implements IndexListener {
 		}
 	}
 	
-	private void gather(JCas cas) {
+	private void clean() {
+		Set<String> keys = new HashSet<String>();
 		for (String key : this.getAnnotations().keySet()) {
 			List<SingleWordTermAnnotation> list = this.getAnnotations().get(key);
+			if (list.size() < 2) {
+				keys.add(key);
+			}
+		}
+		for (String key : keys) {
+			this.getAnnotations().remove(key);
+		}
+	}
+	
+	private void sort() {
+		this.setAnnotations(this.getAnnotations());
+	}
+	
+	private void gather(JCas cas) {
+		UIMAFramework.getLogger().log(Level.INFO, "Edit-distance gathering over " + this.getAnnotations().size() + " term classes");
+		for (String key : this.getAnnotations().keySet()) {
+			List<SingleWordTermAnnotation> list = this.getAnnotations().get(key);
+			UIMAFramework.getLogger().log(Level.FINE, "Edit-distance gathering over the '" + key + "' term class of size " + list.size());
 			for (int i = 0; i < list.size(); i++) {
 				for (int j = i + 1; j < list.size(); j++) {
 					String source = list.get(i).getCoveredText();
@@ -178,21 +206,24 @@ public class EditDistanceGathering implements IndexListener {
 		}
 		base.setVariants(array);
 		base.setVariants(array.size() - 1 , variant);
-		System.out.println("-----> " + base.getCoveredText() + " " + variant.getCoveredText());
 	}
 
 	@Override
 	public void index(Annotation annotation) { }
 	
+	private static boolean done = false;
+	
 	@Override
 	public void release(JCas cas) { 
-		if (!this.enable) {
-			return;
-		}
-		if (this.getAnnotations() == null) {
-			this.setAnnotations();
-			this.index(cas);
-			this.gather(cas);
+		if (this.enable && !done) {
+			if (this.getAnnotations() == null) {
+				this.setAnnotations();
+				this.index(cas);
+				this.clean();
+				this.sort();
+				this.gather(cas);
+			}
+			done = true;
 		}
 	}
 	

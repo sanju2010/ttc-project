@@ -3,11 +3,8 @@
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>false</primitive>
   <delegateAnalysisEngineSpecifiers>
-    <delegateAnalysisEngine key="EnglishTermIndexer">
-      <import name="eu.project.ttc.english.engines.EnglishTermIndexer"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="EnglishTermDetector">
-      <import name="eu.project.ttc.english.engines.EnglishTermDetector"/>
+    <delegateAnalysisEngine key="EnglishTermGatherer">
+      <import name="eu.project.ttc.english.engines.EnglishTermGatherer"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="EnglishTermFilter">
       <import name="eu.project.ttc.english.engines.EnglishTermFilter"/>
@@ -21,11 +18,17 @@
     <delegateAnalysisEngine key="XmiCasConsumer">
       <import name="eu.project.ttc.all.engines.XmiCasConsumer"/>
     </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="EnglishTermGatherer">
-      <import name="eu.project.ttc.english.engines.EnglishTermGatherer"/>
-    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="EnglishLemmaFilter">
       <import name="eu.project.ttc.english.engines.EnglishLemmaFilter"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="EnglishTermIndexer">
+      <import name="eu.project.ttc.english.engines.EnglishTermIndexer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="TermCleaner">
+      <import name="eu.project.ttc.all.engines.TermCleaner"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="EnglishTermDetector">
+      <import name="eu.project.ttc.english.engines.EnglishTermDetector"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="TermIndexer">
       <import name="eu.project.ttc.all.engines.TermIndexer"/>
@@ -62,6 +65,7 @@
         <mandatory>true</mandatory>
         <overrides>
           <parameter>TermIndexer/Type</parameter>
+          <parameter>TermCleaner/Type</parameter>
         </overrides>
       </configurationParameter>
       <configurationParameter>
@@ -175,6 +179,7 @@
         <node>EnglishTermIndexer</node>
         <node>EnglishCompoundSplitter</node>
         <node>EnglishTermGatherer</node>
+        <node>TermCleaner</node>
         <node>IndexWriter</node>
         <node>XmiCasConsumer</node>
       </fixedFlow>
@@ -245,6 +250,10 @@
       </externalResourceBinding>
       <externalResourceBinding>
         <key>EnglishCompoundSplitter/Index</key>
+        <resourceName>DefaultIndex</resourceName>
+      </externalResourceBinding>
+      <externalResourceBinding>
+        <key>TermCleaner/Index</key>
         <resourceName>DefaultIndex</resourceName>
       </externalResourceBinding>
     </externalResourceBindings>

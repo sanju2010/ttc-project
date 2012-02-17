@@ -24,6 +24,7 @@ import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
 
 import eu.project.ttc.models.Term;
+import eu.project.ttc.types.CompoundTermAnnotation;
 import eu.project.ttc.types.MultiWordTermAnnotation;
 import eu.project.ttc.types.NeoClassicalCompoundTermAnnotation;
 import eu.project.ttc.types.SingleWordTermAnnotation;
@@ -119,6 +120,8 @@ public class ZigguratCollectionReader extends CollectionReader_ImplBase {
 				term = new SingleWordTermAnnotation(cas.getJCas(), begin, end);
 			} else if (complexity.equals(Term.MULTI_WORD)) {
 				term = new MultiWordTermAnnotation(cas.getJCas(), begin, end);
+			} else if (complexity.equals(Term.COMPOUND)) {
+				term = new CompoundTermAnnotation(cas.getJCas(), begin, end);
 			} else if (complexity.equals(Term.NEO_CLASSICAL_COMPOUND)) {
 				term = new NeoClassicalCompoundTermAnnotation(cas.getJCas(), begin, end);
 			} else {

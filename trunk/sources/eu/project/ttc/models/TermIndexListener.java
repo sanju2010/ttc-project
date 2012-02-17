@@ -14,18 +14,17 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.DataResource;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.apache.uima.util.CasCopier;
 import org.apache.uima.util.Level;
 
 import uima.sandbox.indexer.resources.IndexListener;
 
+import eu.project.ttc.types.CompoundTermAnnotation;
 import eu.project.ttc.types.MultiWordTermAnnotation;
 import eu.project.ttc.types.NeoClassicalCompoundTermAnnotation;
 import eu.project.ttc.types.SingleWordTermAnnotation;
 import eu.project.ttc.types.TermAnnotation;
 import eu.project.ttc.types.TermComponentAnnotation;
 import eu.project.ttc.types.WordAnnotation;
-
 
 public class TermIndexListener implements IndexListener {
 
@@ -106,6 +105,15 @@ public class TermIndexListener implements IndexListener {
 			}
 		}
 	
+		public void addEntry(CompoundTermAnnotation annotation) {
+			String term = this.add(annotation, false);
+			if (term == null) {
+				return;
+			} else {
+				this.addComponents(annotation, term);
+			}
+		}
+		
 		public void addEntry(NeoClassicalCompoundTermAnnotation annotation) {
 			String term = this.add(annotation, false);
 			if (term == null) {
@@ -137,6 +145,28 @@ public class TermIndexListener implements IndexListener {
 			}
 		}
 
+		private void addComponents(CompoundTermAnnotation annotation, String term) {
+			try {
+				JCas cas = annotation.getCAS().getJCas();
+				AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TermComponentAnnotation.type);
+				FSIterator<Annotation> iterator = index.subiterator(annotation);
+				List<Component> components = new ArrayList<Component>();
+				while (iterator.hasNext()) {
+					TermComponentAnnotation component = (TermComponentAnnotation) iterator.next();
+					if (component.getBegin() == annotation.getBegin() && component.getEnd() == annotation.getEnd()) {
+						continue;
+					} else {
+						Component c = new Component();
+						c.update(component, annotation.getBegin());
+						components.add(c);
+					}
+				}
+				this.getComponents().put(term, components);
+			} catch (CASException e) {
+				UIMAFramework.getLogger().log(Level.WARNING,e.getMessage());
+			}
+		}
+		
 		private void addComponents(NeoClassicalCompoundTermAnnotation annotation, String term) {
 			try {
 				JCas cas = annotation.getCAS().getJCas();
@@ -159,7 +189,6 @@ public class TermIndexListener implements IndexListener {
 			}
 		}
 
-		
 	}	
 	
 	private SimpleTermFrequency singleWordTermFrequency;
@@ -182,6 +211,16 @@ public class TermIndexListener implements IndexListener {
 		return this.multiWordTermFrequency;
 	}
 	
+	private ComplexTermFrequency compoundFrequency;
+	
+	private void setCompoundFrequency() {
+		this.compoundFrequency = new ComplexTermFrequency();
+	}
+	
+	private ComplexTermFrequency getCompoundFrequency() {
+		return this.compoundFrequency;
+	}
+	
 	private ComplexTermFrequency neoClassicalCompoundFrequency;
 	
 	private void setNeoClassicalCompoundFrequency() {
@@ -195,6 +234,7 @@ public class TermIndexListener implements IndexListener {
 	public TermIndexListener() {
 		this.setSingleWordTermFrequency();
 		this.setMultiWordTermFrequency();
+		this.setCompoundFrequency();
 		this.setNeoClassicalCompoundFrequency();
 	}
 	
@@ -208,34 +248,10 @@ public class TermIndexListener implements IndexListener {
 		return this.language;
 	}
 	
-	private String type;
-	
-	private void setType(String type) {
-		this.type = type;
-	}
-	
-	private boolean isAllTermEnabled() {
-		return this.type.equals(TermAnnotation.class.getCanonicalName()); 
-	}
-	
-	private boolean isSingleWordTermEnabled() {
-		return this.isAllTermEnabled() || this.type.equals(SingleWordTermAnnotation.class.getCanonicalName()); 
-	}
-	
-	private boolean isMultiWordTermEnabled() {
-		return this.isAllTermEnabled() || this.type.equals(MultiWordTermAnnotation.class.getCanonicalName()); 
-	}
-	
-	private boolean isNeoClassicalCompoundEnabled() {
-		return this.isAllTermEnabled() || this.type.equals(NeoClassicalCompoundTermAnnotation.class.getCanonicalName()); 
-	}
-	
 	@Override 
 	public void configure(UimaContext context){ 
 		String language = (String) context.getConfigParameterValue("Language");
 		this.setLanguage(language);
-		String type = (String) context.getConfigParameterValue("Type");
-		this.setType(type);
 	}
 	
 	@Override
@@ -243,11 +259,13 @@ public class TermIndexListener implements IndexListener {
 
 	@Override
 	public void index(Annotation annotation) {
-		if (annotation instanceof SingleWordTermAnnotation && this.isSingleWordTermEnabled()) {
+		if (annotation instanceof SingleWordTermAnnotation) {
 			this.getSingleWordTermFrequency().addEntry((SingleWordTermAnnotation) annotation);					
-		} else if (annotation instanceof MultiWordTermAnnotation && this.isMultiWordTermEnabled()) {
+		} else if (annotation instanceof MultiWordTermAnnotation) {
 			this.getMultiWordTermFrequency().addEntry((MultiWordTermAnnotation) annotation);
-		} else if (annotation instanceof NeoClassicalCompoundTermAnnotation && this.isNeoClassicalCompoundEnabled()) {
+		} else if (annotation instanceof CompoundTermAnnotation) {
+			this.getCompoundFrequency().addEntry((CompoundTermAnnotation) annotation);
+		} else if (annotation instanceof NeoClassicalCompoundTermAnnotation) {
 			this.getNeoClassicalCompoundFrequency().addEntry((NeoClassicalCompoundTermAnnotation) annotation);
 		}
 	}
@@ -258,6 +276,7 @@ public class TermIndexListener implements IndexListener {
 		StringBuilder builder = new StringBuilder();
 		this.release(cas, builder, this.getSingleWordTermFrequency());
 		this.release(cas, builder, this.getMultiWordTermFrequency(), Term.MULTI_WORD);
+		this.release(cas, builder, this.getCompoundFrequency(), Term.COMPOUND);
 		this.release(cas, builder, this.getNeoClassicalCompoundFrequency(), Term.NEO_CLASSICAL_COMPOUND);
 		cas.setDocumentText(builder.toString());
 		// this.index(cas);
@@ -267,18 +286,17 @@ public class TermIndexListener implements IndexListener {
 		for (String entry : frequency.getFrequencies().keySet()) {
 			int freq = frequency.getFrequencies().get(entry).intValue();
 			String category = frequency.getCategories().get(entry);
-			if (freq > 1) {
 				int begin = builder.length();
 				builder.append(entry);
 				int end = builder.length();
 				builder.append('\n');
 				TermAnnotation annotation = new SingleWordTermAnnotation(cas,begin,end);
+				annotation.setOccurrences(freq);
 				annotation.setFrequency(freq);
 				annotation.setCategory(category);
 				annotation.setLemma(entry);
 				annotation.setComplexity(Term.SINGLE_WORD);
 				annotation.addToIndexes();
-			}
 		}
 	}
 	
@@ -287,7 +305,6 @@ public class TermIndexListener implements IndexListener {
 			int freq = frequency.getFrequencies().get(entry).intValue();
 			String category = frequency.getCategories().get(entry);
 			List<Component> components = frequency.getComponents().get(entry);
-			if (freq > 1) {
 				int begin = builder.length();
 				builder.append(entry);
 				int end = builder.length();
@@ -295,11 +312,14 @@ public class TermIndexListener implements IndexListener {
 				TermAnnotation annotation = null;
 				if (complexity.equals(Term.MULTI_WORD)) {
 					annotation = new MultiWordTermAnnotation(cas,begin,end);
+				} else if (complexity.equals(Term.COMPOUND)) {
+					annotation = new CompoundTermAnnotation(cas,begin,end);
 				} else if (complexity.equals(Term.NEO_CLASSICAL_COMPOUND)) {
 					annotation = new NeoClassicalCompoundTermAnnotation(cas,begin,end);
 				} else {
 					continue;
 				}
+				annotation.setOccurrences(freq);
 				annotation.setFrequency(freq);
 				annotation.setCategory(category);
 				annotation.setComplexity(complexity);
@@ -311,50 +331,7 @@ public class TermIndexListener implements IndexListener {
 						c.addToIndexes();
 					}						
 				}
-			}
 		}
-	}
-
-	private void index(JCas cas) {
-		AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TermAnnotation.type); 
-		FSIterator<Annotation> iterator = index.iterator();
-		while (iterator.hasNext()) {
-			TermAnnotation annotation = (TermAnnotation) iterator.next();
-			String key = null;
-			if (annotation instanceof SingleWordTermAnnotation) {
-				String term = annotation.getCoveredText();
-				int end = term.length() < 3 ? term.length() : 3;
-				key = annotation.getCoveredText().substring(0, end);
-			} else if (annotation instanceof MultiWordTermAnnotation)  {
-				key = this.head((MultiWordTermAnnotation) annotation);
-			}
-			try {
-				JCas view = this.get(cas, key);
-				this.copy(annotation, view);
-			} catch (Exception e) {
-				// FIXME
-				e.printStackTrace();
-			}
-		}
-	}
-	
-	private JCas get(JCas cas, String key) throws CASException {
-		try {
-			return cas.getView(key);
-		} catch (CASException e) {
-			JCas view = cas.createView(key);
-			return view;
-		}
-	}
-
-	private void copy(TermAnnotation annotation, JCas view) {
-		CasCopier copier = new CasCopier(annotation.getCAS(), view.getCas());
-		
-	}
-
-	private String head(MultiWordTermAnnotation annotation) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	private class Component {

@@ -11,7 +11,7 @@ import org.apache.uima.cas.impl.TypeImpl;
 import org.apache.uima.cas.Type;
 
 /** 
- * Updated by JCasGen Wed Feb 08 15:55:05 CET 2012
+ * Updated by JCasGen Fri Feb 17 13:13:10 CET 2012
  * @generated */
 public class CompoundTermAnnotation_Type extends TermAnnotation_Type {
   /** @generated */

@@ -8,4 +8,6 @@ public class Term {
 	
 	public static final String SINGLE_WORD = "single-word";
 
+	public static final String COMPOUND = "compound";
+
 }

@@ -18,6 +18,7 @@ import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 
+import eu.project.ttc.types.MultiWordTermAnnotation;
 import eu.project.ttc.types.TermAnnotation;
 import eu.project.ttc.types.TermComponentAnnotation;
 
@@ -114,6 +115,11 @@ public class AcabitViewer {
 	
 	private void addVariants(DefaultMutableTreeNode root, JCas cas, TermAnnotation annotation) {
 		if (annotation.getVariants() != null) {
+			String flag = "*";
+			if (annotation instanceof MultiWordTermAnnotation) {
+				flag += "*";
+			}
+			root.setUserObject(root.getUserObject() + "     (" + flag + ")");
 			DefaultMutableTreeNode node = this.getvariants(root);
 			if (node == null) {
 				node = new DefaultMutableTreeNode();
@@ -169,6 +175,7 @@ public class AcabitViewer {
 	private void addNotes(DefaultMutableTreeNode root,TermAnnotation annotation) {
 		this.addNote(root, "complexity", annotation.getComplexity());
 		this.addNote(root, "category", annotation.getCategory());
+		this.addNote(root, "occurrences", annotation.getOccurrences());
 		this.addNote(root, "frequency", annotation.getFrequency());
 		this.addNote(root, "specificity", annotation.getSpecificity());
 	}

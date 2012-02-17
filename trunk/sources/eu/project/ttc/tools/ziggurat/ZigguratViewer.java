@@ -173,10 +173,12 @@ public class ZigguratViewer {
 		DefaultMutableTreeNode node = new DefaultMutableTreeNode();
 		node.setUserObject(cas.getDocumentText() + " (" + (best == -1 ? "unranked" : new Integer(best).toString()) + ")");
 		this.getRoot().add(node);
-		for (int i = 0; i < 20; i++) {
-			this.addNote(node, candidates[i], new Integer(i + 1), scores[i]);
+		if (best != -1) { 
+			for (int i = 0; i < 20; i++) {
+				this.addNote(node, candidates[i], new Integer(i + 1), scores[i]);
+			}
+			this.getTableModel().update(best);
 		}
-		this.getTableModel().update(best == -1 ? 101 : best);
 		this.getTreeModel().reload();
 	}
 		

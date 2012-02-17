@@ -3,29 +3,32 @@
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>false</primitive>
   <delegateAnalysisEngineSpecifiers>
-    <delegateAnalysisEngine key="LatvianTermIndexer">
-      <import name="eu.project.ttc.latvian.engines.LatvianTermIndexer"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="LatvianTermDetector">
-      <import name="eu.project.ttc.latvian.engines.LatvianTermDetector"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="LatvianTermFilter">
-      <import name="eu.project.ttc.latvian.engines.LatvianTermFilter"/>
-    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="LatvianCompoundSplitter">
       <import name="eu.project.ttc.latvian.engines.LatvianCompoundSplitter"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="IndexWriter">
-      <import name="eu.project.ttc.all.engines.IndexWriter"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="XmiCasConsumer">
-      <import name="eu.project.ttc.all.engines.XmiCasConsumer"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="LatvianTermGatherer">
       <import name="eu.project.ttc.latvian.engines.LatvianTermGatherer"/>
     </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="IndexWriter">
+      <import name="eu.project.ttc.all.engines.IndexWriter"/>
+    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="LatvianLemmaFilter">
       <import name="eu.project.ttc.latvian.engines.LatvianLemmaFilter"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="XmiCasConsumer">
+      <import name="eu.project.ttc.all.engines.XmiCasConsumer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="LatvianTermDetector">
+      <import name="eu.project.ttc.latvian.engines.LatvianTermDetector"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="TermCleaner">
+      <import name="eu.project.ttc.all.engines.TermCleaner"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="LatvianTermIndexer">
+      <import name="eu.project.ttc.latvian.engines.LatvianTermIndexer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="LatvianTermFilter">
+      <import name="eu.project.ttc.latvian.engines.LatvianTermFilter"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="TermIndexer">
       <import name="eu.project.ttc.all.engines.TermIndexer"/>
@@ -62,6 +65,7 @@
         <mandatory>true</mandatory>
         <overrides>
           <parameter>TermIndexer/Type</parameter>
+          <parameter>TermCleaner/Type</parameter>
         </overrides>
       </configurationParameter>
       <configurationParameter>
@@ -175,6 +179,7 @@
         <node>LatvianTermIndexer</node>
         <node>LatvianCompoundSplitter</node>
         <node>LatvianTermGatherer</node>
+        <node>TermCleaner</node>
         <node>IndexWriter</node>
         <node>XmiCasConsumer</node>
       </fixedFlow>
@@ -245,6 +250,10 @@
       </externalResourceBinding>
       <externalResourceBinding>
         <key>LatvianCompoundSplitter/Index</key>
+        <resourceName>DefaultIndex</resourceName>
+      </externalResourceBinding>
+      <externalResourceBinding>
+        <key>TermCleaner/Index</key>
         <resourceName>DefaultIndex</resourceName>
       </externalResourceBinding>
     </externalResourceBindings>

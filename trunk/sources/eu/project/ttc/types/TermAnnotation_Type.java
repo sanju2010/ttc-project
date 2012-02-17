@@ -15,7 +15,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /** 
- * Updated by JCasGen Wed Feb 08 15:55:05 CET 2012
+ * Updated by JCasGen Fri Feb 17 13:13:10 CET 2012
  * @generated */
 public class TermAnnotation_Type extends Annotation_Type {
   /** @generated */
@@ -168,6 +168,24 @@ public class TermAnnotation_Type extends Annotation_Type {
     ll_cas.ll_setRefArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_variants), i, v);
   }
  
+ 
+  /** @generated */
+  final Feature casFeat_occurrences;
+  /** @generated */
+  final int     casFeatCode_occurrences;
+  /** @generated */ 
+  public int getOccurrences(int addr) {
+        if (featOkTst && casFeat_occurrences == null)
+      jcas.throwFeatMissing("occurrences", "eu.project.ttc.types.TermAnnotation");
+    return ll_cas.ll_getIntValue(addr, casFeatCode_occurrences);
+  }
+  /** @generated */    
+  public void setOccurrences(int addr, int v) {
+        if (featOkTst && casFeat_occurrences == null)
+      jcas.throwFeatMissing("occurrences", "eu.project.ttc.types.TermAnnotation");
+    ll_cas.ll_setIntValue(addr, casFeatCode_occurrences, v);}
+    
+  
 
 
 
@@ -200,6 +218,10 @@ public class TermAnnotation_Type extends Annotation_Type {
  
     casFeat_variants = jcas.getRequiredFeatureDE(casType, "variants", "uima.cas.FSArray", featOkTst);
     casFeatCode_variants  = (null == casFeat_variants) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_variants).getCode();
+
+ 
+    casFeat_occurrences = jcas.getRequiredFeatureDE(casType, "occurrences", "uima.cas.Integer", featOkTst);
+    casFeatCode_occurrences  = (null == casFeat_occurrences) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_occurrences).getCode();
 
   }
 }

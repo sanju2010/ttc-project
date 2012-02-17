@@ -3,17 +3,20 @@
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>false</primitive>
   <delegateAnalysisEngineSpecifiers>
-    <delegateAnalysisEngine key="SpanishTermIndexer">
-      <import name="eu.project.ttc.spanish.engines.SpanishTermIndexer"/>
+    <delegateAnalysisEngine key="SpanishTermFilter">
+      <import name="eu.project.ttc.spanish.engines.SpanishTermFilter"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="SpanishTermDetector">
       <import name="eu.project.ttc.spanish.engines.SpanishTermDetector"/>
     </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="SpanishTermFilter">
-      <import name="eu.project.ttc.spanish.engines.SpanishTermFilter"/>
+    <delegateAnalysisEngine key="SpanishTermGatherer">
+      <import name="eu.project.ttc.spanish.engines.SpanishTermGatherer"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="SpanishCompoundSplitter">
       <import name="eu.project.ttc.spanish.engines.SpanishCompoundSplitter"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="SpanishTermIndexer">
+      <import name="eu.project.ttc.spanish.engines.SpanishTermIndexer"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="IndexWriter">
       <import name="eu.project.ttc.all.engines.IndexWriter"/>
@@ -21,8 +24,8 @@
     <delegateAnalysisEngine key="XmiCasConsumer">
       <import name="eu.project.ttc.all.engines.XmiCasConsumer"/>
     </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="SpanishTermGatherer">
-      <import name="eu.project.ttc.spanish.engines.SpanishTermGatherer"/>
+    <delegateAnalysisEngine key="TermCleaner">
+      <import name="eu.project.ttc.all.engines.TermCleaner"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="SpanishLemmaFilter">
       <import name="eu.project.ttc.spanish.engines.SpanishLemmaFilter"/>
@@ -62,6 +65,7 @@
         <mandatory>true</mandatory>
         <overrides>
           <parameter>TermIndexer/Type</parameter>
+          <parameter>TermCleaner/Type</parameter>
         </overrides>
       </configurationParameter>
       <configurationParameter>
@@ -175,6 +179,7 @@
         <node>SpanishTermIndexer</node>
         <node>SpanishCompoundSplitter</node>
         <node>SpanishTermGatherer</node>
+        <node>TermCleaner</node>
         <node>IndexWriter</node>
         <node>XmiCasConsumer</node>
       </fixedFlow>
@@ -245,6 +250,10 @@
       </externalResourceBinding>
       <externalResourceBinding>
         <key>SpanishCompoundSplitter/Index</key>
+        <resourceName>DefaultIndex</resourceName>
+      </externalResourceBinding>
+      <externalResourceBinding>
+        <key>TermCleaner/Index</key>
         <resourceName>DefaultIndex</resourceName>
       </externalResourceBinding>
     </externalResourceBindings>

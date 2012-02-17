@@ -3,8 +3,8 @@
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>false</primitive>
   <delegateAnalysisEngineSpecifiers>
-    <delegateAnalysisEngine key="DanishTermIndexer">
-      <import name="eu.project.ttc.danish.engines.DanishTermIndexer"/>
+    <delegateAnalysisEngine key="DanishCompoundSplitter">
+      <import name="eu.project.ttc.danish.engines.DanishCompoundSplitter"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="DanishTermDetector">
       <import name="eu.project.ttc.danish.engines.DanishTermDetector"/>
@@ -12,23 +12,26 @@
     <delegateAnalysisEngine key="DanishTermFilter">
       <import name="eu.project.ttc.danish.engines.DanishTermFilter"/>
     </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="DanishCompoundSplitter">
-      <import name="eu.project.ttc.danish.engines.DanishCompoundSplitter"/>
-    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="IndexWriter">
       <import name="eu.project.ttc.all.engines.IndexWriter"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="XmiCasConsumer">
-      <import name="eu.project.ttc.all.engines.XmiCasConsumer"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="DanishTermGatherer">
       <import name="eu.project.ttc.danish.engines.DanishTermGatherer"/>
     </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="DanishLemmaFilter">
-      <import name="eu.project.ttc.danish.engines.DanishLemmaFilter"/>
+    <delegateAnalysisEngine key="XmiCasConsumer">
+      <import name="eu.project.ttc.all.engines.XmiCasConsumer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="TermCleaner">
+      <import name="eu.project.ttc.all.engines.TermCleaner"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="DanishTermIndexer">
+      <import name="eu.project.ttc.danish.engines.DanishTermIndexer"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="TermIndexer">
       <import name="eu.project.ttc.all.engines.TermIndexer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="DanishLemmaFilter">
+      <import name="eu.project.ttc.danish.engines.DanishLemmaFilter"/>
     </delegateAnalysisEngine>
   </delegateAnalysisEngineSpecifiers>
   <analysisEngineMetaData>
@@ -62,6 +65,7 @@
         <mandatory>true</mandatory>
         <overrides>
           <parameter>TermIndexer/Type</parameter>
+          <parameter>TermCleaner/Type</parameter>
         </overrides>
       </configurationParameter>
       <configurationParameter>
@@ -177,6 +181,7 @@
         <node>DanishTermGatherer</node>
         <node>IndexWriter</node>
         <node>XmiCasConsumer</node>
+        <node>TermCleaner</node>
       </fixedFlow>
     </flowConstraints>
     <typePriorities/>
@@ -245,6 +250,10 @@
       </externalResourceBinding>
       <externalResourceBinding>
         <key>DanishCompoundSplitter/Index</key>
+        <resourceName>DefaultIndex</resourceName>
+      </externalResourceBinding>
+      <externalResourceBinding>
+        <key>TermCleaner/Index</key>
         <resourceName>DefaultIndex</resourceName>
       </externalResourceBinding>
     </externalResourceBindings>

@@ -121,6 +121,11 @@
           <rangeTypeName>uima.cas.FSArray</rangeTypeName>
           <elementType>eu.project.ttc.types.TermAnnotation</elementType>
         </featureDescription>
+        <featureDescription>
+          <name>occurrences</name>
+          <description/>
+          <rangeTypeName>uima.cas.Integer</rangeTypeName>
+        </featureDescription>
       </features>
     </typeDescription>
     <typeDescription>

@@ -14,7 +14,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
- * Updated by JCasGen Wed Feb 08 15:55:05 CET 2012
+ * Updated by JCasGen Fri Feb 17 13:13:10 CET 2012
  * XML source: /home/rocheteau-j/Repositories/GoogleCode/ttc-term-suite/trunk/resources/eu/project/ttc/types/TermSuiteTypeSystem.xml
  * @generated */
 public class TermAnnotation extends Annotation {
@@ -184,6 +184,24 @@ public class TermAnnotation extends Annotation {
       jcasType.jcas.throwFeatMissing("variants", "eu.project.ttc.types.TermAnnotation");
     jcasType.jcas.checkArrayBounds(jcasType.ll_cas.ll_getRefValue(addr, ((TermAnnotation_Type)jcasType).casFeatCode_variants), i);
     jcasType.ll_cas.ll_setRefArrayValue(jcasType.ll_cas.ll_getRefValue(addr, ((TermAnnotation_Type)jcasType).casFeatCode_variants), i, jcasType.ll_cas.ll_getFSRef(v));}
+   
+    
+  //*--------------*
+  //* Feature: occurrences
+
+  /** getter for occurrences - gets 
+   * @generated */
+  public int getOccurrences() {
+    if (TermAnnotation_Type.featOkTst && ((TermAnnotation_Type)jcasType).casFeat_occurrences == null)
+      jcasType.jcas.throwFeatMissing("occurrences", "eu.project.ttc.types.TermAnnotation");
+    return jcasType.ll_cas.ll_getIntValue(addr, ((TermAnnotation_Type)jcasType).casFeatCode_occurrences);}
+    
+  /** setter for occurrences - sets  
+   * @generated */
+  public void setOccurrences(int v) {
+    if (TermAnnotation_Type.featOkTst && ((TermAnnotation_Type)jcasType).casFeat_occurrences == null)
+      jcasType.jcas.throwFeatMissing("occurrences", "eu.project.ttc.types.TermAnnotation");
+    jcasType.ll_cas.ll_setIntValue(addr, ((TermAnnotation_Type)jcasType).casFeatCode_occurrences, v);}    
   }
 
     

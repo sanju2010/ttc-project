@@ -3,26 +3,29 @@
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>false</primitive>
   <delegateAnalysisEngineSpecifiers>
-    <delegateAnalysisEngine key="RussianTermIndexer">
-      <import name="eu.project.ttc.russian.engines.RussianTermIndexer"/>
-    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="RussianTermDetector">
       <import name="eu.project.ttc.russian.engines.RussianTermDetector"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="RussianTermFilter">
       <import name="eu.project.ttc.russian.engines.RussianTermFilter"/>
     </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="RussianCompoundSplitter">
-      <import name="eu.project.ttc.russian.engines.RussianCompoundSplitter"/>
-    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="IndexWriter">
       <import name="eu.project.ttc.all.engines.IndexWriter"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="RussianTermGatherer">
+      <import name="eu.project.ttc.russian.engines.RussianTermGatherer"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="XmiCasConsumer">
       <import name="eu.project.ttc.all.engines.XmiCasConsumer"/>
     </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="RussianTermGatherer">
-      <import name="eu.project.ttc.russian.engines.RussianTermGatherer"/>
+    <delegateAnalysisEngine key="RussianCompoundSplitter">
+      <import name="eu.project.ttc.russian.engines.RussianCompoundSplitter"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="TermCleaner">
+      <import name="eu.project.ttc.all.engines.TermCleaner"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="RussianTermIndexer">
+      <import name="eu.project.ttc.russian.engines.RussianTermIndexer"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="RussianLemmaFilter">
       <import name="eu.project.ttc.russian.engines.RussianLemmaFilter"/>
@@ -62,6 +65,7 @@
         <mandatory>true</mandatory>
         <overrides>
           <parameter>TermIndexer/Type</parameter>
+          <parameter>TermCleaner/Type</parameter>
         </overrides>
       </configurationParameter>
       <configurationParameter>
@@ -175,6 +179,7 @@
         <node>RussianTermIndexer</node>
         <node>RussianCompoundSplitter</node>
         <node>RussianTermGatherer</node>
+        <node>TermCleaner</node>
         <node>IndexWriter</node>
         <node>XmiCasConsumer</node>
       </fixedFlow>
@@ -245,6 +250,10 @@
       </externalResourceBinding>
       <externalResourceBinding>
         <key>RussianCompoundSplitter/Index</key>
+        <resourceName>DefaultIndex</resourceName>
+      </externalResourceBinding>
+      <externalResourceBinding>
+        <key>TermCleaner/Index</key>
         <resourceName>DefaultIndex</resourceName>
       </externalResourceBinding>
     </externalResourceBindings>

@@ -4,11 +4,13 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.UimaContext;
@@ -103,15 +105,19 @@ public class TermVariantListener implements IndexListener {
 
 	@Override
 	public void index(Annotation annotation) { }
-	
+		
 	@Override
 	public void release(JCas cas) { 
 		if (this.enable) {
 			if (this.getAnnotations() == null) {
 				this.setAnnotations();
 				this.index(cas);
-				for (Rule rule : this.getRuleSystem().get()) {
-					this.gather(cas, rule);
+				this.clean();
+				this.sort();
+				try {
+					this.gather(cas);
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
 			}
 		}
@@ -123,14 +129,29 @@ public class TermVariantListener implements IndexListener {
 		this.annotations = new HashMap<String, List<TermAnnotation>>();
 	}
 	
+	private void setAnnotations(Map<String, List<TermAnnotation>> annotations) {
+		TreeMap<String, List<TermAnnotation>> a = new TreeMap<String, List<TermAnnotation>>();
+		a.putAll(annotations);
+		this.annotations = a;
+	}
+	
 	private Map<String, List<TermAnnotation>> getAnnotations() {
 		return this.annotations;
 	}
 	
-	private List<String> getKeys(TermAnnotation annotation) {
+	private String setKey(String term, String category) {
+		return term;
+	}
+	
+	private String setKey(String component1, String component2, String category) {
+		return component1 + "+" + component2;
+	}
+	
+	private List<String> getKeys(TermAnnotation annotation, String language) {
 		List<String> keys = new ArrayList<String>();
 		if (annotation instanceof SingleWordTermAnnotation) {
-			keys.add(annotation.getCoveredText());
+			String key = this.setKey(annotation.getCoveredText(), annotation.getCategory());
+			keys.add(key);
 		} else if (annotation instanceof CompoundTermAnnotation) {
 			CompoundTermAnnotation compound = (CompoundTermAnnotation) annotation;
 			try {
@@ -141,7 +162,9 @@ public class TermVariantListener implements IndexListener {
 					TermComponentAnnotation component = (TermComponentAnnotation) iterator.next();
 					String category = component.getCategory();
 					if (category.equals("noun") || category.equals("adjective")) {
-						keys.add(component.getCoveredText());
+						String key = this.setKey(component.getCoveredText(), category);
+						keys.add(key);
+						break;
 					}
 				}
 			} catch (CASException e) {
@@ -157,7 +180,9 @@ public class TermVariantListener implements IndexListener {
 					TermComponentAnnotation component = (TermComponentAnnotation) iterator.next();
 					String category = component.getCategory();
 					if (category.equals("noun") || category.equals("adjective")) {
-						keys.add(component.getCoveredText());
+						String key = this.setKey(component.getCoveredText(), category);
+						keys.add(key);
+						break;
 					}
 				}
 			} catch (CASException e) {
@@ -166,21 +191,34 @@ public class TermVariantListener implements IndexListener {
 		} else if (annotation instanceof MultiWordTermAnnotation) {
 			MultiWordTermAnnotation mwt = (MultiWordTermAnnotation) annotation;
 			try {
-				JCas cas = annotation.getCAS().getJCas();
-				AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TermComponentAnnotation.type);
-				FSIterator<Annotation> iterator = index.subiterator(mwt);
-				while (iterator.hasNext()) {
-					TermComponentAnnotation component = (TermComponentAnnotation) iterator.next();
-					String category = component.getCategory();
-					if (category.equals("noun") || category.equals("adjective")) {
-						keys.add(component.getStem());
-					}
-				}
+				this.getKeys(mwt, keys);
 			} catch (CASException e) {
 				// ignore
 			}
 		}
 		return keys;
+	}
+
+	private void getKeys(MultiWordTermAnnotation mwt, List<String> keys) throws CASException {
+		JCas cas = mwt.getCAS().getJCas();
+		AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TermComponentAnnotation.type);
+		FSIterator<Annotation> iterator = index.subiterator(mwt);
+		List<String> components = new ArrayList<String>();
+		while (iterator.hasNext()) {
+			TermComponentAnnotation component = (TermComponentAnnotation) iterator.next();
+			String category = component.getCategory();
+			if (category.equals("noun") || category.equals("adjective")) {
+				components.add(component.getStem());
+			}
+		}
+		Collections.sort(components);
+		String category = mwt.getCategory();
+		for (int i = 0 ; i < components.size(); i++) {
+			for (int j = i + 1; j < components.size(); j++) {
+				String key = this.setKey(components.get(i), components.get(j), category);
+				keys.add(key);
+			}
+		}		
 	}
 	
 	private void index(JCas cas) {
@@ -188,7 +226,7 @@ public class TermVariantListener implements IndexListener {
 		FSIterator<Annotation> iterator = index.iterator();
 		while (iterator.hasNext()) {
 			TermAnnotation annotation = (TermAnnotation) iterator.next();
-			List<String> keys = this.getKeys(annotation);
+			List<String> keys = this.getKeys(annotation, cas.getDocumentLanguage());
 			for (String key : keys) {
 				List<TermAnnotation> list = this.getAnnotations().get(key);
 				if (list == null) {
@@ -200,17 +238,92 @@ public class TermVariantListener implements IndexListener {
 		}
 	}
 	
-	private void gather(JCas cas, Rule rule) {
+	private void clean() {
+		Set<String> keys = new HashSet<String>();
 		for (String key : this.getAnnotations().keySet()) {
 			List<TermAnnotation> list = this.getAnnotations().get(key);
+			if (list.size() < 2) {
+				keys.add(key);
+			}
+		}
+		for (String key : keys) {
+			this.getAnnotations().remove(key);
+		}
+	}
+	
+	private void sort() {
+		this.setAnnotations(this.getAnnotations());
+	}
+	
+	private void gather(JCas cas) {
+		UIMAFramework.getLogger().log(Level.INFO, "Rule-based gathering over " + this.getAnnotations().size() + " term classes");
+		for (String key : this.getAnnotations().keySet()) {
+			List<TermAnnotation> list = this.getAnnotations().get(key);
+			UIMAFramework.getLogger().log(Level.FINE, "Rule-based gathering over the '" + key + "' term class of size " + list.size());
+			
+			/*
+			Map<String, TermAnnotation> idx = new HashMap<String, TermAnnotation>();
+			Map<String, List<TermAnnotation>> index = new HashMap<String, List<TermAnnotation>>();
+			for (TermAnnotation item : list) {
+				String id = item.getCategory();
+				List<TermAnnotation> part = index.get(id);
+				if (part == null) {
+					part = new ArrayList<TermAnnotation>();
+					index.put(id, part);
+					idx.put(id, item);
+				} else if (item.getFrequency() > idx.get(id).getFrequency()) {
+					idx.put(id, item);
+				}
+				part.add(item);
+			}
+			for (String id : index.keySet()) {
+				List<TermAnnotation> part = index.get(id);
+				TermAnnotation item = idx.get(id);
+				part.remove(item);
+			}
+			for (String id : index.keySet()) {
+				List<TermAnnotation> part = index.get(id);
+				TermAnnotation item = idx.get(id);
+				FSArray variants = item.getVariants();
+				int offset = 0;
+				if (variants == null) {
+					variants = new FSArray(cas, part.size());
+				} else {
+					offset = variants.size();
+					TermAnnotation[] fs = new TermAnnotation[offset];
+					variants.copyToArray(0, fs, 0, offset);
+					variants = new FSArray(cas, offset + part.size());
+					variants.copyFromArray(fs, 0, 0, offset);
+				}
+				item.setVariants(variants);
+				for (int i = 0; i < part.size(); i++) {
+					item.setVariants(offset + i, part.get(i));
+				}
+				
+			}
+			list = new ArrayList<TermAnnotation>(idx.values());
+			*/
+			/*
+			 * faire une partition de cette liste en fonction du patron du terme
+			 * 
+			 * associer tous les termes de toute les sous partitions entre eux
+			 * 
+			 * extraire un représentant de chaque partitions (le plus fréquent)
+			 * 
+			 * appliquer les règles sur ces représentants
+			 * 
+			 * */
+			
 			for (int i = 0; i < list.size(); i++) {
 				for (int j = 0; j < list.size(); j++) {
 					if (i == j) {
 						continue;
 					} else {
-						TermAnnotation source = list.get(i);
-						TermAnnotation target = list.get(j);
-						this.process(cas, rule, source, target);
+						for (Rule rule : this.getRuleSystem().get()) {
+							TermAnnotation source = list.get(i);
+							TermAnnotation target = list.get(j);
+							this.process(cas, rule, source, target);
+						}
 					}
 				}
 			}

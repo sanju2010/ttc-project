@@ -21,6 +21,9 @@
     <delegateAnalysisEngine key="XmiCasConsumer">
       <import name="eu.project.ttc.all.engines.XmiCasConsumer"/>
     </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="TermCleaner">
+      <import name="eu.project.ttc.all.engines.TermCleaner"/>
+    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="FrenchTermGatherer">
       <import name="eu.project.ttc.french.engines.FrenchTermGatherer"/>
     </delegateAnalysisEngine>
@@ -62,6 +65,7 @@
         <mandatory>true</mandatory>
         <overrides>
           <parameter>TermIndexer/Type</parameter>
+          <parameter>TermCleaner/Type</parameter>
         </overrides>
       </configurationParameter>
       <configurationParameter>
@@ -205,6 +209,7 @@
         <node>FrenchTermIndexer</node>
         <node>FrenchCompoundSplitter</node>
         <node>FrenchTermGatherer</node>
+        <node>TermCleaner</node>
         <node>IndexWriter</node>
         <node>XmiCasConsumer</node>
       </fixedFlow>
@@ -275,6 +280,10 @@
       </externalResourceBinding>
       <externalResourceBinding>
         <key>FrenchCompoundSplitter/Index</key>
+        <resourceName>DefaultIndex</resourceName>
+      </externalResourceBinding>
+      <externalResourceBinding>
+        <key>TermCleaner/Index</key>
         <resourceName>DefaultIndex</resourceName>
       </externalResourceBinding>
     </externalResourceBindings>
