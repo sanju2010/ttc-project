@@ -3,10 +3,12 @@ package uima.sandbox.matcher.engines;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -116,7 +118,7 @@ public class Matcher extends JCasAnnotator_ImplBase {
 			if (path != null && this.getPath() == null) {
 				this.setPath(path);
 			}
-						
+			this.setComparator();			
 			this.setTrees();
 			this.setAnnotations();
 		} catch (Exception e) {
@@ -133,8 +135,12 @@ public class Matcher extends JCasAnnotator_ImplBase {
 			int begin = this.getBegin(index);
 			int end = this.getEnd(index);
 			List<Annotation> list = this.getAnnotations().get(index);
-			Annotation[] annotations = new Annotation[list.size()];
-			list.toArray(annotations);
+			// TODO clean
+			// Collections.sort(list, this.getComparator());
+			Set<Annotation> set = new TreeSet<Annotation>(this.getComparator());
+			set.addAll(list);
+			Annotation[] annotations = new Annotation[set.size()];
+			set.toArray(annotations);
 			this.annotate(cas, id, begin, end, annotations);
 		}
 	}
@@ -218,6 +224,30 @@ public class Matcher extends JCasAnnotator_ImplBase {
 			Integer id = new Integer(index);
 			this.getTrees().get(id).add(tree);
 		}
+	}
+
+	private Comparator<Annotation> comparator;
+
+	private void setComparator() {
+		this.comparator = new AnnotationComparator();
+	}
+	
+	private Comparator<Annotation> getComparator() {
+		return this.comparator;
+	}
+	
+	private class AnnotationComparator implements Comparator<Annotation> {
+
+		@Override
+		public int compare(Annotation anAnnotation, Annotation anotherAnnotation) {
+			int diff = anAnnotation.getBegin() - anotherAnnotation.getBegin();
+			if (diff == 0) {
+				return anotherAnnotation.getEnd() - anAnnotation.getEnd();
+			} else {
+				return diff;
+			}
+		}
+		
 	}
 	
 }
