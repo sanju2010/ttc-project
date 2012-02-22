@@ -341,7 +341,7 @@
 			</patterns>
 		</sequence>
 	</pattern>
-	<pattern id="noun-preposition-noun-noun-alt">
+	<pattern id="noun-preposition-noun-quote-noun-quote">
 		<sequence>
 			<patterns>
 				<pattern>
@@ -382,7 +382,37 @@
 													<eq key="lemma" value="type" />
 												</constraint>
 												<constraint>
-													<eq key="lemma" value="effet" />
+													<eq key="lemma" value="axe" />
+												</constraint>
+												<constraint>
+													<eq key="lemma" value="vitesse" />
+												</constraint>
+												<constraint>
+													<eq key="lemma" value="chair" />
+												</constraint>
+												<constraint>
+													<eq key="lemma" value="phase" />
+												</constraint>
+												<constraint>
+													<eq key="lemma" value="genre" />
+												</constraint>
+												<constraint>
+													<eq key="lemma" value="origine" />
+												</constraint>
+												<constraint>
+													<eq key="lemma" value="état" />
+												</constraint>
+												<constraint>
+													<eq key="lemma" value="couleur" />
+												</constraint>
+												<constraint>
+													<eq key="lemma" value="pâte" />
+												</constraint>
+												<constraint>
+													<eq key="lemma" value="voie" />
+												</constraint>
+												<constraint>
+													<eq key="lemma" value="face" />
 												</constraint>
 											</constraints>
 										</or>

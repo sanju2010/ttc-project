@@ -43,7 +43,6 @@ public class RuleBasedTermDetector extends Matcher {
 				term.setLemma(lemma.trim());
 			}
 			term.addToIndexes();
-			System.out.println(term.getLemma());
 		}
 	}
 		

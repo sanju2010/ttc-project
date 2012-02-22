@@ -901,6 +901,170 @@
 				<left>
 					<and>
 						<left>
+							<or>
+								<left>
+									<eq>
+										<left>
+											<feature name="category">
+												<element>
+													<variable name="base" />
+												</element>
+											</feature>
+										</left>
+										<right>
+											<string value="noun-noun" />
+										</right>
+									</eq>
+								</left>
+								<right>
+									<eq>
+										<left>
+											<feature name="category">
+												<element>
+													<variable name="base" />
+												</element>
+											</feature>
+										</left>
+										<right>
+											<string value="noun-adjective" />
+										</right>
+									</eq>
+								</right>
+							</or>
+						</left>
+						<right>
+							<or>
+								<left>
+									<eq>
+										<left>
+											<feature name="category">
+												<element>
+													<variable name="variant" />
+												</element>
+											</feature>
+										</left>
+										<right>
+											<string value="noun-preposition-noun-noun" />
+										</right>
+									</eq>
+								</left>
+								<right>
+									<eq>
+										<left>
+											<feature name="category">
+												<element>
+													<variable name="variant" />
+												</element>
+											</feature>
+										</left>
+										<right>
+											<string value="noun-preposition-noun-adjective" />
+										</right>
+									</eq>
+								</right>
+							</or>
+						</right>
+					</and>
+				</left>
+				<right>
+					<and>
+						<left>
+							<eq>
+								<left>
+									<feature name="lemma">
+										<element>
+											<get>
+												<left>
+													<sub type="eu.project.ttc.types.TermComponentAnnotation">
+														<element>
+															<variable name="base" />
+														</element>
+													</sub>
+												</left>
+												<right>
+													<integer value="0" />
+												</right>
+											</get>
+										</element>
+									</feature>
+								</left>
+								<right>
+									<feature name="lemma">
+										<element>
+											<get>
+												<left>
+													<sub type="eu.project.ttc.types.TermComponentAnnotation">
+														<element>
+															<variable name="variant" />
+														</element>
+													</sub>
+												</left>
+												<right>
+													<integer value="0" />
+												</right>
+											</get>
+										</element>
+									</feature>
+								</right>
+							</eq>
+						</left>
+						<right>
+							<eq>
+								<left>
+									<feature name="lemma">
+										<element>
+											<get>
+												<left>
+													<sub type="eu.project.ttc.types.TermComponentAnnotation">
+														<element>
+															<variable name="base" />
+														</element>
+													</sub>
+												</left>
+												<right>
+													<integer value="1" />
+												</right>
+											</get>
+										</element>
+									</feature>
+								</left>
+								<right>
+									<feature name="lemma">
+										<element>
+											<get>
+												<left>
+													<sub type="eu.project.ttc.types.TermComponentAnnotation">
+														<element>
+															<variable name="variant" />
+														</element>
+													</sub>
+												</left>
+												<right>
+													<integer value="3" />
+												</right>
+											</get>
+										</element>
+									</feature>
+								</right>
+							</eq>
+						</right>
+					</and>
+				</right>
+			</and>
+		</constraint>
+	</rule>
+	<rule id="noun-preposition-noun-quote-noun-quote">
+		<parameters>
+			<parameter name="base"
+				type="eu.project.ttc.types.MultiWordTermAnnotation" />
+			<parameter name="variant"
+				type="eu.project.ttc.types.MultiWordTermAnnotation" />
+		</parameters>
+		<constraint>
+			<and>
+				<left>
+					<and>
+						<left>
 							<eq>
 								<left>
 									<feature name="category">
@@ -924,7 +1088,7 @@
 									</feature>
 								</left>
 								<right>
-									<string value="noun-preposition-noun-noun" />
+									<string value="noun-preposition-noun-quote-noun-quote" />
 								</right>
 							</eq>
 						</right>
@@ -1004,7 +1168,7 @@
 													</sub>
 												</left>
 												<right>
-													<integer value="3" />
+													<integer value="4" />
 												</right>
 											</get>
 										</element>

@@ -23,6 +23,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.DataResource;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Level;
+import org.tartarus.snowball.models.PorterStemmer;
 
 import eu.project.ttc.types.CompoundTermAnnotation;
 import eu.project.ttc.types.MultiWordTermAnnotation;
@@ -81,6 +82,9 @@ public class TermVariantListener implements IndexListener {
 	@Override 
 	public void configure(UimaContext context) throws ResourceInitializationException {
 		try {
+			if (this.getStemmer() == null) {
+				this.setStemmer();
+			}
 			Boolean enabled = (Boolean) context.getConfigParameterValue("Enable");
 			this.enable(enabled == null ? false : enabled.booleanValue());
 			if (this.enable) {
@@ -111,6 +115,7 @@ public class TermVariantListener implements IndexListener {
 		if (this.enable) {
 			if (this.getAnnotations() == null) {
 				this.setAnnotations();
+				this.clean(cas);
 				this.index(cas);
 				this.clean();
 				this.sort();
@@ -177,33 +182,152 @@ public class TermVariantListener implements IndexListener {
 		return keys;
 	}
 
+	private PorterStemmer stemmer;
+	
+	private void setStemmer() {
+		this.stemmer = new PorterStemmer();
+	}
+	
+	private PorterStemmer getStemmer() {
+		return this.stemmer;
+	}
+	
 	private void getKeys(TermAnnotation annotation, List<String> keys, boolean norm) throws CASException {
 		JCas cas = annotation.getCAS().getJCas();
 		AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TermComponentAnnotation.type);
 		FSIterator<Annotation> iterator = index.subiterator(annotation);
-		List<String> components = new ArrayList<String>();
+		List<String> lemmas = new ArrayList<String>();
+		Map<String, String> stems = new HashMap<String, String>();
 		while (iterator.hasNext()) {
 			TermComponentAnnotation component = (TermComponentAnnotation) iterator.next();
 			String category = component.getCategory();
 			if (norm) {
-				if (category.equals("noun") || category.equals("adjective")) {
-					components.add(component.getLemma());
+				if (category.equals("noun") || category.equals("adjective") || category.equals("name") || category.equals("verb")) {
+					lemmas.add(component.getLemma());
+					stems.put(component.getLemma(), component.getStem());
 				}	
 			} else {
-				components.add(component.getCoveredText());
+				lemmas.add(component.getCoveredText());
+				this.getStemmer().setCurrent(component.getCoveredText());
+				this.getStemmer().stem();
+				stems.put(component.getCoveredText(), this.getStemmer().getCurrent());
 			}
 			
 		}
-		Collections.sort(components);
+		Collections.sort(lemmas);
+		// Collections.sort(stems);
 		String category = annotation.getCategory();
-		for (int i = 0 ; i < components.size(); i++) {
-			for (int j = i + 1; j < components.size(); j++) {
-				String key = this.setKey(components.get(i), components.get(j), category);
+		for (int i = 0 ; i < lemmas.size(); i++) {
+			String lemma = lemmas.get(i);
+			if (lemma.isEmpty()) {
+				continue;
+			} else {
+				for (int j = i + 1; j < lemmas.size(); j++) {
+					String anotherLemma = stems.get(lemmas.get(j));
+					if (anotherLemma.isEmpty()) {
+						continue;
+					} else {
+						String key = this.setKey(lemma, anotherLemma, category);
+						keys.add(key);
+					}
+				}
+			}
+		}
+		/*
+		for (int i = 0 ; i < lemmas.size(); i++) {
+			for (int j = 0; j < stems.size(); j++) {
+				String key = this.setKey(lemmas.get(i), stems.get(j), category);
 				keys.add(key);
 			}
-		}		
+		}
+		*/
 	}
 	
+	private void clean(JCas cas) {
+		HashMap<String, Set<TermAnnotation>> map = new HashMap<String, Set<TermAnnotation>>();
+		AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TermAnnotation.type);
+		FSIterator<Annotation> iterator = index.iterator();
+		while (iterator.hasNext()) {
+			TermAnnotation annotation = (TermAnnotation) iterator.next();
+			String id = this.getId(cas, annotation);
+			Set<TermAnnotation> set = map.get(id);
+			if (set == null) {
+				set = new HashSet<TermAnnotation>();
+				map.put(id, set);
+			}
+			set.add(annotation);
+		}
+		for (String id : map.keySet()) {
+			Set<TermAnnotation> set = map.get(id);
+			if (set.size() > 1) {
+				this.setBase(cas, set);
+			}
+		}
+	}
+	
+	private void setBase(JCas cas, Set<TermAnnotation> set) {
+		TermAnnotation base = null;
+		List<TermAnnotation> variants = new ArrayList<TermAnnotation>();
+		for (TermAnnotation element : set) {
+			if (base == null) {
+				base = element;
+			} else if (element.getFrequency() > base.getFrequency()) {
+				variants.add(base);
+				base = element;
+			} else {
+				variants.add(element);
+			}
+		}
+		FSArray old = base.getVariants();
+		if (old != null) {
+			for (int i = 0; i < base.getVariants().size(); i++) {
+				TermAnnotation variant = base.getVariants(i);
+				variants.add(variant);
+			}
+		}
+		FSArray ar = new FSArray(cas, variants.size());
+		base.setVariants(ar);
+		int i = 0;
+		int occ = base.getOccurrences();
+		double freq = base.getFrequency();
+		double spec = base.getSpecificity();
+		for (TermAnnotation  variant : variants) {
+			occ += variant.getOccurrences();
+			freq += variant.getFrequency();
+			spec += variant.getSpecificity();
+			base.setVariants(i, variant);
+			i++;
+			variant.removeFromIndexes();
+		}
+		base.setOccurrences(occ);
+		base.setFrequency(freq);
+		base.setSpecificity(spec);
+	}
+
+	private String getId(JCas cas, TermAnnotation annotation) {
+		if (annotation instanceof SingleWordTermAnnotation) {
+			return annotation.getLemma();
+		} else if (annotation instanceof CompoundTermAnnotation) {
+			return annotation.getLemma();
+		} else if (annotation instanceof NeoClassicalCompoundTermAnnotation) {
+			return annotation.getLemma();
+		} else if (annotation instanceof MultiWordTermAnnotation) {
+			AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TermComponentAnnotation.type);
+			FSIterator<Annotation> iterator = index.subiterator(annotation);
+			String lemma = "";
+			while (iterator.hasNext()) {
+				TermComponentAnnotation component = (TermComponentAnnotation) iterator.next();
+				if (!lemma.isEmpty()) {
+					lemma += " ";
+				}
+				lemma += component.getLemma();
+			}
+			return lemma;
+		} else {
+			return null;
+		}
+	}
+
 	private void index(JCas cas) {
 		AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TermAnnotation.type);
 		FSIterator<Annotation> iterator = index.iterator();

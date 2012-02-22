@@ -113,7 +113,7 @@ public class EditDistanceGathering implements IndexListener {
 	}
 	
 	private String getKey(Annotation annotation) {
-		String coveredText = annotation.getCoveredText();
+		String coveredText = annotation.getCoveredText().toLowerCase();
 		char ch = coveredText.charAt(0);
 		if (ch == 'é' || ch == 'è' || ch == 'ê' || ch == 'ë') {
 			ch = 'e';
@@ -137,17 +137,25 @@ public class EditDistanceGathering implements IndexListener {
 	}
 	
 	private void index(JCas cas) {
+		Set<SingleWordTermAnnotation> remove = new HashSet<SingleWordTermAnnotation>();
 		AnnotationIndex<Annotation> index = cas.getAnnotationIndex(SingleWordTermAnnotation.type);
 		FSIterator<Annotation> iterator = index.iterator();
 		while (iterator.hasNext()) {
 			SingleWordTermAnnotation annotation = (SingleWordTermAnnotation) iterator.next();
 			String key = this.getKey(annotation);
-			List<SingleWordTermAnnotation> list = this.getAnnotations().get(key);
-			if (list == null) {
-				list = new ArrayList<SingleWordTermAnnotation>();
-				this.getAnnotations().put(key, list);				
+			if (key.matches("^[a-z]")) {
+				List<SingleWordTermAnnotation> list = this.getAnnotations().get(key);
+				if (list == null) {
+					list = new ArrayList<SingleWordTermAnnotation>();
+					this.getAnnotations().put(key, list);
+				}
+				list.add(annotation);
+			} else {
+				remove.add(annotation);
 			}
-			list.add(annotation);
+		}
+		for (SingleWordTermAnnotation r : remove) {
+			r.removeFromIndexes();
 		}
 	}
 	
