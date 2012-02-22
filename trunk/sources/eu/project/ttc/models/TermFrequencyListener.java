@@ -15,13 +15,13 @@ import eu.project.ttc.types.TermAnnotation;
 
 public class TermFrequencyListener implements IndexListener {
 	
-	private double specializedFrequency;
+	private Double specializedFrequency;
 	
 	private void setSpecializedFrequency() {
-		this.specializedFrequency = 0.0;
+		this.specializedFrequency = new Double(0.0);
 	}
 	
-	private double getSpecializedFrequency() {
+	private Double getSpecializedFrequency() {
 		return this.specializedFrequency;
 	}
 	
@@ -38,7 +38,6 @@ public class TermFrequencyListener implements IndexListener {
 	@Override 
 	public void configure(UimaContext context) throws ResourceInitializationException {
 		try {
-			this.setSpecializedFrequency();
 			GeneralLanguage generalLanguage = (GeneralLanguage) context.getResourceObject("GeneralLanguage");
 			this.setGeneralLanguage(generalLanguage);
 		} catch (ResourceAccessException e) {
@@ -52,8 +51,6 @@ public class TermFrequencyListener implements IndexListener {
 	@Override
 	public void index(Annotation annotation) { }
 	
-	private boolean done = false;
-
 	private void set(JCas cas) {
 		AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TermAnnotation.type);
 		FSIterator<Annotation> iterator = index.iterator();
@@ -69,7 +66,7 @@ public class TermFrequencyListener implements IndexListener {
 		FSIterator<Annotation> iterator = index.iterator();
 		while (iterator.hasNext()) {
 			TermAnnotation annotation = (TermAnnotation) iterator.next();
-			String entry = annotation.getCoveredText(); // .toLowerCase();
+			String entry = annotation.getCoveredText(); 
 			double frequency = annotation.getFrequency() / this.getSpecializedFrequency();
 			annotation.setFrequency(frequency);
 			double generalFrequency = this.getGeneralLanguage().get(entry);
@@ -81,8 +78,8 @@ public class TermFrequencyListener implements IndexListener {
 	
 	@Override
 	public void release(JCas cas) { 
-		if (!this.done) {
-			this.done = true;
+		if (this.getSpecializedFrequency() == null) {
+			this.setSpecializedFrequency();
 			this.set(cas);
 			this.get(cas);
 		}

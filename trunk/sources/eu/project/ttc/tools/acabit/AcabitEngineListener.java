@@ -240,16 +240,7 @@ public class AcabitEngineListener implements ActionListener, StatusCallbackListe
 	private void doLoad() {
 		try {
 			String path = (String) this.getAcabit().getSettings().getMetaData().getConfigurationParameterSettings().getParameterValue("TerminologyFile");
-			InputStream inputStream = new FileInputStream(path);
-			URL url = this.getClass().getClassLoader().getResource("eu/project/ttc/all/engines/IndexWriter.xml");
-			XMLInputSource source = new XMLInputSource(url);
-			XMLParser parser = UIMAFramework.getXMLParser();
-			AnalysisEngineDescription ae = parser.parseAnalysisEngineDescription(source); 
-			CAS cas = CasCreationUtils.createCas(ae);
-			// Handler handler = HandlerFactory.get();
-			// handler.update(inputStream, cas.getJCas());
-			XmiCasDeserializer.deserialize(inputStream, cas);
-			this.getAcabit().getTerminologies().doLoad(cas.getJCas());
+			this.getAcabit().getTerminologies().doLoad(path);
 		} catch (Exception e) {
 			this.getAcabit().error(e);
 		}

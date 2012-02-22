@@ -1,6 +1,8 @@
 package eu.project.ttc.models;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.cas.FSIterator;
@@ -65,8 +67,9 @@ public class CompoundSplitter implements IndexListener {
 	private boolean done = false;
 
 	@Override
-	public void release(JCas cas) { 
+	public void release(JCas cas) {
 		if (!this.done) {
+			this.done = true;
 			this.dash(cas);
 		}
 	}
@@ -76,31 +79,40 @@ public class CompoundSplitter implements IndexListener {
 		FSIterator<Annotation> iterator = index.iterator();
 		while (iterator.hasNext()) {
 			SingleWordTermAnnotation annotation = (SingleWordTermAnnotation) iterator.next();
-			// System.out.println(annotation.getCoveredText());
-			int first = annotation.getCoveredText().indexOf('-');
-			if (first != -1) {
-				int last = annotation.getCoveredText().lastIndexOf('-');
-				if (first == last) {
-					int begin = annotation.getBegin();
-					int end = annotation.getEnd();
-					CompoundTermAnnotation compound = new CompoundTermAnnotation(cas, begin, end);
-					compound.setComplexity("compound");
-					compound.setCategory(annotation.getCategory());
-					compound.setLemma(annotation.getLemma());
-					compound.setFrequency(annotation.getFrequency());
-					compound.setSpecificity(annotation.getSpecificity());
-					compound.addToIndexes();
-					TermComponentAnnotation a = new TermComponentAnnotation(cas, begin, begin + first);
-					a.setCategory(annotation.getCategory());
-					a.setLemma(a.getCoveredText());
-					a.addToIndexes();
-					TermComponentAnnotation b = new TermComponentAnnotation(cas, begin + first + 1, end);
-					b.setCategory(annotation.getCategory());
-					b.setLemma(b.getCoveredText());
-					b.addToIndexes();
-				}
+			List<TermComponentAnnotation> components = new ArrayList<TermComponentAnnotation>();
+			int begin = annotation.getBegin();
+			int end = annotation.getEnd();
+			this.detect(cas, annotation.getCoveredText(), begin, end, components, false);
+			if (!components.isEmpty()) {
+				CompoundTermAnnotation compound = new CompoundTermAnnotation(cas, begin, end);
+				compound.setComplexity("compound");
+				compound.setCategory(annotation.getCategory());
+				compound.setLemma(annotation.getLemma());
+				compound.setOccurrences(annotation.getOccurrences());
+				compound.setFrequency(annotation.getFrequency());
+				compound.setSpecificity(annotation.getSpecificity());
+				compound.addToIndexes();
 			}
 		}
+	}
+
+	private void detect(JCas cas, String text, int begin, int end, List<TermComponentAnnotation> components, boolean allowed) {
+		int first = text.indexOf('-');
+		if (first == -1) { 
+			if (allowed && begin < end) {
+				this.add(cas, text, begin, end, components);
+			}
+		} else {
+			this.add(cas, text, begin, begin + first, components);
+			this.detect(cas, text.substring(first + 1), begin + first + 1, end, components, true);
+		}
+	}
+
+	private void add(JCas cas, String text, int begin, int end, List<TermComponentAnnotation> components) {
+		TermComponentAnnotation component = new TermComponentAnnotation(cas, begin, end);
+		component.setLemma(component.getCoveredText());
+		component.addToIndexes();
+		components.add(component);
 	}
 	
 }

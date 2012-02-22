@@ -155,43 +155,21 @@ public class TermVariantListener implements IndexListener {
 		} else if (annotation instanceof CompoundTermAnnotation) {
 			CompoundTermAnnotation compound = (CompoundTermAnnotation) annotation;
 			try {
-				JCas cas = annotation.getCAS().getJCas();
-				AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TermComponentAnnotation.type);
-				FSIterator<Annotation> iterator = index.subiterator(compound);
-				while (iterator.hasNext()) {
-					TermComponentAnnotation component = (TermComponentAnnotation) iterator.next();
-					String category = component.getCategory();
-					if (category.equals("noun") || category.equals("adjective")) {
-						String key = this.setKey(component.getCoveredText(), category);
-						keys.add(key);
-						break;
-					}
-				}
+				this.getKeys(compound, keys, false);
 			} catch (CASException e) {
 				// ignore
 			}
 		} else if (annotation instanceof NeoClassicalCompoundTermAnnotation) {
 			NeoClassicalCompoundTermAnnotation ncc = (NeoClassicalCompoundTermAnnotation) annotation;
 			try {
-				JCas cas = annotation.getCAS().getJCas();
-				AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TermComponentAnnotation.type);
-				FSIterator<Annotation> iterator = index.subiterator(ncc);
-				while (iterator.hasNext()) {
-					TermComponentAnnotation component = (TermComponentAnnotation) iterator.next();
-					String category = component.getCategory();
-					if (category.equals("noun") || category.equals("adjective")) {
-						String key = this.setKey(component.getCoveredText(), category);
-						keys.add(key);
-						break;
-					}
-				}
+				this.getKeys(ncc, keys, false);
 			} catch (CASException e) {
 				// ignore
 			}
 		} else if (annotation instanceof MultiWordTermAnnotation) {
 			MultiWordTermAnnotation mwt = (MultiWordTermAnnotation) annotation;
 			try {
-				this.getKeys(mwt, keys);
+				this.getKeys(mwt, keys, true);
 			} catch (CASException e) {
 				// ignore
 			}
@@ -199,20 +177,25 @@ public class TermVariantListener implements IndexListener {
 		return keys;
 	}
 
-	private void getKeys(MultiWordTermAnnotation mwt, List<String> keys) throws CASException {
-		JCas cas = mwt.getCAS().getJCas();
+	private void getKeys(TermAnnotation annotation, List<String> keys, boolean norm) throws CASException {
+		JCas cas = annotation.getCAS().getJCas();
 		AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TermComponentAnnotation.type);
-		FSIterator<Annotation> iterator = index.subiterator(mwt);
+		FSIterator<Annotation> iterator = index.subiterator(annotation);
 		List<String> components = new ArrayList<String>();
 		while (iterator.hasNext()) {
 			TermComponentAnnotation component = (TermComponentAnnotation) iterator.next();
 			String category = component.getCategory();
-			if (category.equals("noun") || category.equals("adjective")) {
-				components.add(component.getStem());
+			if (norm) {
+				if (category.equals("noun") || category.equals("adjective")) {
+					components.add(component.getLemma());
+				}	
+			} else {
+				components.add(component.getCoveredText());
 			}
+			
 		}
 		Collections.sort(components);
-		String category = mwt.getCategory();
+		String category = annotation.getCategory();
 		for (int i = 0 ; i < components.size(); i++) {
 			for (int j = i + 1; j < components.size(); j++) {
 				String key = this.setKey(components.get(i), components.get(j), category);
@@ -357,6 +340,7 @@ public class TermVariantListener implements IndexListener {
 
 	protected void release(JCas cas, String id, Annotation[] annotations) {
 		// String message = "Found " + annotations.length + " annotations with the rule: " + id;
+		// System.out.println(message);
 		
 		TermAnnotation base = null;
 		Set<TermAnnotation> variants = new HashSet<TermAnnotation>();
@@ -387,13 +371,16 @@ public class TermVariantListener implements IndexListener {
 			base.setVariants(i, variant);
 			i++;
 		}
-		/*
-		message += "\nbase = " + base.getCoveredText();
-		for (int index = 0; index < base.getVariants().size(); index++) {
-			message += "\n\tvariant = " + base.getVariants(index).getCoveredText();
-		}
-		System.out.println(message);
-		*/
+		
+		/* if (true) {
+			String message = "Found " + annotations.length + " annotations with the rule: " + id;
+			message += "\nbase = " + base.getCoveredText();
+			for (int index = 0; index < base.getVariants().size(); index++) {
+				message += "\n\tvariant = " + base.getVariants(index).getCoveredText();
+			}
+			System.out.println(message);
+		} */
+		
 	}
 
 }

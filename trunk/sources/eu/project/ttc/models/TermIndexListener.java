@@ -55,26 +55,23 @@ public class TermIndexListener implements IndexListener {
 			return this.categories;
 		}
 
-		protected String add(TermAnnotation annotation, boolean normalized) {
-			String term = normalized ? annotation.getLemma().toLowerCase() : annotation.getCoveredText().toLowerCase();
+		protected String add(TermAnnotation annotation) {
+			String term = annotation.getLemma().toLowerCase().trim(); // : annotation.getCoveredText().toLowerCase();
 			if (term == null) { 
 				return null;
+			} else if (term.length() <= 2) {
+				return null;
 			} else {
-				term = term.toLowerCase().trim();
-				if (term.length() <= 2) {
-					return null;
-				} else {
-					Integer frequency = this.getFrequencies().get(term);
-					int freq = frequency == null ? 1 : frequency.intValue() + 1;
-					this.getFrequencies().put(term, new Integer(freq));
-					this.getCategories().put(term, annotation.getCategory());
-					return term;
-				}
+				Integer frequency = this.getFrequencies().get(term);
+				int freq = frequency == null ? 1 : frequency.intValue() + 1;
+				this.getFrequencies().put(term, new Integer(freq));
+				this.getCategories().put(term, annotation.getCategory());
+				return term;
 			}
 		}
 
 		public void addEntry(SingleWordTermAnnotation annotation) {
-			this.add(annotation, true);
+			this.add(annotation);
 		}
 
 	}
@@ -97,7 +94,7 @@ public class TermIndexListener implements IndexListener {
 		}
 	
 		public void addEntry(MultiWordTermAnnotation annotation) {
-			String term = this.add(annotation, false);
+			String term = this.add(annotation);
 			if (term == null) {
 				return;
 			} else {
@@ -106,7 +103,7 @@ public class TermIndexListener implements IndexListener {
 		}
 	
 		public void addEntry(CompoundTermAnnotation annotation) {
-			String term = this.add(annotation, false);
+			String term = this.add(annotation);
 			if (term == null) {
 				return;
 			} else {
@@ -115,7 +112,7 @@ public class TermIndexListener implements IndexListener {
 		}
 		
 		public void addEntry(NeoClassicalCompoundTermAnnotation annotation) {
-			String term = this.add(annotation, false);
+			String term = this.add(annotation);
 			if (term == null) {
 				return;
 			} else {
@@ -279,24 +276,23 @@ public class TermIndexListener implements IndexListener {
 		this.release(cas, builder, this.getCompoundFrequency(), Term.COMPOUND);
 		this.release(cas, builder, this.getNeoClassicalCompoundFrequency(), Term.NEO_CLASSICAL_COMPOUND);
 		cas.setDocumentText(builder.toString());
-		// this.index(cas);
 	}
 
 	private void release(JCas cas, StringBuilder builder, SimpleTermFrequency frequency) {
 		for (String entry : frequency.getFrequencies().keySet()) {
 			int freq = frequency.getFrequencies().get(entry).intValue();
 			String category = frequency.getCategories().get(entry);
-				int begin = builder.length();
-				builder.append(entry);
-				int end = builder.length();
-				builder.append('\n');
-				TermAnnotation annotation = new SingleWordTermAnnotation(cas,begin,end);
-				annotation.setOccurrences(freq);
-				annotation.setFrequency(freq);
-				annotation.setCategory(category);
-				annotation.setLemma(entry);
-				annotation.setComplexity(Term.SINGLE_WORD);
-				annotation.addToIndexes();
+			int begin = builder.length();
+			builder.append(entry);
+			int end = builder.length();
+			builder.append('\n');
+			TermAnnotation annotation = new SingleWordTermAnnotation(cas,begin,end);
+			annotation.setOccurrences(freq);
+			annotation.setFrequency(freq);
+			annotation.setCategory(category);
+			annotation.setLemma(entry);
+			annotation.setComplexity(Term.SINGLE_WORD);
+			annotation.addToIndexes();
 		}
 	}
 	
@@ -305,32 +301,32 @@ public class TermIndexListener implements IndexListener {
 			int freq = frequency.getFrequencies().get(entry).intValue();
 			String category = frequency.getCategories().get(entry);
 			List<Component> components = frequency.getComponents().get(entry);
-				int begin = builder.length();
-				builder.append(entry);
-				int end = builder.length();
-				builder.append('\n');
-				TermAnnotation annotation = null;
-				if (complexity.equals(Term.MULTI_WORD)) {
-					annotation = new MultiWordTermAnnotation(cas,begin,end);
-				} else if (complexity.equals(Term.COMPOUND)) {
-					annotation = new CompoundTermAnnotation(cas,begin,end);
-				} else if (complexity.equals(Term.NEO_CLASSICAL_COMPOUND)) {
-					annotation = new NeoClassicalCompoundTermAnnotation(cas,begin,end);
-				} else {
-					continue;
-				}
-				annotation.setOccurrences(freq);
-				annotation.setFrequency(freq);
-				annotation.setCategory(category);
-				annotation.setComplexity(complexity);
-				annotation.addToIndexes();
-				if (components != null) {
-					for (Component component : components) {
-						TermComponentAnnotation c = new TermComponentAnnotation(cas);
-						component.release(c, annotation.getBegin());
-						c.addToIndexes();
-					}						
-				}
+			int begin = builder.length();
+			builder.append(entry);
+			int end = builder.length();
+			builder.append('\n');
+			TermAnnotation annotation = null;
+			if (complexity.equals(Term.MULTI_WORD)) {
+				annotation = new MultiWordTermAnnotation(cas,begin,end);
+			} else if (complexity.equals(Term.COMPOUND)) {
+				annotation = new CompoundTermAnnotation(cas,begin,end);
+			} else if (complexity.equals(Term.NEO_CLASSICAL_COMPOUND)) {
+				annotation = new NeoClassicalCompoundTermAnnotation(cas,begin,end);
+			} else {
+				continue;
+			}
+			annotation.setOccurrences(freq);
+			annotation.setFrequency(freq);
+			annotation.setCategory(category);
+			annotation.setComplexity(complexity);
+			annotation.addToIndexes();
+			if (components != null) {
+				for (Component component : components) {
+					TermComponentAnnotation c = new TermComponentAnnotation(cas);
+					component.release(c, annotation.getBegin());
+					c.addToIndexes();
+				}						
+			}
 		}
 	}
 

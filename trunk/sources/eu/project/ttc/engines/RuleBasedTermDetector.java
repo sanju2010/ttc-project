@@ -25,9 +25,11 @@ public class RuleBasedTermDetector extends Matcher {
 				term.setComplexity(Term.SINGLE_WORD);
 			} else {
 				term = new MultiWordTermAnnotation(cas, begin, end);
+				String lemma = term.getCoveredText();
 				/*
 				for (int index = 0; index < annotations.length; index++) {
 					WordAnnotation a = (WordAnnotation) annotations[index];
+					lemma += " " + a.getCoveredText();
 					
 					TermComponentAnnotation component = new TermComponentAnnotation(cas, a.getBegin(), a.getEnd());
 					component.setCategory(a.getCategory());
@@ -38,9 +40,10 @@ public class RuleBasedTermDetector extends Matcher {
 				*/
 				term.setComplexity(Term.MULTI_WORD);
 				term.setCategory(id);
-				term.setLemma(cas.getDocumentText().substring(begin, end).toLowerCase().trim());
+				term.setLemma(lemma.trim());
 			}
 			term.addToIndexes();
+			System.out.println(term.getLemma());
 		}
 	}
 		
