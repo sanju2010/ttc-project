@@ -42,16 +42,9 @@
 					</and>
 				</left>
 				<right>
-					<eq>
+					<and>
 						<left>
-							<feature name="lemma">
-								<element>
-									<variable name="variant" />
-								</element>
-							</feature>
-						</left>
-						<right>
-							<plus>
+							<eq>
 								<left>
 									<feature name="lemma">
 										<element>
@@ -71,33 +64,66 @@
 									</feature>
 								</left>
 								<right>
-									<plus>
-										<left>
-											<string value="-" />
-										</left>
-										<right>
-											<feature name="lemma">
-												<element>
-													<get>
-														<left>
-															<sub type="eu.project.ttc.types.TermComponentAnnotation">
-																<element>
-																	<variable name="base" />
-																</element>
-															</sub>
-														</left>
-														<right>
-															<integer value="1" />
-														</right>
-													</get>
-												</element>
-											</feature>
-										</right>
-									</plus>
+									<feature name="lemma">
+										<element>
+											<get>
+												<left>
+													<sub type="eu.project.ttc.types.TermComponentAnnotation">
+														<element>
+															<variable name="variant" />
+														</element>
+													</sub>
+												</left>
+												<right>
+													<integer value="0" />
+												</right>
+											</get>
+										</element>
+									</feature>
 								</right>
-							</plus>
+							</eq>
+						</left>
+						<right>
+							<eq>
+								<left>
+									<feature name="lemma">
+										<element>
+											<get>
+												<left>
+													<sub type="eu.project.ttc.types.TermComponentAnnotation">
+														<element>
+															<variable name="base" />
+														</element>
+													</sub>
+												</left>
+												<right>
+													<integer value="1" />
+												</right>
+											</get>
+										</element>
+									</feature>
+								</left>
+								<right>
+									<feature name="lemma">
+										<element>
+											<get>
+												<left>
+													<sub type="eu.project.ttc.types.TermComponentAnnotation">
+														<element>
+															<variable name="variant" />
+														</element>
+													</sub>
+												</left>
+												<right>
+													<integer value="1" />
+												</right>
+											</get>
+										</element>
+									</feature>
+								</right>
+							</eq>
 						</right>
-					</eq>
+					</and>
 				</right>
 			</and>
 		</constraint>
