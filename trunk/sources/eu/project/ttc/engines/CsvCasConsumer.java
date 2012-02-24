@@ -17,6 +17,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Level;
 
 import eu.project.ttc.models.CsvResource;
+import eu.project.ttc.types.SingleWordTermAnnotation;
 import eu.project.ttc.types.TermAnnotation;
 
 public class CsvCasConsumer extends JCasAnnotator_ImplBase {
@@ -97,7 +98,7 @@ public class CsvCasConsumer extends JCasAnnotator_ImplBase {
 			while (iterator.hasNext()) {
 				TermAnnotation annotation = (TermAnnotation) iterator.next();
 				String term = annotation.getCoveredText().toLowerCase();
-				String complexity = annotation.getComplexity();
+				String complexity = this.getComplexity(annotation);
 				String category = annotation.getCategory();
 				double frequency = annotation.getFrequency();
 				double specificity = annotation.getSpecificity();
@@ -105,6 +106,23 @@ public class CsvCasConsumer extends JCasAnnotator_ImplBase {
 			}
 		} catch (Exception e) {
 			throw new AnalysisEngineProcessException(e);
+		}
+	}
+	
+	private String getComplexity(TermAnnotation annotation) {
+		if (annotation instanceof SingleWordTermAnnotation) {
+			SingleWordTermAnnotation swt = (SingleWordTermAnnotation) annotation;
+			if (swt.getCompound()) {
+				if (swt.getNeoclassical()) {
+					return "neoclassical-compound";
+				} else {
+					return "compound";
+				}
+			} else {
+				return "single-word";
+			}
+		} else {
+			return "multi-word";
 		}
 	}
 

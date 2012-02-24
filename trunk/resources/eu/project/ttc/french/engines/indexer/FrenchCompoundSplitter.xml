@@ -2,34 +2,14 @@
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>true</primitive>
-  <annotatorImplementationName>uima.sandbox.indexer.engines.Indexer</annotatorImplementationName>
+  <annotatorImplementationName>eu.project.ttc.engines.CompoundSplitter</annotatorImplementationName>
   <analysisEngineMetaData>
     <name>French Compound Splitter</name>
     <description/>
     <version>1.0</version>
     <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
-    <configurationParameters>
-      <configurationParameter>
-        <name>Type</name>
-        <type>String</type>
-        <multiValued>false</multiValued>
-        <mandatory>false</mandatory>
-      </configurationParameter>
-      <configurationParameter>
-        <name>File</name>
-        <type>String</type>
-        <multiValued>false</multiValued>
-        <mandatory>false</mandatory>
-      </configurationParameter>
-    </configurationParameters>
-    <configurationParameterSettings>
-      <nameValuePair>
-        <name>Type</name>
-        <value>
-          <string>eu.project.ttc.types.TermAnnotation</string>
-        </value>
-      </nameValuePair>
-    </configurationParameterSettings>
+    <configurationParameters/>
+    <configurationParameterSettings/>
     <typeSystemDescription>
       <imports>
         <import name="eu.project.ttc.types.TermSuiteTypeSystem"/>
@@ -59,18 +39,6 @@
   </analysisEngineMetaData>
   <externalResourceDependencies>
     <externalResourceDependency>
-      <key>Index</key>
-      <description/>
-      <interfaceName>uima.sandbox.indexer.resources.Index</interfaceName>
-      <optional>false</optional>
-    </externalResourceDependency>
-    <externalResourceDependency>
-      <key>Listener</key>
-      <description/>
-      <interfaceName>uima.sandbox.indexer.resources.IndexListener</interfaceName>
-      <optional>false</optional>
-    </externalResourceDependency>
-    <externalResourceDependency>
       <key>Dictionary</key>
       <description/>
       <interfaceName>fr.univnantes.lina.uima.dictionaries.Dictionary</interfaceName>
@@ -79,22 +47,6 @@
   </externalResourceDependencies>
   <resourceManagerConfiguration>
     <externalResources>
-      <externalResource>
-        <name>DefaultIndex</name>
-        <description/>
-        <fileResourceSpecifier>
-          <fileUrl>eu/project/ttc/all/engines/IndexWriter.xml</fileUrl>
-        </fileResourceSpecifier>
-        <implementationName>uima.sandbox.indexer.resources.DefaultIndex</implementationName>
-      </externalResource>
-      <externalResource>
-        <name>CompoundSplitter</name>
-        <description/>
-        <fileResourceSpecifier>
-          <fileUrl>eu/project/ttc/models/CompoundSplitter.class</fileUrl>
-        </fileResourceSpecifier>
-        <implementationName>eu.project.ttc.models.CompoundSplitter</implementationName>
-      </externalResource>
       <externalResource>
         <name>DefaultDictionary</name>
         <description/>
@@ -105,14 +57,6 @@
       </externalResource>
     </externalResources>
     <externalResourceBindings>
-      <externalResourceBinding>
-        <key>Index</key>
-        <resourceName>DefaultIndex</resourceName>
-      </externalResourceBinding>
-      <externalResourceBinding>
-        <key>Listener</key>
-        <resourceName>CompoundSplitter</resourceName>
-      </externalResourceBinding>
       <externalResourceBinding>
         <key>Dictionary</key>
         <resourceName>DefaultDictionary</resourceName>

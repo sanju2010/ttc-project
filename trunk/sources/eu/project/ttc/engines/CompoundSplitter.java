@@ -13,7 +13,6 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 
-import eu.project.ttc.models.Term;
 import eu.project.ttc.types.SingleWordTermAnnotation;
 import eu.project.ttc.types.TermComponentAnnotation;
 import fr.univnantes.lina.uima.dictionaries.Dictionary;
@@ -68,7 +67,6 @@ public class CompoundSplitter extends JCasAnnotator_ImplBase {
 			int end = annotation.getEnd();
 			this.detect(cas, annotation.getCoveredText(), begin, end, components, false);
 			if (!components.isEmpty()) {
-				annotation.setComplexity(Term.COMPOUND);
 				annotation.setCompound(true);
 			}
 		}

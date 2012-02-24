@@ -29,6 +29,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import eu.project.ttc.types.SingleWordTermAnnotation;
 import eu.project.ttc.types.TermAnnotation;
 
 public class TbxCasConsumer extends JCasAnnotator_ImplBase {
@@ -193,10 +194,27 @@ public class TbxCasConsumer extends JCasAnnotator_ImplBase {
 			}
 			this.addNote(document, langSet, tig, "partOfSpeech", "noun");
 			this.addNote(document, langSet, tig, "termPattern", annotation.getCategory());
-			this.addNote(document, langSet, tig, "termComplexity", annotation.getComplexity());
+			this.addNote(document, langSet, tig, "termComplexity", this.getComplexity(annotation));
 			this.addDescrip(document, langSet, tig, "nbOccurrences", annotation.getOccurrences());
 			this.addDescrip(document, langSet, tig, "relativeFrequency", annotation.getFrequency());
 			// this.addDescrip(document, langSet, tig, "domainSpecificity", annotation.getSpecificity());
+		}
+	}
+	
+	private String getComplexity(TermAnnotation annotation) {
+		if (annotation instanceof SingleWordTermAnnotation) {
+			SingleWordTermAnnotation swt = (SingleWordTermAnnotation) annotation;
+			if (swt.getCompound()) {
+				if (swt.getNeoclassical()) {
+					return "neoclassical-compound";
+				} else {
+					return "compound";
+				}
+			} else {
+				return "single-word";
+			}
+		} else {
+			return "multi-word";
 		}
 	}
 	

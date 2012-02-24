@@ -14,7 +14,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /** 
- * Updated by JCasGen Fri Feb 24 09:30:03 CET 2012
+ * Updated by JCasGen Fri Feb 24 14:28:15 CET 2012
  * @generated */
 public class TermAnnotation_Type extends Annotation_Type {
   /** @generated */
@@ -43,24 +43,6 @@ public class TermAnnotation_Type extends Annotation_Type {
      @modifiable */
   @SuppressWarnings ("hiding")
   public final static boolean featOkTst = JCasRegistry.getFeatOkTst("eu.project.ttc.types.TermAnnotation");
- 
-  /** @generated */
-  final Feature casFeat_complexity;
-  /** @generated */
-  final int     casFeatCode_complexity;
-  /** @generated */ 
-  public String getComplexity(int addr) {
-        if (featOkTst && casFeat_complexity == null)
-      jcas.throwFeatMissing("complexity", "eu.project.ttc.types.TermAnnotation");
-    return ll_cas.ll_getStringValue(addr, casFeatCode_complexity);
-  }
-  /** @generated */    
-  public void setComplexity(int addr, String v) {
-        if (featOkTst && casFeat_complexity == null)
-      jcas.throwFeatMissing("complexity", "eu.project.ttc.types.TermAnnotation");
-    ll_cas.ll_setStringValue(addr, casFeatCode_complexity, v);}
-    
-  
  
   /** @generated */
   final Feature casFeat_frequency;
@@ -157,7 +139,7 @@ public class TermAnnotation_Type extends Annotation_Type {
     if (lowLevelTypeChecks)
       return ll_cas.ll_getRefArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_variants), i, true);
     jcas.checkArrayBounds(ll_cas.ll_getRefValue(addr, casFeatCode_variants), i);
-	return ll_cas.ll_getRefArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_variants), i);
+  return ll_cas.ll_getRefArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_variants), i);
   }
    
   /** @generated */ 
@@ -212,7 +194,7 @@ public class TermAnnotation_Type extends Annotation_Type {
     if (lowLevelTypeChecks)
       return ll_cas.ll_getRefArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_context), i, true);
     jcas.checkArrayBounds(ll_cas.ll_getRefValue(addr, casFeatCode_context), i);
-	return ll_cas.ll_getRefArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_context), i);
+  return ll_cas.ll_getRefArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_context), i);
   }
    
   /** @generated */ 
@@ -233,10 +215,6 @@ public class TermAnnotation_Type extends Annotation_Type {
   public TermAnnotation_Type(JCas jcas, Type casType) {
     super(jcas, casType);
     casImpl.getFSClassRegistry().addGeneratorForType((TypeImpl)this.casType, getFSGenerator());
-
- 
-    casFeat_complexity = jcas.getRequiredFeatureDE(casType, "complexity", "uima.cas.String", featOkTst);
-    casFeatCode_complexity  = (null == casFeat_complexity) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_complexity).getCode();
 
  
     casFeat_frequency = jcas.getRequiredFeatureDE(casType, "frequency", "uima.cas.Double", featOkTst);

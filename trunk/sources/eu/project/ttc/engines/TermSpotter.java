@@ -5,7 +5,6 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 import uima.sandbox.matcher.engines.Matcher;
 
-import eu.project.ttc.models.Term;
 import eu.project.ttc.types.MultiWordTermAnnotation;
 import eu.project.ttc.types.SingleWordTermAnnotation;
 import eu.project.ttc.types.TermAnnotation;
@@ -22,7 +21,6 @@ public class TermSpotter extends Matcher {
 				WordAnnotation word = (WordAnnotation) annotations[0];
 				term.setCategory(word.getCategory());
 				term.setLemma(word.getLemma());
-				term.setComplexity(Term.SINGLE_WORD);
 			} else {
 				term = new MultiWordTermAnnotation(cas, begin, end);
 				String lemma = term.getCoveredText();
@@ -38,7 +36,6 @@ public class TermSpotter extends Matcher {
 					
 				}
 				*/
-				term.setComplexity(Term.MULTI_WORD);
 				term.setCategory(id);
 				term.setLemma(lemma.trim());
 			}

@@ -14,22 +14,20 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 
-import eu.project.ttc.models.Root;
-import eu.project.ttc.models.RootBank;
-import eu.project.ttc.models.RootTree;
-import eu.project.ttc.models.Term;
+import eu.project.ttc.models.Bank;
+import eu.project.ttc.models.Tree;
 import eu.project.ttc.types.SingleWordTermAnnotation;
 import eu.project.ttc.types.TermComponentAnnotation;
 
-public class NeoClassicalTermDetector extends JCasAnnotator_ImplBase {
+public class NeoclassicalSplitter extends JCasAnnotator_ImplBase {
 
-	private RootBank bank;
+	private Bank bank;
 	
-	private void setBank(RootBank bank) {
+	private void setBank(Bank bank) {
 		this.bank = bank;
 	}
 
-	private RootBank getBank() {
+	private Bank getBank() {
 		return this.bank;
 	}
 	
@@ -48,7 +46,7 @@ public class NeoClassicalTermDetector extends JCasAnnotator_ImplBase {
 		try {
 			this.setComponents();
 			this.setComparator();
-			RootBank resource = (RootBank) context.getResourceObject("RootBank");
+			Bank resource = (Bank) context.getResourceObject("Bank");
 			this.setBank(resource);
 		} catch (Exception e) {
 			throw new ResourceInitializationException(e);
@@ -73,16 +71,15 @@ public class NeoClassicalTermDetector extends JCasAnnotator_ImplBase {
 		}
 	}
 
-	private void getPrefixes(JCas cas,int begin,int end,int index,RootTree current) {
+	private void getPrefixes(JCas cas,int begin,int end,int index,Tree<Character> current) {
 		if (index < end) {
 			char ch = cas.getDocumentText().charAt(index);
 			Character c = Character.toLowerCase(ch);
-			RootTree tree = current.getChild(c);
+			Tree<Character> tree = current.get(c);
 			if (tree == null) {
-				Root root = current.getRoot();
-				if (root != null) { 
-					this.addRootComponent(cas,root,begin,index,true);
-					tree = this.getBank().getPrefixTree().getChild(c);
+				if (current.leaf()) { 
+					this.addRootComponent(cas,begin,index,true);
+					tree = this.getBank().getPrefixTree().get(c);
 					if (tree != null) {  
 						this.getPrefixes(cas,index,end,index + 1,tree);					
 					}
@@ -93,16 +90,15 @@ public class NeoClassicalTermDetector extends JCasAnnotator_ImplBase {
 		}
 	}
 	
-	private void getSuffixes(JCas cas,int begin,int end,int index,RootTree current) {
+	private void getSuffixes(JCas cas,int begin,int end,int index,Tree<Character> current) {
 		if (index > begin) {
 			char ch = cas.getDocumentText().charAt(index - 1);
 			Character c = Character.toLowerCase(ch);
-			RootTree tree = current.getChild(c);
+			Tree<Character> tree = current.get(c);
 			if (tree == null) {
-				Root root = current.getRoot();
-				if (root != null) {
-					this.addRootComponent(cas,root,index,end,false);
-					tree = this.getBank().getSuffixTree().getChild(c);
+				if (current.leaf()) {
+					this.addRootComponent(cas,index,end,false);
+					tree = this.getBank().getSuffixTree().get(c);
 					if (tree != null) { 
 						this.getSuffixes(cas,begin,index,index - 1,tree);
 					}
@@ -124,10 +120,8 @@ public class NeoClassicalTermDetector extends JCasAnnotator_ImplBase {
 	}
 	
 	private void doAnnotate(SingleWordTermAnnotation annotation) {
-		annotation.setComplexity(Term.NEO_CLASSICAL_COMPOUND);
 		annotation.setCompound(true);
 		annotation.setNeoclassical(true);
-		annotation.addToIndexes();
 	}
 	
 	private void doFill(JCas cas, SingleWordTermAnnotation annotation, int begin,int end) {
@@ -153,9 +147,9 @@ public class NeoClassicalTermDetector extends JCasAnnotator_ImplBase {
 		this.getComponents().add(annotation);
 	}
 	
-	private void addRootComponent(JCas cas,Root root,int begin,int end,boolean prefix) {
+	private void addRootComponent(JCas cas,int begin,int end,boolean prefix) {
 		TermComponentAnnotation annotation = new TermComponentAnnotation(cas,begin,end);
-		annotation.setLemma(root.getRoot());
+		annotation.setLemma(annotation.getCoveredText());
 		if (prefix) {
 			annotation.setCategory("initial");
 		} else {

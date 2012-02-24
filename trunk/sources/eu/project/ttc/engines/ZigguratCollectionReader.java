@@ -23,10 +23,6 @@ import org.apache.uima.util.Level;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
 
-import eu.project.ttc.models.Term;
-import eu.project.ttc.types.MultiWordTermAnnotation;
-import eu.project.ttc.types.SingleWordTermAnnotation;
-import eu.project.ttc.types.TermAnnotation;
 import eu.project.ttc.types.TranslationAnnotation;
 import fr.univnantes.lina.uima.dictionaries.DictionaryFactory;
 import fr.univnantes.lina.uima.dictionaries.Entry;
@@ -111,7 +107,7 @@ public class ZigguratCollectionReader extends CollectionReader_ImplBase {
 			cas.setDocumentText(translation.getTerm());
 			int begin = 0;
 			int end = cas.getDocumentText().length();
-			
+			/* TODO
 			String complexity = translation.getCategory();
 			if (complexity.equals(Term.SINGLE_WORD)) {
 				SingleWordTermAnnotation term = new SingleWordTermAnnotation(cas.getJCas(), begin, end);
@@ -135,7 +131,7 @@ public class ZigguratCollectionReader extends CollectionReader_ImplBase {
 				TermAnnotation term = new TermAnnotation(cas.getJCas(), begin, end);
 				term.addToIndexes();
 			}
-			
+			*/
 			Map<String, Set<String>> translations = translation.getTranslations();
 			for (String language : translations.keySet()) {
 				for (String goldStandard : translations.get(language)) {

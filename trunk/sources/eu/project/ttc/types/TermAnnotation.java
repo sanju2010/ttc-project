@@ -12,7 +12,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
- * Updated by JCasGen Fri Feb 24 09:30:03 CET 2012
+ * Updated by JCasGen Fri Feb 24 14:28:15 CET 2012
  * XML source: /home/rocheteau-j/Repositories/GoogleCode/ttc-term-suite/trunk/resources/eu/project/ttc/types/TermSuiteTypeSystem.xml
  * @generated */
 public class TermAnnotation extends Annotation {
@@ -62,24 +62,6 @@ public class TermAnnotation extends Annotation {
   private void readObject() {/*default - does nothing empty block */}
      
  
-    
-  //*--------------*
-  //* Feature: complexity
-
-  /** getter for complexity - gets 
-   * @generated */
-  public String getComplexity() {
-    if (TermAnnotation_Type.featOkTst && ((TermAnnotation_Type)jcasType).casFeat_complexity == null)
-      jcasType.jcas.throwFeatMissing("complexity", "eu.project.ttc.types.TermAnnotation");
-    return jcasType.ll_cas.ll_getStringValue(addr, ((TermAnnotation_Type)jcasType).casFeatCode_complexity);}
-    
-  /** setter for complexity - sets  
-   * @generated */
-  public void setComplexity(String v) {
-    if (TermAnnotation_Type.featOkTst && ((TermAnnotation_Type)jcasType).casFeat_complexity == null)
-      jcasType.jcas.throwFeatMissing("complexity", "eu.project.ttc.types.TermAnnotation");
-    jcasType.ll_cas.ll_setStringValue(addr, ((TermAnnotation_Type)jcasType).casFeatCode_complexity, v);}    
-   
     
   //*--------------*
   //* Feature: frequency

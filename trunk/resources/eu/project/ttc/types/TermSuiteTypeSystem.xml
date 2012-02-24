@@ -91,11 +91,6 @@
       <supertypeName>uima.tcas.Annotation</supertypeName>
       <features>
         <featureDescription>
-          <name>complexity</name>
-          <description/>
-          <rangeTypeName>uima.cas.String</rangeTypeName>
-        </featureDescription>
-        <featureDescription>
           <name>frequency</name>
           <description/>
           <rangeTypeName>uima.cas.Double</rangeTypeName>

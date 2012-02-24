@@ -37,11 +37,16 @@ public class TermCleaner extends JCasAnnotator_ImplBase {
 	}
 		
 	@Override 
-	public void initialize(UimaContext context) throws ResourceInitializationException { 
-		String type = (String) context.getConfigParameterValue("Type");
-		this.setType(type);
-		this.setAnnotations();
-		UIMAFramework.getLogger().log(Level.INFO, "Term Annotation Type: " + type);
+	public void initialize(UimaContext context) throws ResourceInitializationException {
+		super.initialize(context);
+		try {
+			String type = (String) context.getConfigParameterValue("Type");
+			this.setType(type);
+			this.setAnnotations();
+			context.getLogger().log(Level.INFO, "Term Annotation Type: " + type);
+		} catch (Exception e) {
+			throw new ResourceInitializationException(e);
+		}
 	}
 		
 	private Set<Annotation> annotations;
@@ -88,7 +93,10 @@ public class TermCleaner extends JCasAnnotator_ImplBase {
 						this.getAnnotations().remove(annotation);
 					}
 					for (int i = 0; i < annotation.getVariants().size(); i++) {
-						this.getAnnotations().remove(annotation.getVariants(i));
+						TermAnnotation variant = annotation.getVariants(i);
+						if (this.getAnnotations().contains(variant)) {
+							this.getAnnotations().remove(variant);
+						}
 					}
 				}
 			} 
@@ -108,9 +116,9 @@ public class TermCleaner extends JCasAnnotator_ImplBase {
 			TermAnnotation annotation = (TermAnnotation) iterator.next();
 			if (this.isAllowed(cas, annotation.getType())) {
 				if (annotation.getVariants() != null) {
-					int occ = 0;
-					double freq = 0.0;
-					double spec = 0.0;
+					int occ = annotation.getOccurrences();
+					double freq = annotation.getFrequency();
+					double spec = annotation.getSpecificity();
 					for (int i = 0; i < annotation.getVariants().size(); i++) {
 						occ += annotation.getVariants(i).getOccurrences();
 						freq += annotation.getVariants(i).getFrequency();

@@ -11,7 +11,7 @@ import org.apache.uima.cas.impl.TypeImpl;
 import org.apache.uima.cas.Type;
 
 /** 
- * Updated by JCasGen Fri Feb 24 09:30:03 CET 2012
+ * Updated by JCasGen Fri Feb 24 14:28:15 CET 2012
  * @generated */
 public class MultiWordTermAnnotation_Type extends TermAnnotation_Type {
   /** @generated */

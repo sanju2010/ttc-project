@@ -35,6 +35,7 @@ import org.apache.uima.util.XMLInputSource;
 import org.apache.uima.util.XMLParser;
 
 import eu.project.ttc.types.MultiWordTermAnnotation;
+import eu.project.ttc.types.SingleWordTermAnnotation;
 import eu.project.ttc.types.TermAnnotation;
 import eu.project.ttc.types.TermComponentAnnotation;
 import fr.free.rocheteau.jerome.dunamis.fields.FieldFactory;
@@ -244,13 +245,30 @@ public class IndexerViewer {
 	}
 
 	private void addNotes(DefaultMutableTreeNode root,TermAnnotation annotation) {
-		this.addNote(root, "complexity", annotation.getComplexity());
+		this.addNote(root, "complexity", this.getComplexity(annotation));
 		this.addNote(root, "category", annotation.getCategory());
 		this.addNote(root, "occurrences", annotation.getOccurrences());
 		this.addNote(root, "frequency", annotation.getFrequency());
 		this.addNote(root, "specificity", annotation.getSpecificity());
 	}
 	
+	private String getComplexity(TermAnnotation annotation) {
+		if (annotation instanceof SingleWordTermAnnotation) {
+			SingleWordTermAnnotation swt = (SingleWordTermAnnotation) annotation;
+			if (swt.getCompound()) {
+				if (swt.getNeoclassical()) {
+					return "neoclassical-compound";
+				} else {
+					return "compound";
+				}
+			} else {
+				return "single-word";
+			}
+		} else {
+			return "multi-word";
+		}
+	}
+
 	private void addNote(DefaultMutableTreeNode root,String key,Object value) {
 		DefaultMutableTreeNode node = new DefaultMutableTreeNode();
 		if (value != null) {

@@ -6,14 +6,17 @@
     <delegateAnalysisEngine key="FrenchTermFrequencyComputer">
       <import name="eu.project.ttc.french.engines.indexer.FrenchTermFrequencyComputer"/>
     </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="FrenchCompoundIndexer">
+      <import name="eu.project.ttc.french.engines.indexer.FrenchCompoundIndexer"/>
+    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="Writer">
       <import name="eu.project.ttc.all.engines.Writer"/>
     </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="TermCleaner">
-      <import name="eu.project.ttc.all.engines.indexer.TermCleaner"/>
-    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="FrenchTermGatherer">
       <import name="eu.project.ttc.french.engines.indexer.FrenchTermGatherer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="TermCleaner">
+      <import name="eu.project.ttc.all.engines.indexer.TermCleaner"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="TermIndexer">
       <import name="eu.project.ttc.all.engines.indexer.TermIndexer"/>
@@ -177,6 +180,7 @@
       <fixedFlow>
         <node>TermIndexer</node>
         <node>FrenchTermFrequencyComputer</node>
+        <node>FrenchCompoundIndexer</node>
         <node>FrenchTermGatherer</node>
         <node>TermCleaner</node>
         <node>Writer</node>
