@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<collectionReaderDescription xmlns="http://uima.apache.org/resourceSpecifier">
+<analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
-  <implementationName>eu.project.ttc.engines.XmiCollectionReader</implementationName>
-  <processingResourceMetaData>
-    <name>XMI Collection Reader</name>
+  <primitive>true</primitive>
+  <annotatorImplementationName>eu.project.ttc.engines.Writer</annotatorImplementationName>
+  <analysisEngineMetaData>
+    <name>Writer</name>
     <description/>
     <version>1.0</version>
     <vendor/>
@@ -15,7 +16,14 @@
         <mandatory>true</mandatory>
       </configurationParameter>
     </configurationParameters>
-    <configurationParameterSettings/>
+    <configurationParameterSettings>
+      <nameValuePair>
+        <name>Directory</name>
+        <value>
+          <string>/tmp</string>
+        </value>
+      </nameValuePair>
+    </configurationParameterSettings>
     <typeSystemDescription>
       <imports>
         <import name="eu.project.ttc.types.TermSuiteTypeSystem"/>
@@ -26,18 +34,15 @@
     <capabilities>
       <capability>
         <inputs/>
-        <outputs>
-          <type allAnnotatorFeatures="true">uima.tcas.DocumentAnnotation</type>
-          <type allAnnotatorFeatures="true">org.apache.uima.examples.SourceDocumentInformation</type>
-        </outputs>
+        <outputs/>
         <languagesSupported/>
       </capability>
     </capabilities>
     <operationalProperties>
-      <modifiesCas>true</modifiesCas>
-      <multipleDeploymentAllowed>false</multipleDeploymentAllowed>
-      <outputsNewCASes>true</outputsNewCASes>
+      <modifiesCas>false</modifiesCas>
+      <multipleDeploymentAllowed>true</multipleDeploymentAllowed>
+      <outputsNewCASes>false</outputsNewCASes>
     </operationalProperties>
-  </processingResourceMetaData>
+  </analysisEngineMetaData>
   <resourceManagerConfiguration/>
-</collectionReaderDescription>
+</analysisEngineDescription>

@@ -2,15 +2,15 @@
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>true</primitive>
-  <annotatorImplementationName>uima.sandbox.indexer.engines.Writer</annotatorImplementationName>
+  <annotatorImplementationName>eu.project.ttc.engines.TermCleaner</annotatorImplementationName>
   <analysisEngineMetaData>
-    <name>Index Writer</name>
+    <name>Term Cleaner</name>
     <description/>
     <version>1.0</version>
     <vendor/>
     <configurationParameters>
       <configurationParameter>
-        <name>File</name>
+        <name>Type</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
@@ -18,9 +18,9 @@
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
-        <name>File</name>
+        <name>Type</name>
         <value>
-          <string>output.index</string>
+          <string>eu.project.ttc.types.TermAnnotation</string>
         </value>
       </nameValuePair>
     </configurationParameterSettings>
@@ -44,30 +44,5 @@
       <outputsNewCASes>false</outputsNewCASes>
     </operationalProperties>
   </analysisEngineMetaData>
-  <externalResourceDependencies>
-    <externalResourceDependency>
-      <key>Index</key>
-      <description/>
-      <interfaceName>uima.sandbox.indexer.resources.Index</interfaceName>
-      <optional>false</optional>
-    </externalResourceDependency>
-  </externalResourceDependencies>
-  <resourceManagerConfiguration>
-    <externalResources>
-      <externalResource>
-        <name>DefaultIndex</name>
-        <description/>
-        <fileResourceSpecifier>
-          <fileUrl>eu/project/ttc/all/engines/IndexWriter.xml</fileUrl>
-        </fileResourceSpecifier>
-        <implementationName>uima.sandbox.indexer.resources.DefaultIndex</implementationName>
-      </externalResource>
-    </externalResources>
-    <externalResourceBindings>
-      <externalResourceBinding>
-        <key>Index</key>
-        <resourceName>DefaultIndex</resourceName>
-      </externalResourceBinding>
-    </externalResourceBindings>
-  </resourceManagerConfiguration>
+  <resourceManagerConfiguration/>
 </analysisEngineDescription>

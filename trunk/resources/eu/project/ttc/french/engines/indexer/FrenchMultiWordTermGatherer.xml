@@ -2,55 +2,25 @@
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>true</primitive>
-  <annotatorImplementationName>uima.sandbox.mapper.engines.Mapper</annotatorImplementationName>
+  <annotatorImplementationName>eu.project.ttc.engines.MultiWordTermGatherer</annotatorImplementationName>
   <analysisEngineMetaData>
-    <name>French TreeTagger Tense Normalizer</name>
+    <name>French MultiWord Term Gatherer</name>
     <description/>
     <version>1.0</version>
     <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
     <configurationParameters>
       <configurationParameter>
-        <name>Source</name>
-        <type>String</type>
-        <multiValued>false</multiValued>
-        <mandatory>true</mandatory>
-      </configurationParameter>
-      <configurationParameter>
-        <name>Target</name>
-        <type>String</type>
-        <multiValued>false</multiValued>
-        <mandatory>true</mandatory>
-      </configurationParameter>
-      <configurationParameter>
-        <name>Update</name>
+        <name>Enable</name>
         <type>Boolean</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
-      <configurationParameter>
-        <name>File</name>
-        <type>String</type>
-        <multiValued>false</multiValued>
-        <mandatory>false</mandatory>
-      </configurationParameter>
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
-        <name>Source</name>
+        <name>Enable</name>
         <value>
-          <string>eu.project.ttc.types.WordAnnotation:tag</string>
-        </value>
-      </nameValuePair>
-      <nameValuePair>
-        <name>Target</name>
-        <value>
-          <string>eu.project.ttc.types.WordAnnotation:tense</string>
-        </value>
-      </nameValuePair>
-      <nameValuePair>
-        <name>Update</name>
-        <value>
-          <boolean>true</boolean>
+          <boolean>false</boolean>
         </value>
       </nameValuePair>
     </configurationParameterSettings>
@@ -64,12 +34,11 @@
     <capabilities>
       <capability>
         <inputs>
-          <type>eu.project.ttc.types.WordAnnotation</type>
-          <feature>eu.project.ttc.types.WordAnnotation:tag</feature>
+          <type allAnnotatorFeatures="true">org.apache.uima.examples.SourceDocumentInformation</type>
+          <type allAnnotatorFeatures="true">eu.project.ttc.types.TermAnnotation</type>
         </inputs>
         <outputs>
-          <type>eu.project.ttc.types.WordAnnotation</type>
-          <feature>eu.project.ttc.types.WordAnnotation:tense</feature>
+          <type allAnnotatorFeatures="true">eu.project.ttc.types.TermAnnotation</type>
         </outputs>
         <languagesSupported>
           <language>fr</language>
@@ -84,27 +53,27 @@
   </analysisEngineMetaData>
   <externalResourceDependencies>
     <externalResourceDependency>
-      <key>Mapping</key>
+      <key>RuleSystem</key>
       <description/>
-      <interfaceName>uima.sandbox.mapper.resources.Mapping</interfaceName>
+      <interfaceName>uima.sandbox.catcher.resources.RuleSystem</interfaceName>
       <optional>false</optional>
     </externalResourceDependency>
   </externalResourceDependencies>
   <resourceManagerConfiguration>
     <externalResources>
       <externalResource>
-        <name>FrenchTenseMapping</name>
+        <name>FrenchVariantRuleSystem</name>
         <description/>
         <fileResourceSpecifier>
-          <fileUrl>eu/project/ttc/french/resources/french-tense-mapping.xml</fileUrl>
+          <fileUrl>eu/project/ttc/french/resources/french-variant-rule-system.xml</fileUrl>
         </fileResourceSpecifier>
-        <implementationName>uima.sandbox.mapper.resources.MappingResource</implementationName>
+        <implementationName>uima.sandbox.catcher.resources.RuleSystemResource</implementationName>
       </externalResource>
     </externalResources>
     <externalResourceBindings>
       <externalResourceBinding>
-        <key>Mapping</key>
-        <resourceName>FrenchTenseMapping</resourceName>
+        <key>RuleSystem</key>
+        <resourceName>FrenchVariantRuleSystem</resourceName>
       </externalResourceBinding>
     </externalResourceBindings>
   </resourceManagerConfiguration>

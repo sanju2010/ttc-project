@@ -2,37 +2,49 @@
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>true</primitive>
-  <annotatorImplementationName>eu.project.ttc.engines.TermContextBuilder</annotatorImplementationName>
+  <annotatorImplementationName>eu.project.ttc.engines.TermIndexer</annotatorImplementationName>
   <analysisEngineMetaData>
-    <name>Term Context Builder</name>
+    <name>Term Indexer</name>
     <description/>
     <version>1.0</version>
     <vendor/>
     <configurationParameters>
       <configurationParameter>
-        <name>Type</name>
+        <name>Feature</name>
         <type>String</type>
         <multiValued>false</multiValued>
-        <mandatory>false</mandatory>
+        <mandatory>true</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>Size</name>
-        <type>Integer</type>
+        <name>Language</name>
+        <type>String</type>
         <multiValued>false</multiValued>
-        <mandatory>false</mandatory>
+        <mandatory>true</mandatory>
+      </configurationParameter>
+      <configurationParameter>
+        <name>AssociationRateClassName</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
       </configurationParameter>
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
-        <name>Type</name>
+        <name>Feature</name>
         <value>
-          <string>eu.project.ttc.types.SingleWordTermAnnotation</string>
+          <string>org.apache.uima.examples.SourceDocumentInformation:lastSegment</string>
         </value>
       </nameValuePair>
       <nameValuePair>
-        <name>Size</name>
+        <name>Language</name>
         <value>
-          <integer>3</integer>
+          <string>x-unspecified</string>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>AssociationRateClassName</name>
+        <value>
+          <string>eu.project.ttc.metrics.LogLikelihood</string>
         </value>
       </nameValuePair>
     </configurationParameterSettings>
@@ -45,19 +57,15 @@
     <fsIndexCollection/>
     <capabilities>
       <capability>
-        <inputs>
-          <type allAnnotatorFeatures="true">org.apache.uima.TermContextEntryAnnotation</type>
-        </inputs>
-        <outputs>
-          <type allAnnotatorFeatures="true">org.apache.uima.TermContextVectorAnnotation</type>
-        </outputs>
+        <inputs/>
+        <outputs/>
         <languagesSupported/>
       </capability>
     </capabilities>
     <operationalProperties>
       <modifiesCas>true</modifiesCas>
       <multipleDeploymentAllowed>true</multipleDeploymentAllowed>
-      <outputsNewCASes>false</outputsNewCASes>
+      <outputsNewCASes>true</outputsNewCASes>
     </operationalProperties>
   </analysisEngineMetaData>
   <resourceManagerConfiguration/>

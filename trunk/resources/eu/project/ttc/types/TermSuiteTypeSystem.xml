@@ -126,25 +126,33 @@
           <description/>
           <rangeTypeName>uima.cas.Integer</rangeTypeName>
         </featureDescription>
+        <featureDescription>
+          <name>context</name>
+          <description/>
+          <rangeTypeName>uima.cas.FSArray</rangeTypeName>
+          <elementType>eu.project.ttc.types.TermAnnotation</elementType>
+        </featureDescription>
       </features>
     </typeDescription>
     <typeDescription>
       <name>eu.project.ttc.types.SingleWordTermAnnotation</name>
       <description/>
       <supertypeName>eu.project.ttc.types.TermAnnotation</supertypeName>
+      <features>
+        <featureDescription>
+          <name>compound</name>
+          <description/>
+          <rangeTypeName>uima.cas.Boolean</rangeTypeName>
+        </featureDescription>
+        <featureDescription>
+          <name>neoclassical</name>
+          <description/>
+          <rangeTypeName>uima.cas.Boolean</rangeTypeName>
+        </featureDescription>
+      </features>
     </typeDescription>
     <typeDescription>
       <name>eu.project.ttc.types.MultiWordTermAnnotation</name>
-      <description/>
-      <supertypeName>eu.project.ttc.types.TermAnnotation</supertypeName>
-    </typeDescription>
-    <typeDescription>
-      <name>eu.project.ttc.types.CompoundTermAnnotation</name>
-      <description/>
-      <supertypeName>eu.project.ttc.types.TermAnnotation</supertypeName>
-    </typeDescription>
-    <typeDescription>
-      <name>eu.project.ttc.types.NeoClassicalCompoundTermAnnotation</name>
       <description/>
       <supertypeName>eu.project.ttc.types.TermAnnotation</supertypeName>
     </typeDescription>
@@ -171,42 +179,7 @@
       </features>
     </typeDescription>
     <typeDescription>
-      <name>eu.project.ttc.types.TermContextAnnotation</name>
-      <description/>
-      <supertypeName>uima.tcas.Annotation</supertypeName>
-      <features>
-        <featureDescription>
-          <name>context</name>
-          <description/>
-          <rangeTypeName>uima.cas.FSArray</rangeTypeName>
-          <elementType>eu.project.ttc.types.TermAnnotation</elementType>
-        </featureDescription>
-        <featureDescription>
-          <name>term</name>
-          <description/>
-          <rangeTypeName>eu.project.ttc.types.TermAnnotation</rangeTypeName>
-        </featureDescription>
-      </features>
-    </typeDescription>
-    <typeDescription>
-      <name>eu.project.ttc.types.VectorAnnotation</name>
-      <description/>
-      <supertypeName>uima.tcas.Annotation</supertypeName>
-      <features>
-        <featureDescription>
-          <name>item</name>
-          <description/>
-          <rangeTypeName>uima.cas.String</rangeTypeName>
-        </featureDescription>
-        <featureDescription>
-          <name>frequency</name>
-          <description/>
-          <rangeTypeName>uima.cas.Integer</rangeTypeName>
-        </featureDescription>
-      </features>
-    </typeDescription>
-    <typeDescription>
-      <name>eu.project.ttc.types.CandidateAnnotation</name>
+      <name>eu.project.ttc.types.TranslationCandidateAnnotation</name>
       <description/>
       <supertypeName>uima.tcas.Annotation</supertypeName>
       <features>
@@ -239,50 +212,6 @@
         </featureDescription>
         <featureDescription>
           <name>language</name>
-          <description/>
-          <rangeTypeName>uima.cas.String</rangeTypeName>
-        </featureDescription>
-      </features>
-    </typeDescription>
-    <typeDescription>
-      <name>eu.project.ttc.types.TermVariationAnnotation</name>
-      <description/>
-      <supertypeName>uima.tcas.Annotation</supertypeName>
-      <features>
-        <featureDescription>
-          <name>base</name>
-          <description/>
-          <rangeTypeName>eu.project.ttc.types.TermAnnotation</rangeTypeName>
-        </featureDescription>
-        <featureDescription>
-          <name>variant</name>
-          <description/>
-          <rangeTypeName>eu.project.ttc.types.TermAnnotation</rangeTypeName>
-        </featureDescription>
-      </features>
-    </typeDescription>
-    <typeDescription>
-      <name>eu.project.ttc.types.SimilarityAnnotation</name>
-      <description/>
-      <supertypeName>uima.tcas.Annotation</supertypeName>
-      <features>
-        <featureDescription>
-          <name>source</name>
-          <description/>
-          <rangeTypeName>uima.cas.String</rangeTypeName>
-        </featureDescription>
-        <featureDescription>
-          <name>target</name>
-          <description/>
-          <rangeTypeName>uima.cas.String</rangeTypeName>
-        </featureDescription>
-        <featureDescription>
-          <name>score</name>
-          <description/>
-          <rangeTypeName>uima.cas.Double</rangeTypeName>
-        </featureDescription>
-        <featureDescription>
-          <name>distance</name>
           <description/>
           <rangeTypeName>uima.cas.String</rangeTypeName>
         </featureDescription>

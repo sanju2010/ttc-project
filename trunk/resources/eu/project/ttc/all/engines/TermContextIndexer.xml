@@ -2,7 +2,7 @@
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>true</primitive>
-  <annotatorImplementationName>uima.sandbox.indexer.engines.Indexer</annotatorImplementationName>
+  <annotatorImplementationName>eu.project.ttc.engines.TermContextIndexer</annotatorImplementationName>
   <analysisEngineMetaData>
     <name>Term Context Indexer</name>
     <description/>
@@ -10,19 +10,13 @@
     <vendor/>
     <configurationParameters>
       <configurationParameter>
-        <name>Type</name>
+        <name>Feature</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
       <configurationParameter>
         <name>AssociationRateClassName</name>
-        <type>String</type>
-        <multiValued>false</multiValued>
-        <mandatory>true</mandatory>
-      </configurationParameter>
-      <configurationParameter>
-        <name>Language</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
@@ -30,21 +24,15 @@
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
-        <name>Type</name>
-        <value>
-          <string>eu.project.ttc.types.TermContextAnnotation</string>
-        </value>
-      </nameValuePair>
-      <nameValuePair>
         <name>AssociationRateClassName</name>
         <value>
           <string>eu.project.ttc.metrics.LogLikelihood</string>
         </value>
       </nameValuePair>
       <nameValuePair>
-        <name>Language</name>
+        <name>Feature</name>
         <value>
-          <string>x-unspecified</string>
+          <string>org.apache.uima.examples.SourceDocumentInformation:lastSegment</string>
         </value>
       </nameValuePair>
     </configurationParameterSettings>
@@ -68,48 +56,5 @@
       <outputsNewCASes>false</outputsNewCASes>
     </operationalProperties>
   </analysisEngineMetaData>
-  <externalResourceDependencies>
-    <externalResourceDependency>
-      <key>Index</key>
-      <description/>
-      <interfaceName>uima.sandbox.indexer.resources.Index</interfaceName>
-      <optional>false</optional>
-    </externalResourceDependency>
-    <externalResourceDependency>
-      <key>Listener</key>
-      <description/>
-      <interfaceName>uima.sandbox.indexer.resources.IndexListener</interfaceName>
-      <optional>false</optional>
-    </externalResourceDependency>
-  </externalResourceDependencies>
-  <resourceManagerConfiguration>
-    <externalResources>
-      <externalResource>
-        <name>DefaultIndex</name>
-        <description/>
-        <fileResourceSpecifier>
-          <fileUrl>eu/project/ttc/all/engines/TermContextIndexWriter.xml</fileUrl>
-        </fileResourceSpecifier>
-        <implementationName>uima.sandbox.indexer.resources.DefaultIndex</implementationName>
-      </externalResource>
-      <externalResource>
-        <name>TermContextIndexListener</name>
-        <description/>
-        <fileResourceSpecifier>
-          <fileUrl>eu/project/ttc/models/TermContextIndexListener.class</fileUrl>
-        </fileResourceSpecifier>
-        <implementationName>eu.project.ttc.models.TermContextIndexListener</implementationName>
-      </externalResource>
-    </externalResources>
-    <externalResourceBindings>
-      <externalResourceBinding>
-        <key>Index</key>
-        <resourceName>DefaultIndex</resourceName>
-      </externalResourceBinding>
-      <externalResourceBinding>
-        <key>Listener</key>
-        <resourceName>TermContextIndexListener</resourceName>
-      </externalResourceBinding>
-    </externalResourceBindings>
-  </resourceManagerConfiguration>
+  <resourceManagerConfiguration/>
 </analysisEngineDescription>
