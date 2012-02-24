@@ -76,10 +76,10 @@ public class Eq implements Constraint {
 		Object left = this.left.match(cas, values);
 		Object right = this.right.match(cas, values);
 		if (left == null) {
-			System.out.println("Null " + this.left);
+			System.out.println("Left Operand Null " + this);
 			return false;
 		} else if (right == null) {
-			System.out.println("Null " + this.right);
+			System.out.println("Right Operand Null " + this);
 			return false;
 		} else if (left instanceof Type && right instanceof Type) {
 			Type first = (Type) left;
