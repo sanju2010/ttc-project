@@ -1,5 +1,5 @@
 
-/* First created by JCasGen Thu Oct 20 17:03:42 CEST 2011 */
+/* First created by JCasGen Fri Feb 24 09:30:03 CET 2012 */
 package eu.project.ttc.types;
 
 import org.apache.uima.jcas.JCas;
@@ -9,15 +9,15 @@ import org.apache.uima.cas.impl.FSGenerator;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.impl.TypeImpl;
 import org.apache.uima.cas.Type;
-
 import org.apache.uima.cas.impl.FeatureImpl;
 import org.apache.uima.cas.Feature;
 
 /** 
- * Updated by JCasGen Fri Feb 17 13:13:10 CET 2012
+ * Updated by JCasGen Fri Feb 24 09:30:03 CET 2012
  * @generated */
 public class SingleWordTermAnnotation_Type extends TermAnnotation_Type {
   /** @generated */
+  @Override
   protected FSGenerator getFSGenerator() {return fsGenerator;}
   /** @generated */
   private final FSGenerator fsGenerator = 
@@ -36,10 +36,48 @@ public class SingleWordTermAnnotation_Type extends TermAnnotation_Type {
   	  }
     };
   /** @generated */
+  @SuppressWarnings ("hiding")
   public final static int typeIndexID = SingleWordTermAnnotation.typeIndexID;
   /** @generated 
      @modifiable */
+  @SuppressWarnings ("hiding")
   public final static boolean featOkTst = JCasRegistry.getFeatOkTst("eu.project.ttc.types.SingleWordTermAnnotation");
+ 
+  /** @generated */
+  final Feature casFeat_compound;
+  /** @generated */
+  final int     casFeatCode_compound;
+  /** @generated */ 
+  public boolean getCompound(int addr) {
+        if (featOkTst && casFeat_compound == null)
+      jcas.throwFeatMissing("compound", "eu.project.ttc.types.SingleWordTermAnnotation");
+    return ll_cas.ll_getBooleanValue(addr, casFeatCode_compound);
+  }
+  /** @generated */    
+  public void setCompound(int addr, boolean v) {
+        if (featOkTst && casFeat_compound == null)
+      jcas.throwFeatMissing("compound", "eu.project.ttc.types.SingleWordTermAnnotation");
+    ll_cas.ll_setBooleanValue(addr, casFeatCode_compound, v);}
+    
+  
+ 
+  /** @generated */
+  final Feature casFeat_neoclassical;
+  /** @generated */
+  final int     casFeatCode_neoclassical;
+  /** @generated */ 
+  public boolean getNeoclassical(int addr) {
+        if (featOkTst && casFeat_neoclassical == null)
+      jcas.throwFeatMissing("neoclassical", "eu.project.ttc.types.SingleWordTermAnnotation");
+    return ll_cas.ll_getBooleanValue(addr, casFeatCode_neoclassical);
+  }
+  /** @generated */    
+  public void setNeoclassical(int addr, boolean v) {
+        if (featOkTst && casFeat_neoclassical == null)
+      jcas.throwFeatMissing("neoclassical", "eu.project.ttc.types.SingleWordTermAnnotation");
+    ll_cas.ll_setBooleanValue(addr, casFeatCode_neoclassical, v);}
+    
+  
 
 
 
@@ -48,6 +86,14 @@ public class SingleWordTermAnnotation_Type extends TermAnnotation_Type {
   public SingleWordTermAnnotation_Type(JCas jcas, Type casType) {
     super(jcas, casType);
     casImpl.getFSClassRegistry().addGeneratorForType((TypeImpl)this.casType, getFSGenerator());
+
+ 
+    casFeat_compound = jcas.getRequiredFeatureDE(casType, "compound", "uima.cas.Boolean", featOkTst);
+    casFeatCode_compound  = (null == casFeat_compound) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_compound).getCode();
+
+ 
+    casFeat_neoclassical = jcas.getRequiredFeatureDE(casType, "neoclassical", "uima.cas.Boolean", featOkTst);
+    casFeatCode_neoclassical  = (null == casFeat_neoclassical) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_neoclassical).getCode();
 
   }
 }

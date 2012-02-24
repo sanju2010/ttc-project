@@ -1,5 +1,5 @@
 
-/* First created by JCasGen Thu Nov 24 11:54:32 CET 2011 */
+/* First created by JCasGen Fri Feb 24 09:30:03 CET 2012 */
 package eu.project.ttc.types;
 
 import org.apache.uima.jcas.JCas;
@@ -14,10 +14,11 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /** 
- * Updated by JCasGen Fri Feb 17 13:13:10 CET 2012
+ * Updated by JCasGen Fri Feb 24 09:30:03 CET 2012
  * @generated */
 public class TranslationAnnotation_Type extends Annotation_Type {
   /** @generated */
+  @Override
   protected FSGenerator getFSGenerator() {return fsGenerator;}
   /** @generated */
   private final FSGenerator fsGenerator = 
@@ -36,9 +37,11 @@ public class TranslationAnnotation_Type extends Annotation_Type {
   	  }
     };
   /** @generated */
+  @SuppressWarnings ("hiding")
   public final static int typeIndexID = TranslationAnnotation.typeIndexID;
   /** @generated 
      @modifiable */
+  @SuppressWarnings ("hiding")
   public final static boolean featOkTst = JCasRegistry.getFeatOkTst("eu.project.ttc.types.TranslationAnnotation");
  
   /** @generated */

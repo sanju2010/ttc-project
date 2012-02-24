@@ -1,32 +1,33 @@
 
 
-/* First created by JCasGen Thu Oct 20 17:03:42 CEST 2011 */
+/* First created by JCasGen Fri Feb 24 09:30:03 CET 2012 */
 package eu.project.ttc.types;
 
 import org.apache.uima.jcas.JCas; 
 import org.apache.uima.jcas.JCasRegistry;
 import org.apache.uima.jcas.cas.TOP_Type;
 
-
-
 import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
- * Updated by JCasGen Fri Feb 17 13:13:10 CET 2012
+ * Updated by JCasGen Fri Feb 24 09:30:03 CET 2012
  * XML source: /home/rocheteau-j/Repositories/GoogleCode/ttc-term-suite/trunk/resources/eu/project/ttc/types/TermSuiteTypeSystem.xml
  * @generated */
 public class TermAnnotation extends Annotation {
   /** @generated
    * @ordered 
    */
+  @SuppressWarnings ("hiding")
   public final static int typeIndexID = JCasRegistry.register(TermAnnotation.class);
   /** @generated
    * @ordered 
    */
+  @SuppressWarnings ("hiding")
   public final static int type = typeIndexID;
   /** @generated  */
+  @Override
   public              int getTypeIndexID() {return typeIndexID;}
  
   /** Never called.  Disable default constructor
@@ -58,7 +59,7 @@ public class TermAnnotation extends Annotation {
     * Write your own initialization here
     * <!-- end-user-doc -->
   @generated modifiable */
-  private void readObject() {}
+  private void readObject() {/*default - does nothing empty block */}
      
  
     
@@ -202,6 +203,40 @@ public class TermAnnotation extends Annotation {
     if (TermAnnotation_Type.featOkTst && ((TermAnnotation_Type)jcasType).casFeat_occurrences == null)
       jcasType.jcas.throwFeatMissing("occurrences", "eu.project.ttc.types.TermAnnotation");
     jcasType.ll_cas.ll_setIntValue(addr, ((TermAnnotation_Type)jcasType).casFeatCode_occurrences, v);}    
+   
+    
+  //*--------------*
+  //* Feature: context
+
+  /** getter for context - gets 
+   * @generated */
+  public FSArray getContext() {
+    if (TermAnnotation_Type.featOkTst && ((TermAnnotation_Type)jcasType).casFeat_context == null)
+      jcasType.jcas.throwFeatMissing("context", "eu.project.ttc.types.TermAnnotation");
+    return (FSArray)(jcasType.ll_cas.ll_getFSForRef(jcasType.ll_cas.ll_getRefValue(addr, ((TermAnnotation_Type)jcasType).casFeatCode_context)));}
+    
+  /** setter for context - sets  
+   * @generated */
+  public void setContext(FSArray v) {
+    if (TermAnnotation_Type.featOkTst && ((TermAnnotation_Type)jcasType).casFeat_context == null)
+      jcasType.jcas.throwFeatMissing("context", "eu.project.ttc.types.TermAnnotation");
+    jcasType.ll_cas.ll_setRefValue(addr, ((TermAnnotation_Type)jcasType).casFeatCode_context, jcasType.ll_cas.ll_getFSRef(v));}    
+    
+  /** indexed getter for context - gets an indexed value - 
+   * @generated */
+  public TermAnnotation getContext(int i) {
+    if (TermAnnotation_Type.featOkTst && ((TermAnnotation_Type)jcasType).casFeat_context == null)
+      jcasType.jcas.throwFeatMissing("context", "eu.project.ttc.types.TermAnnotation");
+    jcasType.jcas.checkArrayBounds(jcasType.ll_cas.ll_getRefValue(addr, ((TermAnnotation_Type)jcasType).casFeatCode_context), i);
+    return (TermAnnotation)(jcasType.ll_cas.ll_getFSForRef(jcasType.ll_cas.ll_getRefArrayValue(jcasType.ll_cas.ll_getRefValue(addr, ((TermAnnotation_Type)jcasType).casFeatCode_context), i)));}
+
+  /** indexed setter for context - sets an indexed value - 
+   * @generated */
+  public void setContext(int i, TermAnnotation v) { 
+    if (TermAnnotation_Type.featOkTst && ((TermAnnotation_Type)jcasType).casFeat_context == null)
+      jcasType.jcas.throwFeatMissing("context", "eu.project.ttc.types.TermAnnotation");
+    jcasType.jcas.checkArrayBounds(jcasType.ll_cas.ll_getRefValue(addr, ((TermAnnotation_Type)jcasType).casFeatCode_context), i);
+    jcasType.ll_cas.ll_setRefArrayValue(jcasType.ll_cas.ll_getRefValue(addr, ((TermAnnotation_Type)jcasType).casFeatCode_context), i, jcasType.ll_cas.ll_getFSRef(v));}
   }
 
     

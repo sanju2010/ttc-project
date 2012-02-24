@@ -2,12 +2,14 @@ package eu.project.ttc.tools.utils;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JPanel;
 import javax.swing.JProgressBar;
-import javax.swing.JToolBar;
 
 public class ToolBar {
 	
@@ -30,22 +32,6 @@ public class ToolBar {
 	public JButton getQuit() {
 		return this.quit;
 	}
-
-	private JButton help;
-	
-	private void setHelp() {
-		this.help = new JButton("Help");
-		this.help.setActionCommand("help");
-		this.help.setEnabled(true);
-		this.help.setPreferredSize(dimension);
-		this.help.setMargin(insets);
-		this.help.setBackground(color);
-		this.help.setBorderPainted(false);
-	}
-	
-	public JButton getHelp() {
-		return this.help;
-	}
 	
 	private JButton about;
 	
@@ -62,13 +48,12 @@ public class ToolBar {
 	public JButton getAbout() {
 		return this.about;
 	}
-	/*
 	private JButton save;
 	
 	private void setSave() {
 		this.save = new JButton("Save");
 		this.save.setActionCommand("save");
-		this.save.setEnabled(false);
+		this.save.setEnabled(true);
 		this.save.setPreferredSize(dimension);
 		this.save.setMargin(insets);
 		this.save.setBackground(color);
@@ -78,7 +63,7 @@ public class ToolBar {
 	public JButton getSave() {
 		return this.save;
 	}
-	*/
+
 	private JButton run;
 	
 	private void setRun() {
@@ -131,7 +116,7 @@ public class ToolBar {
 	
 	private void setProgressBar() {
 		this.progressBar = new JProgressBar();
-		this.progressBar.setPreferredSize(new Dimension(600,33));
+		this.progressBar.setPreferredSize(new Dimension(333,33));
 		this.progressBar.setStringPainted(true);
 	}
 
@@ -139,31 +124,55 @@ public class ToolBar {
 		return progressBar;
 	}
 	
-	private JToolBar component;
+	private JPanel component;
 	
 	private void setComponent() {
-		this.component = new JToolBar();
-		this.component.setFloatable(false);
-		this.component.add(this.getAbout());
-		this.component.add(this.getHelp());
-		this.component.addSeparator();
-		this.component.add(this.getRun());
-		this.component.add(this.getPause());
-		this.component.add(this.getStop());
-		this.component.add(this.getProgressBar());
-		// this.component.add(this.getSave());
-		this.component.add(this.getQuit());
+		this.component = new JPanel(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		c.insets = new Insets(0, 10, 0, 3);
+		c.weightx = 0.0; 
+		c.gridx = 0; 
+		c.gridy = 0; 
+		c.gridwidth = 1; 
+		this.component.add(this.getAbout(), c);
+		c.gridx = 1; 
+		c.insets = new Insets(0, 3, 0, 3);
+		c.weightx = 0.0; 
+		this.component.add(this.getRun(), c);
+		c.gridx = 2; 
+		c.insets = new Insets(0, 3, 0, 3);
+		c.weightx = 0.0; 
+		this.component.add(this.getPause(), c);
+		c.gridx = 3; 
+		c.insets = new Insets(0, 3, 0, 3);
+		c.weightx = 0.0; 
+		this.component.add(this.getStop(), c);
+		c.insets = new Insets(0, 3, 0, 10);
+		c.weightx = 1.0; 
+		c.gridx = 4; 
+		c.gridwidth = 5; 
+		c.fill = GridBagConstraints.BOTH; 
+		this.component.add(this.getProgressBar(), c);
+		c.gridx = 9;  
+		c.insets = new Insets(0, 3, 0, 3);
+		c.weightx = 0.0;
+		c.gridwidth = 1; 
+		this.component.add(this.getSave(), c);
+		c.gridx = 10;  
+		c.insets = new Insets(0, 3, 0, 3);
+		c.weightx = 0.0;
+		c.gridwidth = 1; 
+		this.component.add(this.getQuit(), c);
 	}
 	
-	public JToolBar getComponent(){
+	public JPanel getComponent(){
 		return this.component;
 	}
 	
 	public void enableListeners(ActionListener listener) {
 		this.getQuit().addActionListener(listener);
 		this.getAbout().addActionListener(listener);
-		this.getHelp().addActionListener(listener);
-		// this.getSave().addActionListener(listener);
+		this.getSave().addActionListener(listener);
 		this.getStop().addActionListener(listener);
 		this.getPause().addActionListener(listener);
 		this.getRun().addActionListener(listener);
@@ -171,9 +180,8 @@ public class ToolBar {
 	
 	public ToolBar() {
 		this.setQuit();
-		this.setHelp();
 		this.setAbout();
-		// this.setSave();
+		this.setSave();
 		this.setRun();
 		this.setPause();
 		this.setStop();

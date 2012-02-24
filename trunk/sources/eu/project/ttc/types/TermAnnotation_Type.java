@@ -1,5 +1,5 @@
 
-/* First created by JCasGen Thu Oct 20 17:03:42 CEST 2011 */
+/* First created by JCasGen Fri Feb 24 09:30:03 CET 2012 */
 package eu.project.ttc.types;
 
 import org.apache.uima.jcas.JCas;
@@ -11,14 +11,14 @@ import org.apache.uima.cas.impl.TypeImpl;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.impl.FeatureImpl;
 import org.apache.uima.cas.Feature;
-
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /** 
- * Updated by JCasGen Fri Feb 17 13:13:10 CET 2012
+ * Updated by JCasGen Fri Feb 24 09:30:03 CET 2012
  * @generated */
 public class TermAnnotation_Type extends Annotation_Type {
   /** @generated */
+  @Override
   protected FSGenerator getFSGenerator() {return fsGenerator;}
   /** @generated */
   private final FSGenerator fsGenerator = 
@@ -37,9 +37,11 @@ public class TermAnnotation_Type extends Annotation_Type {
   	  }
     };
   /** @generated */
+  @SuppressWarnings ("hiding")
   public final static int typeIndexID = TermAnnotation.typeIndexID;
   /** @generated 
      @modifiable */
+  @SuppressWarnings ("hiding")
   public final static boolean featOkTst = JCasRegistry.getFeatOkTst("eu.project.ttc.types.TermAnnotation");
  
   /** @generated */
@@ -155,7 +157,7 @@ public class TermAnnotation_Type extends Annotation_Type {
     if (lowLevelTypeChecks)
       return ll_cas.ll_getRefArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_variants), i, true);
     jcas.checkArrayBounds(ll_cas.ll_getRefValue(addr, casFeatCode_variants), i);
-  return ll_cas.ll_getRefArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_variants), i);
+	return ll_cas.ll_getRefArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_variants), i);
   }
    
   /** @generated */ 
@@ -186,6 +188,43 @@ public class TermAnnotation_Type extends Annotation_Type {
     ll_cas.ll_setIntValue(addr, casFeatCode_occurrences, v);}
     
   
+ 
+  /** @generated */
+  final Feature casFeat_context;
+  /** @generated */
+  final int     casFeatCode_context;
+  /** @generated */ 
+  public int getContext(int addr) {
+        if (featOkTst && casFeat_context == null)
+      jcas.throwFeatMissing("context", "eu.project.ttc.types.TermAnnotation");
+    return ll_cas.ll_getRefValue(addr, casFeatCode_context);
+  }
+  /** @generated */    
+  public void setContext(int addr, int v) {
+        if (featOkTst && casFeat_context == null)
+      jcas.throwFeatMissing("context", "eu.project.ttc.types.TermAnnotation");
+    ll_cas.ll_setRefValue(addr, casFeatCode_context, v);}
+    
+   /** @generated */
+  public int getContext(int addr, int i) {
+        if (featOkTst && casFeat_context == null)
+      jcas.throwFeatMissing("context", "eu.project.ttc.types.TermAnnotation");
+    if (lowLevelTypeChecks)
+      return ll_cas.ll_getRefArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_context), i, true);
+    jcas.checkArrayBounds(ll_cas.ll_getRefValue(addr, casFeatCode_context), i);
+	return ll_cas.ll_getRefArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_context), i);
+  }
+   
+  /** @generated */ 
+  public void setContext(int addr, int i, int v) {
+        if (featOkTst && casFeat_context == null)
+      jcas.throwFeatMissing("context", "eu.project.ttc.types.TermAnnotation");
+    if (lowLevelTypeChecks)
+      ll_cas.ll_setRefArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_context), i, v, true);
+    jcas.checkArrayBounds(ll_cas.ll_getRefValue(addr, casFeatCode_context), i);
+    ll_cas.ll_setRefArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_context), i, v);
+  }
+ 
 
 
 
@@ -222,6 +261,10 @@ public class TermAnnotation_Type extends Annotation_Type {
  
     casFeat_occurrences = jcas.getRequiredFeatureDE(casType, "occurrences", "uima.cas.Integer", featOkTst);
     casFeatCode_occurrences  = (null == casFeat_occurrences) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_occurrences).getCode();
+
+ 
+    casFeat_context = jcas.getRequiredFeatureDE(casType, "context", "uima.cas.FSArray", featOkTst);
+    casFeatCode_context  = (null == casFeat_context) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_context).getCode();
 
   }
 }

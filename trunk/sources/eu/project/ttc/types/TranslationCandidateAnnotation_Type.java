@@ -1,5 +1,5 @@
 
-/* First created by JCasGen Thu Nov 24 11:32:45 CET 2011 */
+/* First created by JCasGen Fri Feb 24 09:30:03 CET 2012 */
 package eu.project.ttc.types;
 
 import org.apache.uima.jcas.JCas;
@@ -14,32 +14,35 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /** 
- * Updated by JCasGen Fri Feb 17 13:13:10 CET 2012
+ * Updated by JCasGen Fri Feb 24 09:30:03 CET 2012
  * @generated */
-public class CandidateAnnotation_Type extends Annotation_Type {
+public class TranslationCandidateAnnotation_Type extends Annotation_Type {
   /** @generated */
+  @Override
   protected FSGenerator getFSGenerator() {return fsGenerator;}
   /** @generated */
   private final FSGenerator fsGenerator = 
     new FSGenerator() {
       public FeatureStructure createFS(int addr, CASImpl cas) {
-  			 if (CandidateAnnotation_Type.this.useExistingInstance) {
+  			 if (TranslationCandidateAnnotation_Type.this.useExistingInstance) {
   			   // Return eq fs instance if already created
-  		     FeatureStructure fs = CandidateAnnotation_Type.this.jcas.getJfsFromCaddr(addr);
+  		     FeatureStructure fs = TranslationCandidateAnnotation_Type.this.jcas.getJfsFromCaddr(addr);
   		     if (null == fs) {
-  		       fs = new CandidateAnnotation(addr, CandidateAnnotation_Type.this);
-  			   CandidateAnnotation_Type.this.jcas.putJfsFromCaddr(addr, fs);
+  		       fs = new TranslationCandidateAnnotation(addr, TranslationCandidateAnnotation_Type.this);
+  			   TranslationCandidateAnnotation_Type.this.jcas.putJfsFromCaddr(addr, fs);
   			   return fs;
   		     }
   		     return fs;
-        } else return new CandidateAnnotation(addr, CandidateAnnotation_Type.this);
+        } else return new TranslationCandidateAnnotation(addr, TranslationCandidateAnnotation_Type.this);
   	  }
     };
   /** @generated */
-  public final static int typeIndexID = CandidateAnnotation.typeIndexID;
+  @SuppressWarnings ("hiding")
+  public final static int typeIndexID = TranslationCandidateAnnotation.typeIndexID;
   /** @generated 
      @modifiable */
-  public final static boolean featOkTst = JCasRegistry.getFeatOkTst("eu.project.ttc.types.CandidateAnnotation");
+  @SuppressWarnings ("hiding")
+  public final static boolean featOkTst = JCasRegistry.getFeatOkTst("eu.project.ttc.types.TranslationCandidateAnnotation");
  
   /** @generated */
   final Feature casFeat_translation;
@@ -48,13 +51,13 @@ public class CandidateAnnotation_Type extends Annotation_Type {
   /** @generated */ 
   public String getTranslation(int addr) {
         if (featOkTst && casFeat_translation == null)
-      jcas.throwFeatMissing("translation", "eu.project.ttc.types.CandidateAnnotation");
+      jcas.throwFeatMissing("translation", "eu.project.ttc.types.TranslationCandidateAnnotation");
     return ll_cas.ll_getStringValue(addr, casFeatCode_translation);
   }
   /** @generated */    
   public void setTranslation(int addr, String v) {
         if (featOkTst && casFeat_translation == null)
-      jcas.throwFeatMissing("translation", "eu.project.ttc.types.CandidateAnnotation");
+      jcas.throwFeatMissing("translation", "eu.project.ttc.types.TranslationCandidateAnnotation");
     ll_cas.ll_setStringValue(addr, casFeatCode_translation, v);}
     
   
@@ -66,13 +69,13 @@ public class CandidateAnnotation_Type extends Annotation_Type {
   /** @generated */ 
   public double getScore(int addr) {
         if (featOkTst && casFeat_score == null)
-      jcas.throwFeatMissing("score", "eu.project.ttc.types.CandidateAnnotation");
+      jcas.throwFeatMissing("score", "eu.project.ttc.types.TranslationCandidateAnnotation");
     return ll_cas.ll_getDoubleValue(addr, casFeatCode_score);
   }
   /** @generated */    
   public void setScore(int addr, double v) {
         if (featOkTst && casFeat_score == null)
-      jcas.throwFeatMissing("score", "eu.project.ttc.types.CandidateAnnotation");
+      jcas.throwFeatMissing("score", "eu.project.ttc.types.TranslationCandidateAnnotation");
     ll_cas.ll_setDoubleValue(addr, casFeatCode_score, v);}
     
   
@@ -84,13 +87,13 @@ public class CandidateAnnotation_Type extends Annotation_Type {
   /** @generated */ 
   public int getRank(int addr) {
         if (featOkTst && casFeat_rank == null)
-      jcas.throwFeatMissing("rank", "eu.project.ttc.types.CandidateAnnotation");
+      jcas.throwFeatMissing("rank", "eu.project.ttc.types.TranslationCandidateAnnotation");
     return ll_cas.ll_getIntValue(addr, casFeatCode_rank);
   }
   /** @generated */    
   public void setRank(int addr, int v) {
         if (featOkTst && casFeat_rank == null)
-      jcas.throwFeatMissing("rank", "eu.project.ttc.types.CandidateAnnotation");
+      jcas.throwFeatMissing("rank", "eu.project.ttc.types.TranslationCandidateAnnotation");
     ll_cas.ll_setIntValue(addr, casFeatCode_rank, v);}
     
   
@@ -99,7 +102,7 @@ public class CandidateAnnotation_Type extends Annotation_Type {
 
   /** initialize variables to correspond with Cas Type and Features
 	* @generated */
-  public CandidateAnnotation_Type(JCas jcas, Type casType) {
+  public TranslationCandidateAnnotation_Type(JCas jcas, Type casType) {
     super(jcas, casType);
     casImpl.getFSClassRegistry().addGeneratorForType((TypeImpl)this.casType, getFSGenerator());
 

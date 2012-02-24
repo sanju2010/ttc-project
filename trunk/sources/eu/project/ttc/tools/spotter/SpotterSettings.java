@@ -1,14 +1,14 @@
-package eu.project.ttc.tools.tagger.treetagger;
+package eu.project.ttc.tools.spotter;
 
 import org.apache.uima.resource.metadata.ConfigurationParameter;
 import org.apache.uima.resource.metadata.ConfigurationParameterDeclarations;
 
-import eu.project.ttc.tools.tagger.TaggerSettings;
+import eu.project.ttc.tools.TermSuiteSettings;
 import eu.project.ttc.tools.utils.Parameters;
 
-public class TreeTaggerSettings extends Parameters implements TaggerSettings {	
+public class SpotterSettings extends Parameters implements TermSuiteSettings {	
 	
-	public TreeTaggerSettings(String resource) {
+	public SpotterSettings(String resource) {
 		super(resource);
 	}
 
@@ -17,6 +17,7 @@ public class TreeTaggerSettings extends Parameters implements TaggerSettings {
 		this.addParameter(declarations, "InputDirectory", ConfigurationParameter.TYPE_STRING, false, true);
 		this.addParameter(declarations, "OutputDirectory", ConfigurationParameter.TYPE_STRING, false, true);
 		this.addParameter(declarations, "TreeTaggerHomeDirectory", ConfigurationParameter.TYPE_STRING, false, true);
+		/*
 		this.addParameter(declarations, "TreeTaggerParameterFile", ConfigurationParameter.TYPE_STRING, false, true);
 		this.addParameter(declarations, "SegmentFile", ConfigurationParameter.TYPE_STRING, false, true);
 		this.addParameter(declarations, "CategoryMappingFile", ConfigurationParameter.TYPE_STRING, false, true);
@@ -26,6 +27,7 @@ public class TreeTaggerSettings extends Parameters implements TaggerSettings {
 		this.addParameter(declarations, "GenderMappingFile", ConfigurationParameter.TYPE_STRING, false, true);
 		this.addParameter(declarations, "NumberMappingFile", ConfigurationParameter.TYPE_STRING, false, true);
 		this.addParameter(declarations, "CaseMappingFile", ConfigurationParameter.TYPE_STRING, false, true);
+		*/
 	}
 		
 }
