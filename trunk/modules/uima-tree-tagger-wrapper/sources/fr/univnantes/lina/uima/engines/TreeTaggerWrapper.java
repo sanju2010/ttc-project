@@ -269,7 +269,7 @@ public class TreeTaggerWrapper extends JCasAnnotator_ImplBase {
 		@Override
 		public String getText(Annotation annotation) {
 			synchronized (annotation.getCAS()) {
-				return annotation.getCoveredText();				
+				return annotation.getCoveredText().toLowerCase();		
 			}
 		}
 		
