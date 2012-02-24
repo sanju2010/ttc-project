@@ -1,17 +1,12 @@
 package eu.project.ttc.tools.help;
 
 import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Toolkit;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.util.Locale;
 
-import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
 
-public class Help implements Runnable {
+public class Help {
 
 	private Locale locale;
 	
@@ -43,119 +38,51 @@ public class Help implements Runnable {
 		}
 	}
 	
-	private JTabbedPane content;
+	private JTabbedPane component;
 	
-	private void setContent() {		
-		this.content = new JTabbedPane();
-		this.content.setTabPlacement(JTabbedPane.TOP);
+	private void setComponent() {		
+		this.component = new JTabbedPane();
+		this.component.setTabPlacement(JTabbedPane.RIGHT);
 		String locale = this.getLocale().getDisplayLanguage(Locale.ENGLISH);
-		this.content.addTab("  Term Suite  ",this.getHelp("TermSuite", locale));
-		this.content.addTab("  TreeTagger  ",this.getHelp("TreeTagger", locale));
-		this.content.addTab(" Tilde Tagger ",this.getHelp("TildeTagger", locale));
-		this.content.addTab("   RFTagger   ",this.getHelp("RFTagger", locale));
-		this.content.addTab("   FreeLing   ",this.getHelp("FreeLing", locale));
-		this.content.addTab("    Termer    ",this.getHelp("Termer", locale));
-		this.content.addTab("Contextualizer",this.getHelp("Contextualizer", locale));
-		this.content.addTab("   Aligner    ",this.getHelp("Aligner", locale));
-		this.content.addTab("  Converter   ",this.getHelp("Converter", locale));
+		this.component.addTab("   Term Suite   ",this.getHelp("TermSuite", locale));
+		this.component.addTab("   TreeTagger   ",this.getHelp("TreeTagger", locale));
+		this.component.addTab("     Termer     ",this.getHelp("Termer", locale));
+		this.component.addTab(" Contextualizer ",this.getHelp("Contextualizer", locale));
+		this.component.addTab("    Aligner     ",this.getHelp("Aligner", locale));
+		this.component.addTab("   Converter    ",this.getHelp("Converter", locale));
 	}
 	
-	private JTabbedPane getContent() {
-		return this.content;
-	}
-	
-	private Dimension getDimension() {
-		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-		int width = (4 * screen.width) / 5;
-		int height = (4 * screen.height) / 5;
-		Dimension dimension = new Dimension(width,height);
-		return dimension;
-	}
-	
-	private JFrame frame;
-	
-	private void setFrame() {
-		this.frame = new JFrame();
-		this.frame.setTitle("Term Suite Help");
-		this.frame.setPreferredSize(this.getDimension());
-		this.frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		this.frame.getContentPane().add(this.getContent());
-		this.frame.setJMenuBar(null);
-		this.frame.pack();
-		this.frame.setLocationRelativeTo(null);
-		this.frame.setResizable(false);
-		this.frame.addWindowListener(new WindowListener());
-	}
-
-	private void hide() {
-		this.getFrame().setVisible(false);
-	}
-	
-	private void show() {
-		this.getFrame().setVisible(true);
-	}
-	
-	public JFrame getFrame() {
-		return this.frame;
+	public JTabbedPane getComponent() {
+		return this.component;
 	}
 	
 	public Help() {
 		this.setLocale();
-		this.setContent();
-		this.setFrame();
-	}
-		
-	public void run() {
-		this.show();
-	}
-		
-	public void quit() {
-		this.hide();
-		this.getFrame().dispose();
-	}
-	
-	private class WindowListener extends WindowAdapter {
-		
-		public void windowClosing(WindowEvent event) {
-			quit();
-		 }
-		
+		this.setComponent();
 	}
 
 	public void selectTermSuite() {
-		this.getContent().setSelectedIndex(0);
+		this.getComponent().setSelectedIndex(0);
 	}
 	
 	public void selectTreeTagger() {
-		this.getContent().setSelectedIndex(1);
-	}
-	
-	public void selectTildeTagger() {
-		this.getContent().setSelectedIndex(2);
-	}
-	
-	public void selectRFTagger() {
-		this.getContent().setSelectedIndex(3);
-	}
-	
-	public void selectFreeLing() {
-		this.getContent().setSelectedIndex(4);
+		this.getComponent().setSelectedIndex(1);
 	}
 	
 	public void selectTermer() {
-		this.getContent().setSelectedIndex(5);
+		this.getComponent().setSelectedIndex(2);
 	}
 	
 	public void selectContextualizer() {
-		this.getContent().setSelectedIndex(6);
+		this.getComponent().setSelectedIndex(3);
 	}
 	
 	public void selectAligner() {
-		this.getContent().setSelectedIndex(7);
+		this.getComponent().setSelectedIndex(4);
 	}
 	
 	public void selectConverter() {
-		this.getContent().setSelectedIndex(8);
+		this.getComponent().setSelectedIndex(5);
 	}
 	
 }
