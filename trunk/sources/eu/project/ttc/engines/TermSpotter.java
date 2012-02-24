@@ -11,7 +11,7 @@ import eu.project.ttc.types.SingleWordTermAnnotation;
 import eu.project.ttc.types.TermAnnotation;
 import eu.project.ttc.types.WordAnnotation;
 
-public class RuleBasedTermDetector extends Matcher {
+public class TermSpotter extends Matcher {
 			
 	@Override
 	protected void annotate(JCas cas, String id, int begin, int end,Annotation[] annotations) {

@@ -1,38 +1,41 @@
-package eu.project.ttc.models;
+package eu.project.ttc.engines;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.apache.uima.UIMAFramework;
-import org.apache.uima.UimaContext;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.text.AnnotationIndex;
+import org.apache.uima.examples.SourceDocumentInformation;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.apache.uima.resource.DataResource;
-import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Level;
 
-import uima.sandbox.indexer.resources.IndexListener;
+import uima.sandbox.indexer.engines.Indexer;
 
-import eu.project.ttc.types.CompoundTermAnnotation;
+import eu.project.ttc.metrics.AssociationRate;
+import eu.project.ttc.models.CrossTable;
+import eu.project.ttc.models.Term;
+import eu.project.ttc.models.Context;
 import eu.project.ttc.types.MultiWordTermAnnotation;
-import eu.project.ttc.types.NeoClassicalCompoundTermAnnotation;
 import eu.project.ttc.types.SingleWordTermAnnotation;
 import eu.project.ttc.types.TermAnnotation;
 import eu.project.ttc.types.TermComponentAnnotation;
 import eu.project.ttc.types.WordAnnotation;
 
-public class TermIndexListener implements IndexListener {
+public class TermIndexer extends Indexer {
 
 	private class SimpleTermFrequency {
 		
 		public SimpleTermFrequency() {
 			this.setFrequencies();
 			this.setCategories();
+			this.setContexts();
 		}
 		
 		private Map<String, Integer> frequencies;
@@ -74,6 +77,34 @@ public class TermIndexListener implements IndexListener {
 			this.add(annotation);
 		}
 
+		private Map<String, Context> contexts;
+		
+		private void setContexts() {
+			this.contexts = new HashMap<String, Context>();
+		}
+		
+		public Map<String,Context> getContexts() {
+			return this.contexts;
+		}
+		
+		public void setCoOccurrences(String term,String context,Double coOccurrences,int mode) {
+			Context termContext = this.getContexts().get(term);
+			if (termContext == null) {
+				termContext = new Context();
+				this.getContexts().put(term,termContext);
+			}
+			termContext.setCoOccurrences(context, coOccurrences, mode);
+		}
+		
+		public void addCoOccurrences(String term,String context) {
+			Context termContext = this.getContexts().get(term);
+			if (termContext == null) {
+				termContext = new Context();
+				this.getContexts().put(term, termContext);
+			}
+			termContext.setCoOccurrences(context, new Double(1), Context.ADD_MODE);
+		}
+		
 	}
 	
 	private class ComplexTermFrequency extends SimpleTermFrequency {
@@ -101,24 +132,6 @@ public class TermIndexListener implements IndexListener {
 				this.addComponents(annotation, term);
 			}
 		}
-	
-		public void addEntry(CompoundTermAnnotation annotation) {
-			String term = this.add(annotation);
-			if (term == null) {
-				return;
-			} else {
-				this.addComponents(annotation, term);
-			}
-		}
-		
-		public void addEntry(NeoClassicalCompoundTermAnnotation annotation) {
-			String term = this.add(annotation);
-			if (term == null) {
-				return;
-			} else {
-				this.addComponents(annotation, term);
-			}
-		}
 		
 		private void addComponents(MultiWordTermAnnotation annotation, String term) {
 			try {
@@ -128,50 +141,6 @@ public class TermIndexListener implements IndexListener {
 				List<Component> components = new ArrayList<Component>();
 				while (iterator.hasNext()) {
 					WordAnnotation component = (WordAnnotation) iterator.next();
-					if (component.getBegin() == annotation.getBegin() && component.getEnd() == annotation.getEnd()) {
-						continue;
-					} else {
-						Component c = new Component();
-						c.update(component, annotation.getBegin());
-						components.add(c);
-					}
-				}
-				this.getComponents().put(term, components);
-			} catch (CASException e) {
-				UIMAFramework.getLogger().log(Level.WARNING,e.getMessage());
-			}
-		}
-
-		private void addComponents(CompoundTermAnnotation annotation, String term) {
-			try {
-				JCas cas = annotation.getCAS().getJCas();
-				AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TermComponentAnnotation.type);
-				FSIterator<Annotation> iterator = index.subiterator(annotation);
-				List<Component> components = new ArrayList<Component>();
-				while (iterator.hasNext()) {
-					TermComponentAnnotation component = (TermComponentAnnotation) iterator.next();
-					if (component.getBegin() == annotation.getBegin() && component.getEnd() == annotation.getEnd()) {
-						continue;
-					} else {
-						Component c = new Component();
-						c.update(component, annotation.getBegin());
-						components.add(c);
-					}
-				}
-				this.getComponents().put(term, components);
-			} catch (CASException e) {
-				UIMAFramework.getLogger().log(Level.WARNING,e.getMessage());
-			}
-		}
-		
-		private void addComponents(NeoClassicalCompoundTermAnnotation annotation, String term) {
-			try {
-				JCas cas = annotation.getCAS().getJCas();
-				AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TermComponentAnnotation.type);
-				FSIterator<Annotation> iterator = index.subiterator(annotation);
-				List<Component> components = new ArrayList<Component>();
-				while (iterator.hasNext()) {
-					TermComponentAnnotation component = (TermComponentAnnotation) iterator.next();
 					if (component.getBegin() == annotation.getBegin() && component.getEnd() == annotation.getEnd()) {
 						continue;
 					} else {
@@ -208,33 +177,6 @@ public class TermIndexListener implements IndexListener {
 		return this.multiWordTermFrequency;
 	}
 	
-	private ComplexTermFrequency compoundFrequency;
-	
-	private void setCompoundFrequency() {
-		this.compoundFrequency = new ComplexTermFrequency();
-	}
-	
-	private ComplexTermFrequency getCompoundFrequency() {
-		return this.compoundFrequency;
-	}
-	
-	private ComplexTermFrequency neoClassicalCompoundFrequency;
-	
-	private void setNeoClassicalCompoundFrequency() {
-		this.neoClassicalCompoundFrequency = new ComplexTermFrequency();
-	}
-	
-	private ComplexTermFrequency getNeoClassicalCompoundFrequency() {
-		return this.neoClassicalCompoundFrequency;
-	}
-	
-	public TermIndexListener() {
-		this.setSingleWordTermFrequency();
-		this.setMultiWordTermFrequency();
-		this.setCompoundFrequency();
-		this.setNeoClassicalCompoundFrequency();
-	}
-	
 	private String language;
 	
 	private void setLanguage(String language) {
@@ -245,37 +187,118 @@ public class TermIndexListener implements IndexListener {
 		return this.language;
 	}
 	
+	private AssociationRate associationRate;
+	
+	private void setAssociationRate(String name) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+		if (this.associationRate == null) {
+			Class<?> cl = Class.forName(name);
+			Object obj = cl.newInstance();
+			if (obj instanceof AssociationRate) {
+				this.associationRate = (AssociationRate) obj;
+				UIMAFramework.getLogger().log(Level.INFO,"Setting Association Rate: " + this.associationRate.getClass().getSimpleName());
+			} else {
+				throw new ClassCastException("Class name '" + name + "' doesn't comply " + AssociationRate.class.getCanonicalName());
+			}
+		}
+	}
+	
+	private AssociationRate getAssociationRate() {
+		return this.associationRate;
+	}
+		
 	@Override 
-	public void configure(UimaContext context){ 
-		String language = (String) context.getConfigParameterValue("Language");
+	public void initialize() throws Exception { 
+		this.setSingleWordTermFrequency();
+		this.setMultiWordTermFrequency();
+		String language = (String) this.getContext().getConfigParameterValue("Language");
 		this.setLanguage(language);
+		String className = (String) this.getContext().getConfigParameterValue("AssociationRateClassName");
+		this.setAssociationRate(className);
 	}
 	
 	@Override
-	public void load(DataResource data) throws ResourceInitializationException { }
-
-	@Override
-	public void index(Annotation annotation) {
-		if (annotation instanceof SingleWordTermAnnotation) {
-			this.getSingleWordTermFrequency().addEntry((SingleWordTermAnnotation) annotation);					
-		} else if (annotation instanceof MultiWordTermAnnotation) {
-			this.getMultiWordTermFrequency().addEntry((MultiWordTermAnnotation) annotation);
-		} else if (annotation instanceof CompoundTermAnnotation) {
-			this.getCompoundFrequency().addEntry((CompoundTermAnnotation) annotation);
-		} else if (annotation instanceof NeoClassicalCompoundTermAnnotation) {
-			this.getNeoClassicalCompoundFrequency().addEntry((NeoClassicalCompoundTermAnnotation) annotation);
+	public void update(JCas cas) throws Exception {
+		AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TermAnnotation.type);
+		FSIterator<Annotation> iterator = index.iterator();
+		while (iterator.hasNext()) {
+			TermAnnotation annotation = (TermAnnotation) iterator.next();
+			if (annotation instanceof SingleWordTermAnnotation) {
+				this.getSingleWordTermFrequency().addEntry((SingleWordTermAnnotation) annotation);					
+			} else if (annotation instanceof MultiWordTermAnnotation) {
+				this.getMultiWordTermFrequency().addEntry((MultiWordTermAnnotation) annotation);
+			} 
+			this.update(annotation);
+		}
+	}
+	
+	private void update(TermAnnotation annotation) throws Exception {
+		FSArray array = annotation.getContext();
+		if (array == null) {
+			return;
+		} else {
+			String term = annotation.getLemma().toLowerCase();
+			Integer freq = this.getSingleWordTermFrequency().getFrequencies().get(term);
+			if (freq == null || freq.intValue() < 2) {
+				return;
+			} else {
+				for (int index = 0; index < array.size(); index++) {
+					TermAnnotation entry = annotation.getContext(index);
+					String context = entry.getLemma().toLowerCase();
+					this.getSingleWordTermFrequency().addCoOccurrences(term, context);
+				}
+			}
 		}
 	}
 	
 	@Override
-	public void release(JCas cas) {
+	public void release(JCas cas) throws Exception {
 		cas.setDocumentLanguage(this.getLanguage());
 		StringBuilder builder = new StringBuilder();
 		this.release(cas, builder, this.getSingleWordTermFrequency());
 		this.release(cas, builder, this.getMultiWordTermFrequency(), Term.MULTI_WORD);
-		this.release(cas, builder, this.getCompoundFrequency(), Term.COMPOUND);
-		this.release(cas, builder, this.getNeoClassicalCompoundFrequency(), Term.NEO_CLASSICAL_COMPOUND);
 		cas.setDocumentText(builder.toString());
+		SourceDocumentInformation sdi = new SourceDocumentInformation(cas);
+		sdi.setUri("http://terminology." + this.getLanguage().toLowerCase());
+		sdi.setBegin(0);
+		sdi.setEnd(builder.length());
+		sdi.setOffsetInSource(0);
+		sdi.addToIndexes();
+		this.normalize(this.getAssociationRate());
+		this.annotate(cas);
+	}
+	
+	private void annotate(JCas cas) throws Exception {
+		Map<String, Context> contexts = new TreeMap<String, Context>();
+		contexts.putAll(this.getSingleWordTermFrequency().getContexts());
+		for (String item : contexts.keySet()) {
+			JCas jcas = cas.createView(item);
+			jcas.setDocumentLanguage(this.getLanguage());
+			StringBuilder builder = new StringBuilder();
+			Context context = contexts.get(item);
+			builder.append(context.toString());
+			builder.append('\n');
+			jcas.setDocumentText(builder.toString());
+		}
+	}
+	
+	private void normalize(AssociationRate rate) throws Exception {
+		CrossTable crossTable = new CrossTable();
+		Map<String, Context> contexts = this.getSingleWordTermFrequency().getContexts();
+		crossTable.setContexts(contexts);
+		for (String term : contexts.keySet()) {
+			Context context = contexts.get(term);
+			crossTable.setTerm(term);
+			for (String coTerm : context.getCoOccurrences().keySet()) {
+				crossTable.setCoTerm(coTerm);	
+				crossTable.compute();
+				int a = crossTable.getA();
+				int b = crossTable.getB();
+				int c = crossTable.getC();
+				int d = crossTable.getD();
+				double norm = rate.getValue(a, b, c, d);
+				this.getSingleWordTermFrequency().setCoOccurrences(term, coTerm, new Double(norm), Context.DEL_MODE);
+			}
+		}
 	}
 
 	private void release(JCas cas, StringBuilder builder, SimpleTermFrequency frequency) {
@@ -305,16 +328,7 @@ public class TermIndexListener implements IndexListener {
 			builder.append(entry);
 			int end = builder.length();
 			builder.append('\n');
-			TermAnnotation annotation = null;
-			if (complexity.equals(Term.MULTI_WORD)) {
-				annotation = new MultiWordTermAnnotation(cas,begin,end);
-			} else if (complexity.equals(Term.COMPOUND)) {
-				annotation = new CompoundTermAnnotation(cas,begin,end);
-			} else if (complexity.equals(Term.NEO_CLASSICAL_COMPOUND)) {
-				annotation = new NeoClassicalCompoundTermAnnotation(cas,begin,end);
-			} else {
-				continue;
-			}
+			TermAnnotation annotation = new MultiWordTermAnnotation(cas,begin,end);
 			annotation.setOccurrences(freq);
 			annotation.setFrequency(freq);
 			annotation.setCategory(category);
@@ -353,15 +367,6 @@ public class TermIndexListener implements IndexListener {
 			this.begin = annotation.getBegin() - offset;
 			this.end = annotation.getEnd() - offset;
 		}
-
-		public void update(TermComponentAnnotation annotation,int offset) {
-			this.category = annotation.getCategory();
-			this.lemma = annotation.getLemma();
-			this.stem = annotation.getStem();
-			this.begin = annotation.getBegin() - offset;
-			this.end = annotation.getEnd() - offset;
-		}
-
 		
 	}
 		

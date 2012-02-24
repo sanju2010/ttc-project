@@ -1,4 +1,4 @@
-package eu.project.ttc.models;
+package eu.project.ttc.engines;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,21 +10,20 @@ import java.util.TreeMap;
 
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.UimaContext;
+import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.apache.uima.resource.DataResource;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Level;
 
 import eu.project.ttc.metrics.EditDistance;
 import eu.project.ttc.types.SingleWordTermAnnotation;
 
-import uima.sandbox.indexer.resources.IndexListener;
-
-public class EditDistanceGathering implements IndexListener {
+public class SingleWordGatherer extends JCasAnnotator_ImplBase {
 	
 	private EditDistance editDistance;
 	
@@ -72,7 +71,7 @@ public class EditDistanceGathering implements IndexListener {
 	}
 	
 	@Override 
-	public void configure(UimaContext context) throws ResourceInitializationException {
+	public void initialize(UimaContext context) throws ResourceInitializationException {
 		try {
 			Boolean enabled = (Boolean) context.getConfigParameterValue("Enable");
 			this.enable(enabled == null ? false : enabled.booleanValue());
@@ -88,14 +87,14 @@ public class EditDistanceGathering implements IndexListener {
 				Integer ngrams = (Integer) context.getConfigParameterValue("Ngrams");
 				this.setNgrams(ngrams);
 			}
+			if (this.getAnnotations() == null) {
+				this.setAnnotations();
+			}
 		} catch (Exception e) {
 			throw new ResourceInitializationException(e);
 		}
 	}
 	
-	@Override
-	public void load(DataResource data) throws ResourceInitializationException { }
-
 	private Map<String, List<SingleWordTermAnnotation>> annotations;
 	
 	private void setAnnotations() {
@@ -217,21 +216,12 @@ public class EditDistanceGathering implements IndexListener {
 	}
 
 	@Override
-	public void index(Annotation annotation) { }
-	
-	private static boolean done = false;
-	
-	@Override
-	public void release(JCas cas) { 
-		if (this.enable && !done) {
-			if (this.getAnnotations() == null) {
-				this.setAnnotations();
-				this.index(cas);
-				this.clean();
-				this.sort();
-				this.gather(cas);
-			}
-			done = true;
+	public void process(JCas cas) throws AnalysisEngineProcessException { 
+		if (this.enable) {
+			this.index(cas);
+			this.clean();
+			this.sort();
+			this.gather(cas);
 		}
 	}
 	

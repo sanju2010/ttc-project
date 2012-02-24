@@ -14,7 +14,7 @@ public interface TermContextIndex {
 
 	public Map<String, Integer> getOccurrences();
 
-	public Map<String, TermContext> getTermContexts();
+	public Map<String, Context> getContexts();
 
 	public void doShrink(Set<String> terms);
 

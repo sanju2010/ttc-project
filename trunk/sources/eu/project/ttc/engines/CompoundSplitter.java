@@ -1,25 +1,24 @@
-package eu.project.ttc.models;
+package eu.project.ttc.engines;
 
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.uima.UimaContext;
+import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.apache.uima.resource.DataResource;
 import org.apache.uima.resource.ResourceInitializationException;
 
-import eu.project.ttc.types.CompoundTermAnnotation;
+import eu.project.ttc.models.Term;
 import eu.project.ttc.types.SingleWordTermAnnotation;
 import eu.project.ttc.types.TermComponentAnnotation;
 import fr.univnantes.lina.uima.dictionaries.Dictionary;
 
-import uima.sandbox.indexer.resources.IndexListener;
-
-public class CompoundSplitter implements IndexListener {
+public class CompoundSplitter extends JCasAnnotator_ImplBase {
 		
 	private Dictionary dictionary;
 	
@@ -44,7 +43,7 @@ public class CompoundSplitter implements IndexListener {
 	}
 	
 	@Override 
-	public void configure(UimaContext context) throws ResourceInitializationException {
+	public void initialize(UimaContext context) throws ResourceInitializationException {
 		try {
 			Dictionary dictionary = (Dictionary) context.getResourceObject("Dictionary");
 			this.setDictionary(dictionary);
@@ -57,24 +56,9 @@ public class CompoundSplitter implements IndexListener {
 			throw new ResourceInitializationException(e);
 		}
 	}
-	
-	@Override
-	public void load(DataResource data) throws ResourceInitializationException { }
 
 	@Override
-	public void index(Annotation annotation) { }
-	
-	private boolean done = false;
-
-	@Override
-	public void release(JCas cas) {
-		if (!this.done) {
-			this.done = true;
-			this.dash(cas);
-		}
-	}
-	
-	private void dash(JCas cas) {
+	public void process(JCas cas) throws AnalysisEngineProcessException {
 		AnnotationIndex<Annotation> index = cas.getAnnotationIndex(SingleWordTermAnnotation.type);
 		FSIterator<Annotation> iterator = index.iterator();
 		while (iterator.hasNext()) {
@@ -84,14 +68,8 @@ public class CompoundSplitter implements IndexListener {
 			int end = annotation.getEnd();
 			this.detect(cas, annotation.getCoveredText(), begin, end, components, false);
 			if (!components.isEmpty()) {
-				CompoundTermAnnotation compound = new CompoundTermAnnotation(cas, begin, end);
-				compound.setComplexity("compound");
-				compound.setCategory(annotation.getCategory());
-				compound.setLemma(annotation.getLemma());
-				compound.setOccurrences(annotation.getOccurrences());
-				compound.setFrequency(annotation.getFrequency());
-				compound.setSpecificity(annotation.getSpecificity());
-				compound.addToIndexes();
+				annotation.setComplexity(Term.COMPOUND);
+				annotation.setCompound(true);
 			}
 		}
 	}

@@ -24,8 +24,8 @@ public class CrossTable {
 		this.scores = new HashMap<String, Integer>();
 		this.coScores = new HashMap<String, Integer>();
 		this.total = 0;
-		for (String term : this.index.getTermContexts().keySet()) {
-			TermContext context = this.index.getTermContexts().get(term);
+		for (String term : this.index.keySet()) {
+			Context context = this.index.get(term);
 			for (String coTerm : context.getCoOccurrences().keySet()) {
 				Double score = context.getCoOccurrences().get(coTerm);
 				if (score != null) {
@@ -37,9 +37,9 @@ public class CrossTable {
 		}
 	}
 	
-	private TermContextIndex index;
+	private Map<String, Context> index;
 
-	public void setIndex(TermContextIndex index) {
+	public void setContexts(Map<String, Context> index) {
 		this.index = index;
 		this.set();
 	}
@@ -59,9 +59,9 @@ public class CrossTable {
 	private int a;
 	
 	private void setA() {
-		Double score = this.index.getTermContexts().get(this.term).getCoOccurrences().get(this.coTerm);
+		Double score = this.index.get(this.term).getCoOccurrences().get(this.coTerm);
 		if (score == null) {
-			throw new NullPointerException(this.index.getLanguage() + ": term " + this.term + "[" + this.coTerm + "]");
+			throw new NullPointerException("term " + this.term + "[" + this.coTerm + "]");
 		} else {
 			this.a = score.intValue();
 		}

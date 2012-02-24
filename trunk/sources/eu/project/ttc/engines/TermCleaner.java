@@ -1,25 +1,24 @@
-package eu.project.ttc.models;
+package eu.project.ttc.engines;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.UimaContext;
+import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.apache.uima.resource.DataResource;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Level;
 
 import eu.project.ttc.types.TermAnnotation;
 
-import uima.sandbox.indexer.resources.IndexListener;
-
-public class TermCleaner implements IndexListener {
+public class TermCleaner extends JCasAnnotator_ImplBase {
 	
 	private String type;
 	
@@ -38,18 +37,13 @@ public class TermCleaner implements IndexListener {
 	}
 		
 	@Override 
-	public void configure(UimaContext context){ 
+	public void initialize(UimaContext context) throws ResourceInitializationException { 
 		String type = (String) context.getConfigParameterValue("Type");
 		this.setType(type);
+		this.setAnnotations();
 		UIMAFramework.getLogger().log(Level.INFO, "Term Annotation Type: " + type);
 	}
-	
-	@Override
-	public void load(DataResource data) throws ResourceInitializationException { }
-
-	@Override
-	public void index(Annotation annotation) { }
-	
+		
 	private Set<Annotation> annotations;
 	
 	private void setAnnotations() {
@@ -61,14 +55,11 @@ public class TermCleaner implements IndexListener {
 	}
 	
 	@Override
-	public void release(JCas cas) {
-		if (this.getAnnotations() == null) {
-			this.setAnnotations();
-			this.select(cas);
-			this.correct(cas);
-			this.remove();
-			this.adjust(cas);
-		}
+	public void process(JCas cas) throws AnalysisEngineProcessException {
+		this.select(cas);
+		this.correct(cas);
+		this.remove();
+		this.adjust(cas);
 	}
 
 	private void select(JCas cas) {

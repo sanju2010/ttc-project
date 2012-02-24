@@ -1,7 +1,5 @@
 package eu.project.ttc.engines;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -10,13 +8,7 @@ import java.util.List;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
-import org.apache.uima.cas.ConstraintFactory;
 import org.apache.uima.cas.FSIterator;
-import org.apache.uima.cas.FSMatchConstraint;
-import org.apache.uima.cas.FSStringConstraint;
-import org.apache.uima.cas.Feature;
-import org.apache.uima.cas.FeaturePath;
-import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
@@ -26,7 +18,7 @@ import eu.project.ttc.models.Root;
 import eu.project.ttc.models.RootBank;
 import eu.project.ttc.models.RootTree;
 import eu.project.ttc.models.Term;
-import eu.project.ttc.types.NeoClassicalCompoundTermAnnotation;
+import eu.project.ttc.types.SingleWordTermAnnotation;
 import eu.project.ttc.types.TermComponentAnnotation;
 
 public class NeoClassicalTermDetector extends JCasAnnotator_ImplBase {
@@ -37,47 +29,8 @@ public class NeoClassicalTermDetector extends JCasAnnotator_ImplBase {
 		this.bank = bank;
 	}
 
-	private void setBank(String path) throws IOException {
-		if (path != null) {
-			File file = new File(path);
-			this.getBank().doLoad(file);
-		}
-	}
-	
 	private RootBank getBank() {
 		return this.bank;
-	}
-
-	private String typeName;
-	
-	private Type getType(JCas cas) {
-		return cas.getTypeSystem().getType(this.typeName);
-	}
-	
-	private String featureName;
-	
-	private Feature getFeature(Type type) {
-		return type.getFeatureByBaseName(this.featureName);
-	}
-	
-	private void setFeature(String qualifiedFeature) throws Exception {
-		String[] typeAndFeature = qualifiedFeature.split(":");
-		if (typeAndFeature.length == 2) {
-			this.typeName = typeAndFeature[0];
-			this.featureName = typeAndFeature[1];
-		} else {
-			throw new Exception("Wrong Qualified Feature Format: " + qualifiedFeature);
-		}
-	}
-	
-	private String value;
-	
-	private void setValue(String value) {
-		this.value = value;
-	}
-	
-	private String getValue() {
-		return this.value;
 	}
 	
 	private AnnotationComparator comparator;
@@ -97,12 +50,6 @@ public class NeoClassicalTermDetector extends JCasAnnotator_ImplBase {
 			this.setComparator();
 			RootBank resource = (RootBank) context.getResourceObject("RootBank");
 			this.setBank(resource);
-			String file = (String) context.getConfigParameterValue("RootBankFile");
-			this.setBank(file);
-			String feature = (String) context.getConfigParameterValue("Feature");
-			this.setFeature(feature);
-			String value = (String) context.getConfigParameterValue("Value");
-			this.setValue(value);
 		} catch (Exception e) {
 			throw new ResourceInitializationException(e);
 		} 
@@ -110,42 +57,20 @@ public class NeoClassicalTermDetector extends JCasAnnotator_ImplBase {
 
 	@Override
 	public void process(JCas cas) throws AnalysisEngineProcessException {
-		Type type = this.getType(cas);
-		FSMatchConstraint filter = this.getConstraint(cas, type);
-		AnnotationIndex<Annotation> index = cas.getAnnotationIndex(type);
+		AnnotationIndex<Annotation> index = cas.getAnnotationIndex(SingleWordTermAnnotation.type);
 		FSIterator<Annotation> iterator = index.iterator();
-		FSIterator<Annotation> filteredIterator = cas.createFilteredIterator(iterator,filter);
-		while (filteredIterator.hasNext()) {
-			Annotation annotation = filteredIterator.next();
+		while (iterator.hasNext()) {
+			SingleWordTermAnnotation annotation = (SingleWordTermAnnotation) iterator.next();
 			int begin = annotation.getBegin();
 			int end = annotation.getEnd();
 			this.getComponents().clear();
 			this.getPrefixes(cas,begin,end,begin,this.getBank().getPrefixTree());
 			this.getSuffixes(cas,begin,end,end,this.getBank().getSuffixTree());
 			if (!this.getComponents().isEmpty()) {
-				this.doFill(cas, begin, end);
-				/*
-				Collections.sort(this.getComponents(),this.getComparator());
-				int length = this.getComponents().size();
-				Annotation[] components = new Annotation[length];
-				for (int i = 0; i< length; i++) {
-					components[i] = this.getComponents().get(i);
-				}
-				*/
-				this.doAnnotate(cas, annotation.getBegin(), annotation.getEnd());
+				this.doFill(cas, annotation, begin, end);
+				this.doAnnotate(annotation);
 			}
 		}
-	}
-
-	private FSMatchConstraint getConstraint(JCas cas, Type type) {
-		ConstraintFactory factory = cas.getConstraintFactory();
-		Feature feature = this.getFeature(type);
-		FSStringConstraint constraint = factory.createStringConstraint();
-		constraint.equals(this.getValue());
-		FeaturePath path = cas.createFeaturePath();
-	    path.addFeature(feature);
-	    FSMatchConstraint filter = factory.embedConstraint(path,constraint);
-		return filter;
 	}
 
 	private void getPrefixes(JCas cas,int begin,int end,int index,RootTree current) {
@@ -198,35 +123,32 @@ public class NeoClassicalTermDetector extends JCasAnnotator_ImplBase {
 		return this.components;
 	}
 	
-	private void doAnnotate(JCas cas,int begin,int end) {
-		NeoClassicalCompoundTermAnnotation annotation = new NeoClassicalCompoundTermAnnotation(cas,begin,end);
-		annotation.setBegin(begin);
-		annotation.setEnd(end);
+	private void doAnnotate(SingleWordTermAnnotation annotation) {
 		annotation.setComplexity(Term.NEO_CLASSICAL_COMPOUND);
-		annotation.setLemma(annotation.getCoveredText());
-		annotation.setCategory(this.getValue());
+		annotation.setCompound(true);
+		annotation.setNeoclassical(true);
 		annotation.addToIndexes();
 	}
 	
-	private void doFill(JCas cas,int begin,int end) {
+	private void doFill(JCas cas, SingleWordTermAnnotation annotation, int begin,int end) {
 		int last = begin;
 		List<Annotation> annotations = new ArrayList<Annotation>(this.getComponents());
 		Collections.sort(annotations,this.getComparator());
-		for (Annotation annotation : annotations) {
-			int index = annotation.getBegin();
+		for (Annotation a : annotations) {
+			int index = a.getBegin();
 			if (last < index) {
-				this.addComponent(cas, last, index);
+				this.addComponent(cas, annotation.getCategory(), last, index);
 			}
-			last = annotation.getEnd();
+			last = a.getEnd();
 		}
 		if (last < end) {
-			this.addComponent(cas, last, end);
+			this.addComponent(cas, annotation.getCategory(), last, end);
 		}
 	}
 
-	private void addComponent(JCas cas,int begin,int end) {
+	private void addComponent(JCas cas,String category,int begin,int end) {
 		TermComponentAnnotation annotation = new TermComponentAnnotation(cas,begin,end);
-		annotation.setCategory(this.getValue());
+		annotation.setCategory(category);
 		annotation.addToIndexes();
 		this.getComponents().add(annotation);
 	}

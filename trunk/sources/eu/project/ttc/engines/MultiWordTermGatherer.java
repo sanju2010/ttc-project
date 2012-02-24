@@ -1,8 +1,10 @@
-package eu.project.ttc.models;
+package eu.project.ttc.engines;
 
+/*
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+*/
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -14,29 +16,26 @@ import java.util.TreeMap;
 
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.UimaContext;
-import org.apache.uima.cas.CASException;
+import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.apache.uima.resource.DataResource;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Level;
 import org.tartarus.snowball.models.PorterStemmer;
 
-import eu.project.ttc.types.CompoundTermAnnotation;
 import eu.project.ttc.types.MultiWordTermAnnotation;
-import eu.project.ttc.types.NeoClassicalCompoundTermAnnotation;
 import eu.project.ttc.types.SingleWordTermAnnotation;
 import eu.project.ttc.types.TermAnnotation;
 import eu.project.ttc.types.TermComponentAnnotation;
 
 import uima.sandbox.catcher.resources.Rule;
 import uima.sandbox.catcher.resources.RuleSystem;
-import uima.sandbox.indexer.resources.IndexListener;
 
-public class TermVariantListener implements IndexListener {
+public class MultiWordTermGatherer extends JCasAnnotator_ImplBase {
 	
 	private RuleSystem ruleSystem;
 	
@@ -48,6 +47,7 @@ public class TermVariantListener implements IndexListener {
 		return this.ruleSystem;
 	}
 	
+	/*
 	private String path;
 	
 	private void setPath(String path) throws IOException {
@@ -72,6 +72,7 @@ public class TermVariantListener implements IndexListener {
 	private boolean override() {
 		return this.override;
 	}
+	*/
 	
 	private boolean enable;
 	
@@ -80,7 +81,8 @@ public class TermVariantListener implements IndexListener {
 	}
 	
 	@Override 
-	public void configure(UimaContext context) throws ResourceInitializationException {
+	public void initialize(UimaContext context) throws ResourceInitializationException {
+		super.initialize(context);
 		try {
 			if (this.getStemmer() == null) {
 				this.setStemmer();
@@ -91,6 +93,7 @@ public class TermVariantListener implements IndexListener {
 				RuleSystem ruleSystem = (RuleSystem) context.getResourceObject("RuleSystem");
 				this.setRuleSystem(ruleSystem);
 			
+				/*
 				Boolean override = (Boolean) context.getConfigParameterValue("Override");
 				this.enableOverride(override.booleanValue());
 			
@@ -98,33 +101,23 @@ public class TermVariantListener implements IndexListener {
 				if (path != null && this.getPath() == null) {
 					this.setPath(path);
 				}
+				*/
+				this.setAnnotations();
 			}
 		} catch (Exception e) {
 			throw new ResourceInitializationException(e);
 		}
 	}
-	
+			
 	@Override
-	public void load(DataResource data) throws ResourceInitializationException { }
-
-	@Override
-	public void index(Annotation annotation) { }
-		
-	@Override
-	public void release(JCas cas) { 
+	public void process(JCas cas) throws AnalysisEngineProcessException { 
 		if (this.enable) {
-			if (this.getAnnotations() == null) {
-				this.setAnnotations();
-				this.clean(cas);
-				this.index(cas);
-				this.clean();
-				this.sort();
-				try {
-					this.gather(cas);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
+			this.getAnnotations().clear();
+			this.clean(cas);
+			this.index(cas);
+			this.clean();
+			this.sort();
+			this.gather(cas);
 		}
 	}
 	
@@ -152,30 +145,25 @@ public class TermVariantListener implements IndexListener {
 		return component1 + "+" + component2;
 	}
 	
-	private List<String> getKeys(TermAnnotation annotation, String language) {
+	private List<String> getKeys(TermAnnotation annotation) {
 		List<String> keys = new ArrayList<String>();
 		if (annotation instanceof SingleWordTermAnnotation) {
-			String key = this.setKey(annotation.getCoveredText(), annotation.getCategory());
-			keys.add(key);
-		} else if (annotation instanceof CompoundTermAnnotation) {
-			CompoundTermAnnotation compound = (CompoundTermAnnotation) annotation;
-			try {
-				this.getKeys(compound, keys, false);
-			} catch (CASException e) {
-				// ignore
-			}
-		} else if (annotation instanceof NeoClassicalCompoundTermAnnotation) {
-			NeoClassicalCompoundTermAnnotation ncc = (NeoClassicalCompoundTermAnnotation) annotation;
-			try {
-				this.getKeys(ncc, keys, false);
-			} catch (CASException e) {
-				// ignore
+			SingleWordTermAnnotation swtAnnotation = (SingleWordTermAnnotation) annotation;
+			if (swtAnnotation.getCompound()) {
+				try {
+					this.getKeys(swtAnnotation, keys, false);
+				} catch (Exception e) {
+					// ignore
+				}
+			} else {
+				String key = this.setKey(annotation.getLemma(), annotation.getCategory());
+				keys.add(key);				
 			}
 		} else if (annotation instanceof MultiWordTermAnnotation) {
 			MultiWordTermAnnotation mwt = (MultiWordTermAnnotation) annotation;
 			try {
 				this.getKeys(mwt, keys, true);
-			} catch (CASException e) {
+			} catch (Exception e) {
 				// ignore
 			}
 		}
@@ -192,7 +180,7 @@ public class TermVariantListener implements IndexListener {
 		return this.stemmer;
 	}
 	
-	private void getKeys(TermAnnotation annotation, List<String> keys, boolean norm) throws CASException {
+	private void getKeys(TermAnnotation annotation, List<String> keys, boolean norm) throws Exception {
 		JCas cas = annotation.getCAS().getJCas();
 		AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TermComponentAnnotation.type);
 		FSIterator<Annotation> iterator = index.subiterator(annotation);
@@ -307,10 +295,6 @@ public class TermVariantListener implements IndexListener {
 	private String getId(JCas cas, TermAnnotation annotation) {
 		if (annotation instanceof SingleWordTermAnnotation) {
 			return annotation.getLemma();
-		} else if (annotation instanceof CompoundTermAnnotation) {
-			return annotation.getLemma();
-		} else if (annotation instanceof NeoClassicalCompoundTermAnnotation) {
-			return annotation.getLemma();
 		} else if (annotation instanceof MultiWordTermAnnotation) {
 			AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TermComponentAnnotation.type);
 			FSIterator<Annotation> iterator = index.subiterator(annotation);
@@ -333,7 +317,7 @@ public class TermVariantListener implements IndexListener {
 		FSIterator<Annotation> iterator = index.iterator();
 		while (iterator.hasNext()) {
 			TermAnnotation annotation = (TermAnnotation) iterator.next();
-			List<String> keys = this.getKeys(annotation, cas.getDocumentLanguage());
+			List<String> keys = this.getKeys(annotation);
 			for (String key : keys) {
 				List<TermAnnotation> list = this.getAnnotations().get(key);
 				if (list == null) {

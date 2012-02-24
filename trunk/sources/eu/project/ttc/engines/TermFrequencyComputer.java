@@ -1,19 +1,18 @@
-package eu.project.ttc.models;
+package eu.project.ttc.engines;
 
 import org.apache.uima.UimaContext;
+import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
-import org.apache.uima.resource.DataResource;
 import org.apache.uima.resource.ResourceAccessException;
 import org.apache.uima.resource.ResourceInitializationException;
 
-import uima.sandbox.indexer.resources.IndexListener;
-
+import eu.project.ttc.models.GeneralLanguage;
 import eu.project.ttc.types.TermAnnotation;
 
-public class TermFrequencyListener implements IndexListener {
+public class TermFrequencyComputer extends JCasAnnotator_ImplBase {
 	
 	private Double specializedFrequency;
 	
@@ -36,20 +35,15 @@ public class TermFrequencyListener implements IndexListener {
 	}
 	
 	@Override 
-	public void configure(UimaContext context) throws ResourceInitializationException {
+	public void initialize(UimaContext context) throws ResourceInitializationException {
 		try {
 			GeneralLanguage generalLanguage = (GeneralLanguage) context.getResourceObject("GeneralLanguage");
 			this.setGeneralLanguage(generalLanguage);
+			this.setSpecializedFrequency();
 		} catch (ResourceAccessException e) {
 			throw new ResourceInitializationException(e);
 		}
 	}
-	
-	@Override
-	public void load(DataResource data) throws ResourceInitializationException { }
-
-	@Override
-	public void index(Annotation annotation) { }
 	
 	private void set(JCas cas) {
 		AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TermAnnotation.type);
@@ -77,12 +71,9 @@ public class TermFrequencyListener implements IndexListener {
 	}
 	
 	@Override
-	public void release(JCas cas) { 
-		if (this.getSpecializedFrequency() == null) {
-			this.setSpecializedFrequency();
-			this.set(cas);
-			this.get(cas);
-		}
+	public void process(JCas cas) { 
+		this.set(cas);
+		this.get(cas);
 	}
 
 }

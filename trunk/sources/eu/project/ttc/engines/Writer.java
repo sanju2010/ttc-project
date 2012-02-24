@@ -20,7 +20,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Level;
 import org.xml.sax.SAXParseException;
 
-public class XmiCasConsumer extends JCasAnnotator_ImplBase {
+public class Writer extends JCasAnnotator_ImplBase {
 		
 	private File directory;
 	

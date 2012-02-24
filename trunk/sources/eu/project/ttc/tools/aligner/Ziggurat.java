@@ -1,4 +1,4 @@
-package eu.project.ttc.tools.acabit;
+package eu.project.ttc.tools.aligner;
 
 import java.awt.Component;
 import java.awt.Dimension;
@@ -24,7 +24,7 @@ import eu.project.ttc.tools.utils.ToolBar;
 import fr.free.rocheteau.jerome.dunamis.listeners.ProcessingResultListener;
 import fr.free.rocheteau.jerome.dunamis.viewers.ProcessingResultViewer;
 
-public class Acabit implements Runnable {
+public class Ziggurat implements Runnable {
 
 	private TermSuite parent;
 	
@@ -48,7 +48,6 @@ public class Acabit implements Runnable {
 	
 	public void error(Exception e) {
 		UIMAFramework.getLogger().log(Level.SEVERE,e.getMessage());
-		e.printStackTrace();
 	}
 	
 	public void warning(String message) {
@@ -59,20 +58,20 @@ public class Acabit implements Runnable {
 		UIMAFramework.getLogger().log(Level.INFO,message);
 	}
 
-	private AcabitSettings settings;
+	private ZigguratSettings settings;
 	
 	private void setSettings() {
-		this.settings = new AcabitSettings(System.getProperty("user.home") + File.separator + ".acabit.settings");
+		this.settings = new ZigguratSettings(System.getProperty("user.home") + File.separator + ".ziggurat.settings");
 	}
 	
-	public AcabitSettings getSettings() {
+	public ZigguratSettings getSettings() {
 		return this.settings;
 	}
 	
 	private Preferences preferences;
 	
 	private void setPreferences() {
-		this.preferences = new Preferences("acabit.properties");
+		this.preferences = new Preferences("ziggurat.properties");
 		try {
 			this.preferences.load();
 		} catch (Exception e) {
@@ -104,15 +103,15 @@ public class Acabit implements Runnable {
 	public ToolBar getToolBar() {
 		return this.toolBar;
 	}
+		
+	private ZigguratViewer translations;
 	
-	private AcabitViewer terms;
-	
-	private void setTerms() {
-		this.terms = new AcabitViewer();
+	private void setTranslations() {
+		this.translations = new ZigguratViewer();
 	}
 	
-	public AcabitViewer getTerminologies() {
-		return this.terms;
+	public ZigguratViewer getTranslations() {
+		return this.translations;
 	}
 	
 	private ProcessingResultViewer documents;
@@ -130,9 +129,9 @@ public class Acabit implements Runnable {
 	private void setContent() {		
 		JTabbedPane inner = new JTabbedPane();
 		inner.setTabPlacement(JTabbedPane.TOP);
-		inner.addTab("   Settings    ",this.getSettings().getComponent());
-		inner.addTab(" Terminologies ",this.getTerminologies().getComponent());
-		inner.addTab("   Documents   ",this.getDocuments().getComponent());
+		inner.addTab("   Settings   ",this.getSettings().getComponent());
+		inner.addTab(" Translations ",this.getTranslations().getComponent());
+		inner.addTab("   Documents  ",this.getDocuments().getComponent());
 		JSplitPane outter = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 		outter.setTopComponent(this.getToolBar().getComponent());
 		outter.setBottomComponent(inner);
@@ -179,13 +178,13 @@ public class Acabit implements Runnable {
 		return this.frame;
 	}
 	
-	public Acabit(boolean cli) {
+	public Ziggurat(boolean cli) {
 		this.enableCommandLineInterface(cli);
 		this.setSettings();
 		this.setPreferences();
 		this.setAbout();
 		this.setToolBar();
-		this.setTerms();
+		this.setTranslations();
 		this.setDocuments();
 		this.setContent();
 		this.setFrame();
@@ -193,21 +192,21 @@ public class Acabit implements Runnable {
 	}
 	
 	private void enableListeners() {
-		AcabitEngineListener acabitEngineListener = new AcabitEngineListener();
-		acabitEngineListener.setAcabit(this);
-		this.getToolBar().enableListeners(acabitEngineListener);
-		ProcessingResultListener processingRresultListener = new ProcessingResultListener();
-		processingRresultListener.setViewer(this.getDocuments());
-		this.getDocuments().enableListeners(processingRresultListener);
+		ZigguratEngineListener zigguratEngineListener = new ZigguratEngineListener();
+		zigguratEngineListener.setZiggurat(this);
+		this.getToolBar().enableListeners(zigguratEngineListener);
+		ProcessingResultListener processingResultListener = new ProcessingResultListener();
+		processingResultListener.setViewer(this.getDocuments());
+		this.getDocuments().enableListeners(processingResultListener);
 		WindowListener windowListener = new WindowListener();
-		windowListener.setAcabit(this);
+		windowListener.setZiggurat(this);
 		this.getFrame().addWindowListener(windowListener);
 	}
 	
 	private void process() {
-		AcabitEngineListener acabitEngineListener = new AcabitEngineListener();
-		acabitEngineListener.setAcabit(this);
-		acabitEngineListener.doProcess();
+		ZigguratEngineListener listener = new ZigguratEngineListener();
+		listener.setZiggurat(this);
+		listener.doProcess();
 	}
 	
 	public void run() {
@@ -265,8 +264,8 @@ public class Acabit implements Runnable {
 			}
 		}
 		if (wrong == null) {
-			Acabit TermMate = new Acabit(cli);
-			SwingUtilities.invokeLater(TermMate);			
+			Ziggurat ziggurat = new Ziggurat(cli);
+			SwingUtilities.invokeLater(ziggurat);			
 		} else {
 			UIMAFramework.getLogger().log(Level.SEVERE,"Wrong option: " + wrong);
 			UIMAFramework.getLogger().log(Level.INFO,"Options allowed: --cli | --gui");
@@ -276,22 +275,22 @@ public class Acabit implements Runnable {
 	
 	private class WindowListener extends WindowAdapter {
 				
-		private Acabit acabit;
+		private Ziggurat ziggurat;
 		
-		public void setAcabit(Acabit acabit) {
-			this.acabit = acabit;
+		public void setZiggurat(Ziggurat ziggurat) {
+			this.ziggurat = ziggurat;
 		}
 		
-		private Acabit getAcabit() {
-			return this.acabit;
+		private Ziggurat getZiggurat() {
+			return this.ziggurat;
 		}
 		
 		public void windowClosing(WindowEvent event) {
-			String message = "Do you really want to quit " + this.getAcabit().getPreferences().getTitle() + "?";
+			String message = "Do you really want to quit " + this.getZiggurat().getPreferences().getTitle() + "?";
 			String title = "Exit?";
-			int response = JOptionPane.showConfirmDialog(this.getAcabit().getFrame(),message,title,JOptionPane.OK_CANCEL_OPTION);
+			int response = JOptionPane.showConfirmDialog(this.getZiggurat().getFrame(),message,title,JOptionPane.OK_CANCEL_OPTION);
 			if (response == 0) {
-				this.getAcabit().quit();
+				this.getZiggurat().quit();
 			} 
 		 }
 		

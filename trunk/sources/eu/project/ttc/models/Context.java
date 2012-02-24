@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class TermContext /* implements Comparable<TermContext> */ {
+public class Context {
 
 	private TermContextComparator comparator;
 	
@@ -27,7 +27,7 @@ public class TermContext /* implements Comparable<TermContext> */ {
 		return coOccurrences;
 	}
 	
-	public TermContext() {
+	public Context() {
 		this.setComparator();
 		this.setCoOccurrences();
 	}
