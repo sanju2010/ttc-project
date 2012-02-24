@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
+  <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
+  <primitive>false</primitive>
+  <delegateAnalysisEngineSpecifiers>
+    <delegateAnalysisEngine key="GermanTreeTaggerCaseNormalizer">
+      <import name="eu.project.ttc.german.engines.spotter.GermanCaseNormalizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="GermanTreeTaggerGenderNormalizer">
+      <import name="eu.project.ttc.german.engines.spotter.GermanGenderNormalizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="GermanTreeTaggerTenseNormalizer">
+      <import name="eu.project.ttc.german.engines.spotter.GermanTenseNormalizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="GermanTreeTaggerSubcategoryNormalizer">
+      <import name="eu.project.ttc.german.engines.spotter.GermanSubcategoryNormalizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="GermanTreeTaggerNumberNormalizer">
+      <import name="eu.project.ttc.german.engines.spotter.GermanNumberNormalizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="GermanTreeTaggerMoodNormalizer">
+      <import name="eu.project.ttc.german.engines.spotter.GermanMoodNormalizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="GermanTreeTaggerCategoryNormalizer">
+      <import name="eu.project.ttc.german.engines.spotter.GermanCategoryNormalizer"/>
+    </delegateAnalysisEngine>
+  </delegateAnalysisEngineSpecifiers>
+  <analysisEngineMetaData>
+    <name>German Normalizer</name>
+    <description/>
+    <version>1.0</version>
+    <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
+    <configurationParameters searchStrategy="language_fallback"/>
+    <configurationParameterSettings/>
+    <flowConstraints>
+      <fixedFlow>
+        <node>GermanTreeTaggerCategoryNormalizer</node>
+        <node>GermanTreeTaggerSubcategoryNormalizer</node>
+        <node>GermanTreeTaggerMoodNormalizer</node>
+        <node>GermanTreeTaggerTenseNormalizer</node>
+        <node>GermanTreeTaggerGenderNormalizer</node>
+        <node>GermanTreeTaggerNumberNormalizer</node>
+        <node>GermanTreeTaggerCaseNormalizer</node>
+      </fixedFlow>
+    </flowConstraints>
+    <typePriorities/>
+    <fsIndexCollection/>
+    <capabilities>
+      <capability>
+        <inputs/>
+        <outputs>
+          <type allAnnotatorFeatures="true">eu.project.ttc.types.WordAnnotation</type>
+        </outputs>
+        <languagesSupported>
+          <language>de</language>
+        </languagesSupported>
+      </capability>
+    </capabilities>
+    <operationalProperties>
+      <modifiesCas>true</modifiesCas>
+      <multipleDeploymentAllowed>true</multipleDeploymentAllowed>
+      <outputsNewCASes>false</outputsNewCASes>
+    </operationalProperties>
+  </analysisEngineMetaData>
+  <resourceManagerConfiguration/>
+</analysisEngineDescription>

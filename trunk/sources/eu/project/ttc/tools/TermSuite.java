@@ -249,7 +249,7 @@ public class TermSuite implements Runnable {
 	private void setContent() {
 		this.content = new JTabbedPane();
 		this.content.setTabPlacement(JTabbedPane.LEFT);
-		this.content.addTab("     Tagger     ",this.getSpotter().getComponent());
+		this.content.addTab("     Spotter     ",this.getSpotter().getComponent());
 		this.content.addTab("     Viewer     ",this.getViewer().getComponent());
 		this.content.addTab("     Indexer    ",this.getIndexer().getComponent());
 		this.content.addTab("     Banker     ",this.getBanker().getComponent());

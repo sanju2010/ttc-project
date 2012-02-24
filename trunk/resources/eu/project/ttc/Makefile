@@ -1,74 +1,72 @@
 #!/usr/bin/make -f
 
 source=French
-target=Latvian
+target=Chinese
 
 src=$(shell echo $(source) | tr A-Z a-z)
 tgt=$(shell echo $(target) | tr A-Z a-z)
 
-code=lv
+code=zh
 srcCode=fr
 tgtCode=$(code)
 
-files=AcabitAnalysisEngine.xml
-files+=CompoundSplitter.xml
-files+=LemmaFilter.xml
-files+=MultiWordTermDetector.xml
-files+=NeoClassicalAdjectiveDetector.xml
-files+=NeoClassicalNounDetector.xml
-files+=NeoClassicalTermDetector.xml
-files+=RuleBasedGathering.xml
-files+=Stemmer.xml
-files+=TermGatherer.xml
-files+=TermDetector.xml
-files+=TermFilter.xml
-files+=TermIndexer.xml
-files+=TreeTaggerNormalizer.xml
-files+=TreeTaggerSubcategoryNormalizer.xml
-files+=TreeTaggerMoodNormalizer.xml
-files+=TreeTaggerTenseNormalizer.xml
-files+=TreeTaggerGenderNormalizer.xml
-files+=TreeTaggerNumberNormalizer.xml
-files+=TreeTaggerCaseNormalizer.xml
-files+=TreeTaggerWrapper.xml
-files+=TreeTaggerAnalysisEngine.xml
-files+=WordTokenizer.xml
+spotter=CaseNormalizer.xml
+spotter+=MoodNormalizer.xml
+spotter+=Stemmer.xml
+spotter+=TreeTagger.xml
+spotter+=CategoryNormalizer.xml
+spotter+=MultiWordTermSpotter.xml
+spotter+=SubcategoryNormalizer.xml
+spotter+=WordTokenizer.xml
+spotter+=Filter.xml
+spotter+=Normalizer.xml
+spotter+=TenseNormalizer.xml
+spotter+=GenderNormalizer.xml
+spotter+=NumberNormalizer.xml
+spotter+=TermFilter.xml
+spotter+=LemmaFilter.xml
+spotter+=Spotter.xml
+spotter+=TermSpotter.xml
 
-# resources =category-mapping.xml 
-# resources+=mood-mapping.xml
-# resources+=multi-word-rule-system.xml
-# resources+=segment-bank.xml
-# resources+=stop-word-filter.xml
-# resources+=subcategory-mapping.xml
-# resources+=tense-mapping.xml
-# resources+=variant-rule-system.xml
+indexer=CompoundIndexer.xml
+indexer+=Indexer.xml
+indexer+=NeoclassicalSplitter.xml
+indexer+=TermGatherer.xml
+indexer+=CompoundSplitter.xml
+indexer+=MultiWordTermGatherer.xml
+indexer+=TermFrequencyComputer.xml
 
-resources=gender-mapping.xml number-mapping.xml case-mapping.xml
+indexerTargets = $(addprefix $(tgt)/engines/indexer/$(target),$(indexer))
+spotterTargets = $(addprefix $(tgt)/engines/spotter/$(target),$(spotter))
 
-sources = $(addprefix $(src)/engines/$(source),$(files))
-targets = $(addprefix $(tgt)/engines/$(target),$(files))
-
-sourceResources = $(addprefix $(src)/resources/$(src)-,$(resources))
-targetResources = $(addprefix $(tgt)/resources/$(tgt)-,$(resources))
+indexSources = $(addprefix $(src)/engines/indexer/$(source),$(indexer))
+spotterSources = $(addprefix $(src)/engines/spotter/$(source),$(spotter))
 
 help: 
-	@echo "make copy-files target=<Uppercase directory> code=<2-letter language code>"
+	@echo "make copy target=<Uppercase directory> code=<2-letter language code>"
 
-copy-files: $(sources)
-	@for file in $(files) ; do make -s copy-file file=$$file ; done
+copy: $(indexerSources) $(spotterSources)
+	@mkdir -p $(tgt)/engines/indexer
+	@for file in $(indexer) ; do make -s copy-indexer file=$$file ; done
+	@mkdir -p $(tgt)/engines/spotter
+	@for file in $(spotter) ; do make -s copy-spotter file=$$file ; done
 
-copy-file: $(addprefix $(src)/engines/$(source),$(file))
-	@cp $(addprefix $(src)/engines/$(source),$(file)) $(addprefix $(tgt)/engines/$(target),$(file))
-	@make -s edit-file file=$(file)
+copy-indexer: $(addprefix $(src)/engines/indexer/$(source),$(file))
+	@cp $(addprefix $(src)/engines/indexer/$(source),$(file)) $(addprefix $(tgt)/engines/indexer/$(target),$(file))
+	@make -s edit-indexer file=$(file)
 
-edit-file: $(addprefix $(tgt)/engines/$(target),$(file))
-	@sed -i 's/$(source)/$(target)/g' $(addprefix $(tgt)/engines/$(target),$(file))
-	@sed -i 's/$(src)/$(tgt)/g' $(addprefix $(tgt)/engines/$(target),$(file))
-	@sed -i 's/language>$(srcCode)/language>$(tgtCode)/g' $(addprefix $(tgt)/engines/$(target),$(file))
-	@sed -i 's/string>$(srcCode)/string>$(tgtCode)/g' $(addprefix $(tgt)/engines/$(target),$(file))
+copy-spotter: $(addprefix $(src)/engines/spotter/$(source),$(file))
+	@cp $(addprefix $(src)/engines/spotter/$(source),$(file)) $(addprefix $(tgt)/engines/spotter/$(target),$(file))
+	@make -s edit-spotter file=$(file)
 
-copy-resources: $(sourceResources)
-	@for file in $(resources) ; do make -s copy-resource resource=$$file ; done
+edit-indexer: $(addprefix $(tgt)/engines/indexer/$(target),$(file))
+	@sed -i 's/$(source)/$(target)/g' $(addprefix $(tgt)/engines/indexer/$(target),$(file))
+	@sed -i 's/$(src)/$(tgt)/g' $(addprefix $(tgt)/engines/indexer/$(target),$(file))
+	@sed -i 's/language>$(srcCode)/language>$(tgtCode)/g' $(addprefix $(tgt)/engines/indexer/$(target),$(file))
+	@sed -i 's/string>$(srcCode)/string>$(tgtCode)/g' $(addprefix $(tgt)/engines/indexer/$(target),$(file))
 
-copy-resource: $(addprefix $(src)/resources/$(src)-,$(resource))
-	@cp $(addprefix $(src)/resources/$(src)-,$(resource)) $(addprefix $(tgt)/resources/$(tgt)-,$(resource))
+edit-spotter: $(addprefix $(tgt)/engines/spotter/$(target),$(file))
+	@sed -i 's/$(source)/$(target)/g' $(addprefix $(tgt)/engines/spotter/$(target),$(file))
+	@sed -i 's/$(src)/$(tgt)/g' $(addprefix $(tgt)/engines/spotter/$(target),$(file))
+	@sed -i 's/language>$(srcCode)/language>$(tgtCode)/g' $(addprefix $(tgt)/engines/spotter/$(target),$(file))
+	@sed -i 's/string>$(srcCode)/string>$(tgtCode)/g' $(addprefix $(tgt)/engines/spotter/$(target),$(file))

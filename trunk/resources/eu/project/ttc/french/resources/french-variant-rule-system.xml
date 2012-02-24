@@ -4,8 +4,7 @@
 		<parameters>
 			<parameter name="base"
 				type="eu.project.ttc.types.MultiWordTermAnnotation" />
-			<parameter name="variant"
-				type="eu.project.ttc.types.CompoundTermAnnotation" />
+			<parameter name="variant" type="eu.project.ttc.types.SingleTermAnnotation" />
 		</parameters>
 		<constraint>
 			<and>
@@ -26,18 +25,36 @@
 							</eq>
 						</left>
 						<right>
-							<eq>
+							<and>
 								<left>
-									<feature name="category">
-										<element>
-											<variable name="variant" />
-										</element>
-									</feature>
+									<eq>
+										<left>
+											<feature name="compound">
+												<element>
+													<variable name="variant" />
+												</element>
+											</feature>
+										</left>
+										<right>
+											<boolean value="true" />
+										</right>
+									</eq>
 								</left>
 								<right>
-									<string value="noun" />
+									<eq>
+										<left>
+											<feature name="category">
+												<element>
+													<variable name="variant" />
+												</element>
+											</feature>
+										</left>
+										<right>
+											<string value="noun" />
+										</right>
+									</eq>
 								</right>
-							</eq>
+							</and>
 						</right>
 					</and>
 				</left>
@@ -132,8 +149,7 @@
 		<parameters>
 			<parameter name="base"
 				type="eu.project.ttc.types.SingleWordTermAnnotation" />
-			<parameter name="variant"
-				type="eu.project.ttc.types.NeoClassicalCompoundTermAnnotation" />
+			<parameter name="variant" type="eu.project.ttc.types.SingleTermAnnotation" />
 		</parameters>
 		<constraint>
 			<and>
@@ -154,18 +170,36 @@
 							</eq>
 						</left>
 						<right>
-							<eq>
+							<and>
 								<left>
-									<feature name="category">
-										<element>
-											<variable name="variant" />
-										</element>
-									</feature>
+									<eq>
+										<left>
+											<feature name="neoclassical">
+												<element>
+													<variable name="variant" />
+												</element>
+											</feature>
+										</left>
+										<right>
+											<boolean value="true" />
+										</right>
+									</eq>
 								</left>
 								<right>
-									<string value="adjective" />
+									<eq>
+										<left>
+											<feature name="category">
+												<element>
+													<variable name="variant" />
+												</element>
+											</feature>
+										</left>
+										<right>
+											<string value="adjective" />
+										</right>
+									</eq>
 								</right>
-							</eq>
+							</and>
 						</right>
 					</and>
 				</left>

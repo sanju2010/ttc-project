@@ -79,14 +79,22 @@ public class TermIndexer extends Indexer {
 		
 	@Override 
 	public void initialize() throws Exception {
-		SimpleTermFrequency singleWordTermFrequency = (SimpleTermFrequency) this.getContext().getResourceObject("SimpleTermFrequency");
-		this.setSingleWordTermFrequency(singleWordTermFrequency);
-		ComplexTermFrequency multiWordTermFrequency = (ComplexTermFrequency) this.getContext().getResourceObject("ComplexTermFrequency");
-		this.setMultiWordTermFrequency(multiWordTermFrequency);
-		String language = (String) this.getContext().getConfigParameterValue("Language");
-		this.setLanguage(language);
-		String className = (String) this.getContext().getConfigParameterValue("AssociationRateClassName");
-		this.setAssociationRate(className);
+		if (this.getSingleWordTermFrequency() == null) {
+			SimpleTermFrequency singleWordTermFrequency = (SimpleTermFrequency) this.getContext().getResourceObject("SimpleTermFrequency");
+			this.setSingleWordTermFrequency(singleWordTermFrequency);			
+		}
+		if (this.getMultiWordTermFrequency() == null) {
+			ComplexTermFrequency multiWordTermFrequency = (ComplexTermFrequency) this.getContext().getResourceObject("ComplexTermFrequency");
+			this.setMultiWordTermFrequency(multiWordTermFrequency);			
+		}
+		if (this.getLanguage() == null) {
+			String language = (String) this.getContext().getConfigParameterValue("Language");
+			this.setLanguage(language);			
+		}
+		if (this.getAssociationRate() == null) {
+			String className = (String) this.getContext().getConfigParameterValue("AssociationRateClassName");
+			this.setAssociationRate(className);			
+		}
 	}
 	
 	@Override

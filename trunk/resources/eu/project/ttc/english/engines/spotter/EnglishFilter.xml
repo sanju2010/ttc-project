@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
+  <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
+  <primitive>false</primitive>
+  <delegateAnalysisEngineSpecifiers>
+    <delegateAnalysisEngine key="EnglishTermFilter">
+      <import name="eu.project.ttc.english.engines.spotter.EnglishTermFilter"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="EnglishLemmaFilter">
+      <import name="eu.project.ttc.english.engines.spotter.EnglishLemmaFilter"/>
+    </delegateAnalysisEngine>
+  </delegateAnalysisEngineSpecifiers>
+  <analysisEngineMetaData>
+    <name>English Filter</name>
+    <description/>
+    <version>1.0</version>
+    <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
+    <configurationParameters searchStrategy="language_fallback"/>
+    <configurationParameterSettings/>
+    <flowConstraints>
+      <fixedFlow>
+        <node>EnglishTermFilter</node>
+        <node>EnglishLemmaFilter</node>
+      </fixedFlow>
+    </flowConstraints>
+    <typePriorities/>
+    <fsIndexCollection/>
+    <capabilities>
+      <capability>
+        <inputs>
+          <type allAnnotatorFeatures="true">eu.project.ttc.types.WordAnnotation</type>
+        </inputs>
+        <outputs/>
+        <languagesSupported>
+          <language>en</language>
+        </languagesSupported>
+      </capability>
+    </capabilities>
+    <operationalProperties>
+      <modifiesCas>true</modifiesCas>
+      <multipleDeploymentAllowed>true</multipleDeploymentAllowed>
+      <outputsNewCASes>false</outputsNewCASes>
+    </operationalProperties>
+  </analysisEngineMetaData>
+  <resourceManagerConfiguration>
+    <externalResources>
+      <externalResource>
+        <name>EnglishFilter</name>
+        <description/>
+        <fileResourceSpecifier>
+          <fileUrl>eu/project/ttc/english/resources/english-stop-word-filter.xml</fileUrl>
+        </fileResourceSpecifier>
+        <implementationName>uima.sandbox.filter.resources.FilterResource</implementationName>
+      </externalResource>
+    </externalResources>
+    <externalResourceBindings>
+      <externalResourceBinding>
+        <key>EnglishTermFilter/Filter</key>
+        <resourceName>EnglishFilter</resourceName>
+      </externalResourceBinding>
+      <externalResourceBinding>
+        <key>EnglishLemmaFilter/Filter</key>
+        <resourceName>EnglishFilter</resourceName>
+      </externalResourceBinding>
+    </externalResourceBindings>
+  </resourceManagerConfiguration>
+</analysisEngineDescription>

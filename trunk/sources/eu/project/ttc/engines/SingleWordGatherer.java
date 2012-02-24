@@ -75,7 +75,7 @@ public class SingleWordGatherer extends JCasAnnotator_ImplBase {
 		try {
 			Boolean enabled = (Boolean) context.getConfigParameterValue("Enable");
 			this.enable(enabled == null ? false : enabled.booleanValue());
-			if (this.enable) {
+			if (this.enable && this.getEditDistance() == null) {
 				String editDistance = (String) context.getConfigParameterValue("EditDistanceClassName");
 				this.setEditDistance(editDistance);				
 			}

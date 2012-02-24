@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
+  <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
+  <primitive>false</primitive>
+  <delegateAnalysisEngineSpecifiers>
+    <delegateAnalysisEngine key="LatvianTreeTaggerCaseNormalizer">
+      <import name="eu.project.ttc.latvian.engines.spotter.LatvianCaseNormalizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="LatvianTreeTaggerGenderNormalizer">
+      <import name="eu.project.ttc.latvian.engines.spotter.LatvianGenderNormalizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="LatvianTreeTaggerTenseNormalizer">
+      <import name="eu.project.ttc.latvian.engines.spotter.LatvianTenseNormalizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="LatvianTreeTaggerSubcategoryNormalizer">
+      <import name="eu.project.ttc.latvian.engines.spotter.LatvianSubcategoryNormalizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="LatvianTreeTaggerNumberNormalizer">
+      <import name="eu.project.ttc.latvian.engines.spotter.LatvianNumberNormalizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="LatvianTreeTaggerMoodNormalizer">
+      <import name="eu.project.ttc.latvian.engines.spotter.LatvianMoodNormalizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="LatvianTreeTaggerCategoryNormalizer">
+      <import name="eu.project.ttc.latvian.engines.spotter.LatvianCategoryNormalizer"/>
+    </delegateAnalysisEngine>
+  </delegateAnalysisEngineSpecifiers>
+  <analysisEngineMetaData>
+    <name>Latvian Normalizer</name>
+    <description/>
+    <version>1.0</version>
+    <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
+    <configurationParameters searchStrategy="language_fallback"/>
+    <configurationParameterSettings/>
+    <flowConstraints>
+      <fixedFlow>
+        <node>LatvianTreeTaggerCategoryNormalizer</node>
+        <node>LatvianTreeTaggerSubcategoryNormalizer</node>
+        <node>LatvianTreeTaggerMoodNormalizer</node>
+        <node>LatvianTreeTaggerTenseNormalizer</node>
+        <node>LatvianTreeTaggerGenderNormalizer</node>
+        <node>LatvianTreeTaggerNumberNormalizer</node>
+        <node>LatvianTreeTaggerCaseNormalizer</node>
+      </fixedFlow>
+    </flowConstraints>
+    <typePriorities/>
+    <fsIndexCollection/>
+    <capabilities>
+      <capability>
+        <inputs/>
+        <outputs>
+          <type allAnnotatorFeatures="true">eu.project.ttc.types.WordAnnotation</type>
+        </outputs>
+        <languagesSupported>
+          <language>lv</language>
+        </languagesSupported>
+      </capability>
+    </capabilities>
+    <operationalProperties>
+      <modifiesCas>true</modifiesCas>
+      <multipleDeploymentAllowed>true</multipleDeploymentAllowed>
+      <outputsNewCASes>false</outputsNewCASes>
+    </operationalProperties>
+  </analysisEngineMetaData>
+  <resourceManagerConfiguration/>
+</analysisEngineDescription>

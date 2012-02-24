@@ -1,6 +1,7 @@
 package eu.project.ttc.engines;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import java.util.HashMap;
@@ -32,20 +33,21 @@ import org.w3c.dom.Element;
 import eu.project.ttc.types.SingleWordTermAnnotation;
 import eu.project.ttc.types.TermAnnotation;
 
-public class TbxCasConsumer extends JCasAnnotator_ImplBase {
+public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 	
 	private File file;
 	
 	private void setFile(String path) throws IOException {
-		File file = new File(path);
+		File file = new File(path + File.separator + "terminology.xmi");
+		File tbx = new File(path + File.separator + "terminology.tbx");
 		if (file.exists()) {
 			if (file.isFile()) {
-				this.file = file;	
+				this.file = tbx;
 			} else {
-				throw new IOException("Not a file: " + path);
+				throw new IOException("Not a file: " + file.getAbsolutePath());				
 			}
 		} else {
-			this.file = file;
+			throw new FileNotFoundException(file.getAbsolutePath());
 		}
 	}
 	
@@ -56,9 +58,13 @@ public class TbxCasConsumer extends JCasAnnotator_ImplBase {
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
 		try {
-			String path = (String) context.getConfigParameterValue("File");
-			this.setFile(path);
-			this.setVariants();
+			if (this.getFile() == null) {
+				String path = (String) context.getConfigParameterValue("Directory");
+				this.setFile(path);
+			}
+			if (this.variants == null) {
+				this.setVariants();
+			}
 		} catch (Exception e) {
 			throw new ResourceInitializationException(e);
 		}

@@ -2,15 +2,15 @@
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>true</primitive>
-  <annotatorImplementationName>eu.project.ttc.engines.TbxCasConsumer</annotatorImplementationName>
+  <annotatorImplementationName>eu.project.ttc.engines.TermBaseXchanger</annotatorImplementationName>
   <analysisEngineMetaData>
-    <name>TBX Cas Consumer</name>
+    <name>TermBase eXchanger</name>
     <description/>
     <version>1.0</version>
     <vendor/>
     <configurationParameters>
       <configurationParameter>
-        <name>File</name>
+        <name>Directory</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
@@ -18,9 +18,9 @@
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
-        <name>File</name>
+        <name>Directory</name>
         <value>
-          <string>/tmp/output.zig</string>
+          <string>/tmp/</string>
         </value>
       </nameValuePair>
     </configurationParameterSettings>

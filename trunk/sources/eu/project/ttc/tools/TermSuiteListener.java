@@ -60,6 +60,12 @@ public class TermSuiteListener implements ActionListener {
 		} 
 	}
 
+	public void reset() {
+		this.getTermSuiteTool().getParent().getToolBar().getRun().setEnabled(true);
+		this.getTermSuiteTool().getParent().getToolBar().getPause().setEnabled(false);
+		this.getTermSuiteTool().getParent().getToolBar().getStop().setEnabled(false);
+	}
+	
 	public void initialize(int size) {
     	this.getTermSuiteTool().getParent().getToolBar().getProgressBar().setMaximum(size);
     	this.getTermSuiteTool().getParent().getToolBar().getProgressBar().setIndeterminate(false);

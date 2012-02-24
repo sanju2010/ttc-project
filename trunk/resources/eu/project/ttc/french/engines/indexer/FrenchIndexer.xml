@@ -12,11 +12,14 @@
     <delegateAnalysisEngine key="Writer">
       <import name="eu.project.ttc.all.engines.Writer"/>
     </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="FrenchTermGatherer">
-      <import name="eu.project.ttc.french.engines.indexer.FrenchTermGatherer"/>
+    <delegateAnalysisEngine key="TermBaseXchanger">
+      <import name="eu.project.ttc.all.engines.TermBaseXchanger"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="TermCleaner">
       <import name="eu.project.ttc.all.engines.indexer.TermCleaner"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="FrenchTermGatherer">
+      <import name="eu.project.ttc.french.engines.indexer.FrenchTermGatherer"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="TermIndexer">
       <import name="eu.project.ttc.all.engines.indexer.TermIndexer"/>
@@ -38,6 +41,7 @@
         <mandatory>true</mandatory>
         <overrides>
           <parameter>Writer/Directory</parameter>
+          <parameter>TermBaseXchanger/Directory</parameter>
         </overrides>
       </configurationParameter>
       <configurationParameter>
@@ -184,6 +188,7 @@
         <node>FrenchTermGatherer</node>
         <node>TermCleaner</node>
         <node>Writer</node>
+        <node>TermBaseXchanger</node>
       </fixedFlow>
     </flowConstraints>
     <typePriorities/>

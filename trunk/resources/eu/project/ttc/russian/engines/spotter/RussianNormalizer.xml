@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
+  <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
+  <primitive>false</primitive>
+  <delegateAnalysisEngineSpecifiers>
+    <delegateAnalysisEngine key="RussianTreeTaggerCaseNormalizer">
+      <import name="eu.project.ttc.russian.engines.spotter.RussianCaseNormalizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="RussianTreeTaggerGenderNormalizer">
+      <import name="eu.project.ttc.russian.engines.spotter.RussianGenderNormalizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="RussianTreeTaggerTenseNormalizer">
+      <import name="eu.project.ttc.russian.engines.spotter.RussianTenseNormalizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="RussianTreeTaggerSubcategoryNormalizer">
+      <import name="eu.project.ttc.russian.engines.spotter.RussianSubcategoryNormalizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="RussianTreeTaggerNumberNormalizer">
+      <import name="eu.project.ttc.russian.engines.spotter.RussianNumberNormalizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="RussianTreeTaggerMoodNormalizer">
+      <import name="eu.project.ttc.russian.engines.spotter.RussianMoodNormalizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="RussianTreeTaggerCategoryNormalizer">
+      <import name="eu.project.ttc.russian.engines.spotter.RussianCategoryNormalizer"/>
+    </delegateAnalysisEngine>
+  </delegateAnalysisEngineSpecifiers>
+  <analysisEngineMetaData>
+    <name>Russian Normalizer</name>
+    <description/>
+    <version>1.0</version>
+    <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
+    <configurationParameters searchStrategy="language_fallback"/>
+    <configurationParameterSettings/>
+    <flowConstraints>
+      <fixedFlow>
+        <node>RussianTreeTaggerCategoryNormalizer</node>
+        <node>RussianTreeTaggerSubcategoryNormalizer</node>
+        <node>RussianTreeTaggerMoodNormalizer</node>
+        <node>RussianTreeTaggerTenseNormalizer</node>
+        <node>RussianTreeTaggerGenderNormalizer</node>
+        <node>RussianTreeTaggerNumberNormalizer</node>
+        <node>RussianTreeTaggerCaseNormalizer</node>
+      </fixedFlow>
+    </flowConstraints>
+    <typePriorities/>
+    <fsIndexCollection/>
+    <capabilities>
+      <capability>
+        <inputs/>
+        <outputs>
+          <type allAnnotatorFeatures="true">eu.project.ttc.types.WordAnnotation</type>
+        </outputs>
+        <languagesSupported>
+          <language>ru</language>
+        </languagesSupported>
+      </capability>
+    </capabilities>
+    <operationalProperties>
+      <modifiesCas>true</modifiesCas>
+      <multipleDeploymentAllowed>true</multipleDeploymentAllowed>
+      <outputsNewCASes>false</outputsNewCASes>
+    </operationalProperties>
+  </analysisEngineMetaData>
+  <resourceManagerConfiguration/>
+</analysisEngineDescription>

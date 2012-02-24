@@ -183,6 +183,7 @@ public class TermSuiteRunner {
 		} finally {
 			this.pool.releaseJCas(cas);
 			this.engine.callBack();
+			this.listener.reset();
 		}
 	}
 	
@@ -250,12 +251,10 @@ public class TermSuiteRunner {
 			display.append("    ");
 		}
 		display.append("      processes " + num + " documents in "  + time + " milli-seconds ("  + perf + " doc/s).\n\n");
-		/*
 		for (String key : managment.getComponents().keySet()) {
 			AnalysisEngineManagement m = managment.getComponents().get(key);
 			display.append(this.display(metadata, m, level + 1));
 		} 
-		*/
 		return display.toString();
 	}
 
