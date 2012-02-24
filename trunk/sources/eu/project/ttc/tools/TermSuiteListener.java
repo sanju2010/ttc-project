@@ -1,98 +1,101 @@
 package eu.project.ttc.tools;
 
-import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
-
-import eu.project.ttc.tools.acabit.Acabit;
-import eu.project.ttc.tools.converter.Converter;
-import eu.project.ttc.tools.katastasis.Katastasis;
-import eu.project.ttc.tools.mimesis.Mimesis;
-import eu.project.ttc.tools.tagger.Tagger;
-import eu.project.ttc.tools.ziggurat.Ziggurat;
 
 public class TermSuiteListener implements ActionListener {
+	
+	private TermSuiteTool termSuiteTool;
+	
+	public void setTermSuiteTool(TermSuiteTool termSuiteTool) {
+		this.termSuiteTool = termSuiteTool;
+	}
+	
+	private TermSuiteTool getTermSuiteTool() {
+		return this.termSuiteTool;
+	}
 
-	private TermSuite termSuite;
+	private TermSuiteEngine termSuiteEngine;
 	
-	public void setTermSuite(TermSuite termSuite) {
-		this.termSuite = termSuite;
+	public void setTermSuiteEngine(TermSuiteEngine taggerEngine) {
+		this.termSuiteEngine = taggerEngine;
 	}
 	
-	private TermSuite getTermSuite() {
-		return this.termSuite;
-	}
-	
-	private URI getHelp() throws URISyntaxException {
-		String uri = this.getTermSuite().getPreferences().getHelp();
-		return new URI(uri);
+	private TermSuiteEngine getTermSuiteEngine() {
+		return this.termSuiteEngine;
 	}
 	
 	private void doQuit() {
-		String message = "Do you really want to quit " + this.getTermSuite().getPreferences().getTitle() + "?";
+		String message = "Do you really want to quit " + this.getTermSuiteTool().getParent().getPreferences().getTitle() + "?";
 		String title = "Quit";
-		int response = JOptionPane.showConfirmDialog(this.getTermSuite().getFrame(),message,title,JOptionPane.YES_NO_OPTION);
+		int response = JOptionPane.showConfirmDialog(this.getTermSuiteTool().getParent().getFrame(),message,title,JOptionPane.YES_NO_OPTION);
 		if (response == 0) {
-			this.getTermSuite().quit();				
+			this.getTermSuiteTool().getParent().quit();				
 		}
 	}
 	
-	private void doHelp() {
+	public void doRun() {
+		this.getTermSuiteTool().getSettings().doUpdate();
 		try {
-			if (this.getTermSuite().getDesktop() != null && this.getTermSuite().getDesktop().isSupported(Desktop.Action.BROWSE)) {
-				this.getTermSuite().getDesktop().browse(this.getHelp());	
-			} else {
-				SwingUtilities.invokeLater(this.getTermSuite().getHelp());
-			}
-		} catch (IOException e) {
-			this.getTermSuite().error(e);
-		} catch (URISyntaxException e) {
-			this.getTermSuite().error(e);
+			this.getTermSuiteTool().getSettings().validate();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(this.getTermSuiteTool().getParent().getFrame(),e.getMessage(),e.getClass().getSimpleName(),JOptionPane.ERROR_MESSAGE);
+			e.printStackTrace();
 		}
-	}
-	
-	private void doTagger() {
-		Tagger tagger = new Tagger(false);
-		tagger.setParent(this.getTermSuite());
-		SwingUtilities.invokeLater(tagger);
-	}
-	
-	private void doAcabit() {
-		Acabit acabit = new Acabit(false);
-		acabit.setParent(this.getTermSuite());
-		SwingUtilities.invokeLater(acabit);
+		this.getTermSuiteTool().getParent().getViewer().doEnable(false);
+		this.getTermSuiteTool().getParent().getViewer().getResultModel().clear();
+		try {
+			this.getTermSuiteTool().getParent().getToolBar().getRun().setEnabled(false); 
+			TermSuiteRunner runner = new TermSuiteRunner();
+			runner.process(this.getTermSuiteEngine(), this);
+			// this.getTermSuiteTool().getParent().getToolBar().getPause().setEnabled(true);
+			// this.getTermSuiteTool().getParent().getToolBar().getStop().setEnabled(true);
+			// TODO
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(this.getTermSuiteTool().getParent().getFrame(),e.getMessage(),"Exception",JOptionPane.ERROR_MESSAGE);
+			e.printStackTrace();
+		} 
 	}
 
-	private void doKatastasis() {
-		Katastasis katastasis = new Katastasis(false);
-		katastasis.setParent(this.getTermSuite());
-		SwingUtilities.invokeLater(katastasis);
+	public void initialize(int size) {
+    	this.getTermSuiteTool().getParent().getToolBar().getProgressBar().setMaximum(size);
+    	this.getTermSuiteTool().getParent().getToolBar().getProgressBar().setIndeterminate(false);
+		this.getTermSuiteTool().getParent().getToolBar().getProgressBar().setValue(0);
 	}
 	
-	private void doMimesis() {
-		Mimesis mimesis = new Mimesis(false);
-		mimesis.setParent(this.getTermSuite());
-		SwingUtilities.invokeLater(mimesis);
+	public void flush(int value, int limit) {
+		this.getTermSuiteTool().getParent().getToolBar().getProgressBar().setValue(value);
+		this.getTermSuiteTool().getParent().getToolBar().getProgressBar().setString(value + " / " + limit);
 	}
 	
-	private void doZiggurat() {
-		Ziggurat ziggurat = new Ziggurat(false);
-		ziggurat.setParent(this.getTermSuite());
-		SwingUtilities.invokeLater(ziggurat);
+	/*
+	
+	private void doResume() {
+		this.getTermSuiteTool().getParent().getToolBar().getProgressBar().setString("Resumed...");
+		this.getTermSuiteTool().getParent().getToolBar().getPause().setEnabled(true);
 	}
 	
-	private void doConverter() {
-		Converter converter = new Converter(false);
-		converter.setParent(this.getTermSuite());
-		SwingUtilities.invokeLater(converter);
+	private void doPause() {
+		this.getTermSuiteTool().getParent().getToolBar().getProgressBar().setString("Paused...");
+		this.getTermSuiteTool().getParent().getToolBar().getRun().setText("Resume");
+		this.getTermSuiteTool().getParent().getToolBar().getRun().setActionCommand("resume");
+		this.getTermSuiteTool().getParent().getToolBar().getRun().setEnabled(true);
+		this.getTermSuiteTool().getParent().getToolBar().getPause().setEnabled(false);
 	}
+
+	private void doStop() {
+		this.getTermSuiteTool().getParent().getToolBar().getRun().setEnabled(true);
+		this.getTermSuiteTool().getParent().getToolBar().getPause().setEnabled(false);
+		this.getTermSuiteTool().getParent().getToolBar().getStop().setEnabled(false);
+		if (this.getTermSuiteTool().getParent().isCommandLineInterface()) {
+			this.getTermSuiteTool().getParent().quit();
+		}
+		this.getTermSuiteTool().getParent().getTaggerViewer().doEnable(true);
+	}
+	*/
 	
 	@Override
 	public void actionPerformed(ActionEvent event) {
@@ -102,23 +105,17 @@ public class TermSuiteListener implements ActionListener {
 			String action = source.getActionCommand();
 			if (action.equals("quit")) { 
 				this.doQuit();
-			} else if (action.equals("help")) { 
-				this.doHelp();
 			} else if (action.equals("about")) {
-				this.getTermSuite().getAbout().show();
-			} else if (action.equals("tagger")) {
-				this.doTagger();
-			} else if (action.equals("acabit")) {
-				this.doAcabit();
-			} else if (action.equals("katastasis")) {
-				this.doKatastasis();
-			} else if (action.equals("mimesis")) {
-				this.doMimesis();
-			} else if (action.equals("ziggurat")) {
-				this.doZiggurat();
-			} else if (action.equals("converter")) {
-				this.doConverter();
-			} 
+				this.getTermSuiteTool().getParent().getAbout().show();
+			} else if (action.equals("run")) {
+				this.doRun();
+			} else if (action.equals("pause")) {
+				
+			} else if (action.equals("resume")) {
+				
+			} else if (action.equals("stop")) {
+				
+			}
 		} 
 	}
 	

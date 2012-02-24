@@ -1,79 +1,68 @@
 package eu.project.ttc.tools.converter.tbx;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
-import java.net.URL;
-
-import javax.swing.SwingWorker;
-
-import org.apache.uima.collection.impl.metadata.cpe.CpeDescriptorFactory;
-import org.apache.uima.collection.metadata.CasProcessorConfigurationParameterSettings;
-import org.apache.uima.collection.metadata.CpeCollectionReader;
-import org.apache.uima.collection.metadata.CpeComponentDescriptor;
-import org.apache.uima.collection.metadata.CpeDescription;
-import org.apache.uima.collection.metadata.CpeDescriptorException;
-import org.apache.uima.collection.metadata.CpeIntegratedCasProcessor;
+import org.apache.uima.UIMAFramework;
+import org.apache.uima.cas.CAS;
 import org.apache.uima.resource.metadata.ConfigurationParameterSettings;
 
-import eu.project.ttc.tools.converter.ConverterEngine;
-import eu.project.ttc.tools.converter.ConverterTool;
+import eu.project.ttc.tools.TermSuiteEngine;
+import eu.project.ttc.tools.TermSuiteRunner;
+import eu.project.ttc.tools.TermSuiteTool;
 
-public class XmiTbxConverterEngine extends SwingWorker<CpeDescription,Void> implements ConverterEngine {
+public class XmiTbxConverterEngine implements TermSuiteEngine {
 
-	private ConverterTool converterTool;
+	private TermSuiteTool termSuiteTool;
 	
-	public void setConverterTool(ConverterTool converterTool) {
-		this.converterTool = converterTool;
+	public void setTermSuiteTool(TermSuiteTool termSuiteTool) {
+		this.termSuiteTool = termSuiteTool;
 	}
 	
-	private ConverterTool getConverterTool() {
-		return this.converterTool;
-	}
-		
-	private CpeDescription collectionProcessingEngine;
-	
-	private void setCollectionProcessingEngine() throws CpeDescriptorException {
-		this.collectionProcessingEngine = CpeDescriptorFactory.produceDescriptor();
-		Runtime runtime = Runtime.getRuntime();
-        int threads = runtime.availableProcessors();
-		this.collectionProcessingEngine.setProcessingUnitThreadCount(threads);
-		this.collectionProcessingEngine.getCpeCasProcessors().setPoolSize(threads);
-		this.collectionProcessingEngine.getCpeCasProcessors().setConcurrentPUCount(threads);
+	private TermSuiteTool getTermSuiteTool() {
+		return this.termSuiteTool;
 	}
 
 	@Override
-	protected CpeDescription doInBackground() throws Exception {
-		this.setCollectionProcessingEngine();
-		this.setCollectionReader();
-		this.setAnalysisEngine();
-		File file = File.createTempFile("converter-xmi-tbx-cpe-",".xml");
-		file.deleteOnExit();
-		OutputStream stream = new FileOutputStream(file);
-		this.collectionProcessingEngine.toXML(stream);
-		return this.collectionProcessingEngine;
-	}
-	
-	private void setCollectionReader() throws Exception {
-		ConfigurationParameterSettings parameters = this.getConverterTool().getSettings().getMetaData().getConfigurationParameterSettings();
-		URL url = this.getClass().getClassLoader().getResource("eu/project/ttc/all/engines/XmiCollectionReader.xml");
-		CpeCollectionReader termSuiteCollector = CpeDescriptorFactory.produceCollectionReader(url.toURI().toString());
-		CasProcessorConfigurationParameterSettings settings = CpeDescriptorFactory.produceCasProcessorConfigurationParameterSettings();
-		settings.setParameterValue("Directory",parameters.getParameterValue("InputFile"));
-		termSuiteCollector.setConfigurationParameterSettings(settings);
-		this.collectionProcessingEngine.addCollectionReader(termSuiteCollector);
-	}
-
-	private void setAnalysisEngine() throws Exception {
-		ConfigurationParameterSettings parameters = this.getConverterTool().getSettings().getMetaData().getConfigurationParameterSettings();
-		URL url = this.getClass().getClassLoader().getResource("eu/project/ttc/all/engines/TbxCasConsumer.xml");
-        CpeIntegratedCasProcessor termMateAnnotator = CpeDescriptorFactory.produceCasProcessor("XMI to TBX Converter Analysis Engine");
-        CpeComponentDescriptor desc = CpeDescriptorFactory.produceComponentDescriptor(url.toURI().toString());
-        termMateAnnotator.setCpeComponentDescriptor(desc);
-        CasProcessorConfigurationParameterSettings settings = CpeDescriptorFactory.produceCasProcessorConfigurationParameterSettings();
+	public ConfigurationParameterSettings settings() throws Exception {
+		ConfigurationParameterSettings parameters = this.getTermSuiteTool().getSettings().getMetaData().getConfigurationParameterSettings();
+        ConfigurationParameterSettings settings = UIMAFramework.getResourceSpecifierFactory().createConfigurationParameterSettings();
         settings.setParameterValue("File", (String) parameters.getParameterValue("OutputFile"));
-        termMateAnnotator.setConfigurationParameterSettings(settings);
-        this.collectionProcessingEngine.addCasProcessor(termMateAnnotator);
+		return settings;
 	}
 
+	@Override
+	public String data() {
+		ConfigurationParameterSettings parameters = this.getTermSuiteTool().getSettings().getMetaData().getConfigurationParameterSettings();
+		return (String) parameters.getParameterValue("InputFile");
+	}
+
+	@Override
+	public int input() {
+		return TermSuiteRunner.XMI;
+	}
+
+	@Override
+	public String language() {
+		return null;
+	}
+
+	@Override
+	public String encoding() {
+		return null;
+	}
+
+	@Override
+	public String get() throws Exception {
+		return "eu/project/ttc/all/engines/XmiTbxConverter.xml";
+	}
+
+	@Override
+	public void callBack(CAS cas) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void callBack() {
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -1,4 +1,4 @@
-package eu.project.ttc.tools.converter;
+package eu.project.ttc.tools;
 
 import java.io.IOException;
 
@@ -6,7 +6,7 @@ import org.apache.uima.resource.ResourceConfigurationException;
 import org.apache.uima.resource.metadata.ResourceMetaData;
 import org.xml.sax.SAXException;
 
-public interface ConverterSettings {
+public interface TermSuiteSettings {
 
 	public void doUpdate();
 	

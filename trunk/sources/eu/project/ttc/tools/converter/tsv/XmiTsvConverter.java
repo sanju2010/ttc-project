@@ -3,21 +3,18 @@ package eu.project.ttc.tools.converter.tsv;
 import java.awt.Component;
 import java.io.File;
 
-import org.apache.uima.UIMAFramework;
-import org.apache.uima.util.Level;
+import eu.project.ttc.tools.TermSuite;
+import eu.project.ttc.tools.TermSuiteTool;
 
-import eu.project.ttc.tools.converter.Converter;
-import eu.project.ttc.tools.converter.ConverterTool;
+public class XmiTsvConverter implements TermSuiteTool {
 
-public class XmiTsvConverter implements ConverterTool {
-
-	private Converter parent;
+	private TermSuite parent;
 	
 	/* (non-Javadoc)
 	 * @see eu.project.ttc.tools.tildetagger.TaggerEmbedder#setParent(eu.project.ttc.tools.tagger.Tagger)
 	 */
 	@Override
-	public void setParent(Converter parent) {
+	public void setParent(TermSuite parent) {
 		this.parent = parent;
 	}
 	
@@ -25,33 +22,9 @@ public class XmiTsvConverter implements ConverterTool {
 	 * @see eu.project.ttc.tools.tildetagger.TaggerEmbedder#getParent()
 	 */
 	@Override
-	public Converter getParent() {
+	public TermSuite getParent() {
 		return this.parent;
-	}
-	
-	/* (non-Javadoc)
-	 * @see eu.project.ttc.tools.tildetagger.TaggerEmbedder#error(java.lang.Exception)
-	 */
-	@Override
-	public void error(Exception e) {
-		UIMAFramework.getLogger().log(Level.SEVERE,e.getMessage());
-	}
-	
-	/* (non-Javadoc)
-	 * @see eu.project.ttc.tools.tildetagger.TaggerEmbedder#warning(java.lang.String)
-	 */
-	@Override
-	public void warning(String message) {
-		UIMAFramework.getLogger().log(Level.WARNING,message);
-	}
-	
-	/* (non-Javadoc)
-	 * @see eu.project.ttc.tools.tildetagger.TaggerEmbedder#message(java.lang.String)
-	 */
-	@Override
-	public void message(String message) {
-		UIMAFramework.getLogger().log(Level.INFO,message);
-	}
+	}	
 	
 	private XmiTsvConverterSettings settings;
 	

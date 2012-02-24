@@ -1,25 +1,13 @@
 package eu.project.ttc.tools.converter;
 
-import java.awt.Dimension;
-import java.awt.Toolkit;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.apache.uima.UIMAFramework;
-import org.apache.uima.util.Level;
-
 import eu.project.ttc.tools.TermSuite;
-import eu.project.ttc.tools.converter.csv.XmiCsvConverter;
-import eu.project.ttc.tools.converter.csv.XmiCsvConverterEngine;
+import eu.project.ttc.tools.TermSuiteListener;
+import eu.project.ttc.tools.TermSuiteSettings;
+import eu.project.ttc.tools.TermSuiteTool;
 import eu.project.ttc.tools.converter.tbx.TbxXmiConverter;
 import eu.project.ttc.tools.converter.tbx.TbxXmiConverterEngine;
 import eu.project.ttc.tools.converter.tbx.XmiTbxConverter;
@@ -28,93 +16,27 @@ import eu.project.ttc.tools.converter.tsv.TsvXmiConverter;
 import eu.project.ttc.tools.converter.tsv.TsvXmiConverterEngine;
 import eu.project.ttc.tools.converter.tsv.XmiTsvConverter;
 import eu.project.ttc.tools.converter.tsv.XmiTsvConverterEngine;
-import eu.project.ttc.tools.utils.About;
-import eu.project.ttc.tools.utils.Preferences;
-import eu.project.ttc.tools.utils.ToolBar;
 
-public class Converter implements Runnable {
+public class Converter implements TermSuiteTool {
 
 	private TermSuite parent;
 	
 	public void setParent(TermSuite parent) {
 		this.parent = parent;
+		this.xmiTsvConverter.setParent(this.getParent());
+		this.tsvXmiConverter.setParent(this.getParent());
+		this.xmiTbxConverter.setParent(this.getParent());
+		this.tbxXmiConverter.setParent(this.getParent());
 	}
 	
 	public TermSuite getParent() {
 		return this.parent;
-	}
-	
-	private boolean cli;
-	
-	private void enableCommandLineInterface(boolean enabled) {
-		this.cli = enabled;
-	}
-	
-	public boolean isCommandLineInterface() {
-		return this.cli;
-	}
-	
-	public void error(Exception e) {
-		UIMAFramework.getLogger().log(Level.SEVERE,e.getMessage());
-	}
-	
-	public void warning(String message) {
-		UIMAFramework.getLogger().log(Level.WARNING,message);
-	}
-	
-	public void message(String message) {
-		UIMAFramework.getLogger().log(Level.INFO,message);
-	}
-	
-	private Preferences preferences;
-	
-	private void setPreferences() {
-		this.preferences = new Preferences("converter.properties");
-		try {
-			this.preferences.load();
-		} catch (Exception e) {
-			this.error(e);
-		}
-	}
-	
-	private About about;
-	
-	private void setAbout() {
-		this.about = new About();
-		this.about.setPreferences(this.getPreferences());
-	}
-	
-	public About getAbout() {
-		return this.about;
-	}
-	
-	public Preferences  getPreferences() {
-		return this.preferences;
-	}
-
-	private ToolBar toolBar;
-	
-	private void setToolBar() {
-		this.toolBar = new ToolBar();
-	}
-	
-	public ToolBar getToolBar() {
-		return this.toolBar;
-	}
-	
-	private Dimension getDimension() {
-		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-		int width = (4 * screen.width) / 5;
-		int height = (2 * screen.height) / 5;
-		Dimension dimension = new Dimension(width,height);
-		return dimension;
-	}
+	}	
 	
 	private XmiTsvConverter xmiTsvConverter;
 	
 	private void setXmiTsvConverter() {
 		this.xmiTsvConverter = new XmiTsvConverter();
-		this.xmiTsvConverter.setParent(this);
 	}
 	
 	private XmiTsvConverter getXmiTsvConverter() {
@@ -125,29 +47,16 @@ public class Converter implements Runnable {
 	
 	private void setTsvXmiConverter() {
 		this.tsvXmiConverter = new TsvXmiConverter();
-		this.tsvXmiConverter.setParent(this);
 	}
 	
 	private TsvXmiConverter getTsvXmiConverter() {
 		return this.tsvXmiConverter;
 	}
 	
-	private XmiCsvConverter xmiCsvConverter;
-	
-	private void setXmiCsvConverter() {
-		this.xmiCsvConverter = new XmiCsvConverter();
-		this.xmiCsvConverter.setParent(this);
-	}
-	
-	private XmiCsvConverter getXmiCsvConverter() {
-		return this.xmiCsvConverter;
-	}
-	
 	private XmiTbxConverter xmiTbxConverter;
 	
 	private void setXmiTbxConverter() {
 		this.xmiTbxConverter = new XmiTbxConverter();
-		this.xmiTbxConverter.setParent(this);
 	}
 	
 	private XmiTbxConverter getXmiTbxConverter() {
@@ -158,7 +67,6 @@ public class Converter implements Runnable {
 	
 	private void setTbxXmiConverter() {
 		this.tbxXmiConverter = new TbxXmiConverter();
-		this.tbxXmiConverter.setParent(this);
 	}
 	
 	private TbxXmiConverter getTbxXmiConverter() {
@@ -169,10 +77,9 @@ public class Converter implements Runnable {
 	
 	private void setContent() {
 		this.content = new JTabbedPane();
-		this.content.setTabPlacement(JTabbedPane.TOP);
+		this.content.setTabPlacement(JTabbedPane.RIGHT);
 		this.content.addTab(" XMI -> TSV ",this.getXmiTsvConverter().getComponent());
 		this.content.addTab(" TSV -> XMI ",this.getTsvXmiConverter().getComponent());
-		this.content.addTab(" XMI -> CSV ",this.getXmiCsvConverter().getComponent());
 		this.content.addTab(" XMI -> TBX ",this.getXmiTbxConverter().getComponent());
 		this.content.addTab(" TBX -> XMI ",this.getTbxXmiConverter().getComponent());
 		Listener listener = new Listener();
@@ -192,213 +99,83 @@ public class Converter implements Runnable {
 		return this.getContent().getSelectedIndex() == 1;
 	}
 	
-	public boolean isXmiCsvSelected() {
+	public boolean isXmiTbxSelected() {
 		return this.getContent().getSelectedIndex() == 2;
 	}
 	
-	public boolean isXmiTbxSelected() {
+	public boolean isTbxXmiSelected() {
 		return this.getContent().getSelectedIndex() == 3;
 	}
-	
-	public boolean isTbxXmiSelected() {
-		return this.getContent().getSelectedIndex() == 4;
-	}
 
-	private JSplitPane component;
+	@Override
+	public JTabbedPane getComponent() {
+		return this.content;
+	}	
 	
-	private void setComponent() {
-		this.component = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-		this.component.setTopComponent(this.getToolBar().getComponent());
-		this.component.setBottomComponent(this.getContent());
-		this.component.setDividerSize(0);
-		this.component.setEnabled(false);
-	}
-	
-	private JSplitPane getComponent() {
-		return this.component;
-	}
-	
-	private JFrame frame;
-	
-	private void setFrame() {
-		this.frame = new JFrame();
-		this.frame.setTitle(this.getPreferences().getTitle());
-		this.frame.setPreferredSize(this.getDimension());
-		this.frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		this.frame.getContentPane().add(this.getComponent());
-		this.frame.setJMenuBar(null);
-		this.frame.pack();
-		this.frame.setLocationRelativeTo(null);
-		this.frame.setResizable(false);
-	}
-
-	private void hide() {
-		this.getFrame().setVisible(false);
-	}
-	
-	private void show() {
-		this.getFrame().setVisible(true);
-	}
-	
-	public JFrame getFrame() {
-		return this.frame;
-	}
-	
-	public Converter(boolean cli) {
-		this.enableCommandLineInterface(cli);
-		this.setPreferences();
-		this.setAbout();
-		this.setToolBar();
+	public Converter() {
 		this.setXmiTsvConverter();
 		this.setTsvXmiConverter();
-		this.setXmiCsvConverter();
 		this.setXmiTbxConverter();
 		this.setTbxXmiConverter();
 		this.setContent();
-		this.setComponent();
-		this.setFrame();
-		this.setListener();
 	}
 	
-	private ConverterEngineListener listener;
+	TermSuiteListener listener;
 	
-	private void setListener() {
-		this.listener = new ConverterEngineListener();
-		this.enableListsners();
-		this.getToolBar().enableListeners(this.listener);
-		WindowListener windowListener = new WindowListener();
-		windowListener.setConverter(this);
-		this.getFrame().addWindowListener(windowListener);
+	public void enableListsners(TermSuiteListener listener) {
+		this.listener = listener;
 	}
 	
-	public void enableListsners() {
+	private void enableListsners() {
 		if (this.isXmiTsvSelected()) {
-			this.listener.setConverterTool(this.getXmiTsvConverter());
+			listener.setTermSuiteTool(this.getXmiTsvConverter());
 			XmiTsvConverterEngine engine = new XmiTsvConverterEngine();
-			engine.setConverterTool(this.getXmiTsvConverter());
-			this.listener.setConverterEngine(engine);
+			engine.setTermSuiteTool(this.getXmiTsvConverter());
+			listener.setTermSuiteEngine(engine);
 		} else if (this.isTsvXmiSelected()) {
-			this.listener.setConverterTool(this.getTsvXmiConverter());
+			listener.setTermSuiteTool(this.getTsvXmiConverter());
 			TsvXmiConverterEngine engine = new TsvXmiConverterEngine();
-			engine.setConverterTool(this.getTsvXmiConverter());
-			this.listener.setConverterEngine(engine);
-		} else if (this.isXmiCsvSelected()) {
-			this.listener.setConverterTool(this.getXmiCsvConverter());
-			XmiCsvConverterEngine engine = new XmiCsvConverterEngine();
-			engine.setConverterTool(this.getXmiCsvConverter());
-			this.listener.setConverterEngine(engine);
+			engine.setTermSuiteTool(this.getTsvXmiConverter());
+			listener.setTermSuiteEngine(engine);
 		}  else if (this.isXmiTbxSelected()) {
-			this.listener.setConverterTool(this.getXmiTbxConverter());
+			listener.setTermSuiteTool(this.getXmiTbxConverter());
 			XmiTbxConverterEngine engine = new XmiTbxConverterEngine();
-			engine.setConverterTool(this.getXmiTbxConverter());
-			this.listener.setConverterEngine(engine);
+			engine.setTermSuiteTool(this.getXmiTbxConverter());
+			listener.setTermSuiteEngine(engine);
 		}  else if (this.isTbxXmiSelected()) {
-			this.listener.setConverterTool(this.getTbxXmiConverter());
+			listener.setTermSuiteTool(this.getTbxXmiConverter());
 			TbxXmiConverterEngine engine = new TbxXmiConverterEngine();
-			engine.setConverterTool(this.getTbxXmiConverter());
-			this.listener.setConverterEngine(engine);
+			engine.setTermSuiteTool(this.getTbxXmiConverter());
+			listener.setTermSuiteEngine(engine);
 		}
 	}
 	
-	private void process() {
-		/*
-		ConverterEngineListener engineListener = new ConverterEngineListener();
-		engineListener.setConverter(this);
-		engineListener.doProcess();
-		*/
-	}
-	
-	public void run() {
-		if (this.isCommandLineInterface()) {
-			this.process();
-		} else {
-			this.show();
-		}
-	}
-	
-	private void save() {
+	public void doSave() {
 		try {
 			this.getXmiTsvConverter().getSettings().doSave();
 			this.getTsvXmiConverter().getSettings().doSave();
-			this.getXmiCsvConverter().getSettings().doSave();
 			this.getXmiTbxConverter().getSettings().doSave();
 			this.getTbxXmiConverter().getSettings().doSave();
 		} catch (Exception e) {
-			this.error(e);
+			this.getParent().error(e);
 		}
 	}
-	
-	public void quit() {
-		this.save();
-		this.hide();
-		this.getFrame().dispose();
-		if (this.getParent() == null) {
-			System.exit(0);			
-		}
-	}
-	
-	public void quit(Exception e) {
-		this.save();
-		UIMAFramework.getLogger().log(Level.SEVERE,e.getMessage());
-		e.printStackTrace();
-		this.hide();
-		this.getFrame().dispose();
-		if (this.getParent() == null) {
-			System.exit(1);			
-		}
-	}
-	
-	public static void main(String[] args) {
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (Exception e) { }
-		boolean cli = false;
-		String wrong = null;
-		for (String arg : args) {
-			if (arg.equals("--cli")) {
-				cli = true;
-				break;
-			} else if (arg.equals("--gui")) {
-				cli = false;
-				break;
-			} else {
-				wrong = arg;
-				break;
-			}
-		}
-		if (wrong == null) {
-			Converter treeTagger = new Converter(cli);
-			SwingUtilities.invokeLater(treeTagger);			
+
+	@Override
+	public TermSuiteSettings getSettings() {
+		if (this.isXmiTsvSelected()) {
+			return this.getXmiTsvConverter().getSettings();
+		} else if (this.isTsvXmiSelected()) {
+			return this.getTsvXmiConverter().getSettings();
+		} else if (this.isXmiTbxSelected()) {
+			return this.getXmiTbxConverter().getSettings();
+		} else if (this.isTbxXmiSelected()) {
+			return this.getTbxXmiConverter().getSettings();
 		} else {
-			UIMAFramework.getLogger().log(Level.SEVERE,"Wrong option: " + wrong);
-			UIMAFramework.getLogger().log(Level.INFO,"Options allowed: --cli | --gui");
-			System.exit(1);
+			return null;
 		}
-    }
-	
-	private class WindowListener extends WindowAdapter {
-				
-		private Converter converter;
-		
-		public void setConverter(Converter converter) {
-			this.converter = converter;
-		}
-		
-		private Converter getConverter() {
-			return this.converter;
-		}
-		
-		public void windowClosing(WindowEvent event) {
-			String message = "Do you really want to quit " + this.getConverter().getPreferences().getTitle() + "?";
-			String title = "Exit?";
-			int response = JOptionPane.showConfirmDialog(this.getConverter().getFrame(),message,title,JOptionPane.OK_CANCEL_OPTION);
-			if (response == 0) {
-				this.getConverter().quit();
-			} 
-		 }
-		
 	}
-	
+
 	private class Listener implements ChangeListener {
 
 		private Converter converter;
@@ -408,7 +185,7 @@ public class Converter implements Runnable {
 		}
 		
 		@Override
-		public void stateChanged(ChangeEvent event) {
+		public void stateChanged(ChangeEvent arg0) {
 			this.converter.enableListsners();
 		}
 		

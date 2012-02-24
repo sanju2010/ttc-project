@@ -3,10 +3,10 @@ package eu.project.ttc.tools.converter.tsv;
 import org.apache.uima.resource.metadata.ConfigurationParameter;
 import org.apache.uima.resource.metadata.ConfigurationParameterDeclarations;
 
-import eu.project.ttc.tools.converter.ConverterSettings;
+import eu.project.ttc.tools.TermSuiteSettings;
 import eu.project.ttc.tools.utils.Parameters;
 
-public class TsvXmiConverterSettings extends Parameters implements ConverterSettings {	
+public class TsvXmiConverterSettings extends Parameters implements TermSuiteSettings {	
 	
 	public TsvXmiConverterSettings(String resource) {
 		super(resource);
