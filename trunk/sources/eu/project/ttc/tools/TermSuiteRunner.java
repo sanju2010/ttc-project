@@ -153,6 +153,10 @@ public class TermSuiteRunner extends SwingWorker<Void, File> {
 	
 	@Override
 	protected Void doInBackground() throws Exception {
+		int max = this.data.size();
+		this.termSuite.getToolBar().getProgressBar().setMaximum(max);
+		this.termSuite.getToolBar().getProgressBar().setMinimum(0);
+		this.termSuite.getToolBar().getProgressBar().setValue(0);
 		this.setProgress(0);
         for (int index = 0; index < this.data.size(); index++) {
         	if (this.isCancelled()) {
@@ -162,7 +166,8 @@ public class TermSuiteRunner extends SwingWorker<Void, File> {
         	boolean last = index == this.data.size() - 1;
         	this.publish(file);
         	this.process(file, this.encoding, this.language, this.input, last);
-        	this.setProgress(index + 1 / this.data.size());
+        	int progress = (index * 100) / max;
+        	this.setProgress(progress);
         }
         return null;
 	}
