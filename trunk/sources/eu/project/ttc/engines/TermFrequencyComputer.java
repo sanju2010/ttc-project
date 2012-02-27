@@ -9,7 +9,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceAccessException;
 import org.apache.uima.resource.ResourceInitializationException;
 
-import eu.project.ttc.models.GeneralLanguage;
+import eu.project.ttc.resources.GeneralLanguage;
 import eu.project.ttc.types.TermAnnotation;
 
 public class TermFrequencyComputer extends JCasAnnotator_ImplBase {

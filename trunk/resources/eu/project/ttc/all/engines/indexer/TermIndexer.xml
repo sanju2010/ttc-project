@@ -72,13 +72,13 @@
     <externalResourceDependency>
       <key>SimpleTermFrequency</key>
       <description/>
-      <interfaceName>eu.project.ttc.models.SimpleTermFrequency</interfaceName>
+      <interfaceName>eu.project.ttc.resources.SimpleTermFrequency</interfaceName>
       <optional>false</optional>
     </externalResourceDependency>
     <externalResourceDependency>
       <key>ComplexTermFrequency</key>
       <description/>
-      <interfaceName>eu.project.ttc.models.ComplexTermFrequency</interfaceName>
+      <interfaceName>eu.project.ttc.resources.ComplexTermFrequency</interfaceName>
       <optional>false</optional>
     </externalResourceDependency>
   </externalResourceDependencies>
@@ -88,17 +88,17 @@
         <name>SimpleTermFrequencyResource</name>
         <description/>
         <fileResourceSpecifier>
-          <fileUrl>eu/project/ttc/models/SimpleTermFrequency.class</fileUrl>
+          <fileUrl>eu/project/ttc/resources/SimpleTermFrequency.class</fileUrl>
         </fileResourceSpecifier>
-        <implementationName>eu.project.ttc.models.SimpleTermFrequency</implementationName>
+        <implementationName>eu.project.ttc.resources.SimpleTermFrequency</implementationName>
       </externalResource>
       <externalResource>
         <name>ComplexTermFrequency</name>
         <description/>
         <fileResourceSpecifier>
-          <fileUrl>eu/project/ttc/models/ComplexTermFrequency.class</fileUrl>
+          <fileUrl>eu/project/ttc/resources/ComplexTermFrequency.class</fileUrl>
         </fileResourceSpecifier>
-        <implementationName>eu.project.ttc.models.ComplexTermFrequency</implementationName>
+        <implementationName>eu.project.ttc.resources.ComplexTermFrequency</implementationName>
       </externalResource>
     </externalResources>
     <externalResourceBindings>

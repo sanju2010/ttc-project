@@ -128,25 +128,25 @@ public class Converter implements TermSuiteTool {
 	
 	private void enableListsners() {
 		if (this.isXmiTsvSelected()) {
-			listener.setTermSuiteTool(this.getXmiTsvConverter());
+			listener.setTool(this.getXmiTsvConverter());
 			XmiTsvConverterEngine engine = new XmiTsvConverterEngine();
 			engine.setTermSuiteTool(this.getXmiTsvConverter());
-			listener.setTermSuiteEngine(engine);
+			listener.setEngine(engine);
 		} else if (this.isTsvXmiSelected()) {
-			listener.setTermSuiteTool(this.getTsvXmiConverter());
+			listener.setTool(this.getTsvXmiConverter());
 			TsvXmiConverterEngine engine = new TsvXmiConverterEngine();
 			engine.setTermSuiteTool(this.getTsvXmiConverter());
-			listener.setTermSuiteEngine(engine);
+			listener.setEngine(engine);
 		}  else if (this.isXmiTbxSelected()) {
-			listener.setTermSuiteTool(this.getXmiTbxConverter());
+			listener.setTool(this.getXmiTbxConverter());
 			XmiTbxConverterEngine engine = new XmiTbxConverterEngine();
 			engine.setTermSuiteTool(this.getXmiTbxConverter());
-			listener.setTermSuiteEngine(engine);
+			listener.setEngine(engine);
 		}  else if (this.isTbxXmiSelected()) {
-			listener.setTermSuiteTool(this.getTbxXmiConverter());
+			listener.setTool(this.getTbxXmiConverter());
 			TbxXmiConverterEngine engine = new TbxXmiConverterEngine();
 			engine.setTermSuiteTool(this.getTbxXmiConverter());
-			listener.setTermSuiteEngine(engine);
+			listener.setEngine(engine);
 		}
 	}
 	

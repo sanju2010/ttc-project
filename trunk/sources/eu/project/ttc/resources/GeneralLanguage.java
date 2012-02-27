@@ -1,4 +1,4 @@
-package eu.project.ttc.models;
+package eu.project.ttc.resources;
 
 import org.apache.uima.resource.SharedResourceObject;
 

@@ -14,8 +14,8 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 
-import eu.project.ttc.models.Bank;
 import eu.project.ttc.models.Tree;
+import eu.project.ttc.resources.Bank;
 import eu.project.ttc.types.SingleWordTermAnnotation;
 import eu.project.ttc.types.TermComponentAnnotation;
 

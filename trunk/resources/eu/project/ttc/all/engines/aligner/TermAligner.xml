@@ -2,37 +2,67 @@
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>true</primitive>
-  <annotatorImplementationName>eu.project.ttc.engines.TermContextIndexer</annotatorImplementationName>
+  <annotatorImplementationName>eu.project.ttc.engines.TermAligner</annotatorImplementationName>
   <analysisEngineMetaData>
-    <name>Term Context Indexer</name>
+    <name>Term Aligner</name>
     <description/>
-    <version>1.0</version>
+    <version/>
     <vendor/>
     <configurationParameters>
       <configurationParameter>
-        <name>Feature</name>
+        <name>SourceTerminologyFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
+      <configurationParameter>
+        <name>TargetTerminologyFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
+      <configurationParameter>
+        <name>DictionaryFile</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
+      <configurationParameter>
+        <name>SimilarityDistanceClassName</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>AssociationRateClassName</name>
-        <type>String</type>
+        <name>DistributionalMethod</name>
+        <type>Boolean</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+      </configurationParameter>
+      <configurationParameter>
+        <name>CompositionalMethod</name>
+        <type>Boolean</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
-        <name>AssociationRateClassName</name>
+        <name>SimilarityDistanceClassName</name>
         <value>
-          <string>eu.project.ttc.metrics.LogLikelihood</string>
+          <string>eu.project.ttc.metrics.Cosinus</string>
         </value>
       </nameValuePair>
       <nameValuePair>
-        <name>Feature</name>
+        <name>DistributionalMethod</name>
         <value>
-          <string>org.apache.uima.examples.SourceDocumentInformation:lastSegment</string>
+          <boolean>true</boolean>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>CompositionalMethod</name>
+        <value>
+          <boolean>true</boolean>
         </value>
       </nameValuePair>
     </configurationParameterSettings>

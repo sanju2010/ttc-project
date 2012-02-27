@@ -80,22 +80,6 @@ public class ToolBar {
 		return this.run;
 	}
 	
-	private JButton pause;
-	
-	private void setPause() {
-		this.pause = new JButton("Pause");
-		this.pause.setActionCommand("pause");
-		this.pause.setEnabled(false);
-		this.pause.setPreferredSize(dimension);
-		this.pause.setMargin(insets);
-		this.pause.setBackground(color);
-		this.pause.setBorderPainted(false);
-	}
-	
-	public JButton getPause() {
-		return this.pause;
-	}
-	
 	private JButton stop;
 	
 	private void setStop() {
@@ -118,6 +102,9 @@ public class ToolBar {
 		this.progressBar = new JProgressBar();
 		this.progressBar.setPreferredSize(new Dimension(333,33));
 		this.progressBar.setStringPainted(true);
+    	this.progressBar.setMaximum(100);
+    	this.progressBar.setIndeterminate(false);
+		this.progressBar.setValue(0);
 	}
 
 	public JProgressBar getProgressBar() {
@@ -142,23 +129,19 @@ public class ToolBar {
 		c.gridx = 2; 
 		c.insets = new Insets(0, 3, 0, 3);
 		c.weightx = 0.0; 
-		this.component.add(this.getPause(), c);
-		c.gridx = 3; 
-		c.insets = new Insets(0, 3, 0, 3);
-		c.weightx = 0.0; 
 		this.component.add(this.getStop(), c);
 		c.insets = new Insets(0, 3, 0, 10);
 		c.weightx = 1.0; 
-		c.gridx = 4; 
+		c.gridx = 3; 
 		c.gridwidth = 5; 
 		c.fill = GridBagConstraints.BOTH; 
 		this.component.add(this.getProgressBar(), c);
-		c.gridx = 9;  
+		c.gridx = 8;  
 		c.insets = new Insets(0, 3, 0, 3);
 		c.weightx = 0.0;
 		c.gridwidth = 1; 
 		this.component.add(this.getSave(), c);
-		c.gridx = 10;  
+		c.gridx = 9;  
 		c.insets = new Insets(0, 3, 0, 3);
 		c.weightx = 0.0;
 		c.gridwidth = 1; 
@@ -174,7 +157,6 @@ public class ToolBar {
 		this.getAbout().addActionListener(listener);
 		this.getSave().addActionListener(listener);
 		this.getStop().addActionListener(listener);
-		this.getPause().addActionListener(listener);
 		this.getRun().addActionListener(listener);
 	}
 	
@@ -183,7 +165,6 @@ public class ToolBar {
 		this.setAbout();
 		this.setSave();
 		this.setRun();
-		this.setPause();
 		this.setStop();
 		this.setProgressBar();
 		this.setComponent();

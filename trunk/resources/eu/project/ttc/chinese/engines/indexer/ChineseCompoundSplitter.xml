@@ -41,7 +41,7 @@
     <externalResourceDependency>
       <key>Dictionary</key>
       <description/>
-      <interfaceName>fr.univnantes.lina.uima.dictionaries.Dictionary</interfaceName>
+      <interfaceName>eu.project.ttc.resources.Dictionary</interfaceName>
       <optional>false</optional>
     </externalResourceDependency>
   </externalResourceDependencies>
@@ -51,9 +51,9 @@
         <name>DefaultDictionary</name>
         <description/>
         <fileResourceSpecifier>
-          <fileUrl>fr/univnantes/lina/uima/resources/Dictionary.Default</fileUrl>
+          <fileUrl>eu/project/ttc/all/resources/empty-dictionary.txt</fileUrl>
         </fileResourceSpecifier>
-        <implementationName>fr.univnantes.lina.uima.dictionaries.DictionaryResource</implementationName>
+        <implementationName>eu.project.ttc.resources.DictionaryResource</implementationName>
       </externalResource>
     </externalResources>
     <externalResourceBindings>

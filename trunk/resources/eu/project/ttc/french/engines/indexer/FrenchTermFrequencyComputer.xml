@@ -34,7 +34,7 @@
     <externalResourceDependency>
       <key>GeneralLanguage</key>
       <description/>
-      <interfaceName>eu.project.ttc.models.GeneralLanguage</interfaceName>
+      <interfaceName>eu.project.ttc.resources.GeneralLanguage</interfaceName>
       <optional>false</optional>
     </externalResourceDependency>
   </externalResourceDependencies>
@@ -46,7 +46,7 @@
         <fileResourceSpecifier>
           <fileUrl>eu/project/ttc/french/resources/GeneralLanguage.French</fileUrl>
         </fileResourceSpecifier>
-        <implementationName>eu.project.ttc.models.GeneralLanguageResource</implementationName>
+        <implementationName>eu.project.ttc.resources.GeneralLanguageResource</implementationName>
       </externalResource>
     </externalResources>
     <externalResourceBindings>

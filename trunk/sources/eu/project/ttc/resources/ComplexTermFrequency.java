@@ -1,4 +1,4 @@
-package eu.project.ttc.models;
+package eu.project.ttc.resources;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,6 +13,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.util.Level;
 
+import eu.project.ttc.models.Component;
 import eu.project.ttc.types.MultiWordTermAnnotation;
 import eu.project.ttc.types.WordAnnotation;
 

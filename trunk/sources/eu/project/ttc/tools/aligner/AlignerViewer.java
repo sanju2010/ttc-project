@@ -21,7 +21,7 @@ import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 
-public class ZigguratViewer {
+public class AlignerViewer {
 
 	private Dimension getDimension() {
 		return new Dimension(600,400);
@@ -30,7 +30,7 @@ public class ZigguratViewer {
 	private DefaultMutableTreeNode root;
 
 	private void setRoot() {
-		this.root = new DefaultMutableTreeNode("Context");
+		this.root = new DefaultMutableTreeNode("");
 	}
 	
 	private DefaultMutableTreeNode getRoot() {
@@ -112,13 +112,14 @@ public class ZigguratViewer {
 		this.split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 		this.split.setTopComponent(this.getTableScroll());
 		this.split.setBottomComponent(this.getTreeScroll());
+		this.split.setContinuousLayout(true);
 	}
 	
 	public JSplitPane getComponent() {
 		return this.split;
 	}
 		
-	public ZigguratViewer() {
+	public AlignerViewer() {
 		this.setRoot();
 		this.setTreeModel();
 		this.setTree();

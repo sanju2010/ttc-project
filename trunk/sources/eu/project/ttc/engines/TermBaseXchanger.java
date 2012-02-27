@@ -1,7 +1,6 @@
 package eu.project.ttc.engines;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import java.util.HashMap;
@@ -23,6 +22,7 @@ import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.text.AnnotationIndex;
+import org.apache.uima.examples.SourceDocumentInformation;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
@@ -37,30 +37,20 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 	
 	private File file;
 	
-	private void setFile(String path) throws IOException {
-		File file = new File(path + File.separator + "terminology.xmi");
-		File tbx = new File(path + File.separator + "terminology.tbx");
-		if (file.exists()) {
-			if (file.isFile()) {
-				this.file = tbx;
-			} else {
-				throw new IOException("Not a file: " + file.getAbsolutePath());				
-			}
-		} else {
-			throw new FileNotFoundException(file.getAbsolutePath());
-		}
+	private void setDirectory(String path) throws IOException {
+		this.file = new File(path);
 	}
 	
-	private File getFile() {
+	private File getDirectory() {
 		return this.file;
 	}
 	
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
 		try {
-			if (this.getFile() == null) {
+			if (this.getDirectory() == null) {
 				String path = (String) context.getConfigParameterValue("Directory");
-				this.setFile(path);
+				this.setDirectory(path);
 			}
 			if (this.variants == null) {
 				this.setVariants();
@@ -73,8 +63,17 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 	@Override
 	public void process(JCas cas) throws AnalysisEngineProcessException {
 		try {
+			AnnotationIndex<Annotation> index = cas.getAnnotationIndex(SourceDocumentInformation.type);
+			FSIterator<Annotation> iterator = index.iterator();
+			String file = "terminology.tbx";
+			if (iterator.hasNext()) {
+				SourceDocumentInformation sdi = (SourceDocumentInformation) iterator.next();
+				String uri = sdi.getUri();
+				int last = uri.lastIndexOf('.');
+				file = uri.substring(0, last - 1) + ".tbx";
+			}
 			this.index(cas);
-			this.create(cas);
+			this.create(cas, file);
 		} catch (Exception e) {
 			throw new AnalysisEngineProcessException(e);
 		}
@@ -108,7 +107,8 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 		}
 	}
 
-	private void create(JCas cas) throws Exception {
+	private void create(JCas cas, String name) throws Exception {
+		File file = new File(this.getDirectory(), name);
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder = factory.newDocumentBuilder();
 		Document document = builder.newDocument();
@@ -127,7 +127,7 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 		encodingDesc.appendChild(encodingP);
 		Element sourceDesc = document.createElement("sourceDesc");
 		Element  p = document.createElement("p");
-		p.setTextContent(this.getFile().getAbsolutePath());
+		p.setTextContent(file.getAbsolutePath());
 		sourceDesc.appendChild(p);
 		fileDesc.appendChild(sourceDesc);
 		Element text = document.createElement("text");
@@ -142,7 +142,7 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 		transformer.setOutputProperty(OutputKeys.STANDALONE,"yes");
 		transformer.setOutputProperty(OutputKeys.INDENT,"no");
 		DOMSource source = new DOMSource(document);
-		StreamResult result = new StreamResult(this.getFile());
+		StreamResult result = new StreamResult(file);
 		transformer.transform(source, result);
 	}
 

@@ -12,6 +12,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
+import javax.swing.SwingWorker;
+
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
@@ -28,8 +30,8 @@ import org.apache.uima.util.JCasPool;
 import org.apache.uima.util.Level;
 import org.apache.uima.util.XMLInputSource;
 
-public class TermSuiteRunner {
-
+public class TermSuiteRunner extends SwingWorker<Void, File> {
+	
 	public static final int TXT = 0;
 	
 	public static final int URI = 1;
@@ -143,6 +145,48 @@ public class TermSuiteRunner {
 		}
 	}
 	
+	private int input;
+	
+	private String language;
+	
+	private String encoding;
+	
+	@Override
+	protected Void doInBackground() throws Exception {
+		this.setProgress(0);
+        for (int index = 0; index < this.data.size(); index++) {
+        	if (this.isCancelled()) {
+				break;
+			}
+        	File file = this.data.get(index);
+        	boolean last = index == this.data.size() - 1;
+        	this.publish(file);
+        	this.process(file, this.encoding, this.language, this.input, last);
+        	this.setProgress(index + 1 / this.data.size());
+        }
+        return null;
+	}
+
+	@Override
+	public void process(List<File> files) {
+		for (File file : files) {
+			if (this.isCancelled()) {
+				break;
+			}
+			UIMAFramework.getLogger().log(Level.INFO, "Processing " + file.getAbsolutePath());
+		}
+	}
+	
+	@Override
+	public void done() {
+		this.reset();
+		if (this.isCancelled()) {
+			return;
+		}
+		String message = this.display(this.analysisEngine.getAnalysisEngineMetaData(), this.analysisEngine.getManagementInterface(), 0);
+        UIMAFramework.getLogger().log(Level.INFO, message);
+	}
+	
 	private void process(File file, String encoding, String language, int mode, boolean last) throws Exception {
 		JCas cas = this.pool.getJCas();
 		try {
@@ -183,8 +227,14 @@ public class TermSuiteRunner {
 		} finally {
 			this.pool.releaseJCas(cas);
 			this.engine.callBack();
-			this.listener.reset();
 		}
+	}
+	
+	private void reset() {
+		this.termSuite.getToolBar().getRun().setEnabled(true);
+		this.termSuite.getToolBar().getStop().setEnabled(false);
+		this.termSuite.getToolBar().getProgressBar().setValue(0);
+		this.setProgress(0);
 	}
 	
 	private String extract(File file, String encoding) throws Exception {
@@ -218,31 +268,15 @@ public class TermSuiteRunner {
         }
 	}
 	
-	private void process(String path, ConfigurationParameterSettings settings, String data, int input, String language, String encoding) throws Exception {
-        // String path = analysisEngine.replaceAll("\\.", "/") + ".xml";
-        this.setAnalysisEngine(path, settings);
-        this.setData(data, input);
-        this.listener.initialize(this.data.size());
-        for (int index = 0; index < this.data.size(); index++) {
-                File file = this.data.get(index);
-                boolean last = index == this.data.size() - 1;
-                UIMAFramework.getLogger().log(Level.INFO, "Processing '" + file.getAbsolutePath() + "'");
-                this.process(file, encoding, language, input, last);
-                this.listener.flush(index + 1, this.data.size());
-        }
-        String message = this.display(this.analysisEngine.getAnalysisEngineMetaData(), this.analysisEngine.getManagementInterface(), 0);
-        UIMAFramework.getLogger().log(Level.INFO, message);
-	}
-	
 	private <md> String display(AnalysisEngineMetaData metadata, AnalysisEngineManagement managment, int level) {
 		long time = managment.getAnalysisTime();
 		String name = managment.getName();
 		String perf = managment.getCASesPerSecond();
 		long num = managment.getNumberOfCASesProcessed();
 		StringBuilder display = new StringBuilder();
-		/* if (level == 0) {
+		if (level == 0) {
 			display.append("\n\n");
-		} */
+		}
 		for (int index = 0; index < level; index++) {
 			display.append("    ");
 		}
@@ -250,7 +284,7 @@ public class TermSuiteRunner {
 		for (int index = 0; index < level; index++) {
 			display.append("    ");
 		}
-		display.append("      processes " + num + " documents in "  + time + " milli-seconds ("  + perf + " doc/s).\n\n");
+		display.append("processes " + num + " documents in "  + time + " milli-seconds ("  + perf + " doc/s).\n\n");
 		for (String key : managment.getComponents().keySet()) {
 			AnalysisEngineManagement m = managment.getComponents().get(key);
 			display.append(this.display(metadata, m, level + 1));
@@ -258,14 +292,18 @@ public class TermSuiteRunner {
 		return display.toString();
 	}
 
-	private TermSuiteListener listener;
+	private TermSuite termSuite;
 	
 	private TermSuiteEngine engine;
 	
-	public void process(TermSuiteEngine engine, TermSuiteListener listener) throws Exception {
+	public TermSuiteRunner(TermSuite termSuite, TermSuiteEngine engine) throws Exception {
+		this.termSuite = termSuite;
 		this.engine = engine;
-		this.listener = listener;
-		this.process(engine.get(), engine.settings(), engine.data(), engine.input(), engine.language(), engine.encoding());
+		this.input = this.engine.input();
+		this.language = this.engine.language();
+		this.encoding = this.engine.encoding();
+        this.setAnalysisEngine(this.engine.get(), this.engine.settings());
+        this.setData(this.engine.data(), this.input);
 	}
 	
 }

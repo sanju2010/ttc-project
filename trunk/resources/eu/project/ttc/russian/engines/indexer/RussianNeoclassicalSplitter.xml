@@ -41,7 +41,7 @@
     <externalResourceDependency>
       <key>Bank</key>
       <description/>
-      <interfaceName>eu.project.ttc.models.Bank</interfaceName>
+      <interfaceName>eu.project.ttc.resources.Bank</interfaceName>
       <optional>false</optional>
     </externalResourceDependency>
   </externalResourceDependencies>
@@ -53,7 +53,7 @@
         <fileResourceSpecifier>
           <fileUrl>eu/project/ttc/russian/resources/RootBank.Russian</fileUrl>
         </fileResourceSpecifier>
-        <implementationName>eu.project.ttc.models.BankResource</implementationName>
+        <implementationName>eu.project.ttc.resources.BankResource</implementationName>
       </externalResource>
     </externalResources>
     <externalResourceBindings>

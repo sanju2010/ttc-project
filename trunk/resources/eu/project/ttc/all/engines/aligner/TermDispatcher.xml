@@ -2,15 +2,27 @@
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>true</primitive>
-  <annotatorImplementationName>eu.project.ttc.engines.TsvCasConsumer</annotatorImplementationName>
+  <annotatorImplementationName>eu.project.ttc.engines.TermDispatcher</annotatorImplementationName>
   <analysisEngineMetaData>
-    <name>TSV Cas Consumer</name>
+    <name>Term Dispatcher</name>
     <description/>
-    <version>1.0</version>
+    <version/>
     <vendor/>
     <configurationParameters>
       <configurationParameter>
-        <name>Directory</name>
+        <name>SourceLanguage</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
+      <configurationParameter>
+        <name>TargetLanguage</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
+      <configurationParameter>
+        <name>Feature</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
@@ -18,9 +30,9 @@
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
-        <name>Directory</name>
+        <name>Feature</name>
         <value>
-          <string>/tmp</string>
+          <string>org.apache.uima.examples.SourceDocumentInformation:lastSegment</string>
         </value>
       </nameValuePair>
     </configurationParameterSettings>
@@ -39,9 +51,9 @@
       </capability>
     </capabilities>
     <operationalProperties>
-      <modifiesCas>true</modifiesCas>
+      <modifiesCas>false</modifiesCas>
       <multipleDeploymentAllowed>true</multipleDeploymentAllowed>
-      <outputsNewCASes>false</outputsNewCASes>
+      <outputsNewCASes>true</outputsNewCASes>
     </operationalProperties>
   </analysisEngineMetaData>
   <resourceManagerConfiguration/>

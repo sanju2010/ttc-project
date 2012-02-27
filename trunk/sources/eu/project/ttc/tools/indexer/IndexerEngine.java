@@ -8,28 +8,29 @@ import org.apache.uima.resource.metadata.ConfigurationParameterSettings;
 
 import eu.project.ttc.tools.TermSuiteEngine;
 import eu.project.ttc.tools.TermSuiteRunner;
+import eu.project.ttc.tools.TermSuiteTool;
 
 public class IndexerEngine implements TermSuiteEngine {
 
-	private Indexer acabit;
+	private TermSuiteTool tool;
 	
-	public void setAcabit(Indexer acabit) {
-		this.acabit = acabit;
+	public void setTool(TermSuiteTool tool) {
+		this.tool = tool;
 	}
 	
-	private Indexer getAcabit() {
-		return this.acabit;
+	private TermSuiteTool getTool() {
+		return this.tool;
 	}
 		
 	public String get() throws Exception {
-		ConfigurationParameterSettings parameters = this.getAcabit().getSettings().getMetaData().getConfigurationParameterSettings();
+		ConfigurationParameterSettings parameters = this.getTool().getSettings().getMetaData().getConfigurationParameterSettings();
 		String code = (String) parameters.getParameterValue("Language");
 		String language = new Locale (code).getDisplayLanguage(Locale.ENGLISH);
 		return "eu/project/ttc/" + language.toLowerCase() + "/engines/indexer/" + language + "Indexer.xml";
 	}
 
 	public ConfigurationParameterSettings settings() { 
-		ConfigurationParameterSettings parameters = this.getAcabit().getSettings().getMetaData().getConfigurationParameterSettings();
+		ConfigurationParameterSettings parameters = this.getTool().getSettings().getMetaData().getConfigurationParameterSettings();
 		String code = (String) parameters.getParameterValue("Language");
         ConfigurationParameterSettings settings = UIMAFramework.getResourceSpecifierFactory().createConfigurationParameterSettings();
         settings.setParameterValue("Language", code);
@@ -52,7 +53,7 @@ public class IndexerEngine implements TermSuiteEngine {
 
 	@Override
 	public void callBack(CAS cas) throws Exception {
-		this.getAcabit().getParent().getBanker().doLoad(cas.getJCas());	
+		this.getTool().getParent().getBanker().doLoad(cas.getJCas());	
 	}
 
 	@Override
@@ -60,7 +61,7 @@ public class IndexerEngine implements TermSuiteEngine {
 
 	@Override
 	public String data() {
-		ConfigurationParameterSettings parameters = this.getAcabit().getSettings().getMetaData().getConfigurationParameterSettings();
+		ConfigurationParameterSettings parameters = this.getTool().getSettings().getMetaData().getConfigurationParameterSettings();
 		return (String) parameters.getParameterValue("InputDirectory");
 	}
 
@@ -71,7 +72,7 @@ public class IndexerEngine implements TermSuiteEngine {
 
 	@Override
 	public String language() {
-		ConfigurationParameterSettings parameters = this.getAcabit().getSettings().getMetaData().getConfigurationParameterSettings();
+		ConfigurationParameterSettings parameters = this.getTool().getSettings().getMetaData().getConfigurationParameterSettings();
 		return (String) parameters.getParameterValue("Language");
 	}
 

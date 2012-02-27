@@ -2,15 +2,17 @@ package eu.project.ttc.tools;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
-public class TermSuiteListener implements ActionListener {
+public class TermSuiteListener implements ActionListener, PropertyChangeListener  {
 	
 	private TermSuiteTool termSuiteTool;
 	
-	public void setTermSuiteTool(TermSuiteTool termSuiteTool) {
+	public void setTool(TermSuiteTool termSuiteTool) {
 		this.termSuiteTool = termSuiteTool;
 	}
 	
@@ -20,7 +22,7 @@ public class TermSuiteListener implements ActionListener {
 
 	private TermSuiteEngine termSuiteEngine;
 	
-	public void setTermSuiteEngine(TermSuiteEngine taggerEngine) {
+	public void setEngine(TermSuiteEngine taggerEngine) {
 		this.termSuiteEngine = taggerEngine;
 	}
 	
@@ -49,59 +51,34 @@ public class TermSuiteListener implements ActionListener {
 		this.getTermSuiteTool().getParent().getViewer().getResultModel().clear();
 		try {
 			this.getTermSuiteTool().getParent().getToolBar().getRun().setEnabled(false); 
-			TermSuiteRunner runner = new TermSuiteRunner();
-			runner.process(this.getTermSuiteEngine(), this);
-			// this.getTermSuiteTool().getParent().getToolBar().getPause().setEnabled(true);
-			// this.getTermSuiteTool().getParent().getToolBar().getStop().setEnabled(true);
-			// TODO
+			this.runner = new TermSuiteRunner(this.getTermSuiteTool().getParent(), this.getTermSuiteEngine());
+	        this.runner.addPropertyChangeListener(this);
+			this.runner.execute();
+			this.getTermSuiteTool().getParent().getToolBar().getStop().setEnabled(true);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(this.getTermSuiteTool().getParent().getFrame(),e.getMessage(),"Exception",JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		} 
 	}
-
-	public void reset() {
-		this.getTermSuiteTool().getParent().getToolBar().getRun().setEnabled(true);
-		this.getTermSuiteTool().getParent().getToolBar().getPause().setEnabled(false);
-		this.getTermSuiteTool().getParent().getToolBar().getStop().setEnabled(false);
-	}
 	
-	public void initialize(int size) {
-    	this.getTermSuiteTool().getParent().getToolBar().getProgressBar().setMaximum(size);
-    	this.getTermSuiteTool().getParent().getToolBar().getProgressBar().setIndeterminate(false);
-		this.getTermSuiteTool().getParent().getToolBar().getProgressBar().setValue(0);
-	}
+	private TermSuiteRunner runner;
 	
-	public void flush(int value, int limit) {
-		this.getTermSuiteTool().getParent().getToolBar().getProgressBar().setValue(value);
-		this.getTermSuiteTool().getParent().getToolBar().getProgressBar().setString(value + " / " + limit);
-	}
-	
-	/*
-	
-	private void doResume() {
-		this.getTermSuiteTool().getParent().getToolBar().getProgressBar().setString("Resumed...");
-		this.getTermSuiteTool().getParent().getToolBar().getPause().setEnabled(true);
-	}
-	
-	private void doPause() {
-		this.getTermSuiteTool().getParent().getToolBar().getProgressBar().setString("Paused...");
-		this.getTermSuiteTool().getParent().getToolBar().getRun().setText("Resume");
-		this.getTermSuiteTool().getParent().getToolBar().getRun().setActionCommand("resume");
-		this.getTermSuiteTool().getParent().getToolBar().getRun().setEnabled(true);
-		this.getTermSuiteTool().getParent().getToolBar().getPause().setEnabled(false);
-	}
-
-	private void doStop() {
-		this.getTermSuiteTool().getParent().getToolBar().getRun().setEnabled(true);
-		this.getTermSuiteTool().getParent().getToolBar().getPause().setEnabled(false);
-		this.getTermSuiteTool().getParent().getToolBar().getStop().setEnabled(false);
-		if (this.getTermSuiteTool().getParent().isCommandLineInterface()) {
-			this.getTermSuiteTool().getParent().quit();
+	@Override
+	public void propertyChange(PropertyChangeEvent event) {
+		if (event.getPropertyName().equals("progress")) {
+			int progress = this.runner.getProgress();
+			this.flush(progress);			
 		}
-		this.getTermSuiteTool().getParent().getTaggerViewer().doEnable(true);
 	}
-	*/
+	
+	public void flush(int value) {
+		this.getTermSuiteTool().getParent().getToolBar().getProgressBar().setValue(value);
+		this.getTermSuiteTool().getParent().getToolBar().getProgressBar().setString(value + " %");
+	}
+	
+	private void doStop() {
+		this.runner.cancel(false);
+	}
 	
 	@Override
 	public void actionPerformed(ActionEvent event) {
@@ -115,12 +92,10 @@ public class TermSuiteListener implements ActionListener {
 				this.getTermSuiteTool().getParent().getAbout().show();
 			} else if (action.equals("run")) {
 				this.doRun();
-			} else if (action.equals("pause")) {
-				
-			} else if (action.equals("resume")) {
-				
 			} else if (action.equals("stop")) {
-				
+				this.doStop();
+			}  else if (action.equals("save")) {
+				this.getTermSuiteTool().getParent().save();
 			}
 		} 
 	}

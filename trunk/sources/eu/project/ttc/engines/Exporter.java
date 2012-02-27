@@ -20,7 +20,7 @@ import org.apache.uima.util.Level;
 
 import eu.project.ttc.types.WordAnnotation;
 
-public class TsvCasConsumer extends JCasAnnotator_ImplBase {
+public class Exporter extends JCasAnnotator_ImplBase {
 	
 	private File directory;
 	
@@ -78,9 +78,11 @@ public class TsvCasConsumer extends JCasAnnotator_ImplBase {
 			WordAnnotation annotation = (WordAnnotation) iterator.next();
 			builder.append(annotation.getCoveredText());
 			builder.append('\t');
-			builder.append(annotation.getCategory());
+			builder.append(annotation.getTag());
 			builder.append('\t');
 			builder.append(annotation.getLemma());
+			builder.append('\t');
+			builder.append(annotation.getStem());
 			builder.append('\n');
 		}
 		return builder.toString();

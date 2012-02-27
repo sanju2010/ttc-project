@@ -1,4 +1,4 @@
-package eu.project.ttc.models;
+package eu.project.ttc.resources;
 
 import java.io.IOException;
 import java.util.HashMap;

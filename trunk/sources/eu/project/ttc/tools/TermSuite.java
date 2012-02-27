@@ -18,6 +18,9 @@ import javax.swing.event.ChangeListener;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.util.Level;
 
+import eu.project.ttc.tools.aligner.Aligner;
+import eu.project.ttc.tools.aligner.AlignerEngine;
+import eu.project.ttc.tools.aligner.AlignerViewer;
 import eu.project.ttc.tools.help.Help;
 import eu.project.ttc.tools.indexer.Indexer;
 import eu.project.ttc.tools.indexer.IndexerEngine;
@@ -32,16 +35,6 @@ import fr.free.rocheteau.jerome.dunamis.viewers.ProcessingResultViewer;
 
 public class TermSuite implements Runnable {
 
-	private boolean cli;
-	
-	private void enableCommandLineInterface(boolean enabled) {
-		this.cli = enabled;
-	}
-	
-	public boolean isCommandLineInterface() {
-		return this.cli;
-	}
-	
 	public void error(Exception e) {
 		UIMAFramework.getLogger().log(Level.SEVERE,e.getMessage());
 	}
@@ -114,23 +107,21 @@ public class TermSuite implements Runnable {
 	
 	public void enableListeners() {
 		if (this.isTaggerSelected()) {
-			this.listener.setTermSuiteTool(this.getSpotter());
+			this.listener.setTool(this.getSpotter());
 			SpotterEngine engine = new SpotterEngine();
-			engine.setTagger(this.getSpotter());
-			this.listener.setTermSuiteEngine(engine);
+			engine.setTool(this.getSpotter());
+			this.listener.setEngine(engine);
 		} else if (this.isIndexerSelected()) {
-			this.listener.setTermSuiteTool(this.getIndexer());
+			this.listener.setTool(this.getIndexer());
 			IndexerEngine engine = new IndexerEngine();
-			engine.setAcabit(this.getIndexer());
-			this.listener.setTermSuiteEngine(engine);
-		} /* else if (this.isContextualizerSelected()) {
-			this.listener.setTermSuiteTool(this.getContextualizer());
-			KatastasisEngine engine = new KatastasisEngine();
-			engine.setKatastasis(this.getContextualizer());
-			this.listener.setTermSuiteEngine(engine);
-		} else if (this.isConverterSelected()) {
-			this.getConverter().enableListsners(this.listener);
-		} */
+			engine.setTool(this.getIndexer());
+			this.listener.setEngine(engine);
+		} else if (this.isAlignerSelected()) {
+			this.listener.setTool(this.getAligner());
+			AlignerEngine engine = new AlignerEngine();
+			engine.setTool(this.getAligner());
+			this.listener.setEngine(engine);
+		} 
 	}
 		
 	public void run() {
@@ -186,7 +177,6 @@ public class TermSuite implements Runnable {
 		return this.viewer;
 	}
 	
-	
 	private Indexer indexer;
 	
 	private void setIndexer() {
@@ -208,41 +198,26 @@ public class TermSuite implements Runnable {
 		return this.banker;
 	}
 
-	/*
+	private Aligner aligner;
 	
-	private Katastasis contextualizer;
-	
-	private void setContextualizer() {
-		this.contextualizer = new Katastasis();
-		this.contextualizer.setParent(this);
+	private void setAligner() {
+		this.aligner = new Aligner();
+		this.aligner.setParent(this);
 	}
 	
-	public Katastasis getContextualizer() {
-		return this.contextualizer;
+	public Aligner getAligner() {
+		return this.aligner;
 	}
 	
-	private KatastasisViewer contextualierViewer;
+	private AlignerViewer mixer;
 	
-	private void setContextualizerViewer() {
-		this.contextualierViewer = new KatastasisViewer();
+	private void setMixer() {
+		this.mixer = new AlignerViewer();
 	}
 	
-	public KatastasisViewer getContextualizerViewer() {
-		return this.contextualierViewer;
+	public AlignerViewer getMixer() {
+		return this.mixer;
 	}
-	
-	private Converter converter;
-	
-	private void setConverter() {
-		this.converter = new Converter();
-		this.converter.setParent(this);
-	}
-	
-	public Converter getConverter() {
-		return this.converter;
-	}
-	
-	*/
 	
 	private JTabbedPane content;
 	
@@ -250,16 +225,11 @@ public class TermSuite implements Runnable {
 		this.content = new JTabbedPane();
 		this.content.setTabPlacement(JTabbedPane.LEFT);
 		this.content.addTab("     Spotter     ",this.getSpotter().getComponent());
-		this.content.addTab("     Viewer     ",this.getViewer().getComponent());
-		this.content.addTab("     Indexer    ",this.getIndexer().getComponent());
-		this.content.addTab("     Banker     ",this.getBanker().getComponent());
-		/*
-		this.content.addTab("   Term Viewer  ",this.getTermerViewer().getComponent());
-		this.content.addTab(" Contextualizer ",this.getContextualizer().getComponent());
-		this.content.addTab(" Context Viewer ",this.getContextualizerViewer().getComponent());
-		this.content.addTab("    Converter   ",this.getConverter().getComponent());
-		this.content.addTab(" Helper ",this.getHelp().getComponent());
-		*/
+		this.content.addTab("     Corpus      ",this.getViewer().getComponent());
+		this.content.addTab("     Indexer     ",this.getIndexer().getComponent());
+		this.content.addTab("   Terminology   ",this.getBanker().getComponent());
+		this.content.addTab("     Aligner     ",this.getAligner().getComponent());
+		this.content.addTab("    Dictionary   ",this.getMixer().getComponent());
 		Listener listener = new Listener();
 		listener.setTermSuite(this);
 		this.content.addChangeListener(listener);
@@ -281,16 +251,8 @@ public class TermSuite implements Runnable {
 		return this.getContent().getSelectedIndex() == 3;
 	}
 	
-	public boolean isContextualizerSelected() {
+	public boolean isAlignerSelected() {
 		return this.getContent().getSelectedIndex() == 4;
-	}
-	
-	public boolean isContextViewerSelected() {
-		return this.getContent().getSelectedIndex() == 5;
-	}
-	
-	public boolean isConverterSelected() {
-		return this.getContent().getSelectedIndex() == 6;
 	}
 	
 	private JTabbedPane getContent() {
@@ -338,8 +300,7 @@ public class TermSuite implements Runnable {
 		return this.frame;
 	}
 	
-	public TermSuite(boolean cli) {
-		this.enableCommandLineInterface(cli);
+	public TermSuite() {
 		this.setDesktop();
 		this.setHelp();
 		this.setPreferences();
@@ -349,12 +310,8 @@ public class TermSuite implements Runnable {
 		this.setViewer();
 		this.setIndexer();
 		this.setBanker();
-		/*
-		this.setTermerViewer();
-		this.setContextualizer();
-		this.setContextualizerViewer();
-		this.setConverter();
-		*/
+		this.setAligner();
+		this.setMixer();
 		this.setContent();
 		this.setComponent();
 		this.setFrame();
@@ -375,14 +332,11 @@ public class TermSuite implements Runnable {
 		this.getFrame().addWindowListener(windowListener);
 	}
 		
-	private void save() {
+	public void save() {
 		try {
 			this.getSpotter().getSettings().doSave();
 			this.getIndexer().getSettings().doSave();
-			/*
-			this.getContextualizer().getSettings().doSave();
-			this.getConverter().doSave();
-			*/
+			this.getAligner().getSettings().doSave();
 		} catch (Exception e) {
 			this.error(e);
 		}
@@ -392,28 +346,8 @@ public class TermSuite implements Runnable {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) { }
-		boolean cli = false;
-		String wrong = null;
-		for (String arg : args) {
-			if (arg.equals("--cli")) {
-				cli = true;
-				break;
-			} else if (arg.equals("--gui")) {
-				cli = false;
-				break;
-			} else {
-				wrong = arg;
-				break;
-			}
-		}
-		if (wrong == null) {
-			TermSuite termSuite = new TermSuite(cli);
-			SwingUtilities.invokeLater(termSuite);			
-		} else {
-			UIMAFramework.getLogger().log(Level.SEVERE,"Wrong option: " + wrong);
-			UIMAFramework.getLogger().log(Level.INFO,"Options allowed: --cli | --gui");
-			System.exit(1);
-		}
+		TermSuite termSuite = new TermSuite();
+		SwingUtilities.invokeLater(termSuite);	
     }
 	
 	

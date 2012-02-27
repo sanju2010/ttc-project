@@ -13,9 +13,9 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 
+import eu.project.ttc.resources.Dictionary;
 import eu.project.ttc.types.SingleWordTermAnnotation;
 import eu.project.ttc.types.TermComponentAnnotation;
-import fr.univnantes.lina.uima.dictionaries.Dictionary;
 
 public class CompoundSplitter extends JCasAnnotator_ImplBase {
 		
@@ -34,7 +34,7 @@ public class CompoundSplitter extends JCasAnnotator_ImplBase {
 	private void setPath(String path) throws Exception {
 		this.path = path;
 		URI uri = URI.create(path);
-		this.getDictionary().doLoad(uri);
+		this.getDictionary().load(uri);
 	}
 	
 	private String getPath() {

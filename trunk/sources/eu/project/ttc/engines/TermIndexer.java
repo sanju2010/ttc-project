@@ -16,11 +16,11 @@ import org.apache.uima.util.Level;
 import uima.sandbox.indexer.engines.Indexer;
 
 import eu.project.ttc.metrics.AssociationRate;
-import eu.project.ttc.models.ComplexTermFrequency;
 import eu.project.ttc.models.Component;
 import eu.project.ttc.models.CrossTable;
 import eu.project.ttc.models.Context;
-import eu.project.ttc.models.SimpleTermFrequency;
+import eu.project.ttc.resources.ComplexTermFrequency;
+import eu.project.ttc.resources.SimpleTermFrequency;
 import eu.project.ttc.types.MultiWordTermAnnotation;
 import eu.project.ttc.types.SingleWordTermAnnotation;
 import eu.project.ttc.types.TermAnnotation;
@@ -152,6 +152,7 @@ public class TermIndexer extends Indexer {
 		Map<String, Context> contexts = new TreeMap<String, Context>();
 		contexts.putAll(this.getSingleWordTermFrequency().getContexts());
 		for (String item : contexts.keySet()) {
+			Integer freq = this.getSingleWordTermFrequency().getFrequencies().get(item);
 			JCas jcas = cas.createView(item);
 			jcas.setDocumentLanguage(this.getLanguage());
 			StringBuilder builder = new StringBuilder();
@@ -159,6 +160,9 @@ public class TermIndexer extends Indexer {
 			builder.append(context.toString());
 			builder.append('\n');
 			jcas.setDocumentText(builder.toString());
+			TermAnnotation annotation = new TermAnnotation(jcas, 0, jcas.getDocumentText().length());
+			annotation.setOccurrences(freq.intValue());
+			annotation.addToIndexes();
 		}
 	}
 	

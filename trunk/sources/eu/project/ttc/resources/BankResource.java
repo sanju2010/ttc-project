@@ -1,4 +1,4 @@
-package eu.project.ttc.models;
+package eu.project.ttc.resources;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,6 +8,8 @@ import java.util.Scanner;
 
 import org.apache.uima.resource.DataResource;
 import org.apache.uima.resource.ResourceInitializationException;
+
+import eu.project.ttc.models.Tree;
 
 public class BankResource implements Bank {
 	

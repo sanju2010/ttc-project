@@ -1,10 +1,5 @@
 package eu.project.ttc.engines;
 
-/*
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-*/
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -14,7 +9,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import org.apache.uima.UIMAFramework;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
@@ -47,33 +41,6 @@ public class MultiWordTermGatherer extends JCasAnnotator_ImplBase {
 		return this.ruleSystem;
 	}
 	
-	/*
-	private String path;
-	
-	private void setPath(String path) throws IOException {
-		this.path = path;
-		if (this.override()) {
-			this.getRuleSystem().clear();
-		}
-		InputStream inputStream = new FileInputStream(path);
-		this.getRuleSystem().load(inputStream);
-	}
-	
-	private String getPath() {
-		return this.path;
-	}
-	
-	private boolean override;
-	
-	private void enableOverride(boolean enabled) {
-		this.override = enabled;
-	}
-	
-	private boolean override() {
-		return this.override;
-	}
-	*/
-	
 	private boolean enable;
 	
 	private void enable(boolean enabled) {
@@ -93,15 +60,6 @@ public class MultiWordTermGatherer extends JCasAnnotator_ImplBase {
 				RuleSystem ruleSystem = (RuleSystem) context.getResourceObject("RuleSystem");
 				this.setRuleSystem(ruleSystem);
 			
-				/*
-				Boolean override = (Boolean) context.getConfigParameterValue("Override");
-				this.enableOverride(override.booleanValue());
-			
-				String path = (String) context.getConfigParameterValue("File");
-				if (path != null && this.getPath() == null) {
-					this.setPath(path);
-				}
-				*/
 				this.setAnnotations();
 			}
 		} catch (Exception e) {
@@ -203,7 +161,6 @@ public class MultiWordTermGatherer extends JCasAnnotator_ImplBase {
 			
 		}
 		Collections.sort(lemmas);
-		// Collections.sort(stems);
 		String category = annotation.getCategory();
 		for (int i = 0 ; i < lemmas.size(); i++) {
 			String lemma = lemmas.get(i);
@@ -221,14 +178,6 @@ public class MultiWordTermGatherer extends JCasAnnotator_ImplBase {
 				}
 			}
 		}
-		/*
-		for (int i = 0 ; i < lemmas.size(); i++) {
-			for (int j = 0; j < stems.size(); j++) {
-				String key = this.setKey(lemmas.get(i), stems.get(j), category);
-				keys.add(key);
-			}
-		}
-		*/
 	}
 	
 	private void clean(JCas cas) {
@@ -347,64 +296,10 @@ public class MultiWordTermGatherer extends JCasAnnotator_ImplBase {
 	}
 	
 	private void gather(JCas cas) {
-		UIMAFramework.getLogger().log(Level.INFO, "Rule-based gathering over " + this.getAnnotations().size() + " term classes");
+		this.getContext().getLogger().log(Level.INFO, "Rule-based gathering over " + this.getAnnotations().size() + " term classes");
 		for (String key : this.getAnnotations().keySet()) {
 			List<TermAnnotation> list = this.getAnnotations().get(key);
-			UIMAFramework.getLogger().log(Level.FINE, "Rule-based gathering over the '" + key + "' term class of size " + list.size());
-			
-			/*
-			Map<String, TermAnnotation> idx = new HashMap<String, TermAnnotation>();
-			Map<String, List<TermAnnotation>> index = new HashMap<String, List<TermAnnotation>>();
-			for (TermAnnotation item : list) {
-				String id = item.getCategory();
-				List<TermAnnotation> part = index.get(id);
-				if (part == null) {
-					part = new ArrayList<TermAnnotation>();
-					index.put(id, part);
-					idx.put(id, item);
-				} else if (item.getFrequency() > idx.get(id).getFrequency()) {
-					idx.put(id, item);
-				}
-				part.add(item);
-			}
-			for (String id : index.keySet()) {
-				List<TermAnnotation> part = index.get(id);
-				TermAnnotation item = idx.get(id);
-				part.remove(item);
-			}
-			for (String id : index.keySet()) {
-				List<TermAnnotation> part = index.get(id);
-				TermAnnotation item = idx.get(id);
-				FSArray variants = item.getVariants();
-				int offset = 0;
-				if (variants == null) {
-					variants = new FSArray(cas, part.size());
-				} else {
-					offset = variants.size();
-					TermAnnotation[] fs = new TermAnnotation[offset];
-					variants.copyToArray(0, fs, 0, offset);
-					variants = new FSArray(cas, offset + part.size());
-					variants.copyFromArray(fs, 0, 0, offset);
-				}
-				item.setVariants(variants);
-				for (int i = 0; i < part.size(); i++) {
-					item.setVariants(offset + i, part.get(i));
-				}
-				
-			}
-			list = new ArrayList<TermAnnotation>(idx.values());
-			*/
-			/*
-			 * faire une partition de cette liste en fonction du patron du terme
-			 * 
-			 * associer tous les termes de toute les sous partitions entre eux
-			 * 
-			 * extraire un représentant de chaque partitions (le plus fréquent)
-			 * 
-			 * appliquer les règles sur ces représentants
-			 * 
-			 * */
-			
+			this.getContext().getLogger().log(Level.FINE, "Rule-based gathering over the '" + key + "' term class of size " + list.size());			
 			for (int i = 0; i < list.size(); i++) {
 				for (int j = 0; j < list.size(); j++) {
 					if (i == j) {
@@ -431,7 +326,7 @@ public class MultiWordTermGatherer extends JCasAnnotator_ImplBase {
 					// UIMAFramework.getLogger().log(Level.WARNING,"Annotation Match Failure: " + rule.id());
 				}
 			} catch (Exception e) {
-				UIMAFramework.getLogger().log(Level.WARNING,"Term Gathering Failure: " + e.getMessage());
+				this.getContext().getLogger().log(Level.WARNING,"Term Gathering Failure: " + e.getMessage());
 			}
 		} else {
 			// UIMAFramework.getLogger().log(Level.WARNING,"Type Check Failure: " + rule.id());		
@@ -447,9 +342,6 @@ public class MultiWordTermGatherer extends JCasAnnotator_ImplBase {
 	}
 
 	protected void release(JCas cas, String id, Annotation[] annotations) {
-		// String message = "Found " + annotations.length + " annotations with the rule: " + id;
-		// System.out.println(message);
-		
 		TermAnnotation base = null;
 		Set<TermAnnotation> variants = new HashSet<TermAnnotation>();
 		for (Annotation annotation : annotations) {
@@ -479,16 +371,6 @@ public class MultiWordTermGatherer extends JCasAnnotator_ImplBase {
 			base.setVariants(i, variant);
 			i++;
 		}
-		
-		/* if (true) {
-			String message = "Found " + annotations.length + " annotations with the rule: " + id;
-			message += "\nbase = " + base.getCoveredText();
-			for (int index = 0; index < base.getVariants().size(); index++) {
-				message += "\n\tvariant = " + base.getVariants(index).getCoveredText();
-			}
-			System.out.println(message);
-		} */
-		
 	}
 
 }
