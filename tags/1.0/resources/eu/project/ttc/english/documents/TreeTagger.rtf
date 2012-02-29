@@ -1,0 +1,111 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
+	<TITLE></TITLE>
+	<META NAME="GENERATOR" CONTENT="LibreOffice 3.4  (Linux)">
+	<META NAME="CREATED" CONTENT="0;0">
+	<META NAME="CHANGEDBY" CONTENT="Jérôme Rocheteau">
+	<META NAME="CHANGED" CONTENT="20111207;14365600">
+	<META NAME="CHANGEDBY" CONTENT="Jérôme Rocheteau">
+	<META NAME="CHANGEDBY" CONTENT="Jérôme Rocheteau">
+	<STYLE TYPE="text/css">
+	<!--
+		H2.western { font-family: "Albany", sans-serif; font-size: 14pt; font-style: italic }
+		H2.cjk { font-family: "HG Mincho Light J"; font-size: 14pt; font-style: italic }
+		H2.ctl { font-family: "Arial Unicode MS"; font-size: 14pt; font-style: italic }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LANG="en-US" DIR="LTR">
+<H1 ALIGN=JUSTIFY><FONT FACE="Liberation Sans, sans-serif">TreeTagger</FONT></H1>
+<P ALIGN=JUSTIFY><FONT FACE="Liberation Sans, sans-serif"><B>TreeTagger</B>
+wraps the tree-tagger program and the Porter's stemming performing: </FONT>
+</P>
+<UL>
+	<LI><P ALIGN=JUSTIFY STYLE="margin-bottom: 0cm"><FONT FACE="Liberation Sans, sans-serif">monolingual
+	word segmentation, </FONT>
+	</P>
+	<LI><P ALIGN=JUSTIFY STYLE="margin-bottom: 0cm"><FONT FACE="Liberation Sans, sans-serif">monolingual
+	part-of-speech tagging,</FONT></P>
+	<LI><P ALIGN=JUSTIFY STYLE="margin-bottom: 0cm"><FONT FACE="Liberation Sans, sans-serif">monolingual
+	grammatical category normalization,</FONT></P>
+	<LI><P ALIGN=JUSTIFY STYLE="margin-bottom: 0cm"><FONT FACE="Liberation Sans, sans-serif">monolingual
+	lemmatization,</FONT></P>
+	<LI><P ALIGN=JUSTIFY><FONT FACE="Liberation Sans, sans-serif">monolingual
+	stemming.</FONT></P>
+</UL>
+<P ALIGN=JUSTIFY><FONT FACE="Liberation Sans, sans-serif">It requires
+text files as inputs. It provides a XMI file in the output directory
+per text file in the input directory. </FONT>
+</P>
+<P ALIGN=JUSTIFY><FONT FACE="Liberation Sans, sans-serif">It can
+process these languages: English, French, German, Spanish, Russian,
+and Chinese.</FONT></P>
+<H2 CLASS="western" ALIGN=JUSTIFY><FONT FACE="Liberation Sans, sans-serif">Requirements</FONT></H2>
+<P ALIGN=JUSTIFY><FONT FACE="Liberation Sans, sans-serif">As it is
+based on the <SPAN STYLE="text-decoration: none">tree-tagger</SPAN>
+executable and models, it requires that you have already installed it
+on your computer at least.</FONT></P>
+<P ALIGN=JUSTIFY><FONT FACE="Liberation Sans, sans-serif"><B>IMPORTANT</B>:
+<B>TreeTagger</B> supposes that:</FONT></P>
+<UL>
+	<LI><P ALIGN=JUSTIFY STYLE="margin-bottom: 0cm"><FONT FACE="Liberation Sans, sans-serif">the
+	tree-tagger executable belongs to the bin/ directory;</FONT></P>
+	<LI><P ALIGN=JUSTIFY STYLE="margin-bottom: 0cm"><FONT FACE="Liberation Sans, sans-serif">the
+	tree-tagger parameter files belong to the models/ directory:</FONT></P>
+	<LI><P ALIGN=JUSTIFY STYLE="margin-bottom: 0cm"><FONT FACE="Liberation Sans, sans-serif">the
+	English model is encoded in latin1 and is called english.par;</FONT></P>
+	<LI><P ALIGN=JUSTIFY STYLE="margin-bottom: 0cm"><FONT FACE="Liberation Sans, sans-serif">the
+	French model is encoded in latin1 and is called french.par;</FONT></P>
+	<LI><P ALIGN=JUSTIFY STYLE="margin-bottom: 0cm"><FONT FACE="Liberation Sans, sans-serif">the
+	German model is encoded in latin1 and is called german.par;</FONT></P>
+	<LI><P ALIGN=JUSTIFY STYLE="margin-bottom: 0cm"><FONT FACE="Liberation Sans, sans-serif">the
+	Spanish model is encoded in latin1 and is called spanish.par;</FONT></P>
+	<LI><P ALIGN=JUSTIFY STYLE="margin-bottom: 0cm"><FONT FACE="Liberation Sans, sans-serif">the
+	Russian model is encoded in utf8 and is called russian.par;</FONT></P>
+	<LI><P ALIGN=JUSTIFY><FONT FACE="Liberation Sans, sans-serif">the
+	Chinese model is encoded in utf8 and is called zh.par.</FONT></P>
+</UL>
+<H2 CLASS="western" ALIGN=JUSTIFY><FONT FACE="Liberation Sans, sans-serif">Settings</FONT></H2>
+<P ALIGN=JUSTIFY><FONT FACE="Liberation Sans, sans-serif"><B>TreeTagger</B>
+requires the following parameters to be set: </FONT>
+</P>
+<UL>
+	<LI><P ALIGN=JUSTIFY STYLE="margin-bottom: 0cm"><FONT FACE="Liberation Sans, sans-serif"><I>Language</I>:
+	the 2-letter language code of text files in the input directory; </FONT>
+	</P>
+	<LI><P ALIGN=JUSTIFY STYLE="margin-bottom: 0cm"><FONT FACE="Liberation Sans, sans-serif"><I>Input
+	Directory</I>: the folder where the text files should be read; </FONT>
+	</P>
+	<LI><P ALIGN=JUSTIFY STYLE="margin-bottom: 0cm"><FONT FACE="Liberation Sans, sans-serif"><I>Output
+	Directory</I>: the folder where the XMI files will be written; </FONT>
+	</P>
+	<LI><P ALIGN=JUSTIFY><FONT FACE="Liberation Sans, sans-serif"><I><SPAN STYLE="font-weight: normal">TreeTagger
+	Home Directory</SPAN></I>: the folder where tree-tagger has been
+	installed on your computer. </FONT>
+	</P>
+</UL>
+<H2 CLASS="western">Behaviour</H2>
+<P ALIGN=JUSTIFY><B>TreeTagger</B> behaves as follows:</P>
+<UL>
+	<LI><P ALIGN=JUSTIFY>Firstly, it reads every text files In the input
+	directory and creates a CAS per file.</P>
+	<LI><P ALIGN=JUSTIFY>Secondly, it runs a word tokenizer in order to
+	provide annotations of the type <U>WordAnnotation</U>.</P>
+	<LI><P ALIGN=JUSTIFY>Thirdly, it applies the tree-tagger program
+	over all word annotations in order to set their 'category' and
+	'lemma' feature values.</P>
+	<LI><P ALIGN=JUSTIFY>Fourthly, it maps the 'category' feature value
+	from every word annotations that ranges over the language-specific
+	tag set into a unique tag set specified by the Multext's project.
+	Only grammatical category expansed notations are provided yet. This
+	mapping is given as a resource.</P>
+	<LI><P ALIGN=JUSTIFY>Then, it stems according to the Porter's
+	algorithm in order to fill the 'stem' feature value of every word
+	annotations.</P>
+	<LI><P ALIGN=JUSTIFY>Finally, it writes a output XMI file per input
+	text file.</P>
+</UL>
+</BODY>
+</HTML>
