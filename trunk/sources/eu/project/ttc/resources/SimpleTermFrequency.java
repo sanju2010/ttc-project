@@ -40,17 +40,19 @@ public class SimpleTermFrequency implements SharedResourceObject {
 	}
 
 	protected String add(TermAnnotation annotation) {
-		String term = annotation.getLemma().toLowerCase().replaceAll("\\s+", " ").trim(); // : annotation.getCoveredText().toLowerCase();
+		String term = annotation.getLemma().toLowerCase().replaceAll("\\s+", " ").trim();
 		if (term == null) { 
 			return null;
 		} else if (term.length() <= 2) {
 			return null;
-		} else {
+		} else if (Character.getType(term.charAt(0)) == Character.LOWERCASE_LETTER) {
 			Integer frequency = this.getFrequencies().get(term);
 			int freq = frequency == null ? 1 : frequency.intValue() + 1;
 			this.getFrequencies().put(term, new Integer(freq));
 			this.getCategories().put(term, annotation.getCategory());
 			return term;
+		} else {
+			return null;
 		}
 	}
 
@@ -87,9 +89,6 @@ public class SimpleTermFrequency implements SharedResourceObject {
 	}
 
 	@Override
-	public void load(DataResource aData) throws ResourceInitializationException {
-		// TODO Auto-generated method stub
-		
-	}
+	public void load(DataResource aData) throws ResourceInitializationException { }
 
 }

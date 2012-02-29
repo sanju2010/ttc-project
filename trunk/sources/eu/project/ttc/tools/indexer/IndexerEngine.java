@@ -34,7 +34,7 @@ public class IndexerEngine implements TermSuiteEngine {
 		String code = (String) parameters.getParameterValue("Language");
         ConfigurationParameterSettings settings = UIMAFramework.getResourceSpecifierFactory().createConfigurationParameterSettings();
         settings.setParameterValue("Language", code);
-        settings.setParameterValue("Directory", (String) parameters.getParameterValue("OutputDirectory"));
+        settings.setParameterValue("Directory", parameters.getParameterValue("OutputDirectory"));
         // settings.setParameterValue("File", (String) parameters.getParameterValue("TerminologyFile"));
         settings.setParameterValue("Action", "drop");
         /*
@@ -42,11 +42,11 @@ public class IndexerEngine implements TermSuiteEngine {
         settings.setParameterValue("TermVariationRuleFile", (String) parameters.getParameterValue("TermVariationRuleFile"));
         settings.setParameterValue("NeoclassicalElementFile", (String) parameters.getParameterValue("NeoclassicalElementFile"));
         */
-        settings.setParameterValue("AssociationRateClassName", (String) parameters.getParameterValue("AssociationRateClassName"));
-        settings.setParameterValue("EditDistanceClassName", (String) parameters.getParameterValue("EditDistanceClassName"));
-        settings.setParameterValue("EnableTermGathering", (Boolean) parameters.getParameterValue("EnableTermConflating"));
-        settings.setParameterValue("EditDistanceThreshold", (Float) parameters.getParameterValue("EditDistanceThreshold"));
-        settings.setParameterValue("EditDistanceNgrams", (Integer) parameters.getParameterValue("EditDistanceNgrams"));
+        settings.setParameterValue("AssociationRateClassName", parameters.getParameterValue("AssociationRateClassName"));
+        settings.setParameterValue("EditDistanceClassName", parameters.getParameterValue("EditDistanceClassName"));
+        settings.setParameterValue("EnableTermGathering", parameters.getParameterValue("EnableTermConflating") == null ? Boolean.FALSE : parameters.getParameterValue("EnableTermConflating"));
+        settings.setParameterValue("EditDistanceThreshold", parameters.getParameterValue("EditDistanceThreshold"));
+        settings.setParameterValue("EditDistanceNgrams", parameters.getParameterValue("EditDistanceNgrams"));
         return settings;
 	}
 

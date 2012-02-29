@@ -156,15 +156,7 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 			this.getContext().getLogger().log(Level.INFO,"Processing '" + term + "'");
 			TermAnnotation annotation = this.getSourceTerminology().get(term);
 			if (annotation == null) {
-				this.getContext().getLogger().log(Level.WARNING, "Term '" + term + "'not found");
-			} else {
-				if (this.distributional()) {
-					if (annotation instanceof SingleWordTermAnnotation) {
-						this.alignSingleWord(cas, term);
-					} else if (annotation instanceof MultiWordTermAnnotation) {
-						// TODO 
-					}					
-				}
+				this.getContext().getLogger().log(Level.WARNING, "Skiping '" + term + "' as it doesn't belong to the source terminology");
 				if (this.compositional()) {
 					if (annotation instanceof SingleWordTermAnnotation) {
 						SingleWordTermAnnotation swt = (SingleWordTermAnnotation) annotation;
@@ -174,6 +166,12 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 					} else if (annotation instanceof MultiWordTermAnnotation) {
 						this.alignMultiWord(cas, terminology, term);
 					}
+				}
+			} else {
+				if (this.distributional()) {
+					if (annotation instanceof SingleWordTermAnnotation) {
+						this.alignSingleWord(cas, term);
+					} 				
 				}
 			}
 		} catch (Exception e) {
@@ -228,7 +226,9 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 
 	private void alignCompound(JCas cas, JCas terminology, String term, boolean reshape) throws CASException {
 		TermAnnotation termEntry = this.retrieve(terminology, SingleWordTermAnnotation.type, term);
-		if (termEntry != null) {
+		if (termEntry == null) { 
+			return;
+		} else {
 			List<String> components = this.extract(terminology, termEntry, true);
 			if (reshape) {
 				this.reshape(components);
@@ -416,7 +416,7 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 					components.add(prefix + suffix);
 					return this.reshape(components);
 				} else {
-					throw new NullPointerException();
+					return Collections.emptyList();
 				}
 			}
 		return components;

@@ -35,8 +35,8 @@ public class AlignerEngine implements TermSuiteEngine {
 		settings.setParameterValue("DictionaryFile",parameters.getParameterValue("DictionaryFile"));
 		settings.setParameterValue("SourceTerminologyFile",parameters.getParameterValue("SourceTerminologyFile"));
 		settings.setParameterValue("TargetTerminologyFile",parameters.getParameterValue("TargetTerminologyFile"));
-		settings.setParameterValue("DistributionalMethod",parameters.getParameterValue("DistributionalMethod"));
-		settings.setParameterValue("CompositionalMethod",parameters.getParameterValue("CompositionalMethod"));
+		settings.setParameterValue("DistributionalMethod",parameters.getParameterValue("DistributionalMethod") == null ? Boolean.FALSE : parameters.getParameterValue("DistributionalMethod"));
+		settings.setParameterValue("CompositionalMethod",parameters.getParameterValue("CompositionalMethod") == null ? Boolean.FALSE : parameters.getParameterValue("CompositionalMethod"));
 		settings.setParameterValue("Directory", parameters.getParameterValue("Directory"));
 		settings.setParameterValue("Action", "drop");
 		return settings;
