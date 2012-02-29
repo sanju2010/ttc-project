@@ -2,6 +2,11 @@
 
 = Change Log =
 
+== Version 1.0 ==
+
+  * no more CPE and CR, only AE
+  * reshaping in Spotter, Indexer and Aligner
+
 == Version 1.0-rc9 ==
 
   * added Relater for computing similarity distances between context vectors of a monolingual contextual terminology
