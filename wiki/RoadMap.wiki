@@ -14,6 +14,19 @@
 
 == Version 1.0 ==
 
-  * computing term variations
-  * implementing and validating neo-classical compound term alignment available
-  * implementing and validating multi-word term alignment based on a compositional method available
+  * tokenization
+  * part-of-speech tagging
+  * lemmatization
+  * tag multext normalization
+  * stemming
+  * simple and complex term spotting
+  * stop-word filtering
+  * term contextual window computing
+  * term indexation
+  * term context indexation
+  * term frequency and specificty computing
+  * simple and complex term variation conflation
+  * hapax deletion
+  * distributional simple word alignment
+  * compositional (neoclassical) compound term alignment
+  * compositional multi-word term alignment
