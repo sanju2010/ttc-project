@@ -3,10 +3,17 @@
 
 = Road Map =
 
+== Version 1.1 ==
+
+  * help system enabled
+  * language package plug-in system enabled
+  * multext management improved
+  * compositional method improved
+  * result display improved
+  * Chinese processing improved
+
 == Version 1.0 ==
 
   * computing term variations
-  * implementing term alignment based on interlingual similarity available (implemented and validated)
   * implementing and validating neo-classical compound term alignment available
   * implementing and validating multi-word term alignment based on a compositional method available
-  * providing CLI utilities
