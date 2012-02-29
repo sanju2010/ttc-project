@@ -1,12 +1,15 @@
 package fr.univnantes.lina.uima.dictionaries;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URLConnection;
-import java.util.Collection;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Scanner;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.uima.UIMAFramework;
@@ -42,66 +45,62 @@ public class DictionaryResource implements Dictionary {
 		return this.target;
 	}
 	
-	private Map<String,Set<String>> entries;
+	private Map<String, Set<String>> entries;
 	
-	private void setEntries() {
+	private void set() {
 		this.entries = new HashMap<String, Set<String>>();
 	}	
 	
 	@Override
-	public Map<String, Set<String>> map() {
+	public Map<String, Set<String>> get() {
 		return this.entries;
-	}
-	
-	@Override
-	public Set<String> domain(String language) {
-		if (language.equals(this.source)) {
-			return this.entries.keySet();
-		} else {
-			Set<String> set = new HashSet<String>();
-			Collection<Set<String>> sets = this.entries.values();
-			for (Set<String> s : sets) {
-				set.addAll(s);
-			}
-			return set;
-		}
 	}
 	
 	public DictionaryResource() {
 		this.setLoaded();
-		this.setEntries();
+		this.set();
 	}
 
-	public void add(String sourceLanguage,String targetLanguage,String sourceEntry,String targetEntry) {
-		if (this.source == null && this.target == null) {
-			this.source = sourceLanguage;
-			this.target = targetLanguage;
-		} 
-		if (sourceLanguage.equals(this.source) && targetLanguage.equals(this.target)) {
-			Set<String> targetEntries = this.entries.get(sourceEntry);
-			if (targetEntries == null) {
-				targetEntries = new HashSet<String>();
-				this.entries.put(sourceEntry, targetEntries);
-			}
-			targetEntries.add(targetEntry);
+	public void add(String source,String target) {
+		Set<String> targetEntries = this.entries.get(source);
+		if (targetEntries == null) {
+			targetEntries = new HashSet<String>();
+			this.entries.put(source, targetEntries);
 		}
+		targetEntries.add(target);
 	}
 	
+	private Set<Entry<String, String>> parse(InputStream inputStream) throws IOException {
+		Set<Entry<String, String>> entries = new HashSet<Entry<String, String>>();
+		Scanner scanner = new Scanner(inputStream);
+		while (scanner.hasNextLine()) {
+			String line = scanner.nextLine();
+			String[] items = line.split("\t");
+			String source = items[0];
+			if (source != null) {
+				String target = items[1];
+				if (target != null) {
+					Entry<String, String> entry = new SimpleEntry<String, String>(source, target);
+					entries.add(entry);
+				}
+			}
+		}
+		return entries;
+	}
+
+	
 	@Override
-	public void doLoad(URI resourceIdentifier) throws Exception {
+	public void load(URI resourceIdentifier) throws Exception {
 		if (!this.isLoaded(resourceIdentifier)) {
 			this.getLoaded().add(resourceIdentifier.toString());
 			URLConnection connection = resourceIdentifier.toURL().openConnection();
 			UIMAFramework.getLogger().log(Level.CONFIG,"Loading Dictionary: " + resourceIdentifier.toString());
 			InputStream inputStream = connection.getInputStream();
-			Set<Entry> entries = DictionaryFactory.doParse(inputStream);
-			for (Entry entry : entries) {
-				String sourceEntry = entry.getSourceEntry();
-				String targetEntry = entry.getTargetEntry();
-				String sourceLanguage = entry.getSourceLanguage();
-				String targetLanguage = entry.getTargetLanguage();
-				this.add(sourceLanguage, targetLanguage, sourceEntry, targetEntry);
-				// this.add(targetLanguage, sourceLanguage, targetEntry, sourceEntry);
+			Set<Entry<String, String>> entries = this.parse(inputStream);
+			for (Entry<String, String> entry : entries) {
+				String source = entry.getKey();
+				String target = entry.getValue();
+				this.add(source, target);
 			}
 		}
 	}
