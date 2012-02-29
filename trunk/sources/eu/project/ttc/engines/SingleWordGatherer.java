@@ -14,6 +14,7 @@ import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.text.AnnotationIndex;
+import org.apache.uima.examples.SourceDocumentInformation;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.tcas.Annotation;
@@ -72,6 +73,7 @@ public class SingleWordGatherer extends JCasAnnotator_ImplBase {
 	
 	@Override 
 	public void initialize(UimaContext context) throws ResourceInitializationException {
+		super.initialize(context);
 		try {
 			Boolean enabled = (Boolean) context.getConfigParameterValue("Enable");
 			this.enable(enabled == null ? false : enabled.booleanValue());
@@ -215,9 +217,19 @@ public class SingleWordGatherer extends JCasAnnotator_ImplBase {
 		base.setVariants(array.size() - 1 , variant);
 	}
 
+	private void display(JCas cas) {
+		AnnotationIndex<Annotation> index = cas.getAnnotationIndex(SourceDocumentInformation.type);
+		FSIterator<Annotation> iterator = index.iterator();
+		if (iterator.hasNext()) {
+			SourceDocumentInformation sdi = (SourceDocumentInformation) iterator.next();
+			this.getContext().getLogger().log(Level.INFO, "Gathering single-words of " + sdi.getUri());
+		}
+	}
+	
 	@Override
 	public void process(JCas cas) throws AnalysisEngineProcessException { 
 		if (this.enable) {
+			this.display(cas);
 			this.index(cas);
 			this.clean();
 			this.sort();

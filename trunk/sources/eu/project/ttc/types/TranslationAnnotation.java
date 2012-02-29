@@ -11,7 +11,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
- * Updated by JCasGen Fri Feb 24 14:28:15 CET 2012
+ * Updated by JCasGen Wed Feb 29 11:17:08 CET 2012
  * XML source: /home/rocheteau-j/Repositories/GoogleCode/ttc-term-suite/trunk/resources/eu/project/ttc/types/TermSuiteTypeSystem.xml
  * @generated */
 public class TranslationAnnotation extends Annotation {
@@ -67,17 +67,17 @@ public class TranslationAnnotation extends Annotation {
 
   /** getter for term - gets 
    * @generated */
-  public String getTerm() {
+  public TermAnnotation getTerm() {
     if (TranslationAnnotation_Type.featOkTst && ((TranslationAnnotation_Type)jcasType).casFeat_term == null)
       jcasType.jcas.throwFeatMissing("term", "eu.project.ttc.types.TranslationAnnotation");
-    return jcasType.ll_cas.ll_getStringValue(addr, ((TranslationAnnotation_Type)jcasType).casFeatCode_term);}
+    return (TermAnnotation)(jcasType.ll_cas.ll_getFSForRef(jcasType.ll_cas.ll_getRefValue(addr, ((TranslationAnnotation_Type)jcasType).casFeatCode_term)));}
     
   /** setter for term - sets  
    * @generated */
-  public void setTerm(String v) {
+  public void setTerm(TermAnnotation v) {
     if (TranslationAnnotation_Type.featOkTst && ((TranslationAnnotation_Type)jcasType).casFeat_term == null)
       jcasType.jcas.throwFeatMissing("term", "eu.project.ttc.types.TranslationAnnotation");
-    jcasType.ll_cas.ll_setStringValue(addr, ((TranslationAnnotation_Type)jcasType).casFeatCode_term, v);}    
+    jcasType.ll_cas.ll_setRefValue(addr, ((TranslationAnnotation_Type)jcasType).casFeatCode_term, jcasType.ll_cas.ll_getFSRef(v));}    
    
     
   //*--------------*

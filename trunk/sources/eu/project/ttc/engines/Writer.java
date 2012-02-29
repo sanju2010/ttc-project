@@ -82,7 +82,7 @@ public class Writer extends JCasAnnotator_ImplBase {
 				File file = new File(this.getDirectory(), name);
 				OutputStream stream = new FileOutputStream(file);
 				try {
-					this.getContext().getLogger().log(Level.FINE,"Serializing " + file.getAbsolutePath());
+					this.getContext().getLogger().log(Level.INFO,"Writing " + file.getAbsolutePath());
 					XmiCasSerializer.serialize(cas.getCas(), cas.getTypeSystem(), stream);
 				} catch (SAXParseException e) {
 					this.getContext().getLogger().log(Level.WARNING,"Failure while serializing " + file + "\nCaused by " + e.getClass().getCanonicalName() + ": " + e.getMessage());

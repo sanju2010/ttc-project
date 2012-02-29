@@ -37,6 +37,7 @@ public class AlignerEngine implements TermSuiteEngine {
 		settings.setParameterValue("TargetTerminologyFile",parameters.getParameterValue("TargetTerminologyFile"));
 		settings.setParameterValue("DistributionalMethod",parameters.getParameterValue("DistributionalMethod"));
 		settings.setParameterValue("CompositionalMethod",parameters.getParameterValue("CompositionalMethod"));
+		settings.setParameterValue("Directory", parameters.getParameterValue("Directory"));
 		settings.setParameterValue("Action", "drop");
 		return settings;
 	}
@@ -44,7 +45,7 @@ public class AlignerEngine implements TermSuiteEngine {
 	@Override
 	public String data() {
 		ConfigurationParameterSettings parameters = this.getTool().getSettings().getMetaData().getConfigurationParameterSettings();
-		return (String) parameters.getParameterValue("InputDirectory");
+		return (String) parameters.getParameterValue("Directory");
 	}
 
 	@Override
@@ -66,8 +67,5 @@ public class AlignerEngine implements TermSuiteEngine {
 	public void callBack(CAS cas) throws Exception {
 		this.getTool().getParent().getMixer().doLoad(cas.getJCas());
 	}
-
-	@Override
-	public void callBack() { }
 	
 }

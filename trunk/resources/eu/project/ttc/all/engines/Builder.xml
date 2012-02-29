@@ -44,5 +44,30 @@
       <outputsNewCASes>false</outputsNewCASes>
     </operationalProperties>
   </analysisEngineMetaData>
-  <resourceManagerConfiguration/>
+  <externalResourceDependencies>
+    <externalResourceDependency>
+      <key>Dictionary</key>
+      <description/>
+      <interfaceName>eu.project.ttc.resources.Dictionary</interfaceName>
+      <optional>false</optional>
+    </externalResourceDependency>
+  </externalResourceDependencies>
+  <resourceManagerConfiguration>
+    <externalResources>
+      <externalResource>
+        <name>GeneratedDictionary</name>
+        <description/>
+        <fileResourceSpecifier>
+          <fileUrl>eu/project/ttc/all/resources/generated-dictionary.txt</fileUrl>
+        </fileResourceSpecifier>
+        <implementationName>eu.project.ttc.resources.DictionaryResource</implementationName>
+      </externalResource>
+    </externalResources>
+    <externalResourceBindings>
+      <externalResourceBinding>
+        <key>Dictionary</key>
+        <resourceName>GeneratedDictionary</resourceName>
+      </externalResourceBinding>
+    </externalResourceBindings>
+  </resourceManagerConfiguration>
 </analysisEngineDescription>

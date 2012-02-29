@@ -283,7 +283,7 @@
 								<left>
 									<neq>
 										<left>
-											<feature name="coveredText">
+											<feature name="lemma">
 												<element>
 													<get>
 														<left>
@@ -301,7 +301,7 @@
 											</feature>
 										</left>
 										<right>
-											<feature name="coveredText">
+											<feature name="lemma">
 												<element>
 													<get>
 														<left>
@@ -323,7 +323,7 @@
 								<right>
 									<neq>
 										<left>
-											<feature name="coveredText">
+											<feature name="lemma">
 												<element>
 													<get>
 														<left>
@@ -341,7 +341,7 @@
 											</feature>
 										</left>
 										<right>
-											<feature name="coveredText">
+											<feature name="lemma">
 												<element>
 													<get>
 														<left>

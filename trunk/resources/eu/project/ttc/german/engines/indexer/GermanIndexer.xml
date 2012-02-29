@@ -12,11 +12,11 @@
     <delegateAnalysisEngine key="TermCleaner">
       <import name="eu.project.ttc.all.engines.indexer.TermCleaner"/>
     </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="GermanCompoundIndexer">
-      <import name="eu.project.ttc.german.engines.indexer.GermanCompoundIndexer"/>
-    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="GermanTermFrequencyComputer">
       <import name="eu.project.ttc.german.engines.indexer.GermanTermFrequencyComputer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="GermanCompoundIndexer">
+      <import name="eu.project.ttc.german.engines.indexer.GermanCompoundIndexer"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="GermanTermGatherer">
       <import name="eu.project.ttc.german.engines.indexer.GermanTermGatherer"/>
@@ -42,15 +42,6 @@
         <overrides>
           <parameter>Writer/Directory</parameter>
           <parameter>TermBaseXchanger/Directory</parameter>
-        </overrides>
-      </configurationParameter>
-      <configurationParameter>
-        <name>Type</name>
-        <type>String</type>
-        <multiValued>false</multiValued>
-        <mandatory>true</mandatory>
-        <overrides>
-          <parameter>TermCleaner/Type</parameter>
         </overrides>
       </configurationParameter>
       <configurationParameter>
@@ -129,12 +120,6 @@
         <name>Directory</name>
         <value>
           <string>/tmp</string>
-        </value>
-      </nameValuePair>
-      <nameValuePair>
-        <name>Type</name>
-        <value>
-          <string>eu.project.ttc.types.TermAnnotation</string>
         </value>
       </nameValuePair>
       <nameValuePair>

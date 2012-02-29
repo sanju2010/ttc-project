@@ -26,6 +26,7 @@ import org.apache.uima.examples.SourceDocumentInformation;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.apache.uima.util.Level;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -65,13 +66,16 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 		try {
 			AnnotationIndex<Annotation> index = cas.getAnnotationIndex(SourceDocumentInformation.type);
 			FSIterator<Annotation> iterator = index.iterator();
-			String file = "terminology.tbx";
+			String name = "terminology.tbx";
 			if (iterator.hasNext()) {
 				SourceDocumentInformation sdi = (SourceDocumentInformation) iterator.next();
 				String uri = sdi.getUri();
+				int first = uri.lastIndexOf('/');
 				int last = uri.lastIndexOf('.');
-				file = uri.substring(0, last - 1) + ".tbx";
+				name = uri.substring(first, last) + ".tbx";
 			}
+			File file = new File(this.getDirectory(), name);
+			this.getContext().getLogger().log(Level.INFO, "Exporting " + file.getAbsolutePath());	
 			this.index(cas);
 			this.create(cas, file);
 		} catch (Exception e) {
@@ -107,8 +111,7 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 		}
 	}
 
-	private void create(JCas cas, String name) throws Exception {
-		File file = new File(this.getDirectory(), name);
+	private void create(JCas cas, File file) throws Exception {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder = factory.newDocumentBuilder();
 		Document document = builder.newDocument();

@@ -1,26 +1,26 @@
 package eu.project.ttc.models;
 
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Context {
 
-	private TermContextComparator comparator;
+	private ContextComparator comparator;
 	
 	private void setComparator() {
-		this.comparator = new TermContextComparator();
+		this.comparator = new ContextComparator();
 	}
 	
-	private TermContextComparator getComparator() {
+	private ContextComparator getComparator() {
 		return this.comparator;
 	}
 	
 	private Map<String,Double> coOccurrences;
 
 	private void setCoOccurrences() {
-		this.coOccurrences = new HashMap<String,Double>();
+		this.coOccurrences = new ConcurrentHashMap<String,Double>();
 	}
 
 	public Map<String,Double> getCoOccurrences() {
@@ -62,30 +62,16 @@ public class Context {
 		occurrences.putAll(this.getCoOccurrences());
 		return occurrences;
 	}
-		
-	/*
-	public String toString(String term,int depth) {
-		StringBuilder builder = new StringBuilder();
-		int index = 0;
-		Map<String, Double> occurrences = this.getSortedCoOccurrences();
-		for (String key: occurrences.keySet()) {
-			index++;
-			if (index <= depth) {
-				builder.append(term);
-				builder.append("::");
-				builder.append("null");
-				builder.append("::en-fr::");
-				builder.append(key);
-				builder.append("::");
-				builder.append("null");
-				builder.append('\n');
-			} else {
-				break;
-			}
+	
+	public void fromString(String text) {
+		String[] pairs = text.split("\n");
+		for (String pair : pairs) {
+			String[] keyValue = pair.split("\t");
+			String key = keyValue[0];
+			String value = keyValue[1];
+			this.setCoOccurrences(key, Double.valueOf(value), Context.ADD_MODE);
 		}
-		return builder.toString();
 	}
-	*/
 	
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -95,38 +81,17 @@ public class Context {
 		for (String key: occurrences.keySet()) {
 			index++;
 			builder.append(key);
-			builder.append('#');
+			builder.append('\t');
 			double value = occurrences.get(key).doubleValue();
 			builder.append(value);
 			if (index < size) {
-				builder.append(':');				
+				builder.append('\n');				
 			}
 		}
 		return builder.toString();
 	}
 	
-	/*
-	@Override
-	public int compareTo(TermContext termContext) {
-		for (String key : this.getCoOccurrences().keySet()) {
-			Double score = this.getCoOccurrences().get(key);
-			Double termScore = termContext.getCoOccurrences().get(key);
-			if (termScore == null) {
-				return 1;
-			} else {
-				long value = Math.round(score.doubleValue() * 10000000000.0);
-				long termValue = Math.round(termScore.doubleValue() * 10000000000.0);
-				int diff = new Long(value).compareTo(new Long(termValue));
-				if (diff != 0) {
-					return diff;
-				}
-			}
-		}
-		return 0;
-	}
-	*/
-	
-	private class TermContextComparator implements Comparator<String> {
+	private class ContextComparator implements Comparator<String> {
 
 		@Override
 		public int compare(String sourceKey,String targetKey) {

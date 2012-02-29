@@ -31,9 +31,6 @@ public class SpotterEngine implements TermSuiteEngine {
 	}
 
 	@Override
-	public void callBack() { }
-
-	@Override
 	public String get() throws Exception {
 		ConfigurationParameterSettings parameters = this.getTool().getSettings().getMetaData().getConfigurationParameterSettings();
 		String code = (String) parameters.getParameterValue("Language");

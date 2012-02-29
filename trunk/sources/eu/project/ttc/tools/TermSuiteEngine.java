@@ -18,7 +18,5 @@ public interface TermSuiteEngine {
 	public String encoding();
 	
 	public void callBack(CAS cas) throws Exception;
-
-	public void callBack();
 	
 }

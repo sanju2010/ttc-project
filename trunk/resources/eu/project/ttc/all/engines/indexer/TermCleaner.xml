@@ -8,22 +8,8 @@
     <description/>
     <version>1.0</version>
     <vendor/>
-    <configurationParameters>
-      <configurationParameter>
-        <name>Type</name>
-        <type>String</type>
-        <multiValued>false</multiValued>
-        <mandatory>true</mandatory>
-      </configurationParameter>
-    </configurationParameters>
-    <configurationParameterSettings>
-      <nameValuePair>
-        <name>Type</name>
-        <value>
-          <string>eu.project.ttc.types.TermAnnotation</string>
-        </value>
-      </nameValuePair>
-    </configurationParameterSettings>
+    <configurationParameters/>
+    <configurationParameterSettings/>
     <typeSystemDescription>
       <imports>
         <import name="eu.project.ttc.types.TermSuiteTypeSystem"/>

@@ -142,7 +142,7 @@ public class ToolBar {
 		c.gridwidth = 1; 
 		this.component.add(this.getSave(), c);
 		c.gridx = 9;  
-		c.insets = new Insets(0, 3, 0, 3);
+		c.insets = new Insets(0, 3, 0, 10);
 		c.weightx = 0.0;
 		c.gridwidth = 1; 
 		this.component.add(this.getQuit(), c);

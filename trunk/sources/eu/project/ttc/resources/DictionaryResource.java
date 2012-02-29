@@ -74,8 +74,9 @@ public class DictionaryResource implements Dictionary {
 	private Set<Entry<String, String>> parse(InputStream inputStream) throws IOException {
 		Set<Entry<String, String>> entries = new HashSet<Entry<String, String>>();
 		Scanner scanner = new Scanner(inputStream);
-		while (scanner.hasNextLine()) {
-			String line = scanner.nextLine();
+		scanner.useDelimiter(System.getProperty("line.separator"));
+		while (scanner.hasNext()) {
+			String line = scanner.next();
 			String[] items = line.split("\t");
 			String source = items[0];
 			if (source != null) {
@@ -95,7 +96,7 @@ public class DictionaryResource implements Dictionary {
 		if (!this.isLoaded(resourceIdentifier)) {
 			this.getLoaded().add(resourceIdentifier.toString());
 			URLConnection connection = resourceIdentifier.toURL().openConnection();
-			UIMAFramework.getLogger().log(Level.CONFIG,"Loading Dictionary: " + resourceIdentifier.toString());
+			UIMAFramework.getLogger().log(Level.INFO,"Loading " + resourceIdentifier.getPath());
 			InputStream inputStream = connection.getInputStream();
 			Set<Entry<String, String>> entries = this.parse(inputStream);
 			for (Entry<String, String> entry : entries) {

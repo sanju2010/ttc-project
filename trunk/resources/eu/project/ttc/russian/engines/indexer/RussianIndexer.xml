@@ -6,11 +6,11 @@
     <delegateAnalysisEngine key="RussianTermFrequencyComputer">
       <import name="eu.project.ttc.russian.engines.indexer.RussianTermFrequencyComputer"/>
     </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="Writer">
-      <import name="eu.project.ttc.all.engines.Writer"/>
-    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="RussianCompoundIndexer">
       <import name="eu.project.ttc.russian.engines.indexer.RussianCompoundIndexer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="Writer">
+      <import name="eu.project.ttc.all.engines.Writer"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="RussianTermGatherer">
       <import name="eu.project.ttc.russian.engines.indexer.RussianTermGatherer"/>
@@ -42,15 +42,6 @@
         <overrides>
           <parameter>Writer/Directory</parameter>
           <parameter>TermBaseXchanger/Directory</parameter>
-        </overrides>
-      </configurationParameter>
-      <configurationParameter>
-        <name>Type</name>
-        <type>String</type>
-        <multiValued>false</multiValued>
-        <mandatory>true</mandatory>
-        <overrides>
-          <parameter>TermCleaner/Type</parameter>
         </overrides>
       </configurationParameter>
       <configurationParameter>
@@ -129,12 +120,6 @@
         <name>Directory</name>
         <value>
           <string>/tmp</string>
-        </value>
-      </nameValuePair>
-      <nameValuePair>
-        <name>Type</name>
-        <value>
-          <string>eu.project.ttc.types.TermAnnotation</string>
         </value>
       </nameValuePair>
       <nameValuePair>

@@ -12,6 +12,7 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
+import eu.project.ttc.types.TermAnnotation;
 import eu.project.ttc.types.TranslationCandidateAnnotation;
 import eu.project.ttc.types.TranslationAnnotation;
 
@@ -132,36 +133,47 @@ public class AlignerViewer {
 	
 	public synchronized void doLoad(JCas cas) {
 		try {
-			Set<String> translations = this.updateTableModel(cas);
-			this.updateTreeModel(cas, translations);
-		} catch (CASRuntimeException e) {
+			String term = this.getTerm(cas);
+			Set<String> translations = this.getTranslations(cas);
+			this.setCandidates(cas, term, translations);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	private Set<String> updateTableModel(JCas cas) {
+	private String getTerm(JCas cas) {
+		AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TermAnnotation.type);
+		FSIterator<Annotation> iterator = index.iterator();
+		if (iterator.hasNext()) {
+			return iterator.next().getCoveredText();
+		} else {
+			return null;
+		}
+	}
+	
+	private Set<String> getTranslations(JCas cas) {
 		Set<String> translations = new HashSet<String>();
 		AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TranslationAnnotation.type);
 		FSIterator<Annotation> iterator = index.iterator();
 		while (iterator.hasNext()) {
 			TranslationAnnotation annotation = (TranslationAnnotation) iterator.next();
-			translations.add(annotation.getTerm());
+			translations.add(annotation.getCoveredText());
 		}
 		return translations;
 	}
 	
-	private void updateTreeModel(JCas cas, Set<String> translations) {
+	private void setCandidates(JCas cas, String term, Set<String> translations) {
 		int best = -1;
 		AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TranslationCandidateAnnotation.type);
 		FSIterator<Annotation> iterator = index.iterator();
-		String[] candidates = new String[20];
-		Double[] scores = new Double[20];
+		String[] candidates = new String[100];
+		Double[] scores = new Double[100];
 		while (iterator.hasNext()) {
 			TranslationCandidateAnnotation annotation = (TranslationCandidateAnnotation) iterator.next();
 			String translation = annotation.getTranslation();
 			Double score = annotation.getScore();
 			Integer rank = annotation.getRank();
-			if (rank.intValue() > 0 && rank.intValue() <= 20) {
+			if (rank.intValue() > 0 && rank.intValue() <= 100) {
 				candidates[rank.intValue() - 1] = translation;
 				scores[rank.intValue() - 1] = score;
 			}
@@ -172,14 +184,12 @@ public class AlignerViewer {
 			}
 		}
 		DefaultMutableTreeNode node = new DefaultMutableTreeNode();
-		node.setUserObject(cas.getDocumentText() + " (" + (best == -1 ? "unranked" : new Integer(best).toString()) + ")");
+		node.setUserObject(term + " (" + (best == -1 ? "unranked" : new Integer(best).toString()) + ")");
 		this.getRoot().add(node);
-		if (best != -1) { 
-			for (int i = 0; i < 20; i++) {
-				this.addNote(node, candidates[i], new Integer(i + 1), scores[i]);
-			}
-			this.getTableModel().update(best);
+		for (int i = 0; i < 100; i++) {
+			this.addNote(node, candidates[i], new Integer(i + 1), scores[i]);
 		}
+		this.getTableModel().update(best == -1 ? 101 : best);
 		this.getTreeModel().reload();
 	}
 		

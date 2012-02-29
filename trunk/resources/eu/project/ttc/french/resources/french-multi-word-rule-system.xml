@@ -496,7 +496,15 @@
 				<pattern>
 					<annotation type="eu.project.ttc.types.WordAnnotation">
 						<constraint>
-							<eq key="category" value="conjunction" />
+							<or>
+								<constraints>
+									<constraint>
+										<eq key="coveredText" value="et" />
+										<eq key="coveredText" value="ou" />
+										<eq key="coveredText" value="," />
+									</constraint>
+								</constraints>
+							</or>
 						</constraint>
 					</annotation>
 				</pattern>
@@ -625,7 +633,16 @@
 				<pattern>
 					<annotation type="eu.project.ttc.types.WordAnnotation">
 						<constraint>
-							<eq key="category" value="conjunction" />
+							<and>
+								<constraints>
+									<constraint>
+										<eq key="category" value="conjunction" />
+									</constraint>
+									<constraint>
+										<eq key="coveredText" value="et" />
+									</constraint>
+								</constraints>
+							</and>
 						</constraint>
 					</annotation>
 				</pattern>

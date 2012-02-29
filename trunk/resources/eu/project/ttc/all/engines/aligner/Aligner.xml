@@ -3,11 +3,11 @@
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>false</primitive>
   <delegateAnalysisEngineSpecifiers>
+    <delegateAnalysisEngine key="Writer">
+      <import name="eu.project.ttc.all.engines.Writer"/>
+    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="TermDispatcher">
       <import name="eu.project.ttc.all.engines.aligner.TermDispatcher"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="Builder">
-      <import name="eu.project.ttc.all.engines.Builder"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="TermAligner">
       <import name="eu.project.ttc.all.engines.aligner.TermAligner"/>
@@ -22,24 +22,6 @@
     <version>1.0</version>
     <vendor/>
     <configurationParameters searchStrategy="language_fallback">
-      <configurationParameter>
-        <name>SourceLanguage</name>
-        <type>String</type>
-        <multiValued>false</multiValued>
-        <mandatory>false</mandatory>
-        <overrides>
-          <parameter>TermDispatcher/SourceLanguage</parameter>
-        </overrides>
-      </configurationParameter>
-      <configurationParameter>
-        <name>TargetLanguage</name>
-        <type>String</type>
-        <multiValued>false</multiValued>
-        <mandatory>false</mandatory>
-        <overrides>
-          <parameter>TermDispatcher/TargetLanguage</parameter>
-        </overrides>
-      </configurationParameter>
       <configurationParameter>
         <name>SourceTerminologyFile</name>
         <type>String</type>
@@ -77,22 +59,6 @@
         </overrides>
       </configurationParameter>
       <configurationParameter>
-        <name>Action</name>
-        <description>The action to be taken after a CAS has been input to a CAS Multiplier and the CAS Multiplier has finished processing it.
-		 Valid values are:
-			continue - the CAS continues on to the next element in the flow
-			stop - the CAS will no longer continue in the flow, and will be returned from the aggregate if possible.
-			drop - the CAS will no longer continue in the flow, and will be dropped (not returned from the aggregate) if possible.	 
-			dropIfNewCasProduced (the default) - if the CAS multiplier produced a new CAS as a result of processing this CAS, then this
-				CAS will be dropped.  If not, then this CAS will continue.</description>
-        <type>String</type>
-        <multiValued>false</multiValued>
-        <mandatory>false</mandatory>
-        <overrides>
-          <parameter>FixedFlowController/ActionAfterCasMultiplier</parameter>
-        </overrides>
-      </configurationParameter>
-      <configurationParameter>
         <name>DistributionalMethod</name>
         <type>Boolean</type>
         <multiValued>false</multiValued>
@@ -110,14 +76,51 @@
           <parameter>TermAligner/CompositionalMethod</parameter>
         </overrides>
       </configurationParameter>
+      <configurationParameter>
+        <name>Directory</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>Writer/Directory</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>SourceLanguage</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>TermDispatcher/SourceLanguage</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>TargetLanguage</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>TermDispatcher/TargetLanguage</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>Action</name>
+        <description>The action to be taken after a CAS has been input to a CAS Multiplier and the CAS Multiplier has finished processing it.
+		 Valid values are:
+			continue - the CAS continues on to the next element in the flow
+			stop - the CAS will no longer continue in the flow, and will be returned from the aggregate if possible.
+			drop - the CAS will no longer continue in the flow, and will be dropped (not returned from the aggregate) if possible.	 
+			dropIfNewCasProduced (the default) - if the CAS multiplier produced a new CAS as a result of processing this CAS, then this
+				CAS will be dropped.  If not, then this CAS will continue.</description>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>FixedFlowController/ActionAfterCasMultiplier</parameter>
+        </overrides>
+      </configurationParameter>
     </configurationParameters>
     <configurationParameterSettings>
-      <nameValuePair>
-        <name>Action</name>
-        <value>
-          <string>drop</string>
-        </value>
-      </nameValuePair>
       <nameValuePair>
         <name>SimilarityDistanceClassName</name>
         <value>
@@ -136,14 +139,27 @@
           <boolean>true</boolean>
         </value>
       </nameValuePair>
+      <nameValuePair>
+        <name>Directory</name>
+        <value>
+          <string>/tmp</string>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>Action</name>
+        <value>
+          <string>drop</string>
+        </value>
+      </nameValuePair>
     </configurationParameterSettings>
     <flowConstraints>
       <fixedFlow>
         <node>TermDispatcher</node>
         <node>TermAligner</node>
-        <node>Builder</node>
+        <node>Writer</node>
       </fixedFlow>
     </flowConstraints>
+    <typePriorities/>
     <fsIndexCollection/>
     <capabilities>
       <capability>
@@ -155,7 +171,7 @@
     <operationalProperties>
       <modifiesCas>true</modifiesCas>
       <multipleDeploymentAllowed>true</multipleDeploymentAllowed>
-      <outputsNewCASes>true</outputsNewCASes>
+      <outputsNewCASes>false</outputsNewCASes>
     </operationalProperties>
   </analysisEngineMetaData>
   <resourceManagerConfiguration/>

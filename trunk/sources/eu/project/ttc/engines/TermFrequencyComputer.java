@@ -4,10 +4,12 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.text.AnnotationIndex;
+import org.apache.uima.examples.SourceDocumentInformation;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceAccessException;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.apache.uima.util.Level;
 
 import eu.project.ttc.resources.GeneralLanguage;
 import eu.project.ttc.types.TermAnnotation;
@@ -36,10 +38,15 @@ public class TermFrequencyComputer extends JCasAnnotator_ImplBase {
 	
 	@Override 
 	public void initialize(UimaContext context) throws ResourceInitializationException {
+		super.initialize(context);
 		try {
-			GeneralLanguage generalLanguage = (GeneralLanguage) context.getResourceObject("GeneralLanguage");
-			this.setGeneralLanguage(generalLanguage);
-			this.setSpecializedFrequency();
+			if (this.getGeneralLanguage() == null) {
+				GeneralLanguage generalLanguage = (GeneralLanguage) context.getResourceObject("GeneralLanguage");
+				this.setGeneralLanguage(generalLanguage);
+			}
+			if (this.getSpecializedFrequency() == null) {
+				this.setSpecializedFrequency();
+			}
 		} catch (ResourceAccessException e) {
 			throw new ResourceInitializationException(e);
 		}
@@ -70,8 +77,18 @@ public class TermFrequencyComputer extends JCasAnnotator_ImplBase {
 		}
 	}
 	
+	private void display(JCas cas) {
+		AnnotationIndex<Annotation> index = cas.getAnnotationIndex(SourceDocumentInformation.type);
+		FSIterator<Annotation> iterator = index.iterator();
+		if (iterator.hasNext()) {
+			SourceDocumentInformation sdi = (SourceDocumentInformation) iterator.next();
+			this.getContext().getLogger().log(Level.INFO, "Computing frequency of " + sdi.getUri());
+		}
+	}
+	
 	@Override
 	public void process(JCas cas) { 
+		this.display(cas);
 		this.set(cas);
 		this.get(cas);
 	}

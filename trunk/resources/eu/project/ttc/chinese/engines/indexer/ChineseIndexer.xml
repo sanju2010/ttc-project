@@ -42,15 +42,6 @@
         </overrides>
       </configurationParameter>
       <configurationParameter>
-        <name>Type</name>
-        <type>String</type>
-        <multiValued>false</multiValued>
-        <mandatory>true</mandatory>
-        <overrides>
-          <parameter>TermCleaner/Type</parameter>
-        </overrides>
-      </configurationParameter>
-      <configurationParameter>
         <name>EditDistanceClassName</name>
         <type>String</type>
         <multiValued>false</multiValued>
@@ -126,12 +117,6 @@
         <name>Directory</name>
         <value>
           <string>/tmp</string>
-        </value>
-      </nameValuePair>
-      <nameValuePair>
-        <name>Type</name>
-        <value>
-          <string>eu.project.ttc.types.TermAnnotation</string>
         </value>
       </nameValuePair>
       <nameValuePair>

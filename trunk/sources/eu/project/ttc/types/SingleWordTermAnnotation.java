@@ -10,7 +10,7 @@ import org.apache.uima.jcas.cas.TOP_Type;
 
 
 /** 
- * Updated by JCasGen Fri Feb 24 14:28:15 CET 2012
+ * Updated by JCasGen Wed Feb 29 11:17:07 CET 2012
  * XML source: /home/rocheteau-j/Repositories/GoogleCode/ttc-term-suite/trunk/resources/eu/project/ttc/types/TermSuiteTypeSystem.xml
  * @generated */
 public class SingleWordTermAnnotation extends TermAnnotation {

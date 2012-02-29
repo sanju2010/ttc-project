@@ -129,32 +129,16 @@ public class IndexerViewer {
 	
 	public void doLoad(JCas cas) {
 		try {
-			// Map<Double, Set<TermAnnotation>> annotations = new TreeMap<Double, Set<TermAnnotation>>(new FrequencyComparator());
 			AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TermAnnotation.type);
 			FSIterator<Annotation> iterator = index.iterator();
 			while (iterator.hasNext()) {
 				TermAnnotation term = (TermAnnotation) iterator.next();
-				/*
-				double frequency = annotation.getFrequency();
-				Set<TermAnnotation> terms = annotations.get(frequency);
-				if (terms == null) {
-					terms = new HashSet<TermAnnotation>();
-					annotations.put(new Double(frequency), terms);
-				}
-				terms.add(annotation);
-				*/
-			// }
-			// for (Double frequency : annotations.keySet()) {
-				// Set<TermAnnotation> terms = annotations.get(frequency);
-				// for (TermAnnotation term : terms) {
-					DefaultMutableTreeNode node = new DefaultMutableTreeNode();
-					node.setUserObject(term.getCoveredText());
-					this.getRoot().add(node);
-					this.addNotes(node, term);
-					this.addComponents(node, cas, term);
-					this.addVariants(node, cas, term);
-					this.addContext(node, cas, term);
-				// }
+				DefaultMutableTreeNode node = new DefaultMutableTreeNode();
+				node.setUserObject(term.getCoveredText().replaceAll("\\s+", " "));
+				this.getRoot().add(node);
+				this.addNotes(node, term);
+				this.addComponents(node, cas, term);
+				this.addVariants(node, cas, term);
 			}
 			this.getModel().reload();
 		} catch (CASRuntimeException e) {
@@ -176,9 +160,9 @@ public class IndexerViewer {
 	}
 	
 	private void addContext(DefaultMutableTreeNode root, String context) {
-		String[] scores = context.split(":");
+		String[] scores = context.split("\n");
 		for (String score : scores) {
-			String[] items = score.trim().split("#");
+			String[] items = score.trim().split("\t");
 			if (items.length == 2) {
 				this.addNote(root, items[0].trim(), items[1].trim());
 			}
@@ -208,7 +192,7 @@ public class IndexerViewer {
 	
 	private void addVariant(DefaultMutableTreeNode root, JCas cas, TermAnnotation annotation) {
 		DefaultMutableTreeNode node = new DefaultMutableTreeNode();
-		node.setUserObject(annotation.getCoveredText());
+		node.setUserObject(annotation.getCoveredText().replaceAll("\\s+", " "));
 		root.add(node);
 		this.addNotes(node, annotation);
 	}

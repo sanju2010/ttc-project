@@ -106,7 +106,7 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
-		try {			
+		try {
 			String name = (String) context.getConfigParameterValue("SimilarityDistanceClassName");
 			this.setSimilarityDistance(name);
 			
@@ -121,7 +121,7 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 				this.setSourceTerminology(terminology);
 				String path = (String) context.getConfigParameterValue("SourceTerminologyFile");
 				if (path != null) {
-					this.getSourceTerminology().load(path);				
+					this.getSourceTerminology().load(path);
 				}
 			}
 			
@@ -152,8 +152,9 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 	public void process(JCas cas) throws AnalysisEngineProcessException {
 		try {
 			JCas terminology = this.getSourceTerminology().getJCas();
-			String term = cas.getDocumentText();
-			TermAnnotation annotation = this.retrieve(terminology, term);
+			String term = this.getTerm(cas);
+			this.getContext().getLogger().log(Level.INFO,"Processing '" + term + "'");
+			TermAnnotation annotation = this.getSourceTerminology().get(term);
 			if (annotation == null) {
 				this.getContext().getLogger().log(Level.WARNING, "Term '" + term + "'not found");
 			} else {
@@ -180,8 +181,18 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 		} 
 	}
 
+	private String getTerm(JCas cas) {
+		AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TermAnnotation.type);
+		FSIterator<Annotation> iterator = index.iterator();
+		if (iterator.hasNext()) {
+			return iterator.next().getCoveredText();
+		} else {
+			return null;
+		}
+	}
+
 	private void alignSingleWord(JCas cas, String term) {
-		Context context = this.getSourceTerminology().getContext(term);
+		Context context = this.getSourceTerminology().context(term);
 		if (context == null) {
 			this.getContext().getLogger().log(Level.WARNING,"Skiping '" + term + "'");
 		} else {
@@ -233,7 +244,7 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 	}
 		
 	private void alignComponent(JCas cas, String term, Set<String> set) {
-		Context context = this.getSourceTerminology().getContext(term);
+		Context context = this.getSourceTerminology().context(term);
 		if (context == null) {
 			this.getContext().getLogger().log(Level.WARNING,"Skiping component '" + term +  "'");
 		} else {
@@ -265,15 +276,26 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 			if (resultTerms != null) {  
 				int totalOcc = 0;
 				for (String resultTerm : resultTerms) {
-					Integer occ = this.getTargetTerminology().getOccurrences(resultTerm);
-					totalOcc += occ == null ? 0 : occ.intValue();
+					Integer occ = this.getTargetTerminology().occurrences(resultTerm);
+					if (occ == null) {
+						continue;
+					} else {
+						totalOcc += occ.intValue();
+					}
 				}
-				for (String resultTerm : resultTerms) {
-					Integer resultOcc = this.getTargetTerminology().getOccurrences(resultTerm);
-					int candidateOcc = resultOcc == null ? 0 : resultOcc.intValue(); 
-					double score = totalOcc == 0.0 ? 0.0 : (sourceCoOcc * candidateOcc) / totalOcc;
-					if (score != 0.0) {
-						termContext.setCoOccurrences(resultTerm, score, Context.MAX_MODE);
+				if (totalOcc == 0) {
+					continue;
+				} else {
+					for (String resultTerm : resultTerms) {
+						Integer occ = this.getTargetTerminology().occurrences(resultTerm);
+						if (occ == null) {
+							continue;
+						} else {
+							double score = (sourceCoOcc * occ.intValue()) / totalOcc;
+							if (score != 0.0) {
+								termContext.setCoOccurrences(resultTerm, score, Context.MAX_MODE);
+							}
+						}
 					}
 				}
 			}
@@ -283,11 +305,15 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 	
 	private Map<String, Double> align(String term, Context termContext) {
 		Map<String, Double> candidates = new HashMap<String, Double>();
-		for (String targetTerm : this.getTargetTerminology().getContexts()) {
-			Context targetContext = this.getTargetTerminology().getContext(targetTerm);
-			double score = this.getSimilarityDistance().getValue(termContext.getCoOccurrences(),targetContext.getCoOccurrences());
-			if (!Double.isInfinite(score) && !Double.isNaN(score)) {
-				candidates.put(targetTerm, new Double(score));
+		for (String targetTerm : this.getTargetTerminology().terms()) {
+			Context targetContext = this.getTargetTerminology().context(targetTerm);
+			if (targetContext == null) {
+				continue;
+			} else {
+				double score = this.getSimilarityDistance().getValue(termContext.getCoOccurrences(),targetContext.getCoOccurrences());	
+				if (!Double.isInfinite(score) && !Double.isNaN(score)) {
+					candidates.put(targetTerm, new Double(score));
+				}
 			}
 		}
 		return candidates;
@@ -332,19 +358,7 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 		}
 		return null;
 	}
-	
-	private TermAnnotation retrieve(JCas cas, String term) {
-		AnnotationIndex<Annotation> index = cas.getAnnotationIndex();
-		FSIterator<Annotation> iterator = index.iterator();
-		while (iterator.hasNext()) {
-			Annotation annotation = iterator.next();
-			if (annotation.getCoveredText().equals(term)) {
-				return (TermAnnotation) annotation;
-			}
-		}
-		return null;
-	}
-	
+		
 	/**
 	 * provides the term components of a given term
 	 * if these components cover the term completely.

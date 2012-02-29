@@ -59,11 +59,5 @@ public class TbxXmiConverterEngine implements TermSuiteEngine {
 		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
-	public void callBack() {
-		// TODO Auto-generated method stub
-		
-	}
 	
 }

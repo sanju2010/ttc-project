@@ -40,7 +40,7 @@ public class SimpleTermFrequency implements SharedResourceObject {
 	}
 
 	protected String add(TermAnnotation annotation) {
-		String term = annotation.getLemma().toLowerCase().trim(); // : annotation.getCoveredText().toLowerCase();
+		String term = annotation.getLemma().toLowerCase().replaceAll("\\s+", " ").trim(); // : annotation.getCoveredText().toLowerCase();
 		if (term == null) { 
 			return null;
 		} else if (term.length() <= 2) {

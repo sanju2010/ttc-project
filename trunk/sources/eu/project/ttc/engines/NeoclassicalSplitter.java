@@ -10,12 +10,15 @@ import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.text.AnnotationIndex;
+import org.apache.uima.examples.SourceDocumentInformation;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.apache.uima.util.Level;
 
 import eu.project.ttc.models.Tree;
 import eu.project.ttc.resources.Bank;
+import eu.project.ttc.resources.Dictionary;
 import eu.project.ttc.types.SingleWordTermAnnotation;
 import eu.project.ttc.types.TermComponentAnnotation;
 
@@ -43,6 +46,7 @@ public class NeoclassicalSplitter extends JCasAnnotator_ImplBase {
 	
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
+		super.initialize(context);
 		try {
 			this.setComponents();
 			this.setComparator();
@@ -53,8 +57,18 @@ public class NeoclassicalSplitter extends JCasAnnotator_ImplBase {
 		} 
 	}
 
+	private void display(JCas cas) {
+		AnnotationIndex<Annotation> index = cas.getAnnotationIndex(SourceDocumentInformation.type);
+		FSIterator<Annotation> iterator = index.iterator();
+		if (iterator.hasNext()) {
+			SourceDocumentInformation sdi = (SourceDocumentInformation) iterator.next();
+			this.getContext().getLogger().log(Level.INFO, "Detecting neoclassical compounds of " + sdi.getUri());
+		}
+	}
+	
 	@Override
 	public void process(JCas cas) throws AnalysisEngineProcessException {
+		this.display(cas);
 		AnnotationIndex<Annotation> index = cas.getAnnotationIndex(SingleWordTermAnnotation.type);
 		FSIterator<Annotation> iterator = index.iterator();
 		while (iterator.hasNext()) {

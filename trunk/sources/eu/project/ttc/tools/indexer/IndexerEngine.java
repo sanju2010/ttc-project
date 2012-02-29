@@ -36,7 +36,6 @@ public class IndexerEngine implements TermSuiteEngine {
         settings.setParameterValue("Language", code);
         settings.setParameterValue("Directory", (String) parameters.getParameterValue("OutputDirectory"));
         // settings.setParameterValue("File", (String) parameters.getParameterValue("TerminologyFile"));
-        settings.setParameterValue("Type", (String) parameters.getParameterValue("TermAnnotationType"));
         settings.setParameterValue("Action", "drop");
         /*
         settings.setParameterValue("MultiWordPatternRuleFile", (String) parameters.getParameterValue("MultiWordPatternRuleFile"));
@@ -45,7 +44,7 @@ public class IndexerEngine implements TermSuiteEngine {
         */
         settings.setParameterValue("AssociationRateClassName", (String) parameters.getParameterValue("AssociationRateClassName"));
         settings.setParameterValue("EditDistanceClassName", (String) parameters.getParameterValue("EditDistanceClassName"));
-        settings.setParameterValue("EnableTermGathering", (Boolean) parameters.getParameterValue("EnableTermGathering"));
+        settings.setParameterValue("EnableTermGathering", (Boolean) parameters.getParameterValue("EnableTermConflating"));
         settings.setParameterValue("EditDistanceThreshold", (Float) parameters.getParameterValue("EditDistanceThreshold"));
         settings.setParameterValue("EditDistanceNgrams", (Integer) parameters.getParameterValue("EditDistanceNgrams"));
         return settings;
@@ -53,11 +52,8 @@ public class IndexerEngine implements TermSuiteEngine {
 
 	@Override
 	public void callBack(CAS cas) throws Exception {
-		this.getTool().getParent().getBanker().doLoad(cas.getJCas());	
+		// TODO this.getTool().getParent().getBanker().doLoad(cas.getJCas());	
 	}
-
-	@Override
-	public void callBack() { }
 
 	@Override
 	public String data() {

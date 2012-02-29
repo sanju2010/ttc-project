@@ -60,10 +60,4 @@ public class TsvXmiConverterEngine implements TermSuiteEngine {
 		
 	}
 
-	@Override
-	public void callBack() {
-		// TODO Auto-generated method stub
-		
-	}
-
 }

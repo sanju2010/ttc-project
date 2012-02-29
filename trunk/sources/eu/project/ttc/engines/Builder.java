@@ -54,7 +54,7 @@ public class Builder extends JCasAnnotator_ImplBase {
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
 		try {
-			Dictionary tabResource = (Dictionary) context.getResourceObject("Resource");
+			Dictionary tabResource = (Dictionary) context.getResourceObject("Dictionary");
 			this.setResource(tabResource);
 			String path = (String) context.getConfigParameterValue("File");
 			this.setFile(path);

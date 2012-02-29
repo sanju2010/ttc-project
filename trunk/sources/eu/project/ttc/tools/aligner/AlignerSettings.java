@@ -13,7 +13,7 @@ public class AlignerSettings extends Parameters implements TermSuiteSettings {
 	}
 
 	protected void setMetaData(ConfigurationParameterDeclarations declarations) {
-		this.addParameter(declarations, "InputDirectory", ConfigurationParameter.TYPE_STRING, false, true);
+		this.addParameter(declarations, "Directory", ConfigurationParameter.TYPE_STRING, false, true);
 		this.addParameter(declarations, "SourceLanguage", ConfigurationParameter.TYPE_STRING, false, true, "values:en|fr|de|es|ru|da|lv|zh");
 		this.addParameter(declarations, "SourceTerminologyFile", ConfigurationParameter.TYPE_STRING, false, true);
 		this.addParameter(declarations, "TargetLanguage", ConfigurationParameter.TYPE_STRING, false, true, "values:en|fr|de|es|ru|da|lv|zh");

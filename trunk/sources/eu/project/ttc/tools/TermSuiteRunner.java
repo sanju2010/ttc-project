@@ -30,7 +30,7 @@ import org.apache.uima.util.JCasPool;
 import org.apache.uima.util.Level;
 import org.apache.uima.util.XMLInputSource;
 
-public class TermSuiteRunner extends SwingWorker<Void, File> {
+public class TermSuiteRunner extends SwingWorker<Void, Void> {
 	
 	public static final int TXT = 0;
 	
@@ -52,13 +52,14 @@ public class TermSuiteRunner extends SwingWorker<Void, File> {
         UIMAFramework.getLogger().log(Level.INFO, "Setting Analysis Engine '" + description.getAnalysisEngineMetaData().getName() + "'");
 		Runtime runtime = Runtime.getRuntime();
         int threads = runtime.availableProcessors();
+        // int threads = 1;
         description.getAnalysisEngineMetaData().setConfigurationParameterSettings(settings);
 	    for (NameValuePair pair : settings.getParameterSettings()) {
 	    	String name = pair.getName();
 	    	Object value = pair.getValue();
 	    	description.getAnalysisEngineMetaData().getConfigurationParameterSettings().setParameterValue(name, value);
 	    }
-	    this.analysisEngine = UIMAFramework.produceAnalysisEngine(description, threads, 0);
+	    this.analysisEngine = UIMAFramework.produceAnalysisEngine(description);
 	    this.pool = new JCasPool(threads, this.analysisEngine);
 	}
 	
@@ -154,9 +155,6 @@ public class TermSuiteRunner extends SwingWorker<Void, File> {
 	@Override
 	protected Void doInBackground() throws Exception {
 		int max = this.data.size();
-		this.termSuite.getToolBar().getProgressBar().setMaximum(max);
-		this.termSuite.getToolBar().getProgressBar().setMinimum(0);
-		this.termSuite.getToolBar().getProgressBar().setValue(0);
 		this.setProgress(0);
         for (int index = 0; index < this.data.size(); index++) {
         	if (this.isCancelled()) {
@@ -164,14 +162,16 @@ public class TermSuiteRunner extends SwingWorker<Void, File> {
 			}
         	File file = this.data.get(index);
         	boolean last = index == this.data.size() - 1;
-        	this.publish(file);
+        	// this.publish(file);
         	this.process(file, this.encoding, this.language, this.input, last);
         	int progress = (index * 100) / max;
         	this.setProgress(progress);
         }
+    	this.setProgress(100);
         return null;
 	}
 
+	/*
 	@Override
 	public void process(List<File> files) {
 		for (File file : files) {
@@ -181,6 +181,7 @@ public class TermSuiteRunner extends SwingWorker<Void, File> {
 			UIMAFramework.getLogger().log(Level.INFO, "Processing " + file.getAbsolutePath());
 		}
 	}
+	*/
 	
 	@Override
 	public void done() {
@@ -231,15 +232,12 @@ public class TermSuiteRunner extends SwingWorker<Void, File> {
 			}
 		} finally {
 			this.pool.releaseJCas(cas);
-			this.engine.callBack();
 		}
 	}
 	
 	private void reset() {
 		this.termSuite.getToolBar().getRun().setEnabled(true);
 		this.termSuite.getToolBar().getStop().setEnabled(false);
-		this.termSuite.getToolBar().getProgressBar().setValue(0);
-		this.setProgress(0);
 	}
 	
 	private String extract(File file, String encoding) throws Exception {

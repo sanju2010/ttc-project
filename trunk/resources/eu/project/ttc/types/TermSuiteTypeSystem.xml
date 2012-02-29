@@ -203,7 +203,7 @@
         <featureDescription>
           <name>term</name>
           <description/>
-          <rangeTypeName>uima.cas.String</rangeTypeName>
+          <rangeTypeName>eu.project.ttc.types.TermAnnotation</rangeTypeName>
         </featureDescription>
         <featureDescription>
           <name>language</name>

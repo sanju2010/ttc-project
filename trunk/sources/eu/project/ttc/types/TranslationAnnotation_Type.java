@@ -14,7 +14,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /** 
- * Updated by JCasGen Fri Feb 24 14:28:15 CET 2012
+ * Updated by JCasGen Wed Feb 29 11:17:08 CET 2012
  * @generated */
 public class TranslationAnnotation_Type extends Annotation_Type {
   /** @generated */
@@ -49,16 +49,16 @@ public class TranslationAnnotation_Type extends Annotation_Type {
   /** @generated */
   final int     casFeatCode_term;
   /** @generated */ 
-  public String getTerm(int addr) {
+  public int getTerm(int addr) {
         if (featOkTst && casFeat_term == null)
       jcas.throwFeatMissing("term", "eu.project.ttc.types.TranslationAnnotation");
-    return ll_cas.ll_getStringValue(addr, casFeatCode_term);
+    return ll_cas.ll_getRefValue(addr, casFeatCode_term);
   }
   /** @generated */    
-  public void setTerm(int addr, String v) {
+  public void setTerm(int addr, int v) {
         if (featOkTst && casFeat_term == null)
       jcas.throwFeatMissing("term", "eu.project.ttc.types.TranslationAnnotation");
-    ll_cas.ll_setStringValue(addr, casFeatCode_term, v);}
+    ll_cas.ll_setRefValue(addr, casFeatCode_term, v);}
     
   
  
@@ -89,7 +89,7 @@ public class TranslationAnnotation_Type extends Annotation_Type {
     casImpl.getFSClassRegistry().addGeneratorForType((TypeImpl)this.casType, getFSGenerator());
 
  
-    casFeat_term = jcas.getRequiredFeatureDE(casType, "term", "uima.cas.String", featOkTst);
+    casFeat_term = jcas.getRequiredFeatureDE(casType, "term", "eu.project.ttc.types.TermAnnotation", featOkTst);
     casFeatCode_term  = (null == casFeat_term) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_term).getCode();
 
  
