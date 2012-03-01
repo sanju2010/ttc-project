@@ -73,14 +73,18 @@ public class NeoclassicalSplitter extends JCasAnnotator_ImplBase {
 		FSIterator<Annotation> iterator = index.iterator();
 		while (iterator.hasNext()) {
 			SingleWordTermAnnotation annotation = (SingleWordTermAnnotation) iterator.next();
-			int begin = annotation.getBegin();
-			int end = annotation.getEnd();
-			this.getComponents().clear();
-			this.getPrefixes(cas,begin,end,begin,this.getBank().getPrefixTree());
-			this.getSuffixes(cas,begin,end,end,this.getBank().getSuffixTree());
-			if (!this.getComponents().isEmpty()) {
-				this.doFill(cas, annotation, begin, end);
-				this.doAnnotate(annotation);
+			if (annotation.getCompound()) {
+				continue;
+			} else {
+				int begin = annotation.getBegin();
+				int end = annotation.getEnd();
+				this.getComponents().clear();
+				this.getPrefixes(cas,begin,end,begin,this.getBank().getPrefixTree());
+				this.getSuffixes(cas,begin,end,end,this.getBank().getSuffixTree());
+				if (!this.getComponents().isEmpty()) {
+					this.doFill(cas, annotation, begin, end);
+					this.doAnnotate(annotation);
+				}
 			}
 		}
 	}

@@ -157,6 +157,7 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 			TermAnnotation annotation = this.getSourceTerminology().get(term);
 			if (annotation == null) {
 				this.getContext().getLogger().log(Level.WARNING, "Skiping '" + term + "' as it doesn't belong to the source terminology");
+			} else {
 				if (this.compositional()) {
 					if (annotation instanceof SingleWordTermAnnotation) {
 						SingleWordTermAnnotation swt = (SingleWordTermAnnotation) annotation;
@@ -167,13 +168,12 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 						this.alignMultiWord(cas, terminology, term);
 					}
 				}
-			} else {
 				if (this.distributional()) {
 					if (annotation instanceof SingleWordTermAnnotation) {
 						this.alignSingleWord(cas, term);
-					} 				
+					}
 				}
-			}
+			} 
 		} catch (Exception e) {
 			throw new AnalysisEngineProcessException(e);
 		} 
@@ -232,11 +232,12 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 			List<String> components = this.extract(terminology, termEntry, true);
 			if (reshape) {
 				this.reshape(components);
-			}
+			}		
 			List<List<String>> candidates = this.transfer(cas, components);
 			candidates = this.combine(candidates);
 			// TODO generate
-			components = this.flatten(candidates, "");
+			components = this.flatten(candidates, "");			
+			components.addAll(this.flatten(candidates, "-"));
 			components.addAll(this.flatten(candidates, " "));
 			components = this.select(components);
 			this.annotate(cas, components);			
@@ -590,9 +591,12 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 		List<String> candidates = new ArrayList<String>();
 		for (List<String> component : components) {
 			StringBuilder candidate = new StringBuilder();
-			for (String item : component) {
+			for (int index = 0; index < component.size(); index++) {
+				String item = component.get(index);
 				candidate.append(item);
-				candidate.append(glue);
+				if (index < component.size() - 1) {
+					candidate.append(glue);					
+				}
 			}
 			candidates.add(candidate.toString());
 		}
@@ -622,11 +626,12 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 	 * @param candidates
 	 */
 	private void annotate(JCas cas, List<String> candidates) {
-		for (String candidate : candidates) {
+		for (int index = 0; index < candidates.size(); index++) {
+			String candidate = candidates.get(index);
 			TranslationCandidateAnnotation annotation = new TranslationCandidateAnnotation(cas,0,cas.getDocumentText().length());
 			annotation.setTranslation(candidate);
 			annotation.setScore(1.0);
-			annotation.setRank(1);
+			annotation.setRank(index);
 			annotation.addToIndexes();
 		}
 	}

@@ -53,8 +53,6 @@ public class AlignerViewer {
 		this.tree = new JTree(this.getTreeModel());
 		this.tree.setRootVisible(false);
 		this.tree.expandRow(1);
-		// this.tree.setSelectionModel(TreeSelectionModel.SINGLE_TREE_SELECTION);
-		// TODO this.list.setCellRenderer(new Renderer());
 	}
 	
 	private JTree getTree() {
@@ -165,22 +163,23 @@ public class AlignerViewer {
 		int best = -1;
 		boolean update = false;
 		AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TranslationCandidateAnnotation.type);
+		int size = index.size() > 100 ? 100 : index.size();		
 		FSIterator<Annotation> iterator = index.iterator();
-		String[] candidates = new String[100];
-		Double[] scores = new Double[100];
+		String[] candidates = new String[size];
+		Double[] scores = new Double[size];
 		while (iterator.hasNext()) {
 			update = true;
 			TranslationCandidateAnnotation annotation = (TranslationCandidateAnnotation) iterator.next();
 			String translation = annotation.getTranslation();
-			Double score = annotation.getScore();
-			Integer rank = annotation.getRank();
-			if (rank.intValue() > 0 && rank.intValue() <= 100) {
-				candidates[rank.intValue() - 1] = translation;
-				scores[rank.intValue() - 1] = score;
+			double score = annotation.getScore();
+			int rank = annotation.getRank() + 1;
+			if (rank > 0 && rank <= size) {
+				candidates[rank - 1] = translation;
+				scores[rank - 1] = score;
 			}
 			if (translations.contains(translation)) {
-				if (best == -1 || rank.intValue() < best) {
-					best = rank.intValue();
+				if (best == -1 || rank < best) {
+					best = rank;
 				}
 			}
 		}
@@ -188,7 +187,7 @@ public class AlignerViewer {
 		node.setUserObject(term + " (" + (best == -1 ? "unranked" : new Integer(best).toString()) + ")");
 		this.getRoot().add(node);
 		if (update) {
-			for (int i = 0; i < 100; i++) {
+			for (int i = 0; i < candidates.length; i++) {
 				this.addNote(node, candidates[i], new Integer(i + 1), scores[i]);
 			}
 			this.getTableModel().update(best == -1 ? 101 : best);
