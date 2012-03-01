@@ -436,8 +436,10 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 		for (int index = 0; index < components.size(); index++) {
 			String component = components.get(index);
 			Set<String> candidate = this.getDictionary().get().get(component);
-			if (candidate == null && this.distributional()) {
+			if (candidate == null) {
 				candidate = new HashSet<String>();
+			}
+			if (candidate.isEmpty() && this.distributional()) {
 				this.alignComponent(cas, component, candidate);
 			}
 			candidates.add(new ArrayList<String>(candidate));
