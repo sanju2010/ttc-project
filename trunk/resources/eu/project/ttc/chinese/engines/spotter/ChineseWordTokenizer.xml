@@ -2,7 +2,7 @@
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>true</primitive>
-  <annotatorImplementationName>uima.sandbox.lexer.engines.Lexer</annotatorImplementationName>
+  <annotatorImplementationName>fr.univnantes.lina.uima.engines.ChineseSegmenter</annotatorImplementationName>
   <analysisEngineMetaData>
     <name>Chinese Word Tokenizer</name>
     <description/>
@@ -10,21 +10,15 @@
     <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
     <configurationParameters>
       <configurationParameter>
-        <name>Type</name>
+        <name>AnnotationType</name>
         <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
-      <configurationParameter>
-        <name>File</name>
-        <type>String</type>
-        <multiValued>false</multiValued>
-        <mandatory>false</mandatory>
-      </configurationParameter>
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
-        <name>Type</name>
+        <name>AnnotationType</name>
         <value>
           <string>eu.project.ttc.types.WordAnnotation</string>
         </value>
@@ -56,27 +50,99 @@
   </analysisEngineMetaData>
   <externalResourceDependencies>
     <externalResourceDependency>
-      <key>Bank</key>
+      <key>WordSegments</key>
       <description/>
-      <interfaceName>uima.sandbox.lexer.resources.SegmentBank</interfaceName>
+      <interfaceName>fr.univnantes.lina.uima.models.ChineseSegment</interfaceName>
+      <optional>false</optional>
+    </externalResourceDependency>
+    <externalResourceDependency>
+      <key>SurnameSegments</key>
+      <description/>
+      <interfaceName>fr.univnantes.lina.uima.models.ChineseSegment</interfaceName>
+      <optional>false</optional>
+    </externalResourceDependency>
+    <externalResourceDependency>
+      <key>ForeignNameSegments</key>
+      <description/>
+      <interfaceName>fr.univnantes.lina.uima.models.ChineseSegment</interfaceName>
+      <optional>false</optional>
+    </externalResourceDependency>
+    <externalResourceDependency>
+      <key>NumberSegments</key>
+      <description/>
+      <interfaceName>fr.univnantes.lina.uima.models.ChineseSegment</interfaceName>
+      <optional>false</optional>
+    </externalResourceDependency>
+    <externalResourceDependency>
+      <key>WrongNameSegments</key>
+      <description/>
+      <interfaceName>fr.univnantes.lina.uima.models.ChineseSegment</interfaceName>
       <optional>false</optional>
     </externalResourceDependency>
   </externalResourceDependencies>
   <resourceManagerConfiguration>
     <externalResources>
       <externalResource>
-        <name>ChineseSegmentBank</name>
+        <name>ChineseWordSegments</name>
         <description/>
         <fileResourceSpecifier>
-          <fileUrl>eu/project/ttc/chinese/resources/chinese-segment-bank.xml</fileUrl>
+          <fileUrl>fr/univnantes/lina/uima/resources/ChineseWord.Segments</fileUrl>
         </fileResourceSpecifier>
-        <implementationName>uima.sandbox.lexer.resources.SegmentBankResource</implementationName>
+        <implementationName>fr.univnantes.lina.uima.models.ChineseSegmentResource</implementationName>
+      </externalResource>
+      <externalResource>
+        <name>ChineseSurnameSegments</name>
+        <description/>
+        <fileResourceSpecifier>
+          <fileUrl>fr/univnantes/lina/uima/resources/ChineseSurname.Segments</fileUrl>
+        </fileResourceSpecifier>
+        <implementationName>fr.univnantes.lina.uima.models.ChineseSegmentResource</implementationName>
+      </externalResource>
+      <externalResource>
+        <name>ChineseForeignNameSegments</name>
+        <description/>
+        <fileResourceSpecifier>
+          <fileUrl>fr/univnantes/lina/uima/resources/ChineseForeignName.Segments</fileUrl>
+        </fileResourceSpecifier>
+        <implementationName>fr.univnantes.lina.uima.models.ChineseSegmentResource</implementationName>
+      </externalResource>
+      <externalResource>
+        <name>ChineseNumberSegments</name>
+        <description/>
+        <fileResourceSpecifier>
+          <fileUrl>fr/univnantes/lina/uima/resources/ChineseNumber.Segments</fileUrl>
+        </fileResourceSpecifier>
+        <implementationName>fr.univnantes.lina.uima.models.ChineseSegmentResource</implementationName>
+      </externalResource>
+      <externalResource>
+        <name>ChineseWrongNameSegments</name>
+        <description/>
+        <fileResourceSpecifier>
+          <fileUrl>fr/univnantes/lina/uima/resources/ChineseWrongName.Segments</fileUrl>
+        </fileResourceSpecifier>
+        <implementationName>fr.univnantes.lina.uima.models.ChineseSegmentResource</implementationName>
       </externalResource>
     </externalResources>
     <externalResourceBindings>
       <externalResourceBinding>
-        <key>Bank</key>
-        <resourceName>ChineseSegmentBank</resourceName>
+        <key>WordSegments</key>
+        <resourceName>ChineseWordSegments</resourceName>
+      </externalResourceBinding>
+      <externalResourceBinding>
+        <key>SurnameSegments</key>
+        <resourceName>ChineseSurnameSegments</resourceName>
+      </externalResourceBinding>
+      <externalResourceBinding>
+        <key>ForeignNameSegments</key>
+        <resourceName>ChineseForeignNameSegments</resourceName>
+      </externalResourceBinding>
+      <externalResourceBinding>
+        <key>NumberSegments</key>
+        <resourceName>ChineseNumberSegments</resourceName>
+      </externalResourceBinding>
+      <externalResourceBinding>
+        <key>WrongNameSegments</key>
+        <resourceName>ChineseWrongNameSegments</resourceName>
       </externalResourceBinding>
     </externalResourceBindings>
   </resourceManagerConfiguration>

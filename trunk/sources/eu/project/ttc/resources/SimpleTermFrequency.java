@@ -1,5 +1,6 @@
 package eu.project.ttc.resources;
 
+import java.lang.Character.UnicodeBlock;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,7 +46,7 @@ public class SimpleTermFrequency implements SharedResourceObject {
 			return null;
 		} else if (term.length() <= 2) {
 			return null;
-		} else if (Character.getType(term.charAt(0)) == Character.LOWERCASE_LETTER) {
+		} else if (this.allow(term)) {
 			Integer frequency = this.getFrequencies().get(term);
 			int freq = frequency == null ? 1 : frequency.intValue() + 1;
 			this.getFrequencies().put(term, new Integer(freq));
@@ -53,6 +54,21 @@ public class SimpleTermFrequency implements SharedResourceObject {
 			return term;
 		} else {
 			return null;
+		}
+	}
+
+	private boolean allow(String term) {
+		char ch = term.charAt(0);
+		int type = Character.getType(ch); 
+		UnicodeBlock unicode = Character.UnicodeBlock.of(ch);
+		if (type == Character.LOWERCASE_LETTER) {
+			return true;
+		} else if (unicode == Character.UnicodeBlock.CYRILLIC) {
+			return true;
+		} else if (unicode == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS) {
+			return true;
+		} else {
+			return false;
 		}
 	}
 
