@@ -5,12 +5,20 @@
 
 == Installation == 
 
+=== Download the binary ===
+
+Just launch this command line:
+
+{{{
+ wget http://ttc-project.googlecode.com/files/ttc-term-suite-1.0.jar
+}}}
+
 === Compilation from Sources ===
 
 Just launch these command lines:
 
 {{{
- svn checkout http://ttc-project.googlecode.com/svn/trunk/ ttc-term-suite
+ svn checkout http://ttc-project.googlecode.com/svn/tags/1.0 ttc-term-suite
  cd ttc-term-suite/modules
  for module in * ; do cd $module ; mvn install ; cd .. ; done
  cd ..
