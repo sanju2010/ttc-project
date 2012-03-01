@@ -14,20 +14,25 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.tartarus.snowball.SnowballStemmer;
+import org.tartarus.snowball.models.PorterStemmer;
 
 public class Stemmer extends JCasAnnotator_ImplBase {
 
 	private SnowballStemmer stemmer;
 	
-	public void setStemmer(String language) throws Exception {
+	public void setStemmer(String language) {
 		String className = "org.tartarus.snowball.models." + language + "Stemmer";
-		Class<?> stemClass = Class.forName(className);
-		Object object = stemClass.newInstance();
-		if (object instanceof SnowballStemmer) {
-			SnowballStemmer stemmer = (SnowballStemmer) object;
-			this.stemmer = stemmer;
-		} else {
-			throw new NullPointerException(className);
+		try {
+			Class<?> stemClass = Class.forName(className);
+			Object object = stemClass.newInstance();
+			if (object instanceof SnowballStemmer) {
+				SnowballStemmer stemmer = (SnowballStemmer) object;
+				this.stemmer = stemmer;
+			} else {
+				throw new NullPointerException(className);
+			}
+		} catch (Exception e) {
+			this.stemmer = new PorterStemmer();
 		}
 	}
 	
@@ -78,6 +83,7 @@ public class Stemmer extends JCasAnnotator_ImplBase {
 	
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
+		super.initialize(context);
 		try {
 			String language = (String) context.getConfigParameterValue("Language");
 			Locale locale = new Locale(language);
