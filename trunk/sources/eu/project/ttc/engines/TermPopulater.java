@@ -1,7 +1,7 @@
 package eu.project.ttc.engines;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.io.File;
+import java.util.Scanner;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
@@ -57,23 +57,34 @@ public class TermPopulater extends JCasAnnotator_ImplBase {
 		try {
 			cas.setDocumentLanguage(this.getSourceLanguage());
 			String text = cas.getDocumentText();
-			Pattern pattern = Pattern.compile("\\t");
-			Matcher matcher = pattern.matcher(text);
-			boolean index = true;
+			Scanner scanner = new Scanner(text);
+			String delimiter = System.getProperty("line.separator");
+			scanner.useDelimiter(delimiter);
 			int begin = 0;
 			int end = 0;
-			while (matcher.find()) {
-				end = matcher.start();
-				if (index) {
-					index = false;
-					TermAnnotation annotation = new TermAnnotation(cas, begin, end);
-					annotation.addToIndexes();
-				} else {
-					TranslationAnnotation annotation = new TranslationAnnotation(cas, begin, end);
-					annotation.setLanguage(this.getTargetLanguage());
-					annotation.addToIndexes();
+			StringBuilder builder = new StringBuilder();
+			while (scanner.hasNext()) {
+				String line = scanner.next();
+				builder.append(line);
+				builder.append(delimiter);
+				String[] items = line.split("\t");
+				TermAnnotation term = null;
+				for (int index = 0; index < items.length; index++) {
+					String word = items[index];
+					end = begin + word.length();
+					if (index == 0) {
+						TermAnnotation annotation = new TermAnnotation(cas, begin, end);
+						annotation.addToIndexes();
+						term = annotation;
+					} else {
+						TranslationAnnotation annotation = new TranslationAnnotation(cas, begin, end);
+						annotation.setTerm(term);
+						annotation.setLanguage(this.getTargetLanguage());
+						annotation.addToIndexes();
+					}
+					begin = end + 1;
 				}
-				begin = matcher.end();
+				begin = builder.length();
 			}
 		} catch (Exception e) {
 			throw new AnalysisEngineProcessException(e);
