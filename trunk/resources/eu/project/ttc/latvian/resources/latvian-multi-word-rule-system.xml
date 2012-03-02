@@ -5,15 +5,15 @@
 			<patterns>
 				<pattern>
 					<annotation type="eu.project.ttc.types.WordAnnotation">
-					<constraint>
-						<eq key="category" value="adjective" />
+						<constraint>
+							<eq key="category" value="adjective" />
 						</constraint>
 					</annotation>
 				</pattern>
 				<pattern>
 					<annotation type="eu.project.ttc.types.WordAnnotation">
-					<constraint>
-						<eq key="category" value="noun" />
+						<constraint>
+							<eq key="category" value="noun" />
 						</constraint>
 					</annotation>
 				</pattern>
@@ -178,9 +178,7 @@
 				<pattern>
 					<annotation type="eu.project.ttc.types.WordAnnotation">
 						<constraint>
-							<constraint>
-								<eq key="category" value="noun" />
-							</constraint>
+							<eq key="category" value="noun" />
 						</constraint>
 					</annotation>
 				</pattern>
@@ -264,9 +262,7 @@
 				<pattern>
 					<annotation type="eu.project.ttc.types.WordAnnotation">
 						<constraint>
-							<constraint>
-								<eq key="category" value="noun" />
-							</constraint>
+							<eq key="category" value="noun" />
 						</constraint>
 					</annotation>
 				</pattern>
@@ -311,9 +307,7 @@
 				<pattern>
 					<annotation type="eu.project.ttc.types.WordAnnotation">
 						<constraint>
-							<constraint>
-								<eq key="category" value="noun" />
-							</constraint>
+							<eq key="category" value="noun" />
 						</constraint>
 					</annotation>
 				</pattern>
@@ -342,9 +336,7 @@
 				<pattern>
 					<annotation type="eu.project.ttc.types.WordAnnotation">
 						<constraint>
-							<constraint>
-								<eq key="category" value="conjunction" />
-							</constraint>
+							<eq key="category" value="conjunction" />
 						</constraint>
 					</annotation>
 				</pattern>
@@ -367,9 +359,7 @@
 				<pattern>
 					<annotation type="eu.project.ttc.types.WordAnnotation">
 						<constraint>
-							<constraint>
-								<eq key="category" value="noun" />
-							</constraint>
+							<eq key="category" value="noun" />
 						</constraint>
 					</annotation>
 				</pattern>

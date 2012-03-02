@@ -11,7 +11,7 @@
     <typeDescription>
       <name>eu.project.ttc.types.WordAnnotation</name>
       <description/>
-      <supertypeName>uima.tcas.Annotation</supertypeName>
+      <supertypeName>eu.project.ttc.types.TermComponentAnnotation</supertypeName>
       <features>
         <featureDescription>
           <name>tag</name>
@@ -19,22 +19,7 @@
           <rangeTypeName>uima.cas.String</rangeTypeName>
         </featureDescription>
         <featureDescription>
-          <name>category</name>
-          <description/>
-          <rangeTypeName>uima.cas.String</rangeTypeName>
-        </featureDescription>
-        <featureDescription>
           <name>subCategory</name>
-          <description/>
-          <rangeTypeName>uima.cas.String</rangeTypeName>
-        </featureDescription>
-        <featureDescription>
-          <name>lemma</name>
-          <description/>
-          <rangeTypeName>uima.cas.String</rangeTypeName>
-        </featureDescription>
-        <featureDescription>
-          <name>stem</name>
           <description/>
           <rangeTypeName>uima.cas.String</rangeTypeName>
         </featureDescription>
@@ -127,6 +112,11 @@
           <rangeTypeName>uima.cas.FSArray</rangeTypeName>
           <elementType>eu.project.ttc.types.TermAnnotation</elementType>
         </featureDescription>
+        <featureDescription>
+          <name>forms</name>
+          <description/>
+          <rangeTypeName>uima.cas.StringArray</rangeTypeName>
+        </featureDescription>
       </features>
     </typeDescription>
     <typeDescription>
@@ -150,6 +140,14 @@
       <name>eu.project.ttc.types.MultiWordTermAnnotation</name>
       <description/>
       <supertypeName>eu.project.ttc.types.TermAnnotation</supertypeName>
+      <features>
+        <featureDescription>
+          <name>components</name>
+          <description/>
+          <rangeTypeName>uima.cas.FSArray</rangeTypeName>
+          <elementType>eu.project.ttc.types.TermComponentAnnotation</elementType>
+        </featureDescription>
+      </features>
     </typeDescription>
     <typeDescription>
       <name>eu.project.ttc.types.TermComponentAnnotation</name>

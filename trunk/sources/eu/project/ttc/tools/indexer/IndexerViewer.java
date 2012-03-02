@@ -133,16 +133,36 @@ public class IndexerViewer {
 			FSIterator<Annotation> iterator = index.iterator();
 			while (iterator.hasNext()) {
 				TermAnnotation term = (TermAnnotation) iterator.next();
-				DefaultMutableTreeNode node = new DefaultMutableTreeNode();
-				node.setUserObject(term.getCoveredText().replaceAll("\\s+", " "));
-				this.getRoot().add(node);
-				this.addNotes(node, term);
-				this.addComponents(node, cas, term);
-				this.addVariants(node, cas, term);
+				if (term.getCategory().equals("verb")) { 
+					continue;
+				} else {
+					DefaultMutableTreeNode node = new DefaultMutableTreeNode();
+					node.setUserObject(term.getCoveredText().replaceAll("\\s+", " "));
+					this.getRoot().add(node);
+					this.addNotes(node, term);
+					this.addComponents(node, cas, term);
+					this.addForms(node, cas, term);
+					this.addVariants(node, cas, term);
+				}
 			}
 			this.getModel().reload();
 		} catch (CASRuntimeException e) {
 			e.printStackTrace();
+		}
+	}
+	
+	private void addForms(DefaultMutableTreeNode root, JCas cas, TermAnnotation annotation) {
+		try {
+			if (annotation.getForms() != null) {
+				DefaultMutableTreeNode node = new DefaultMutableTreeNode();
+				node.setUserObject("forms");
+				root.add(node);
+				for (int i = 0; i < annotation.getForms().size(); i++) {
+					this.addNote(node, annotation.getForms(i));			
+				}
+			}
+		} catch (Exception e) {
+			// ignore
 		}
 	}
 	
@@ -254,10 +274,16 @@ public class IndexerViewer {
 	}
 
 	private void addNote(DefaultMutableTreeNode root,String key,Object value) {
-		DefaultMutableTreeNode node = new DefaultMutableTreeNode();
 		if (value != null) {
 			String string = key + " : " + value.toString();
-			node.setUserObject(string);
+			this.addNote(root, string);
+		}	
+	}
+	
+	private void addNote(DefaultMutableTreeNode root,String value) {
+		DefaultMutableTreeNode node = new DefaultMutableTreeNode();
+		if (value != null) {
+			node.setUserObject(value);
 			root.add(node);
 		}	
 	}

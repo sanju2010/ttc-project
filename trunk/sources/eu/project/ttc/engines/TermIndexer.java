@@ -2,6 +2,7 @@ package eu.project.ttc.engines;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 import org.apache.uima.UIMAFramework;
@@ -10,6 +11,7 @@ import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.examples.SourceDocumentInformation;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
+import org.apache.uima.jcas.cas.StringArray;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.util.Level;
 
@@ -154,7 +156,7 @@ public class TermIndexer extends Indexer {
 		this.release(cas, builder, this.getMultiWordTermFrequency());
 		cas.setDocumentText(builder.toString());
 		SourceDocumentInformation sdi = new SourceDocumentInformation(cas);
-		sdi.setUri("http://terminology." + this.getLanguage().toLowerCase());
+		sdi.setUri("http://terminology.xmi");
 		sdi.setBegin(0);
 		sdi.setEnd(builder.length());
 		sdi.setOffsetInSource(0);
@@ -204,6 +206,7 @@ public class TermIndexer extends Indexer {
 		for (String entry : frequency.getFrequencies().keySet()) {
 			int freq = frequency.getFrequencies().get(entry).intValue();
 			String category = frequency.getCategories().get(entry);
+			Set<String> forms = frequency.getForms().get(entry);
 			int begin = builder.length();
 			builder.append(entry);
 			int end = builder.length();
@@ -214,6 +217,15 @@ public class TermIndexer extends Indexer {
 			annotation.setCategory(category);
 			annotation.setLemma(entry);
 			annotation.addToIndexes();
+			if (forms != null) {
+				StringArray array = new StringArray(cas, forms.size());
+				annotation.setForms(array);
+				int i = 0;
+				for (String form : forms) {
+					annotation.setForms(i, form);
+					i++;
+				}
+			}
 		}
 	}
 	
@@ -222,21 +234,36 @@ public class TermIndexer extends Indexer {
 			int freq = frequency.getFrequencies().get(entry).intValue();
 			String category = frequency.getCategories().get(entry);
 			List<Component> components = frequency.getComponents().get(entry);
+			Set<String> forms = frequency.getForms().get(entry);
 			int begin = builder.length();
 			builder.append(entry);
 			int end = builder.length();
 			builder.append('\n');
-			TermAnnotation annotation = new MultiWordTermAnnotation(cas,begin,end);
+			MultiWordTermAnnotation annotation = new MultiWordTermAnnotation(cas,begin,end);
 			annotation.setOccurrences(freq);
 			annotation.setFrequency(freq);
 			annotation.setCategory(category);
 			annotation.addToIndexes();
 			if (components != null) {
+				FSArray array = new FSArray(cas, components.size());
+				annotation.setComponents(array);
+				int i = 0;
 				for (Component component : components) {
 					TermComponentAnnotation c = new TermComponentAnnotation(cas);
 					component.release(c, annotation.getBegin());
 					c.addToIndexes();
+					annotation.setComponents(i, c);
+					i++;
 				}						
+			}
+			if (forms != null) {
+				StringArray array = new StringArray(cas, forms.size());
+				annotation.setForms(array);
+				int i = 0;
+				for (String form : forms) {
+					annotation.setForms(i, form);
+					i++;
+				}
 			}
 		}
 	}

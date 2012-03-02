@@ -11,10 +11,10 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
- * Updated by JCasGen Wed Feb 29 11:17:08 CET 2012
+ * Updated by JCasGen Thu Mar 01 23:11:13 CET 2012
  * XML source: /home/rocheteau-j/Repositories/GoogleCode/ttc-term-suite/trunk/resources/eu/project/ttc/types/TermSuiteTypeSystem.xml
  * @generated */
-public class WordAnnotation extends Annotation {
+public class WordAnnotation extends TermComponentAnnotation {
   /** @generated
    * @ordered 
    */
@@ -81,24 +81,6 @@ public class WordAnnotation extends Annotation {
    
     
   //*--------------*
-  //* Feature: category
-
-  /** getter for category - gets 
-   * @generated */
-  public String getCategory() {
-    if (WordAnnotation_Type.featOkTst && ((WordAnnotation_Type)jcasType).casFeat_category == null)
-      jcasType.jcas.throwFeatMissing("category", "eu.project.ttc.types.WordAnnotation");
-    return jcasType.ll_cas.ll_getStringValue(addr, ((WordAnnotation_Type)jcasType).casFeatCode_category);}
-    
-  /** setter for category - sets  
-   * @generated */
-  public void setCategory(String v) {
-    if (WordAnnotation_Type.featOkTst && ((WordAnnotation_Type)jcasType).casFeat_category == null)
-      jcasType.jcas.throwFeatMissing("category", "eu.project.ttc.types.WordAnnotation");
-    jcasType.ll_cas.ll_setStringValue(addr, ((WordAnnotation_Type)jcasType).casFeatCode_category, v);}    
-   
-    
-  //*--------------*
   //* Feature: subCategory
 
   /** getter for subCategory - gets 
@@ -114,42 +96,6 @@ public class WordAnnotation extends Annotation {
     if (WordAnnotation_Type.featOkTst && ((WordAnnotation_Type)jcasType).casFeat_subCategory == null)
       jcasType.jcas.throwFeatMissing("subCategory", "eu.project.ttc.types.WordAnnotation");
     jcasType.ll_cas.ll_setStringValue(addr, ((WordAnnotation_Type)jcasType).casFeatCode_subCategory, v);}    
-   
-    
-  //*--------------*
-  //* Feature: lemma
-
-  /** getter for lemma - gets 
-   * @generated */
-  public String getLemma() {
-    if (WordAnnotation_Type.featOkTst && ((WordAnnotation_Type)jcasType).casFeat_lemma == null)
-      jcasType.jcas.throwFeatMissing("lemma", "eu.project.ttc.types.WordAnnotation");
-    return jcasType.ll_cas.ll_getStringValue(addr, ((WordAnnotation_Type)jcasType).casFeatCode_lemma);}
-    
-  /** setter for lemma - sets  
-   * @generated */
-  public void setLemma(String v) {
-    if (WordAnnotation_Type.featOkTst && ((WordAnnotation_Type)jcasType).casFeat_lemma == null)
-      jcasType.jcas.throwFeatMissing("lemma", "eu.project.ttc.types.WordAnnotation");
-    jcasType.ll_cas.ll_setStringValue(addr, ((WordAnnotation_Type)jcasType).casFeatCode_lemma, v);}    
-   
-    
-  //*--------------*
-  //* Feature: stem
-
-  /** getter for stem - gets 
-   * @generated */
-  public String getStem() {
-    if (WordAnnotation_Type.featOkTst && ((WordAnnotation_Type)jcasType).casFeat_stem == null)
-      jcasType.jcas.throwFeatMissing("stem", "eu.project.ttc.types.WordAnnotation");
-    return jcasType.ll_cas.ll_getStringValue(addr, ((WordAnnotation_Type)jcasType).casFeatCode_stem);}
-    
-  /** setter for stem - sets  
-   * @generated */
-  public void setStem(String v) {
-    if (WordAnnotation_Type.featOkTst && ((WordAnnotation_Type)jcasType).casFeat_stem == null)
-      jcasType.jcas.throwFeatMissing("stem", "eu.project.ttc.types.WordAnnotation");
-    jcasType.ll_cas.ll_setStringValue(addr, ((WordAnnotation_Type)jcasType).casFeatCode_stem, v);}    
    
     
   //*--------------*

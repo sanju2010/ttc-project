@@ -14,7 +14,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /** 
- * Updated by JCasGen Wed Feb 29 11:17:07 CET 2012
+ * Updated by JCasGen Thu Mar 01 23:11:13 CET 2012
  * @generated */
 public class TermAnnotation_Type extends Annotation_Type {
   /** @generated */
@@ -207,6 +207,43 @@ public class TermAnnotation_Type extends Annotation_Type {
     ll_cas.ll_setRefArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_context), i, v);
   }
  
+ 
+  /** @generated */
+  final Feature casFeat_forms;
+  /** @generated */
+  final int     casFeatCode_forms;
+  /** @generated */ 
+  public int getForms(int addr) {
+        if (featOkTst && casFeat_forms == null)
+      jcas.throwFeatMissing("forms", "eu.project.ttc.types.TermAnnotation");
+    return ll_cas.ll_getRefValue(addr, casFeatCode_forms);
+  }
+  /** @generated */    
+  public void setForms(int addr, int v) {
+        if (featOkTst && casFeat_forms == null)
+      jcas.throwFeatMissing("forms", "eu.project.ttc.types.TermAnnotation");
+    ll_cas.ll_setRefValue(addr, casFeatCode_forms, v);}
+    
+   /** @generated */
+  public String getForms(int addr, int i) {
+        if (featOkTst && casFeat_forms == null)
+      jcas.throwFeatMissing("forms", "eu.project.ttc.types.TermAnnotation");
+    if (lowLevelTypeChecks)
+      return ll_cas.ll_getStringArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_forms), i, true);
+    jcas.checkArrayBounds(ll_cas.ll_getRefValue(addr, casFeatCode_forms), i);
+  return ll_cas.ll_getStringArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_forms), i);
+  }
+   
+  /** @generated */ 
+  public void setForms(int addr, int i, String v) {
+        if (featOkTst && casFeat_forms == null)
+      jcas.throwFeatMissing("forms", "eu.project.ttc.types.TermAnnotation");
+    if (lowLevelTypeChecks)
+      ll_cas.ll_setStringArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_forms), i, v, true);
+    jcas.checkArrayBounds(ll_cas.ll_getRefValue(addr, casFeatCode_forms), i);
+    ll_cas.ll_setStringArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_forms), i, v);
+  }
+ 
 
 
 
@@ -243,6 +280,10 @@ public class TermAnnotation_Type extends Annotation_Type {
  
     casFeat_context = jcas.getRequiredFeatureDE(casType, "context", "uima.cas.FSArray", featOkTst);
     casFeatCode_context  = (null == casFeat_context) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_context).getCode();
+
+ 
+    casFeat_forms = jcas.getRequiredFeatureDE(casType, "forms", "uima.cas.StringArray", featOkTst);
+    casFeatCode_forms  = (null == casFeat_forms) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_forms).getCode();
 
   }
 }

@@ -1,45 +1,60 @@
 package eu.project.ttc.engines;
 
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.tcas.Annotation;
 
 import uima.sandbox.matcher.engines.Matcher;
 
 import eu.project.ttc.types.MultiWordTermAnnotation;
 import eu.project.ttc.types.SingleWordTermAnnotation;
-import eu.project.ttc.types.TermAnnotation;
 import eu.project.ttc.types.WordAnnotation;
 
 public class TermSpotter extends Matcher {
 			
 	@Override
 	protected void annotate(JCas cas, String id, int begin, int end,Annotation[] annotations) {
+		String language = cas.getDocumentLanguage();
 		if (0 <= begin && begin < end && end <= cas.getDocumentText().length()) {
-			TermAnnotation term = null;
 			if (annotations.length == 1) {
-				term = new SingleWordTermAnnotation(cas, begin, end);
+				SingleWordTermAnnotation term = new SingleWordTermAnnotation(cas, begin, end);
 				WordAnnotation word = (WordAnnotation) annotations[0];
 				term.setCategory(word.getCategory());
-				term.setLemma(word.getLemma());
-			} else {
-				term = new MultiWordTermAnnotation(cas, begin, end);
-				String lemma = term.getCoveredText();
-				/*
-				for (int index = 0; index < annotations.length; index++) {
-					WordAnnotation a = (WordAnnotation) annotations[index];
-					lemma += " " + a.getCoveredText();
-					
-					TermComponentAnnotation component = new TermComponentAnnotation(cas, a.getBegin(), a.getEnd());
-					component.setCategory(a.getCategory());
-					component.setLemma(a.getLemma());
-					component.addToIndexes();
-					
+				if (word.getLemma() == null) {
+					word.setLemma(word.getCoveredText());
+				} else if (word.getLemma().equals("@card@")) {
+					word.setLemma(word.getCoveredText());
 				}
-				*/
+				term.setLemma(word.getLemma());
+				term.addToIndexes();
+			} else {
+				MultiWordTermAnnotation term = new MultiWordTermAnnotation(cas, begin, end);
+				// FIXME 
+				if (language.equals("lv")) {
+					FSArray array = new FSArray(cas, annotations.length);
+					term.setComponents(array);
+				}
+				StringBuilder lemma = new StringBuilder();
+				for (int index = 0; index < annotations.length; index++) {
+					WordAnnotation word = (WordAnnotation) annotations[index];
+					if (word.getLemma() == null) {
+						word.setLemma(word.getCoveredText());
+					} else if (word.getLemma().equals("@card@")) {
+						word.setLemma(word.getCoveredText());
+					}
+					lemma.append(word.getLemma());
+					if (index < annotations.length - 1) {
+						lemma.append(' ');
+					}
+					// FIXME
+					if (language.equals("lv")) {
+						term.setComponents(index, word);						
+					}
+				}
+				term.setLemma(lemma.toString());
 				term.setCategory(id);
-				term.setLemma(lemma.trim());
+				term.addToIndexes();
 			}
-			term.addToIndexes();
 		}
 	}
 		

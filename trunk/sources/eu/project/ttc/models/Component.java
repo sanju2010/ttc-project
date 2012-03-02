@@ -1,7 +1,6 @@
 package eu.project.ttc.models;
 
 import eu.project.ttc.types.TermComponentAnnotation;
-import eu.project.ttc.types.WordAnnotation;
 
 public class Component {
 
@@ -19,7 +18,7 @@ public class Component {
 		annotation.setStem(this.stem);
 	}
 	
-	public void update(WordAnnotation annotation,int offset) {
+	public void update(TermComponentAnnotation annotation,int offset) {
 		this.category = annotation.getCategory();
 		this.lemma = annotation.getLemma();
 		this.stem = annotation.getStem();

@@ -2,7 +2,9 @@ package eu.project.ttc.resources;
 
 import java.lang.Character.UnicodeBlock;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.uima.resource.DataResource;
 import org.apache.uima.resource.ResourceInitializationException;
@@ -18,6 +20,7 @@ public class SimpleTermFrequency implements SharedResourceObject {
 		this.setFrequencies();
 		this.setCategories();
 		this.setContexts();
+		this.setForms();
 	}
 	
 	private Map<String, Integer> frequencies;
@@ -40,6 +43,16 @@ public class SimpleTermFrequency implements SharedResourceObject {
 		return this.categories;
 	}
 
+	private Map<String, Set<String>> forms;
+	
+	private void setForms() {
+		this.forms = new HashMap<String, Set<String>>();
+	}
+	
+	public Map<String, Set<String>> getForms() {
+		return this.forms;
+	}
+	
 	protected String add(TermAnnotation annotation) {
 		String term = annotation.getLemma().toLowerCase().replaceAll("\\s+", " ").trim();
 		if (term == null) { 
@@ -51,6 +64,12 @@ public class SimpleTermFrequency implements SharedResourceObject {
 			int freq = frequency == null ? 1 : frequency.intValue() + 1;
 			this.getFrequencies().put(term, new Integer(freq));
 			this.getCategories().put(term, annotation.getCategory());
+			Set<String> forms = this.getForms().get(term);
+			if (forms == null) {
+				forms = new HashSet<String>();
+				this.getForms().put(term, forms);
+			}
+			forms.add(annotation.getCoveredText());
 			return term;
 		} else {
 			return null;

@@ -6,7 +6,7 @@ import org.apache.uima.cas.FSMatchConstraint;
 import org.apache.uima.jcas.JCas;
 
 public interface Tree {
-			
+
 	public FSMatchConstraint getConstraint(JCas cas);
 		
 	public String id();

@@ -11,8 +11,11 @@ import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.tcas.Annotation;
 
 
+import org.apache.uima.jcas.cas.StringArray;
+
+
 /** 
- * Updated by JCasGen Wed Feb 29 11:17:07 CET 2012
+ * Updated by JCasGen Thu Mar 01 23:11:13 CET 2012
  * XML source: /home/rocheteau-j/Repositories/GoogleCode/ttc-term-suite/trunk/resources/eu/project/ttc/types/TermSuiteTypeSystem.xml
  * @generated */
 public class TermAnnotation extends Annotation {
@@ -219,6 +222,40 @@ public class TermAnnotation extends Annotation {
       jcasType.jcas.throwFeatMissing("context", "eu.project.ttc.types.TermAnnotation");
     jcasType.jcas.checkArrayBounds(jcasType.ll_cas.ll_getRefValue(addr, ((TermAnnotation_Type)jcasType).casFeatCode_context), i);
     jcasType.ll_cas.ll_setRefArrayValue(jcasType.ll_cas.ll_getRefValue(addr, ((TermAnnotation_Type)jcasType).casFeatCode_context), i, jcasType.ll_cas.ll_getFSRef(v));}
+   
+    
+  //*--------------*
+  //* Feature: forms
+
+  /** getter for forms - gets 
+   * @generated */
+  public StringArray getForms() {
+    if (TermAnnotation_Type.featOkTst && ((TermAnnotation_Type)jcasType).casFeat_forms == null)
+      jcasType.jcas.throwFeatMissing("forms", "eu.project.ttc.types.TermAnnotation");
+    return (StringArray)(jcasType.ll_cas.ll_getFSForRef(jcasType.ll_cas.ll_getRefValue(addr, ((TermAnnotation_Type)jcasType).casFeatCode_forms)));}
+    
+  /** setter for forms - sets  
+   * @generated */
+  public void setForms(StringArray v) {
+    if (TermAnnotation_Type.featOkTst && ((TermAnnotation_Type)jcasType).casFeat_forms == null)
+      jcasType.jcas.throwFeatMissing("forms", "eu.project.ttc.types.TermAnnotation");
+    jcasType.ll_cas.ll_setRefValue(addr, ((TermAnnotation_Type)jcasType).casFeatCode_forms, jcasType.ll_cas.ll_getFSRef(v));}    
+    
+  /** indexed getter for forms - gets an indexed value - 
+   * @generated */
+  public String getForms(int i) {
+    if (TermAnnotation_Type.featOkTst && ((TermAnnotation_Type)jcasType).casFeat_forms == null)
+      jcasType.jcas.throwFeatMissing("forms", "eu.project.ttc.types.TermAnnotation");
+    jcasType.jcas.checkArrayBounds(jcasType.ll_cas.ll_getRefValue(addr, ((TermAnnotation_Type)jcasType).casFeatCode_forms), i);
+    return jcasType.ll_cas.ll_getStringArrayValue(jcasType.ll_cas.ll_getRefValue(addr, ((TermAnnotation_Type)jcasType).casFeatCode_forms), i);}
+
+  /** indexed setter for forms - sets an indexed value - 
+   * @generated */
+  public void setForms(int i, String v) { 
+    if (TermAnnotation_Type.featOkTst && ((TermAnnotation_Type)jcasType).casFeat_forms == null)
+      jcasType.jcas.throwFeatMissing("forms", "eu.project.ttc.types.TermAnnotation");
+    jcasType.jcas.checkArrayBounds(jcasType.ll_cas.ll_getRefValue(addr, ((TermAnnotation_Type)jcasType).casFeatCode_forms), i);
+    jcasType.ll_cas.ll_setStringArrayValue(jcasType.ll_cas.ll_getRefValue(addr, ((TermAnnotation_Type)jcasType).casFeatCode_forms), i, v);}
   }
 
     

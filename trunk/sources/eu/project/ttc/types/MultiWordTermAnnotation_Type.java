@@ -10,8 +10,11 @@ import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.cas.impl.TypeImpl;
 import org.apache.uima.cas.Type;
 
+import org.apache.uima.cas.impl.FeatureImpl;
+import org.apache.uima.cas.Feature;
+
 /** 
- * Updated by JCasGen Wed Feb 29 11:17:07 CET 2012
+ * Updated by JCasGen Thu Mar 01 23:11:13 CET 2012
  * @generated */
 public class MultiWordTermAnnotation_Type extends TermAnnotation_Type {
   /** @generated */
@@ -43,11 +46,54 @@ public class MultiWordTermAnnotation_Type extends TermAnnotation_Type {
 
 
 
+  /** @generated */
+  final Feature casFeat_components;
+  /** @generated */
+  final int     casFeatCode_components;
+  /** @generated */ 
+  public int getComponents(int addr) {
+        if (featOkTst && casFeat_components == null)
+      jcas.throwFeatMissing("components", "eu.project.ttc.types.MultiWordTermAnnotation");
+    return ll_cas.ll_getRefValue(addr, casFeatCode_components);
+  }
+  /** @generated */    
+  public void setComponents(int addr, int v) {
+        if (featOkTst && casFeat_components == null)
+      jcas.throwFeatMissing("components", "eu.project.ttc.types.MultiWordTermAnnotation");
+    ll_cas.ll_setRefValue(addr, casFeatCode_components, v);}
+    
+   /** @generated */
+  public int getComponents(int addr, int i) {
+        if (featOkTst && casFeat_components == null)
+      jcas.throwFeatMissing("components", "eu.project.ttc.types.MultiWordTermAnnotation");
+    if (lowLevelTypeChecks)
+      return ll_cas.ll_getRefArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_components), i, true);
+    jcas.checkArrayBounds(ll_cas.ll_getRefValue(addr, casFeatCode_components), i);
+  return ll_cas.ll_getRefArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_components), i);
+  }
+   
+  /** @generated */ 
+  public void setComponents(int addr, int i, int v) {
+        if (featOkTst && casFeat_components == null)
+      jcas.throwFeatMissing("components", "eu.project.ttc.types.MultiWordTermAnnotation");
+    if (lowLevelTypeChecks)
+      ll_cas.ll_setRefArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_components), i, v, true);
+    jcas.checkArrayBounds(ll_cas.ll_getRefValue(addr, casFeatCode_components), i);
+    ll_cas.ll_setRefArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_components), i, v);
+  }
+ 
+
+
+
   /** initialize variables to correspond with Cas Type and Features
 	* @generated */
   public MultiWordTermAnnotation_Type(JCas jcas, Type casType) {
     super(jcas, casType);
     casImpl.getFSClassRegistry().addGeneratorForType((TypeImpl)this.casType, getFSGenerator());
+
+ 
+    casFeat_components = jcas.getRequiredFeatureDE(casType, "components", "uima.cas.FSArray", featOkTst);
+    casFeatCode_components  = (null == casFeat_components) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_components).getCode();
 
   }
 }
