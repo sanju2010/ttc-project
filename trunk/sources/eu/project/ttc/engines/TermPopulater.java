@@ -57,7 +57,7 @@ public class TermPopulater extends JCasAnnotator_ImplBase {
 		try {
 			cas.setDocumentLanguage(this.getSourceLanguage());
 			String text = cas.getDocumentText();
-			Pattern pattern = Pattern.compile("\\s+");
+			Pattern pattern = Pattern.compile("\t");
 			Matcher matcher = pattern.matcher(text);
 			boolean index = true;
 			int begin = 0;
