@@ -21,7 +21,7 @@ import eu.project.ttc.resources.Bank;
 import eu.project.ttc.types.SingleWordTermAnnotation;
 import eu.project.ttc.types.TermComponentAnnotation;
 
-public class NeoclassicalSplitter extends JCasAnnotator_ImplBase {
+public class AffixCompoundSplitter extends JCasAnnotator_ImplBase {
 
 	private Bank bank;
 	
