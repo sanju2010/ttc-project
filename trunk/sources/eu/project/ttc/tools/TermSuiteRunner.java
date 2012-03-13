@@ -161,7 +161,12 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 	@Override
 	protected Void doInBackground() throws Exception {
 		System.out.println("START");
-		this.setAnalysisEngine();
+		try {
+			this.setAnalysisEngine();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
 		System.out.println("INITIALIZED");
 		int max = this.data.size();
 		this.setProgress(0);
@@ -173,11 +178,21 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
         	System.out.println("PROCESS " + file);
         	boolean last = index == this.data.size() - 1;
         	// this.publish(file);
-        	this.process(file, this.encoding, this.language, this.input, last);
+        	try {
+        		this.process(file, this.encoding, this.language, this.input, last);
+        	} catch (Exception e) {
+        		e.printStackTrace();
+        		throw e;
+        	}
         	int progress = (index * 100) / max;
         	this.setProgress(progress);
         }
-        this.analysisEngine.collectionProcessComplete();
+        try {
+        	this.analysisEngine.collectionProcessComplete();
+        } catch (Exception e) {
+        	e.printStackTrace();
+        	throw e;
+        }
     	this.setProgress(100);
         return null;
 	}

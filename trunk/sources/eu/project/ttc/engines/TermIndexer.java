@@ -121,7 +121,7 @@ public class TermIndexer extends Indexer {
 			TermAnnotation annotation = (TermAnnotation) iterator.next();
 			if (annotation instanceof SingleWordTermAnnotation) {
 				this.getSingleWordTermFrequency().addEntry((SingleWordTermAnnotation) annotation);
-				// this.update(annotation);
+				this.update(annotation);
 			} else if (annotation instanceof MultiWordTermAnnotation) {
 				this.getMultiWordTermFrequency().addEntry((MultiWordTermAnnotation) annotation);
 			} 
@@ -161,8 +161,8 @@ public class TermIndexer extends Indexer {
 		sdi.setEnd(builder.length());
 		sdi.setOffsetInSource(0);
 		sdi.addToIndexes();
-		// this.normalize(this.getAssociationRate());
-		// this.annotate(cas);
+		this.normalize(this.getAssociationRate());
+		this.annotate(cas);
 	}
 	
 	private void annotate(JCas cas) throws Exception {
