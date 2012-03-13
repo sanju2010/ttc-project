@@ -2,7 +2,7 @@
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>true</primitive>
-  <annotatorImplementationName>eu.project.ttc.engines.ChineseNormalizer</annotatorImplementationName>
+  <annotatorImplementationName>fr.free.rocheteau.jerome.engines.Stemmer</annotatorImplementationName>
   <analysisEngineMetaData>
     <name>Chinese Stemmer</name>
     <description/>

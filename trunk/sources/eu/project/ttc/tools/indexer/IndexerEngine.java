@@ -42,6 +42,7 @@ public class IndexerEngine implements TermSuiteEngine {
         settings.setParameterValue("TermVariationRuleFile", (String) parameters.getParameterValue("TermVariationRuleFile"));
         settings.setParameterValue("NeoclassicalElementFile", (String) parameters.getParameterValue("NeoclassicalElementFile"));
         */
+        settings.setParameterValue("Threshold", parameters.getParameterValue("HapaxFilteringThreshold"));
         settings.setParameterValue("AssociationRateClassName", parameters.getParameterValue("AssociationRateClassName"));
         settings.setParameterValue("EditDistanceClassName", parameters.getParameterValue("EditDistanceClassName"));
         settings.setParameterValue("EnableTermGathering", parameters.getParameterValue("EnableTermConflating") == null ? Boolean.FALSE : parameters.getParameterValue("EnableTermConflating"));

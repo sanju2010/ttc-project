@@ -6,6 +6,9 @@
     <delegateAnalysisEngine key="FrenchNeoclassicalSplitter">
       <import name="eu.project.ttc.french.engines.indexer.FrenchNeoclassicalSplitter"/>
     </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="FrenchPrefixSplitter">
+      <import name="eu.project.ttc.french.engines.indexer.FrenchPrefixSplitter"/>
+    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="FrenchCompoundSplitter">
       <import name="eu.project.ttc.french.engines.indexer.FrenchCompoundSplitter"/>
     </delegateAnalysisEngine>
@@ -20,6 +23,7 @@
     <flowConstraints>
       <fixedFlow>
         <node>FrenchCompoundSplitter</node>
+        <node>FrenchPrefixSplitter</node>
         <node>FrenchNeoclassicalSplitter</node>
       </fixedFlow>
     </flowConstraints>

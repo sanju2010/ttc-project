@@ -2,31 +2,25 @@
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>true</primitive>
-  <annotatorImplementationName>uima.sandbox.lexer.engines.Lexer</annotatorImplementationName>
+  <annotatorImplementationName>eu.project.ttc.engines.AffixCompoundSplitter</annotatorImplementationName>
   <analysisEngineMetaData>
-    <name>Latvian Word Tokenizer</name>
+    <name>English Prefix Splitter</name>
     <description/>
     <version>1.0</version>
     <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
     <configurationParameters>
       <configurationParameter>
-        <name>Type</name>
-        <type>String</type>
+        <name>Neoclassical</name>
+        <type>Boolean</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
-      </configurationParameter>
-      <configurationParameter>
-        <name>File</name>
-        <type>String</type>
-        <multiValued>false</multiValued>
-        <mandatory>false</mandatory>
       </configurationParameter>
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
-        <name>Type</name>
+        <name>Neoclassical</name>
         <value>
-          <string>eu.project.ttc.types.WordAnnotation</string>
+          <boolean>false</boolean>
         </value>
       </nameValuePair>
     </configurationParameterSettings>
@@ -39,12 +33,15 @@
     <fsIndexCollection/>
     <capabilities>
       <capability>
-        <inputs/>
-        <outputs>
+        <inputs>
+          <type allAnnotatorFeatures="true">org.apache.uima.examples.SourceDocumentInformation</type>
           <type allAnnotatorFeatures="true">eu.project.ttc.types.WordAnnotation</type>
+        </inputs>
+        <outputs>
+          <type allAnnotatorFeatures="true">eu.project.ttc.types.CompoundWordTermAnnotation</type>
         </outputs>
         <languagesSupported>
-          <language>lv</language>
+          <language>en</language>
         </languagesSupported>
       </capability>
     </capabilities>
@@ -58,25 +55,25 @@
     <externalResourceDependency>
       <key>Bank</key>
       <description/>
-      <interfaceName>uima.sandbox.lexer.resources.SegmentBank</interfaceName>
+      <interfaceName>eu.project.ttc.resources.Bank</interfaceName>
       <optional>false</optional>
     </externalResourceDependency>
   </externalResourceDependencies>
   <resourceManagerConfiguration>
     <externalResources>
       <externalResource>
-        <name>LatvianSegmentBank</name>
+        <name>EnglishPrefixBank</name>
         <description/>
         <fileResourceSpecifier>
-          <fileUrl>eu/project/ttc/latvian/resources/latvian-segment-bank.xml</fileUrl>
+          <fileUrl>eu/project/ttc/english/resources/Prefix.English</fileUrl>
         </fileResourceSpecifier>
-        <implementationName>uima.sandbox.lexer.resources.SegmentBankResource</implementationName>
+        <implementationName>eu.project.ttc.resources.BankResource</implementationName>
       </externalResource>
     </externalResources>
     <externalResourceBindings>
       <externalResourceBinding>
         <key>Bank</key>
-        <resourceName>LatvianSegmentBank</resourceName>
+        <resourceName>EnglishPrefixBank</resourceName>
       </externalResourceBinding>
     </externalResourceBindings>
   </resourceManagerConfiguration>

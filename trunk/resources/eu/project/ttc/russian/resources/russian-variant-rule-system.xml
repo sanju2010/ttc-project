@@ -383,88 +383,52 @@
 							</eq>
 						</left>
 						<right>
-							<or>
+							<eq>
 								<left>
-									<eq>
-										<left>
-											<feature name="lemma">
-												<element>
-													<get>
-														<left>
-															<sub type="eu.project.ttc.types.TermComponentAnnotation">
-																<element>
-																	<variable name="base" />
-																</element>
-															</sub>
-														</left>
-														<right>
-															<integer value="0" />
-														</right>
-													</get>
-												</element>
-											</feature>
-										</left>
-										<right>
-											<feature name="lemma">
-												<element>
-													<get>
-														<left>
-															<sub type="eu.project.ttc.types.TermComponentAnnotation">
-																<element>
-																	<variable name="variant" />
-																</element>
-															</sub>
-														</left>
-														<right>
-															<integer value="0" />
-														</right>
-													</get>
-												</element>
-											</feature>
-										</right>
-									</eq>
+									<feature name="lemma">
+										<element>
+											<get>
+												<left>
+													<sub type="eu.project.ttc.types.TermComponentAnnotation">
+														<element>
+															<variable name="base" />
+														</element>
+													</sub>
+												</left>
+												<right>
+													<integer value="0" />
+												</right>
+											</get>
+										</element>
+									</feature>
 								</left>
 								<right>
-									<eq>
-										<left>
-											<feature name="lemma">
-												<element>
-													<get>
-														<left>
-															<sub type="eu.project.ttc.types.TermComponentAnnotation">
-																<element>
-																	<variable name="base" />
-																</element>
-															</sub>
-														</left>
-														<right>
-															<integer value="0" />
-														</right>
-													</get>
-												</element>
-											</feature>
-										</left>
-										<right>
-											<feature name="lemma">
-												<element>
-													<get>
-														<left>
-															<sub type="eu.project.ttc.types.TermComponentAnnotation">
-																<element>
-																	<variable name="variant" />
-																</element>
-															</sub>
-														</left>
-														<right>
-															<integer value="1" />
-														</right>
-													</get>
-												</element>
-											</feature>
-										</right>
-									</eq>
+									<feature name="lemma">
+										<element>
+											<get>
+												<left>
+													<sub type="eu.project.ttc.types.TermComponentAnnotation">
+														<element>
+															<variable name="variant" />
+														</element>
+													</sub>
+												</left>
+												<right>
+													<integer value="0" />
+												</right>
+											</get>
+										</element>
+									</feature>
 								</right>
-							</or>
+							</eq>
+							<!-- </left> <right> <eq> <left> <feature name="lemma"> <element> 
+								<get> <left> <sub type="eu.project.ttc.types.TermComponentAnnotation"> <element> 
+								<variable name="base" /> </element> </sub> </left> <right> <integer value="0" 
+								/> </right> </get> </element> </feature> </left> <right> <feature name="lemma"> 
+								<element> <get> <left> <sub type="eu.project.ttc.types.TermComponentAnnotation"> 
+								<element> <variable name="variant" /> </element> </sub> </left> <right> <integer 
+								value="1" /> </right> </get> </element> </feature> </right> </eq> </right> 
+								</or> -->
 						</right>
 					</and>
 				</right>

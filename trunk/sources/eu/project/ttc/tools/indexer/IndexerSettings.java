@@ -17,6 +17,7 @@ public class IndexerSettings extends Parameters implements TermSuiteSettings {
 		this.addParameter(declarations, "InputDirectory", ConfigurationParameter.TYPE_STRING, false, true);
 		this.addParameter(declarations, "OutputDirectory", ConfigurationParameter.TYPE_STRING, false, true);
 		// this.addParameter(declarations, "TerminologyFile", ConfigurationParameter.TYPE_STRING, false, true);
+		this.addParameter(declarations, "HapaxFilteringThreshold", ConfigurationParameter.TYPE_INTEGER, false, true);
 		this.addParameter(declarations, "AssociationRateClassName", ConfigurationParameter.TYPE_STRING, false, true, "values:eu.project.ttc.metrics.LogLikelihood|eu.project.ttc.metrics.MutualInformation");
 		/*
 		this.addParameter(declarations, "MultiWordPatternRuleFile", ConfigurationParameter.TYPE_STRING, false, true);

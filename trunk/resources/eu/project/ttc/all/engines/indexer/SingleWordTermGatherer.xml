@@ -80,5 +80,30 @@
       <outputsNewCASes>false</outputsNewCASes>
     </operationalProperties>
   </analysisEngineMetaData>
-  <resourceManagerConfiguration/>
+  <externalResourceDependencies>
+    <externalResourceDependency>
+      <key>Mapping</key>
+      <description/>
+      <interfaceName>uima.sandbox.mapper.resources.Mapping</interfaceName>
+      <optional>false</optional>
+    </externalResourceDependency>
+  </externalResourceDependencies>
+  <resourceManagerConfiguration>
+    <externalResources>
+      <externalResource>
+        <name>CharacterMapping</name>
+        <description/>
+        <fileResourceSpecifier>
+          <fileUrl>eu/project/ttc/all/resources/all-character-mapping.xml</fileUrl>
+        </fileResourceSpecifier>
+        <implementationName>uima.sandbox.mapper.resources.MappingResource</implementationName>
+      </externalResource>
+    </externalResources>
+    <externalResourceBindings>
+      <externalResourceBinding>
+        <key>Mapping</key>
+        <resourceName>CharacterMapping</resourceName>
+      </externalResourceBinding>
+    </externalResourceBindings>
+  </resourceManagerConfiguration>
 </analysisEngineDescription>

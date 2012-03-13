@@ -29,8 +29,8 @@ public class DictionaryResource implements Dictionary {
 		return this.loaded;
 	}
 	
-	private boolean isLoaded(URI uri) {
-		return this.loaded.contains(uri.toString());
+	private boolean isLoaded(String id) {
+		return this.loaded.contains(id);
 	}
 	
 	private String source;
@@ -93,11 +93,15 @@ public class DictionaryResource implements Dictionary {
 	
 	@Override
 	public void load(URI resourceIdentifier) throws Exception {
-		if (!this.isLoaded(resourceIdentifier)) {
-			this.getLoaded().add(resourceIdentifier.toString());
-			URLConnection connection = resourceIdentifier.toURL().openConnection();
-			UIMAFramework.getLogger().log(Level.INFO,"Loading " + resourceIdentifier.getPath());
-			InputStream inputStream = connection.getInputStream();
+		URLConnection connection = resourceIdentifier.toURL().openConnection();
+		this.load(resourceIdentifier.getPath(), connection.getInputStream());
+	}
+
+	@Override
+	public void load(String id, InputStream inputStream) throws IOException {
+		if (!this.isLoaded(id)) {
+			this.getLoaded().add(id);
+			UIMAFramework.getLogger().log(Level.INFO,"Loading " + id);
 			Set<Entry<String, String>> entries = this.parse(inputStream);
 			for (Entry<String, String> entry : entries) {
 				String source = entry.getKey();

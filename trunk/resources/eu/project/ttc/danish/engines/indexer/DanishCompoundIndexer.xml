@@ -6,6 +6,9 @@
     <delegateAnalysisEngine key="DanishNeoclassicalSplitter">
       <import name="eu.project.ttc.danish.engines.indexer.DanishNeoclassicalSplitter"/>
     </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="DanishPrefixSplitter">
+      <import name="eu.project.ttc.danish.engines.indexer.DanishPrefixSplitter"/>
+    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="DanishCompoundSplitter">
       <import name="eu.project.ttc.danish.engines.indexer.DanishCompoundSplitter"/>
     </delegateAnalysisEngine>
@@ -20,6 +23,7 @@
     <flowConstraints>
       <fixedFlow>
         <node>DanishCompoundSplitter</node>
+        <node>DanishPrefixSplitter</node>
         <node>DanishNeoclassicalSplitter</node>
       </fixedFlow>
     </flowConstraints>

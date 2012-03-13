@@ -2,7 +2,7 @@
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>true</primitive>
-  <annotatorImplementationName>eu.project.ttc.engines.TildeTagger</annotatorImplementationName>
+  <annotatorImplementationName>fr.univnantes.lina.uima.engines.TreeTaggerWrapper</annotatorImplementationName>
   <analysisEngineMetaData>
     <name>Latvian TreeTagger</name>
     <description/>
@@ -96,5 +96,30 @@
       <outputsNewCASes>false</outputsNewCASes>
     </operationalProperties>
   </analysisEngineMetaData>
-  <resourceManagerConfiguration/>
+  <externalResourceDependencies>
+    <externalResourceDependency>
+      <key>TreeTaggerParameter</key>
+      <description/>
+      <interfaceName>fr.univnantes.lina.uima.models.TreeTaggerParameter</interfaceName>
+      <optional>false</optional>
+    </externalResourceDependency>
+  </externalResourceDependencies>
+  <resourceManagerConfiguration>
+    <externalResources>
+      <externalResource>
+        <name>LatvianTreeTaggerParameter</name>
+        <description/>
+        <fileResourceSpecifier>
+          <fileUrl>eu/project/ttc/latvian/resources/latvian-treetagger.xml</fileUrl>
+        </fileResourceSpecifier>
+        <implementationName>fr.univnantes.lina.uima.models.TreeTaggerParameter</implementationName>
+      </externalResource>
+    </externalResources>
+    <externalResourceBindings>
+      <externalResourceBinding>
+        <key>TreeTaggerParameter</key>
+        <resourceName>LatvianTreeTaggerParameter</resourceName>
+      </externalResourceBinding>
+    </externalResourceBindings>
+  </resourceManagerConfiguration>
 </analysisEngineDescription>

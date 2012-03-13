@@ -21,10 +21,22 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Level;
 
+import uima.sandbox.mapper.resources.Mapping;
+
 import eu.project.ttc.metrics.EditDistance;
 import eu.project.ttc.types.SingleWordTermAnnotation;
 
 public class SingleWordGatherer extends JCasAnnotator_ImplBase {
+	
+	private Mapping mapping;
+    
+    private void setMapping(Mapping conversion) {
+            this.mapping = conversion;
+    }
+    
+    private Mapping getMapping() {
+            return this.mapping;
+    }
 	
 	private EditDistance editDistance;
 	
@@ -92,6 +104,10 @@ public class SingleWordGatherer extends JCasAnnotator_ImplBase {
 			if (this.getAnnotations() == null) {
 				this.setAnnotations();
 			}
+			if (this.getMapping() == null) {
+                Mapping mapping = (Mapping) context.getResourceObject("Mapping");
+                this.setMapping(mapping);
+			}
 		} catch (Exception e) {
 			throw new ResourceInitializationException(e);
 		}
@@ -116,25 +132,17 @@ public class SingleWordGatherer extends JCasAnnotator_ImplBase {
 	private String getKey(Annotation annotation) {
 		String coveredText = annotation.getCoveredText().toLowerCase();
 		char ch = coveredText.charAt(0);
-		if (ch == 'é' || ch == 'è' || ch == 'ê' || ch == 'ë') {
-			ch = 'e';
+		if (Character.isLetter(ch)) {
+			String key = Character.toString(ch);
+			String value = this.getMapping().get(key);
+			if (value == null) {
+				return key;
+			} else {
+				return value;
+			}			
+		} else {
+			return null;
 		}
-		if (ch == 'à' || ch == 'â' || ch == 'ä') {
-			ch = 'a';
-		}
-		if (ch == 'ç') {
-			ch = 'c';
-		}
-		if (ch == 'ù' || ch == 'û' || ch == 'ü') {
-			ch = 'u';
-		}
-		if (ch == 'ô' || ch == 'ö') {
-			ch = 'o';
-		}
-		if (ch == 'î' || ch == 'ï') {
-			ch = 'i';
-		}
-		return Character.toString(ch);
 	}
 	
 	private void index(JCas cas) {
@@ -144,15 +152,15 @@ public class SingleWordGatherer extends JCasAnnotator_ImplBase {
 		while (iterator.hasNext()) {
 			SingleWordTermAnnotation annotation = (SingleWordTermAnnotation) iterator.next();
 			String key = this.getKey(annotation);
-			if (key.matches("^[a-z]")) {
+			if (key == null) { 
+				remove.add(annotation);
+			} else {
 				List<SingleWordTermAnnotation> list = this.getAnnotations().get(key);
 				if (list == null) {
 					list = new ArrayList<SingleWordTermAnnotation>();
 					this.getAnnotations().put(key, list);
 				}
 				list.add(annotation);
-			} else {
-				remove.add(annotation);
 			}
 		}
 		for (SingleWordTermAnnotation r : remove) {

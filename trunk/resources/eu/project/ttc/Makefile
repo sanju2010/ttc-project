@@ -31,6 +31,7 @@ spotter+=TermSpotter.xml
 indexer=CompoundIndexer.xml
 indexer+=Indexer.xml
 indexer+=NeoclassicalSplitter.xml
+indexer+=PrefixSplitter.xml
 indexer+=TermGatherer.xml
 indexer+=CompoundSplitter.xml
 indexer+=MultiWordTermGatherer.xml

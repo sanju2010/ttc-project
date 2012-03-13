@@ -6,17 +6,20 @@
     <delegateAnalysisEngine key="ChineseTermFrequencyComputer">
       <import name="eu.project.ttc.chinese.engines.indexer.ChineseTermFrequencyComputer"/>
     </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="ChineseCompoundIndexer">
+      <import name="eu.project.ttc.chinese.engines.indexer.ChineseCompoundIndexer"/>
+    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="Writer">
       <import name="eu.project.ttc.all.engines.Writer"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="ChineseTermGatherer">
-      <import name="eu.project.ttc.chinese.engines.indexer.ChineseTermGatherer"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="TermBaseXchanger">
       <import name="eu.project.ttc.all.engines.TermBaseXchanger"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="TermCleaner">
       <import name="eu.project.ttc.all.engines.indexer.TermCleaner"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="ChineseTermGatherer">
+      <import name="eu.project.ttc.chinese.engines.indexer.ChineseTermGatherer"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="TermIndexer">
       <import name="eu.project.ttc.all.engines.indexer.TermIndexer"/>
@@ -111,6 +114,15 @@
           <parameter>TermIndexer/AssociationRateClassName</parameter>
         </overrides>
       </configurationParameter>
+      <configurationParameter>
+        <name>Threshold</name>
+        <type>Integer</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>TermCleaner/Threshold</parameter>
+        </overrides>
+      </configurationParameter>
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
@@ -161,11 +173,18 @@
           <string>eu.project.ttc.metrics.LogLikelihood</string>
         </value>
       </nameValuePair>
+      <nameValuePair>
+        <name>Threshold</name>
+        <value>
+          <integer>1</integer>
+        </value>
+      </nameValuePair>
     </configurationParameterSettings>
     <flowConstraints>
       <fixedFlow>
         <node>TermIndexer</node>
         <node>ChineseTermFrequencyComputer</node>
+        <node>ChineseCompoundIndexer</node>
         <node>ChineseTermGatherer</node>
         <node>TermCleaner</node>
         <node>Writer</node>
@@ -189,7 +208,7 @@
     <operationalProperties>
       <modifiesCas>true</modifiesCas>
       <multipleDeploymentAllowed>true</multipleDeploymentAllowed>
-      <outputsNewCASes>true</outputsNewCASes>
+      <outputsNewCASes>false</outputsNewCASes>
     </operationalProperties>
   </analysisEngineMetaData>
   <resourceManagerConfiguration/>

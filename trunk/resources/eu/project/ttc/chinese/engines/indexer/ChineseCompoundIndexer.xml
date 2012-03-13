@@ -6,6 +6,9 @@
     <delegateAnalysisEngine key="ChineseNeoclassicalSplitter">
       <import name="eu.project.ttc.chinese.engines.indexer.ChineseNeoclassicalSplitter"/>
     </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="ChinesePrefixSplitter">
+      <import name="eu.project.ttc.chinese.engines.indexer.ChinesePrefixSplitter"/>
+    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="ChineseCompoundSplitter">
       <import name="eu.project.ttc.chinese.engines.indexer.ChineseCompoundSplitter"/>
     </delegateAnalysisEngine>
@@ -20,6 +23,7 @@
     <flowConstraints>
       <fixedFlow>
         <node>ChineseCompoundSplitter</node>
+        <node>ChinesePrefixSplitter</node>
         <node>ChineseNeoclassicalSplitter</node>
       </fixedFlow>
     </flowConstraints>

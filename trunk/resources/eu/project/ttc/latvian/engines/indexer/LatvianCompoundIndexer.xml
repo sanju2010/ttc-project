@@ -6,6 +6,9 @@
     <delegateAnalysisEngine key="LatvianNeoclassicalSplitter">
       <import name="eu.project.ttc.latvian.engines.indexer.LatvianNeoclassicalSplitter"/>
     </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="LatvianPrefixSplitter">
+      <import name="eu.project.ttc.latvian.engines.indexer.LatvianPrefixSplitter"/>
+    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="LatvianCompoundSplitter">
       <import name="eu.project.ttc.latvian.engines.indexer.LatvianCompoundSplitter"/>
     </delegateAnalysisEngine>
@@ -20,6 +23,7 @@
     <flowConstraints>
       <fixedFlow>
         <node>LatvianCompoundSplitter</node>
+        <node>LatvianPrefixSplitter</node>
         <node>LatvianNeoclassicalSplitter</node>
       </fixedFlow>
     </flowConstraints>

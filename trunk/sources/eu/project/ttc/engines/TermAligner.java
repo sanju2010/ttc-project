@@ -1,6 +1,7 @@
 package eu.project.ttc.engines;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -36,8 +37,13 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 	
 	private Dictionary dictionary;
 	
-	private void setDictionary(Dictionary dictionary) {
+	private void setDictionary(Dictionary dictionary) throws Exception {
 		this.dictionary = dictionary;
+		String src = this.getSourceTerminology().getJCas().getDocumentLanguage();
+		String tgt = this.getTargetTerminology().getJCas().getDocumentLanguage();
+		String name = src + "-" + tgt + "-dictionary.txt";
+		InputStream is = this.getClass().getResourceAsStream("eu/project/ttc/all/dictionaries/" + name);
+		this.dictionary.load(name, is);
 	}
 	
 	private Dictionary getDictionary() {

@@ -6,6 +6,9 @@
     <delegateAnalysisEngine key="RussianNeoclassicalSplitter">
       <import name="eu.project.ttc.russian.engines.indexer.RussianNeoclassicalSplitter"/>
     </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="RussianPrefixSplitter">
+      <import name="eu.project.ttc.russian.engines.indexer.RussianPrefixSplitter"/>
+    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="RussianCompoundSplitter">
       <import name="eu.project.ttc.russian.engines.indexer.RussianCompoundSplitter"/>
     </delegateAnalysisEngine>
@@ -20,6 +23,7 @@
     <flowConstraints>
       <fixedFlow>
         <node>RussianCompoundSplitter</node>
+        <node>RussianPrefixSplitter</node>
         <node>RussianNeoclassicalSplitter</node>
       </fixedFlow>
     </flowConstraints>

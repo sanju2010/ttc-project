@@ -15,11 +15,11 @@
     <delegateAnalysisEngine key="TermBaseXchanger">
       <import name="eu.project.ttc.all.engines.TermBaseXchanger"/>
     </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="FrenchTermGatherer">
-      <import name="eu.project.ttc.french.engines.indexer.FrenchTermGatherer"/>
-    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="TermCleaner">
       <import name="eu.project.ttc.all.engines.indexer.TermCleaner"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="FrenchTermGatherer">
+      <import name="eu.project.ttc.french.engines.indexer.FrenchTermGatherer"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="TermIndexer">
       <import name="eu.project.ttc.all.engines.indexer.TermIndexer"/>
@@ -114,6 +114,15 @@
           <parameter>TermIndexer/AssociationRateClassName</parameter>
         </overrides>
       </configurationParameter>
+      <configurationParameter>
+        <name>Threshold</name>
+        <type>Integer</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>TermCleaner/Threshold</parameter>
+        </overrides>
+      </configurationParameter>
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
@@ -164,6 +173,12 @@
           <string>eu.project.ttc.metrics.LogLikelihood</string>
         </value>
       </nameValuePair>
+      <nameValuePair>
+        <name>Threshold</name>
+        <value>
+          <integer>1</integer>
+        </value>
+      </nameValuePair>
     </configurationParameterSettings>
     <flowConstraints>
       <fixedFlow>
@@ -193,7 +208,7 @@
     <operationalProperties>
       <modifiesCas>true</modifiesCas>
       <multipleDeploymentAllowed>true</multipleDeploymentAllowed>
-      <outputsNewCASes>true</outputsNewCASes>
+      <outputsNewCASes>false</outputsNewCASes>
     </operationalProperties>
   </analysisEngineMetaData>
   <resourceManagerConfiguration/>

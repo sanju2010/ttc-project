@@ -107,8 +107,17 @@
 				</pattern>
 				<pattern>
 					<annotation type="eu.project.ttc.types.WordAnnotation">
-					<constraint>
-						<eq key="category" value="noun" />
+						<constraint>
+							<and>
+								<constraints>
+									<constraint>
+										<eq key="category" value="noun" />
+									</constraint>
+									<constraint>
+										<eq key="case" value="genitive" />
+									</constraint>
+								</constraints>
+							</and>						
 						</constraint>
 					</annotation>
 				</pattern>
@@ -186,14 +195,32 @@
 				<pattern>
 					<annotation type="eu.project.ttc.types.WordAnnotation">
 						<constraint>
-							<eq key="category" value="noun" />
+							<and>
+								<constraints>
+									<constraint>
+										<eq key="category" value="noun" />
+									</constraint>
+									<constraint>
+										<eq key="case" value="genitive" />
+									</constraint>
+								</constraints>
+							</and>						
 						</constraint>
 					</annotation>
 				</pattern>
 				<pattern>
 					<annotation type="eu.project.ttc.types.WordAnnotation">
 						<constraint>
-							<eq key="category" value="noun" />
+							<and>
+								<constraints>
+									<constraint>
+										<eq key="category" value="noun" />
+									</constraint>
+									<constraint>
+										<eq key="case" value="genitive" />
+									</constraint>
+								</constraints>
+							</and>						
 						</constraint>
 					</annotation>
 				</pattern>

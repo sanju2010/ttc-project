@@ -6,6 +6,9 @@
     <delegateAnalysisEngine key="GermanNeoclassicalSplitter">
       <import name="eu.project.ttc.german.engines.indexer.GermanNeoclassicalSplitter"/>
     </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="GermanPrefixSplitter">
+      <import name="eu.project.ttc.german.engines.indexer.GermanPrefixSplitter"/>
+    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="GermanCompoundSplitter">
       <import name="eu.project.ttc.german.engines.indexer.GermanCompoundSplitter"/>
     </delegateAnalysisEngine>
@@ -20,6 +23,7 @@
     <flowConstraints>
       <fixedFlow>
         <node>GermanCompoundSplitter</node>
+        <node>GermanPrefixSplitter</node>
         <node>GermanNeoclassicalSplitter</node>
       </fixedFlow>
     </flowConstraints>

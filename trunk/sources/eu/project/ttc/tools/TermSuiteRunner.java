@@ -48,19 +48,24 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 	
 	private AnalysisEngine analysisEngine;
 	
-	private void setAnalysisEngine(AnalysisEngineDescription description, ConfigurationParameterSettings settings) throws Exception {
-        UIMAFramework.getLogger().log(Level.INFO, "Setting Analysis Engine '" + description.getAnalysisEngineMetaData().getName() + "'");
+	private void setAnalysisEngine() throws Exception {
+		System.out.println("Initializing '" + this.description.getAnalysisEngineMetaData().getName() + "'");
 		Runtime runtime = Runtime.getRuntime();
-        int threads = runtime.availableProcessors();
-        // int threads = 1;
+		int threads = runtime.availableProcessors();
+	    this.analysisEngine = UIMAFramework.produceAnalysisEngine(this.description, threads, 0);
+	    this.pool = new JCasPool(threads, this.analysisEngine);
+	}
+	
+	private AnalysisEngineDescription description;
+	
+	private void setDescription(AnalysisEngineDescription description, ConfigurationParameterSettings settings) {
         description.getAnalysisEngineMetaData().setConfigurationParameterSettings(settings);
 	    for (NameValuePair pair : settings.getParameterSettings()) {
 	    	String name = pair.getName();
 	    	Object value = pair.getValue();
 	    	description.getAnalysisEngineMetaData().getConfigurationParameterSettings().setParameterValue(name, value);
 	    }
-	    this.analysisEngine = UIMAFramework.produceAnalysisEngine(description);
-	    this.pool = new JCasPool(threads, this.analysisEngine);
+	    this.description = description;
 	}
 	
 	private Comparator<File> comparator;
@@ -97,6 +102,7 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 			throw new FileNotFoundException(path);
 		}
 		Collections.sort(this.data, this.comparator);
+		System.out.println("Number of documents to process: " + this.data.size());
 	}
 	
 	private class FileComparator implements Comparator<File> {
@@ -154,6 +160,9 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 	
 	@Override
 	protected Void doInBackground() throws Exception {
+		System.out.println("START");
+		this.setAnalysisEngine();
+		System.out.println("INITIALIZED");
 		int max = this.data.size();
 		this.setProgress(0);
         for (int index = 0; index < this.data.size(); index++) {
@@ -161,12 +170,14 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 				break;
 			}
         	File file = this.data.get(index);
+        	System.out.println("PROCESS " + file);
         	boolean last = index == this.data.size() - 1;
         	// this.publish(file);
         	this.process(file, this.encoding, this.language, this.input, last);
         	int progress = (index * 100) / max;
         	this.setProgress(progress);
         }
+        this.analysisEngine.collectionProcessComplete();
     	this.setProgress(100);
         return null;
 	}
@@ -190,7 +201,7 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 			return;
 		}
 		String message = this.display(this.analysisEngine.getAnalysisEngineMetaData(), this.analysisEngine.getManagementInterface(), 0);
-        UIMAFramework.getLogger().log(Level.INFO, message);
+		UIMAFramework.getLogger().log(Level.INFO, message);
 	}
 	
 	private void process(File file, String encoding, String language, int mode, boolean last) throws Exception {
@@ -259,15 +270,15 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 		}
 	}
 	
-	private void setAnalysisEngine(String path, ConfigurationParameterSettings settings) throws Exception {
+	private void setDescription(String path, ConfigurationParameterSettings settings) throws Exception {
         URL url = this.getClass().getClassLoader().getResource(path);
         XMLInputSource in = new XMLInputSource(url.toURI().toString());
         ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);
         if (specifier instanceof AnalysisEngineDescription) {
         	AnalysisEngineDescription description = (AnalysisEngineDescription) specifier;
-        	this.setAnalysisEngine(description, settings);
+        	this.setDescription(description, settings);
         } else {
-        	throw new Exception("Wrong Analysis Engine: " + url.toExternalForm());
+        	throw new Exception("Wrong Analysis Engine Description: " + url.toExternalForm());
         }
 	}
 	
@@ -305,7 +316,7 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 		this.input = this.engine.input();
 		this.language = this.engine.language();
 		this.encoding = this.engine.encoding();
-        this.setAnalysisEngine(this.engine.get(), this.engine.settings());
+        this.setDescription(this.engine.get(), this.engine.settings());
         this.setData(this.engine.data(), this.input);
 	}
 	
