@@ -3,23 +3,23 @@
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>false</primitive>
   <delegateAnalysisEngineSpecifiers>
-    <delegateAnalysisEngine key="LatvianNormalizer">
-      <import name="eu.project.ttc.latvian.engines.spotter.LatvianNormalizer"/>
-    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="LatvianStemmer">
       <import name="eu.project.ttc.latvian.engines.spotter.LatvianStemmer"/>
     </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="LatvianFilter">
-      <import name="eu.project.ttc.latvian.engines.spotter.LatvianFilter"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="LatvianWordTokenizer">
-      <import name="eu.project.ttc.latvian.engines.spotter.LatvianWordTokenizer"/>
+    <delegateAnalysisEngine key="LatvianNormalizer">
+      <import name="eu.project.ttc.latvian.engines.spotter.LatvianNormalizer"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="Writer">
       <import name="eu.project.ttc.all.engines.Writer"/>
     </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="LatvianWordTokenizer">
+      <import name="eu.project.ttc.latvian.engines.spotter.LatvianWordTokenizer"/>
+    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="Contextualizer">
       <import name="eu.project.ttc.all.engines.spotter.Contextualizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="LatvianFilter">
+      <import name="eu.project.ttc.latvian.engines.spotter.LatvianFilter"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="LatvianTermSpotter">
       <import name="eu.project.ttc.latvian.engines.spotter.LatvianTermSpotter"/>
@@ -28,6 +28,9 @@
       <import name="eu.project.ttc.latvian.engines.spotter.LatvianTreeTagger"/>
     </delegateAnalysisEngine>
   </delegateAnalysisEngineSpecifiers>
+  <flowController key="FixedFlowController">
+    <import name="org.apache.uima.flow.FixedFlowController"/>
+  </flowController>
   <analysisEngineMetaData>
     <name>Latvian Spotter</name>
     <description/>
@@ -52,6 +55,22 @@
           <parameter>Writer/Directory</parameter>
         </overrides>
       </configurationParameter>
+      <configurationParameter>
+        <name>ActionAfterCasMultiplier</name>
+        <description>The action to be taken after a CAS has been input to a CAS Multiplier and the CAS Multiplier has finished processing it.
+		 Valid values are:
+			continue - the CAS continues on to the next element in the flow
+			stop - the CAS will no longer continue in the flow, and will be returned from the aggregate if possible.
+			drop - the CAS will no longer continue in the flow, and will be dropped (not returned from the aggregate) if possible.	 
+			dropIfNewCasProduced (the default) - if the CAS multiplier produced a new CAS as a result of processing this CAS, then this
+				CAS will be dropped.  If not, then this CAS will continue.</description>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>FixedFlowController/ActionAfterCasMultiplier</parameter>
+        </overrides>
+      </configurationParameter>
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
@@ -64,6 +83,12 @@
         <name>Directory</name>
         <value>
           <string>/tmp</string>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>ActionAfterCasMultiplier</name>
+        <value>
+          <string>drop</string>
         </value>
       </nameValuePair>
     </configurationParameterSettings>

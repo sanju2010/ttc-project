@@ -49,7 +49,7 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 	private AnalysisEngine analysisEngine;
 	
 	private void setAnalysisEngine() throws Exception {
-		System.out.println("Initializing '" + this.description.getAnalysisEngineMetaData().getName() + "'");
+		// System.out.println("Initializing '" + this.description.getAnalysisEngineMetaData().getName() + "'");
 		Runtime runtime = Runtime.getRuntime();
 		int threads = runtime.availableProcessors();
 	    this.analysisEngine = UIMAFramework.produceAnalysisEngine(this.description, threads, 0);
@@ -102,7 +102,7 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 			throw new FileNotFoundException(path);
 		}
 		Collections.sort(this.data, this.comparator);
-		System.out.println("Number of documents to process: " + this.data.size());
+		// System.out.println("Number of documents to process: " + this.data.size());
 	}
 	
 	private class FileComparator implements Comparator<File> {
@@ -160,14 +160,14 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 	
 	@Override
 	protected Void doInBackground() throws Exception {
-		System.out.println("START");
+		// System.out.println("START");
 		try {
 			this.setAnalysisEngine();
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
 		}
-		System.out.println("INITIALIZED");
+		// System.out.println("INITIALIZED");
 		int max = this.data.size();
 		this.setProgress(0);
         for (int index = 0; index < this.data.size(); index++) {
@@ -175,7 +175,7 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 				break;
 			}
         	File file = this.data.get(index);
-        	System.out.println("PROCESS " + file);
+        	// System.out.println("PROCESS " + file);
         	boolean last = index == this.data.size() - 1;
         	// this.publish(file);
         	try {

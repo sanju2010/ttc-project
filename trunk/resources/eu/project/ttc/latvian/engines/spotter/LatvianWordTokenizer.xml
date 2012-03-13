@@ -2,7 +2,7 @@
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>true</primitive>
-  <annotatorImplementationName>uima.sandbox.lexer.engines.Lexer</annotatorImplementationName>
+  <annotatorImplementationName>eu.project.ttc.engines.TildeTokenizer</annotatorImplementationName>
   <analysisEngineMetaData>
     <name>Latvian Word Tokenizer</name>
     <description/>
@@ -49,9 +49,9 @@
       </capability>
     </capabilities>
     <operationalProperties>
-      <modifiesCas>true</modifiesCas>
+      <modifiesCas>false</modifiesCas>
       <multipleDeploymentAllowed>true</multipleDeploymentAllowed>
-      <outputsNewCASes>false</outputsNewCASes>
+      <outputsNewCASes>true</outputsNewCASes>
     </operationalProperties>
   </analysisEngineMetaData>
   <externalResourceDependencies>

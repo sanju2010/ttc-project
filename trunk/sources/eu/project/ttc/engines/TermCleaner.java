@@ -14,7 +14,9 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Level;
 
+import eu.project.ttc.types.SingleWordTermAnnotation;
 import eu.project.ttc.types.TermAnnotation;
+import eu.project.ttc.types.TermComponentAnnotation;
 
 public class TermCleaner extends JCasAnnotator_ImplBase {
 		
@@ -66,9 +68,35 @@ public class TermCleaner extends JCasAnnotator_ImplBase {
 	@Override
 	public void process(JCas cas) throws AnalysisEngineProcessException {
 		this.display(cas);
+		// this.clean(cas);
 		this.select(cas);
 		this.remove();
 		this.adjust(cas);
+	}
+	
+	private void clean(JCas cas) {
+		AnnotationIndex<Annotation> index = cas.getAnnotationIndex(SingleWordTermAnnotation.type);
+		FSIterator<Annotation> iterator = index.iterator();
+		while (iterator.hasNext()) {
+			SingleWordTermAnnotation annotation = (SingleWordTermAnnotation) iterator.next();
+			this.clean(cas, annotation);
+		}
+	}
+
+	private void clean(JCas cas, SingleWordTermAnnotation annotation) {
+		Set<TermComponentAnnotation> delete = new HashSet<TermComponentAnnotation>();
+		AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TermComponentAnnotation.type);
+		FSIterator<Annotation> iterator = index.subiterator(annotation);
+		while (iterator.hasNext()) {
+			TermComponentAnnotation component = (TermComponentAnnotation) iterator.next();
+			FSIterator<Annotation> subiterator = index.subiterator(component);
+			while (subiterator.hasNext()) {
+				delete.add((TermComponentAnnotation) subiterator.next());
+			}
+		}
+		for (TermComponentAnnotation del : delete) {
+			del.removeFromIndexes();
+		}
 	}
 
 	private void select(JCas cas) {

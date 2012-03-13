@@ -172,7 +172,7 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 					if (annotation instanceof SingleWordTermAnnotation) {
 						SingleWordTermAnnotation swt = (SingleWordTermAnnotation) annotation;
 						if (swt.getCompound()) {
-							this.alignCompound(cas, terminology, term, swt.getNeoclassical());
+							this.alignCompound(cas, terminology, term);
 						}
 					} else if (annotation instanceof MultiWordTermAnnotation) {
 						this.alignMultiWord(cas, terminology, term);
@@ -233,23 +233,28 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 		}
 	}
 
-	private void alignCompound(JCas cas, JCas terminology, String term, boolean reshape) throws CASException {
-		TermAnnotation termEntry = this.retrieve(terminology, SingleWordTermAnnotation.type, term);
-		if (termEntry == null) { 
+	private void alignCompound(JCas cas, JCas terminology, String term/*, boolean reshape*/) throws CASException {
+		TermAnnotation entry = this.retrieve(terminology, SingleWordTermAnnotation.type, term);
+		if (entry == null) { 
 			return;
 		} else {
-			List<String> components = this.extract(terminology, termEntry, true);
-			if (reshape) {
-				this.reshape(components);
-			}		
-			List<List<String>> candidates = this.transfer(cas, components);
-			candidates = this.combine(candidates);
-			// TODO generate
-			components = this.flatten(candidates, "");			
-			components.addAll(this.flatten(candidates, "-"));
-			components.addAll(this.flatten(candidates, " "));
-			components = this.select(components);
-			this.annotate(cas, components);			
+			List<List<String>> componentLists = this.extract(terminology, entry);
+			for (List<String> components : componentLists) {
+				// List<String> components = this.extract(terminology, termEntry, true);
+				components = this.reshape(components);
+				if (components.size() < 2) {
+					continue;
+				} else {
+					List<List<String>> candidates = this.transfer(cas, components);
+					candidates = this.combine(candidates);
+					// TODO generate
+					components = this.flatten(candidates, "");
+					components.addAll(this.flatten(candidates, "-"));
+					// components.addAll(this.flatten(candidates, " "));
+					components = this.select(components);
+					this.annotate(cas, components);
+				}
+			}
 		}
 	}
 		
@@ -397,9 +402,95 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 		}
 		for (TermComponentAnnotation a : subAnnotations) {
 			components.add(a.getCoveredText());
-			// TODO lemma
 		}
 		return components;
+	}
+	
+	private class Tree<T extends Annotation> {
+		
+		private T node;
+		
+		public T node() {
+			return this.node;
+		}
+		
+		private Set<Tree<T>> children;
+		
+		public Tree(T node) {
+			this.children = new HashSet<Tree<T>>();
+			this.node = node;
+		}
+		
+		public Set<Tree<T>> children() {
+			return this.children;
+		}
+		
+	}
+	
+	private <T extends Annotation> List<List<String>> strings(Tree<T> tree) {
+		List<List<String>> results = new ArrayList<List<String>>();
+		for (Tree<T> t : tree.children()) {
+			List<String> list = new ArrayList<String>();
+			String string = t.node().getCoveredText();
+			list.add(string);
+			results.addAll(this.strings(t, list));
+		}
+		return results;
+	}
+	
+	private <T extends Annotation> List<List<String>> strings(Tree<T> tree, List<String> lists) {
+		if (tree.children().isEmpty()) {
+			List<List<String>> results = new ArrayList<List<String>>();
+			results.add(lists);
+			return results;
+		} else {
+			List<List<String>> results = new ArrayList<List<String>>();
+			for (Tree<T> t : tree.children()) {
+				List<String> list = new ArrayList<String>(lists);
+				String string = t.node().getCoveredText();
+				list.add(string);
+				results.addAll(this.strings(t, list));
+			}
+			return results;
+		}
+	}
+	
+	private List<List<String>> extract(JCas cas, TermAnnotation annotation) {
+		Tree<TermComponentAnnotation> tree = new Tree<TermComponentAnnotation>(null);
+		AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TermComponentAnnotation.type);
+		FSIterator<Annotation> iterator = index.subiterator(annotation);
+		while (iterator.hasNext()) {
+			TermComponentAnnotation component = (TermComponentAnnotation) iterator.next();
+			boolean done = false;
+			for (Tree<TermComponentAnnotation> componentTree : tree.children()) {
+				done = this.add(component, componentTree);
+			}
+			if (!done && annotation.getBegin() == component.getBegin()) {
+				Tree<TermComponentAnnotation> t = new Tree<TermComponentAnnotation>(component);
+				tree.children().add(t);
+			}
+		}
+		return this.strings(tree);
+	}
+	
+	private boolean add(TermComponentAnnotation component, Tree<TermComponentAnnotation> tree) {
+		int size = tree.children().size();
+		if (size == 0) {
+			TermComponentAnnotation last = tree.node();
+			if (last.getEnd() <= component.getBegin()) {
+				Tree<TermComponentAnnotation> t = new Tree<TermComponentAnnotation>(component);
+				tree.children().add(t);
+				return true;
+			} else {
+				return false;
+			} 
+		} else {
+			boolean done = false;
+			for (Tree<TermComponentAnnotation> subtree : tree.children()) {
+				done = this.add(component, subtree);
+			}
+			return done;
+		}
 	}
 		
 	/**
@@ -416,20 +507,24 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 			return Collections.emptyList();
 		} else {
 			int length = components.size();
-			for (int index = 0; index < length; index++) {
+			for (int index = length - 1; index >= 0; index--) {
 				String component = components.get(index);
 				if (this.getDictionary().get().keySet().contains(component)) {
 					continue;
-				} else if (index > 1) {
-					String prefix = components.remove(index - 2);
-					String suffix = components.remove(index - 1);
-					components.add(prefix + suffix);
-					return this.reshape(components);
+				} else if (index > 0) {
+					System.out.println("NO LOOK UP " + component);
+					System.out.println("RESHAPE " + components.get(index - 1) + "+" + components.get(index));
+					List<String> alt = new ArrayList<String>();
+					alt.addAll(components.subList(0, index - 1));
+					alt.add(components.get(index - 1) + components.get(index));
+					alt.addAll(components.subList(index + 1, length));
+					return this.reshape(alt);
 				} else {
+					System.out.println("UN DEF " + component);
 					return Collections.emptyList();
 				}
 			}
-		return components;
+			return components;
 		}
 	}
 	
@@ -446,6 +541,7 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 			String component = components.get(index);
 			Set<String> candidate = this.getDictionary().get().get(component);
 			if (candidate == null) {
+				System.out.println("MISS " + component);
 				candidate = new HashSet<String>();
 			}
 			if (candidate.isEmpty() && this.distributional()) {
