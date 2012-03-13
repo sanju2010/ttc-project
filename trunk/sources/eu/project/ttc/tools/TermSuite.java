@@ -1,5 +1,6 @@
 package eu.project.ttc.tools;
 
+import java.awt.Component;
 import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -219,17 +220,21 @@ public class TermSuite implements Runnable {
 		return this.mixer;
 	}
 	
+	private JTabbedPane embed(Component edit, Component view) {
+		JTabbedPane tabs = new JTabbedPane(JTabbedPane.TOP);
+		tabs.addTab(" Edit ", edit);
+		tabs.addTab(" View ", view);
+		return tabs;
+	}
+	
 	private JTabbedPane content;
 	
 	private void setContent() {
 		this.content = new JTabbedPane();
 		this.content.setTabPlacement(JTabbedPane.LEFT);
-		this.content.addTab("     Spotter     ",this.getSpotter().getComponent());
-		this.content.addTab("     Corpus      ",this.getViewer().getComponent());
-		this.content.addTab("     Indexer     ",this.getIndexer().getComponent());
-		this.content.addTab("   Terminology   ",this.getBanker().getComponent());
-		this.content.addTab("     Aligner     ",this.getAligner().getComponent());
-		this.content.addTab("    Dictionary   ",this.getMixer().getComponent());
+		this.content.addTab(" Spotter ",this.embed(this.getSpotter().getComponent(), this.getViewer().getComponent()));
+		this.content.addTab(" Indexer ",this.embed(this.getIndexer().getComponent(), this.getBanker().getComponent()));
+		this.content.addTab(" Aligner ",this.embed(this.getAligner().getComponent(), this.getMixer().getComponent()));
 		Listener listener = new Listener();
 		listener.setTermSuite(this);
 		this.content.addChangeListener(listener);
@@ -239,20 +244,12 @@ public class TermSuite implements Runnable {
 		return this.getContent().getSelectedIndex() == 0;
 	}
 	
-	public boolean isViewerSelected() {
+	public boolean isIndexerSelected() {
 		return this.getContent().getSelectedIndex() == 1;
 	}
 	
-	public boolean isIndexerSelected() {
-		return this.getContent().getSelectedIndex() == 2;
-	}
-	
-	public boolean isBankerSelected() {
-		return this.getContent().getSelectedIndex() == 3;
-	}
-	
 	public boolean isAlignerSelected() {
-		return this.getContent().getSelectedIndex() == 4;
+		return this.getContent().getSelectedIndex() == 2;
 	}
 	
 	private JTabbedPane getContent() {

@@ -210,7 +210,6 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 			this.annotate(cas, candidates);
 		}
 	}
-	
 
 	private void shrink(Context context) {
 		Set<String> filter = this.getDictionary().get().keySet();
@@ -643,7 +642,7 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 			TranslationCandidateAnnotation annotation = new TranslationCandidateAnnotation(cas,0,cas.getDocumentText().length());
 			annotation.setTranslation(candidate);
 			annotation.setScore(1.0);
-			annotation.setRank(index);
+			annotation.setRank(index + 1);
 			annotation.addToIndexes();
 		}
 	}

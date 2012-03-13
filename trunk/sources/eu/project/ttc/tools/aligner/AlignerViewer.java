@@ -1,7 +1,11 @@
 package eu.project.ttc.tools.aligner;
 
 import java.awt.Dimension;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.swing.JScrollPane;
@@ -117,6 +121,16 @@ public class AlignerViewer {
 		return this.split;
 	}
 		
+	private CandidateComparator comparator;
+	
+	private void setComparator() {
+		this.comparator = new CandidateComparator();
+	}
+	
+	private CandidateComparator getComparator() {
+		return this.comparator;
+	}
+	
 	public AlignerViewer() {
 		this.setRoot();
 		this.setTreeModel();
@@ -126,6 +140,7 @@ public class AlignerViewer {
 		this.setTable();
 		this.setTableScroll();
 		this.setSplit();
+		this.setComparator();
 	}
 	
 	public synchronized void doLoad(JCas cas) {
@@ -163,32 +178,26 @@ public class AlignerViewer {
 		int best = -1;
 		boolean update = false;
 		AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TranslationCandidateAnnotation.type);
-		int size = index.size() > 100 ? 100 : index.size();		
 		FSIterator<Annotation> iterator = index.iterator();
-		String[] candidates = new String[size];
-		Double[] scores = new Double[size];
+		List<TranslationCandidateAnnotation> candidates = new ArrayList<TranslationCandidateAnnotation>();
 		while (iterator.hasNext()) {
 			update = true;
 			TranslationCandidateAnnotation annotation = (TranslationCandidateAnnotation) iterator.next();
-			String translation = annotation.getTranslation();
-			double score = annotation.getScore();
-			int rank = annotation.getRank() + 1;
-			if (rank > 0 && rank <= size) {
-				candidates[rank - 1] = translation;
-				scores[rank - 1] = score;
-			}
-			if (translations.contains(translation)) {
-				if (best == -1 || rank < best) {
-					best = rank;
+			candidates.add(annotation);
+			if (translations.contains(annotation.getTranslation())) {
+				if (best == -1 || annotation.getRank() < best) {
+					best = annotation.getRank();
 				}
 			}
 		}
+		Collections.sort(candidates, this.getComparator());
 		DefaultMutableTreeNode node = new DefaultMutableTreeNode();
 		node.setUserObject(term + " (" + (best == -1 ? "unranked" : new Integer(best).toString()) + ")");
 		this.getRoot().add(node);
 		if (update) {
-			for (int i = 0; i < candidates.length; i++) {
-				this.addNote(node, candidates[i], new Integer(i + 1), scores[i]);
+			for (int i = 0; i < candidates.size(); i++) {
+				TranslationCandidateAnnotation annotation = candidates.get(i);
+				this.addNote(node, annotation.getTranslation(), annotation.getRank(), annotation.getScore());
 			}
 			this.getTableModel().update(best == -1 ? 101 : best);
 		}
@@ -280,6 +289,24 @@ public class AlignerViewer {
 			}
 		}
 
+	}
+
+	private class CandidateComparator implements Comparator<TranslationCandidateAnnotation> {
+
+		@Override
+		public int compare(TranslationCandidateAnnotation source,TranslationCandidateAnnotation target) {
+			int diff = Double.compare(source.getRank(), target.getRank());
+			if (diff == 0) {
+				diff = Double.compare(target.getScore(), source.getScore());
+				if (diff == 0) {
+					return source.getTranslation().compareTo(target.getTranslation());					
+				} else {
+					return diff;
+				}
+			} else {
+				return diff;
+			}
+		}
 		
 	}
 	
