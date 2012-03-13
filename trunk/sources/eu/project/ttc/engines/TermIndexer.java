@@ -120,11 +120,11 @@ public class TermIndexer extends Indexer {
 		while (iterator.hasNext()) {
 			TermAnnotation annotation = (TermAnnotation) iterator.next();
 			if (annotation instanceof SingleWordTermAnnotation) {
-				this.getSingleWordTermFrequency().addEntry((SingleWordTermAnnotation) annotation);					
+				this.getSingleWordTermFrequency().addEntry((SingleWordTermAnnotation) annotation);
+				// this.update(annotation);
 			} else if (annotation instanceof MultiWordTermAnnotation) {
 				this.getMultiWordTermFrequency().addEntry((MultiWordTermAnnotation) annotation);
 			} 
-			this.update(annotation);
 		}
 	}
 	
@@ -156,13 +156,13 @@ public class TermIndexer extends Indexer {
 		this.release(cas, builder, this.getMultiWordTermFrequency());
 		cas.setDocumentText(builder.toString());
 		SourceDocumentInformation sdi = new SourceDocumentInformation(cas);
-		sdi.setUri("http://terminology.xmi");
+		sdi.setUri("http://" + this.getLanguage() + "-terminology.xmi");
 		sdi.setBegin(0);
 		sdi.setEnd(builder.length());
 		sdi.setOffsetInSource(0);
 		sdi.addToIndexes();
-		this.normalize(this.getAssociationRate());
-		this.annotate(cas);
+		// this.normalize(this.getAssociationRate());
+		// this.annotate(cas);
 	}
 	
 	private void annotate(JCas cas) throws Exception {

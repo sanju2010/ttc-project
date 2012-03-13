@@ -3,6 +3,7 @@ package eu.project.ttc.engines;
 import java.io.File;
 import java.io.IOException;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -89,6 +90,9 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 		FSIterator<Annotation> iterator = index.iterator();
 		while (iterator.hasNext()) {
 			TermAnnotation annotation = (TermAnnotation) iterator.next();
+			if (annotation.getCategory().equals("verb")) {
+				continue;
+			}
 			if (annotation.getVariants() != null) {
 				String id = "langset-" + annotation.getAddress();
 				for (int i = 0; i < annotation.getVariants().size(); i++) {
@@ -162,6 +166,7 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 	}
 		
 	private void process(JCas cas, Document document, Element body) {
+		DecimalFormat format = new DecimalFormat("##.######");
 		AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TermAnnotation.type);
 		FSIterator<Annotation> iterator = index.iterator();
 		while (iterator.hasNext()) {
@@ -205,7 +210,7 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 			this.addNote(document, langSet, tig, "termPattern", annotation.getCategory());
 			this.addNote(document, langSet, tig, "termComplexity", this.getComplexity(annotation));
 			this.addDescrip(document, langSet, tig, "nbOccurrences", annotation.getOccurrences());
-			this.addDescrip(document, langSet, tig, "relativeFrequency", annotation.getFrequency());
+			this.addDescrip(document, langSet, tig, "relativeFrequency", format.format(annotation.getFrequency()));
 			// this.addDescrip(document, langSet, tig, "domainSpecificity", annotation.getSpecificity());
 		}
 	}

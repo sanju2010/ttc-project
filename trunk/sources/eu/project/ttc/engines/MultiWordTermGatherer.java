@@ -71,7 +71,7 @@ public class MultiWordTermGatherer extends JCasAnnotator_ImplBase {
 	public void process(JCas cas) throws AnalysisEngineProcessException { 
 		if (this.enable) {
 			this.getAnnotations().clear();
-			this.clean(cas);
+			// this.clean(cas);
 			this.index(cas);
 			this.clean();
 			this.sort();

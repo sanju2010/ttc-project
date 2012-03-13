@@ -18,12 +18,26 @@ import eu.project.ttc.types.TermAnnotation;
 
 public class TermCleaner extends JCasAnnotator_ImplBase {
 		
+	private Integer threshold;
+
+	private void setThreshold(Integer threshold) {
+		this.threshold = threshold;
+	}
+
+	private Integer getThreshold() {
+		return threshold;
+	}
+	
 	@Override 
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
 		try {
 			if (this.getAnnotations() == null) {
 				this.setAnnotations();
+			}
+			if (this.getThreshold() == null) {
+				Integer threshold = (Integer) context.getConfigParameterValue("Threshold");
+				this.setThreshold(threshold);
 			}
 		} catch (Exception e) {
 			throw new ResourceInitializationException(e);
@@ -62,7 +76,7 @@ public class TermCleaner extends JCasAnnotator_ImplBase {
 		FSIterator<Annotation> iterator = index.iterator();
 		while (iterator.hasNext()) {
 			TermAnnotation annotation = (TermAnnotation) iterator.next();
-			if (annotation.getOccurrences() < 2) {
+			if (annotation.getOccurrences() <= this.getThreshold().intValue()) {
 				this.getAnnotations().add(annotation);
 			}
 		}

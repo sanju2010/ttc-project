@@ -18,7 +18,6 @@ import org.apache.uima.util.Level;
 
 import eu.project.ttc.models.Tree;
 import eu.project.ttc.resources.Bank;
-import eu.project.ttc.resources.Dictionary;
 import eu.project.ttc.types.SingleWordTermAnnotation;
 import eu.project.ttc.types.TermComponentAnnotation;
 
@@ -44,14 +43,34 @@ public class NeoclassicalSplitter extends JCasAnnotator_ImplBase {
 		return this.comparator;
 	}
 	
+	private Boolean neoClassical;
+	
+	private void enableNeoClassical(Boolean enabled) {
+		this.neoClassical = enabled;
+	}
+	
+	private Boolean isNeoClassical() {
+		return this.neoClassical;
+	}
+	
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
 		try {
-			this.setComponents();
-			this.setComparator();
-			Bank resource = (Bank) context.getResourceObject("Bank");
-			this.setBank(resource);
+			if (this.getComponents() == null) {
+				this.setComponents();
+			}
+			if (this.getComparator() == null) {
+				this.setComparator();				
+			}
+			if (this.getBank() == null) {
+				Bank resource = (Bank) context.getResourceObject("Bank");
+				this.setBank(resource);				
+			}
+			if (this.isNeoClassical()  == null) {
+				Boolean neoclassical = (Boolean) context.getConfigParameterValue("Neoclassical");
+				this.enableNeoClassical(neoclassical == null ? Boolean.FALSE : neoclassical);		
+			}
 		} catch (Exception e) {
 			throw new ResourceInitializationException(e);
 		} 
@@ -62,7 +81,11 @@ public class NeoclassicalSplitter extends JCasAnnotator_ImplBase {
 		FSIterator<Annotation> iterator = index.iterator();
 		if (iterator.hasNext()) {
 			SourceDocumentInformation sdi = (SourceDocumentInformation) iterator.next();
-			this.getContext().getLogger().log(Level.INFO, "Detecting neoclassical compounds of " + sdi.getUri());
+			if (this.isNeoClassical()) {
+				this.getContext().getLogger().log(Level.INFO, "Detecting neoclassical compounds of " + sdi.getUri());				
+			} else {
+				this.getContext().getLogger().log(Level.INFO, "Detecting classical compounds of " + sdi.getUri());
+			}
 		}
 	}
 	
@@ -139,7 +162,7 @@ public class NeoclassicalSplitter extends JCasAnnotator_ImplBase {
 	
 	private void doAnnotate(SingleWordTermAnnotation annotation) {
 		annotation.setCompound(true);
-		annotation.setNeoclassical(true);
+		annotation.setNeoclassical(this.isNeoClassical().booleanValue());
 	}
 	
 	private void doFill(JCas cas, SingleWordTermAnnotation annotation, int begin,int end) {
