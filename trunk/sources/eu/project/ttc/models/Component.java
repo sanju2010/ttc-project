@@ -7,23 +7,21 @@ public class Component {
 	private String category;
 	private String lemma;
 	private String stem;
-	private int begin;
-	private int end;
+
+	public int length() {
+		return this.lemma.length();
+	}
 	
-	public void release(TermComponentAnnotation annotation, int offset) {
-		annotation.setBegin(offset + this.begin);
-		annotation.setEnd(offset + this.end);
+	public void release(TermComponentAnnotation annotation) {
 		annotation.setCategory(this.category);
 		annotation.setLemma(this.lemma);
 		annotation.setStem(this.stem);
 	}
 	
-	public void update(TermComponentAnnotation annotation,int offset) {
+	public void update(TermComponentAnnotation annotation) {
 		this.category = annotation.getCategory();
 		this.lemma = annotation.getLemma();
 		this.stem = annotation.getStem();
-		this.begin = annotation.getBegin() - offset;
-		this.end = annotation.getEnd() - offset;
 	}
 	
 }

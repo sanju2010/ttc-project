@@ -113,7 +113,7 @@ public class ComplexTermFrequency extends SimpleTermFrequency {
 				continue;
 			} else {
 				Component c = new Component();
-				c.update(component, annotation.getBegin());
+				c.update(component);
 				components.add(c);
 			}
 		}
@@ -132,7 +132,7 @@ public class ComplexTermFrequency extends SimpleTermFrequency {
 					continue;
 				} else {
 					Component c = new Component();
-					c.update(component, annotation.getBegin());
+					c.update(component);
 					components.add(c);
 				}
 			}

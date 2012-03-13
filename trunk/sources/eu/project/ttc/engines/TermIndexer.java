@@ -248,12 +248,15 @@ public class TermIndexer extends Indexer {
 				FSArray array = new FSArray(cas, components.size());
 				annotation.setComponents(array);
 				int i = 0;
+				int start = begin;
 				for (Component component : components) {
-					TermComponentAnnotation c = new TermComponentAnnotation(cas);
-					component.release(c, annotation.getBegin());
+					int stop = start + component.length();
+					TermComponentAnnotation c = new TermComponentAnnotation(cas, start, stop);
+					component.release(c);
 					c.addToIndexes();
 					annotation.setComponents(i, c);
 					i++;
+					start = stop + 1; 
 				}						
 			}
 			if (forms != null) {
