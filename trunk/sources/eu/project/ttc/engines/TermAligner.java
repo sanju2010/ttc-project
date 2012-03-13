@@ -168,25 +168,31 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 			if (annotation == null) {
 				this.getContext().getLogger().log(Level.WARNING, "Skiping '" + term + "' as it doesn't belong to the source terminology");
 			} else {
-				if (this.compositional()) {
-					if (annotation instanceof SingleWordTermAnnotation) {
-						SingleWordTermAnnotation swt = (SingleWordTermAnnotation) annotation;
-						if (swt.getCompound()) {
-							this.alignCompound(cas, terminology, term);
-						}
-					} else if (annotation instanceof MultiWordTermAnnotation) {
-						this.alignMultiWord(cas, terminology, term);
-					}
-				}
-				if (this.distributional()) {
-					if (annotation instanceof SingleWordTermAnnotation) {
-						this.alignSingleWord(cas, term);
-					}
-				}
+				this.align(cas, terminology, annotation, term);
 			} 
 		} catch (Exception e) {
 			throw new AnalysisEngineProcessException(e);
 		} 
+	}
+
+	private void align(JCas cas, JCas terminology, TermAnnotation annotation, String term) throws Exception {
+		if (this.compositional()) {
+			if (annotation instanceof SingleWordTermAnnotation) {
+				SingleWordTermAnnotation swt = (SingleWordTermAnnotation) annotation;
+				if (swt.getCompound()) {
+					this.alignCompound(cas, terminology, swt, term);
+				}
+			} else if (annotation instanceof MultiWordTermAnnotation) {
+				MultiWordTermAnnotation mwt = (MultiWordTermAnnotation) annotation;
+				this.alignMultiWord(cas, terminology, mwt, term);
+			}
+		}
+		if (this.distributional()) {
+			if (annotation instanceof SingleWordTermAnnotation) {
+				SingleWordTermAnnotation swt = (SingleWordTermAnnotation) annotation;
+				this.alignSingleWord(cas, swt, term);
+			}
+		}
 	}
 
 	private String getTerm(JCas cas) {
@@ -199,7 +205,7 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 		}
 	}
 
-	private void alignSingleWord(JCas cas, String term) {
+	private void alignSingleWord(JCas cas, SingleWordTermAnnotation annotation, String term) {
 		Context context = this.getSourceTerminology().context(term);
 		if (context == null) {
 			this.getContext().getLogger().log(Level.WARNING,"Skiping '" + term + "'");
@@ -220,49 +226,35 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 		}
 	}
 
-	private void alignMultiWord(JCas cas, JCas terminology, String term) throws CASException {
-		TermAnnotation entry = this.retrieve(terminology, MultiWordTermAnnotation.type, term);
-		if (entry != null) {
-			List<String> components = this.extract(terminology, entry, false);
-			List<List<String>> candidates = this.transfer(cas, components);
-			candidates = this.combine(candidates);
-			candidates = this.generate(candidates);
-			components = this.flatten(candidates, " ");
-			components = this.select(components);
-			this.annotate(cas, components);
-		}
+	private void alignMultiWord(JCas cas, JCas terminology, MultiWordTermAnnotation entry, String term) throws CASException {
+		boolean flag = term.equals("énergie éolien");
+		List<String> components = this.extract(terminology, entry, flag);
+		List<List<String>> candidates = this.transfer(cas, components);
+		candidates = this.combine(candidates);
+		candidates = this.generate(candidates);
+		components = this.flatten(candidates, " ");
+		components = this.select(components);
+		this.annotate(cas, components);
 	}
 
-	private void alignCompound(JCas cas, JCas terminology, String term/*, boolean reshape*/) throws CASException {
-		TermAnnotation entry = this.retrieve(terminology, SingleWordTermAnnotation.type, term);
-		if (entry == null) { 
-			return;
-		} else {
-			List<List<String>> componentLists = this.extract(terminology, entry);
-			for (List<String> components : componentLists) {
-				// List<String> components = this.extract(terminology, termEntry, true);
-				components = this.reshape(components);
-				if (components.size() < 2) {
-					continue;
-				} else {
-					List<List<String>> candidates = this.transfer(cas, components);
-					candidates = this.combine(candidates);
-					// TODO generate
-					components = this.flatten(candidates, "");
-					components.addAll(this.flatten(candidates, "-"));
-					// components.addAll(this.flatten(candidates, " "));
-					components = this.select(components);
-					this.annotate(cas, components);
-				}
+	private void alignCompound(JCas cas, JCas terminology, SingleWordTermAnnotation entry, String term) throws CASException {
+		List<List<String>> componentLists = this.extract(terminology, entry);
+		for (List<String> components : componentLists) {
+			components = this.reshape(components);
+			if (components.size() >= 2) {
+				List<List<String>> candidates = this.transfer(cas, components);
+				candidates = this.combine(candidates);
+				components = this.flatten(candidates, "");
+				components.addAll(this.flatten(candidates, "-"));
+				components = this.select(components);
+				this.annotate(cas, components);		
 			}
 		}
 	}
 		
 	private void alignComponent(JCas cas, String term, Set<String> set) {
 		Context context = this.getSourceTerminology().context(term);
-		if (context == null) {
-			this.getContext().getLogger().log(Level.WARNING,"Skiping component '" + term +  "'");
-		} else {
+		if (context != null) {
 			Context transfer = this.transfer(term, context);
 			Map<String, Double> scores = this.align(term, transfer);
 			ScoreComparator comparator = new ScoreComparator();
@@ -352,26 +344,6 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 				break;
 			}
 		}
-	}
-	
-	/**
-	 * extracts the neo-classical compound in the source terminology.
-	 * 
-	 * @param cas
-	 * @param term
-	 * @return
-	 * @throws Exception 
-	 */
-	private TermAnnotation retrieve(JCas cas, int type, String term) {
-		AnnotationIndex<Annotation> index = cas.getAnnotationIndex(type);
-		FSIterator<Annotation> iterator = index.iterator();
-		while (iterator.hasNext()) {
-			Annotation annotation = iterator.next();
-			if (annotation.getCoveredText().equals(term)) {
-				return (TermAnnotation) annotation;
-			}
-		}
-		return null;
 	}
 		
 	/**
@@ -512,15 +484,12 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 				if (this.getDictionary().get().keySet().contains(component)) {
 					continue;
 				} else if (index > 0) {
-					System.out.println("NO LOOK UP " + component);
-					System.out.println("RESHAPE " + components.get(index - 1) + "+" + components.get(index));
 					List<String> alt = new ArrayList<String>();
 					alt.addAll(components.subList(0, index - 1));
 					alt.add(components.get(index - 1) + components.get(index));
 					alt.addAll(components.subList(index + 1, length));
 					return this.reshape(alt);
 				} else {
-					System.out.println("UN DEF " + component);
 					return Collections.emptyList();
 				}
 			}
@@ -541,7 +510,6 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 			String component = components.get(index);
 			Set<String> candidate = this.getDictionary().get().get(component);
 			if (candidate == null) {
-				System.out.println("MISS " + component);
 				candidate = new HashSet<String>();
 			}
 			if (candidate.isEmpty() && this.distributional()) {

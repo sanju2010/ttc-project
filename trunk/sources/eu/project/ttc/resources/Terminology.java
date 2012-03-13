@@ -42,6 +42,16 @@ public class Terminology implements SharedResourceObject {
 			TermAnnotation annotation = (TermAnnotation) iterator.next();
 			this.annotations.put(annotation.getCoveredText(), annotation);
 			this.occurences.put(annotation.getCoveredText(), annotation.getOccurrences());
+			/*
+			if (annotation.getForms() != null) {
+				for (int i = 0; i < annotation.getForms().size(); i++) {
+					TermAnnotation old = this.annotations.put(annotation.getForms(i), annotation);
+					if (old != null && old.getAddress() != annotation.getAddress()) {
+						UIMAFramework.getLogger().log(Level.INFO, "Replacing " + annotation.getForms(i));
+					}
+				}
+			}
+			*/
 		}
 	}
 	

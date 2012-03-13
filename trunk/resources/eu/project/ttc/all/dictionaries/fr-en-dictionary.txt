@@ -1,2 +1,5 @@
 anémo	anemo
 aéro	aero
+a	a
+topo	topo
+graphie	graphy
