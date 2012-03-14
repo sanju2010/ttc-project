@@ -3,14 +3,19 @@
 
 = Road Map =
 
-== Version 1.1 ==
+== Version 1.2 ==
 
   * help system enabled
   * language package plug-in system enabled
   * multext management improved
-  * compositional method improved
-  * result display improved
+  * Latvian processing improved
   * Chinese processing improved
+
+== Version 1.1 ==
+
+  * compound & multi-word alignment compositional method improved
+  * term conflating improved (no more extensions)
+  * result display improved and refactorized as tabbed panel
 
 == Version 1.0 ==
 
