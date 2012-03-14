@@ -2,6 +2,12 @@
 
 = Change Log =
 
+== Version 1.1 ==
+
+  * compound and multi-word alignment compositional method improved
+  * term conflation improved (no more extensions)
+  * result displays refactorized in tabbed panels
+
 == Version 1.0 ==
 
   * no more CPE and CR, only AE
