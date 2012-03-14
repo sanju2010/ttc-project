@@ -3,7 +3,9 @@
 
 = Road Map =
 
-== Version 1.2 ==
+== To Do ==
+
+=== Version 1.2 ===
 
   * help system enabled
   * language package plug-in system enabled
@@ -11,13 +13,15 @@
   * Latvian processing improved
   * Chinese processing improved
 
-== Version 1.1 ==
+== Done ==
+
+=== Version 1.1 ===
 
   * compound & multi-word alignment compositional method improved
   * term conflating improved (no more extensions)
   * result display improved and refactorized as tabbed panel
 
-== Version 1.0 ==
+=== Version 1.0 ===
 
   * tokenization
   * part-of-speech tagging
