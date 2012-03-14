@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
+  <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
+  <primitive>false</primitive>
+  <delegateAnalysisEngineSpecifiers>
+    <delegateAnalysisEngine key="RussianNormalizer">
+      <import name="eu.project.ttc.russian.engines.spotter.RussianNormalizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="RussianStemmer">
+      <import name="eu.project.ttc.russian.engines.spotter.RussianStemmer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="RussianFilter">
+      <import name="eu.project.ttc.russian.engines.spotter.RussianFilter"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="RussianWordTokenizer">
+      <import name="eu.project.ttc.russian.engines.spotter.RussianWordTokenizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="Writer">
+      <import name="eu.project.ttc.all.engines.Writer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="Contextualizer">
+      <import name="eu.project.ttc.all.engines.spotter.Contextualizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="RussianTermSpotter">
+      <import name="eu.project.ttc.russian.engines.spotter.RussianTermSpotter"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="RussianTreeTagger">
+      <import name="eu.project.ttc.russian.engines.spotter.RussianTreeTagger"/>
+    </delegateAnalysisEngine>
+  </delegateAnalysisEngineSpecifiers>
+  <analysisEngineMetaData>
+    <name>Russian Spotter</name>
+    <description/>
+    <version>1.0</version>
+    <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
+    <configurationParameters searchStrategy="language_fallback">
+      <configurationParameter>
+        <name>TreeTaggerHomeDirectory</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>RussianTreeTagger/TreeTaggerHomeDirectory</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>Directory</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>Writer/Directory</parameter>
+        </overrides>
+      </configurationParameter>
+    </configurationParameters>
+    <configurationParameterSettings>
+      <nameValuePair>
+        <name>TreeTaggerHomeDirectory</name>
+        <value>
+          <string>/usr/share/tree-tagger</string>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>Directory</name>
+        <value>
+          <string>/tmp</string>
+        </value>
+      </nameValuePair>
+    </configurationParameterSettings>
+    <flowConstraints>
+      <fixedFlow>
+        <node>RussianWordTokenizer</node>
+        <node>RussianTreeTagger</node>
+        <node>RussianNormalizer</node>
+        <node>RussianStemmer</node>
+        <node>RussianTermSpotter</node>
+        <node>RussianFilter</node>
+        <node>Contextualizer</node>
+        <node>Writer</node>
+      </fixedFlow>
+    </flowConstraints>
+    <typePriorities/>
+    <fsIndexCollection/>
+    <capabilities>
+      <capability>
+        <inputs/>
+        <outputs>
+          <type allAnnotatorFeatures="true">eu.project.ttc.types.WordAnnotation</type>
+        </outputs>
+        <languagesSupported>
+          <language>ru</language>
+        </languagesSupported>
+      </capability>
+    </capabilities>
+    <operationalProperties>
+      <modifiesCas>true</modifiesCas>
+      <multipleDeploymentAllowed>true</multipleDeploymentAllowed>
+      <outputsNewCASes>false</outputsNewCASes>
+    </operationalProperties>
+  </analysisEngineMetaData>
+  <resourceManagerConfiguration/>
+</analysisEngineDescription>

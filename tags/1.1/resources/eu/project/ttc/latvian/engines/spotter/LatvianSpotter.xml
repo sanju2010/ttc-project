@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
+  <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
+  <primitive>false</primitive>
+  <delegateAnalysisEngineSpecifiers>
+    <delegateAnalysisEngine key="LatvianStemmer">
+      <import name="eu.project.ttc.latvian.engines.spotter.LatvianStemmer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="LatvianNormalizer">
+      <import name="eu.project.ttc.latvian.engines.spotter.LatvianNormalizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="Writer">
+      <import name="eu.project.ttc.all.engines.Writer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="LatvianWordTokenizer">
+      <import name="eu.project.ttc.latvian.engines.spotter.LatvianWordTokenizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="Contextualizer">
+      <import name="eu.project.ttc.all.engines.spotter.Contextualizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="LatvianFilter">
+      <import name="eu.project.ttc.latvian.engines.spotter.LatvianFilter"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="LatvianTermSpotter">
+      <import name="eu.project.ttc.latvian.engines.spotter.LatvianTermSpotter"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="LatvianTreeTagger">
+      <import name="eu.project.ttc.latvian.engines.spotter.LatvianTreeTagger"/>
+    </delegateAnalysisEngine>
+  </delegateAnalysisEngineSpecifiers>
+  <flowController key="FixedFlowController">
+    <import name="org.apache.uima.flow.FixedFlowController"/>
+  </flowController>
+  <analysisEngineMetaData>
+    <name>Latvian Spotter</name>
+    <description/>
+    <version>1.0</version>
+    <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
+    <configurationParameters searchStrategy="language_fallback">
+      <configurationParameter>
+        <name>TreeTaggerHomeDirectory</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>LatvianTreeTagger/TreeTaggerHomeDirectory</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>Directory</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>Writer/Directory</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>ActionAfterCasMultiplier</name>
+        <description>The action to be taken after a CAS has been input to a CAS Multiplier and the CAS Multiplier has finished processing it.
+		 Valid values are:
+			continue - the CAS continues on to the next element in the flow
+			stop - the CAS will no longer continue in the flow, and will be returned from the aggregate if possible.
+			drop - the CAS will no longer continue in the flow, and will be dropped (not returned from the aggregate) if possible.	 
+			dropIfNewCasProduced (the default) - if the CAS multiplier produced a new CAS as a result of processing this CAS, then this
+				CAS will be dropped.  If not, then this CAS will continue.</description>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>FixedFlowController/ActionAfterCasMultiplier</parameter>
+        </overrides>
+      </configurationParameter>
+    </configurationParameters>
+    <configurationParameterSettings>
+      <nameValuePair>
+        <name>TreeTaggerHomeDirectory</name>
+        <value>
+          <string>/usr/share/tree-tagger</string>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>Directory</name>
+        <value>
+          <string>/tmp</string>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>ActionAfterCasMultiplier</name>
+        <value>
+          <string>drop</string>
+        </value>
+      </nameValuePair>
+    </configurationParameterSettings>
+    <flowConstraints>
+      <fixedFlow>
+        <node>LatvianWordTokenizer</node>
+        <node>LatvianTreeTagger</node>
+        <node>LatvianNormalizer</node>
+        <node>LatvianStemmer</node>
+        <node>LatvianTermSpotter</node>
+        <node>LatvianFilter</node>
+        <node>Contextualizer</node>
+        <node>Writer</node>
+      </fixedFlow>
+    </flowConstraints>
+    <typePriorities/>
+    <fsIndexCollection/>
+    <capabilities>
+      <capability>
+        <inputs/>
+        <outputs>
+          <type allAnnotatorFeatures="true">eu.project.ttc.types.WordAnnotation</type>
+        </outputs>
+        <languagesSupported>
+          <language>lv</language>
+        </languagesSupported>
+      </capability>
+    </capabilities>
+    <operationalProperties>
+      <modifiesCas>true</modifiesCas>
+      <multipleDeploymentAllowed>true</multipleDeploymentAllowed>
+      <outputsNewCASes>false</outputsNewCASes>
+    </operationalProperties>
+  </analysisEngineMetaData>
+  <resourceManagerConfiguration/>
+</analysisEngineDescription>

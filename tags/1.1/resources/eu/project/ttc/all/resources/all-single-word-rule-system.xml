@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<patterns>
+	<pattern id="noun">
+		<annotation type="eu.project.ttc.types.WordAnnotation">
+		<constraint>
+			<eq key="category" value="noun" />
+			</constraint>
+		</annotation>
+	</pattern>
+	<pattern id="adjective">
+		<annotation type="eu.project.ttc.types.WordAnnotation">
+			<constraint>
+				<eq key="category" value="adjective" />
+			</constraint>
+		</annotation>
+	</pattern>
+	<pattern id="verb">
+		<annotation type="eu.project.ttc.types.WordAnnotation">
+			<constraint>
+				<eq key="category" value="verb" />
+			</constraint>
+		</annotation>
+	</pattern>
+</patterns>

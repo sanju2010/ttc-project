@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
+  <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
+  <primitive>false</primitive>
+  <delegateAnalysisEngineSpecifiers>
+    <delegateAnalysisEngine key="FrenchTreeTaggerCaseNormalizer">
+      <import name="eu.project.ttc.french.engines.spotter.FrenchCaseNormalizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="FrenchTreeTaggerGenderNormalizer">
+      <import name="eu.project.ttc.french.engines.spotter.FrenchGenderNormalizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="FrenchTreeTaggerTenseNormalizer">
+      <import name="eu.project.ttc.french.engines.spotter.FrenchTenseNormalizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="FrenchTreeTaggerSubcategoryNormalizer">
+      <import name="eu.project.ttc.french.engines.spotter.FrenchSubcategoryNormalizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="FrenchTreeTaggerNumberNormalizer">
+      <import name="eu.project.ttc.french.engines.spotter.FrenchNumberNormalizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="FrenchTreeTaggerMoodNormalizer">
+      <import name="eu.project.ttc.french.engines.spotter.FrenchMoodNormalizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="FrenchTreeTaggerCategoryNormalizer">
+      <import name="eu.project.ttc.french.engines.spotter.FrenchCategoryNormalizer"/>
+    </delegateAnalysisEngine>
+  </delegateAnalysisEngineSpecifiers>
+  <analysisEngineMetaData>
+    <name>French Normalizer</name>
+    <description/>
+    <version>1.0</version>
+    <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
+    <configurationParameters searchStrategy="language_fallback"/>
+    <configurationParameterSettings/>
+    <flowConstraints>
+      <fixedFlow>
+        <node>FrenchTreeTaggerCategoryNormalizer</node>
+        <node>FrenchTreeTaggerSubcategoryNormalizer</node>
+        <node>FrenchTreeTaggerMoodNormalizer</node>
+        <node>FrenchTreeTaggerTenseNormalizer</node>
+        <node>FrenchTreeTaggerGenderNormalizer</node>
+        <node>FrenchTreeTaggerNumberNormalizer</node>
+        <node>FrenchTreeTaggerCaseNormalizer</node>
+      </fixedFlow>
+    </flowConstraints>
+    <typePriorities/>
+    <fsIndexCollection/>
+    <capabilities>
+      <capability>
+        <inputs/>
+        <outputs>
+          <type allAnnotatorFeatures="true">eu.project.ttc.types.WordAnnotation</type>
+        </outputs>
+        <languagesSupported>
+          <language>fr</language>
+        </languagesSupported>
+      </capability>
+    </capabilities>
+    <operationalProperties>
+      <modifiesCas>true</modifiesCas>
+      <multipleDeploymentAllowed>true</multipleDeploymentAllowed>
+      <outputsNewCASes>false</outputsNewCASes>
+    </operationalProperties>
+  </analysisEngineMetaData>
+  <resourceManagerConfiguration/>
+</analysisEngineDescription>

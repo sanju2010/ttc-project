@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
+  <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
+  <primitive>false</primitive>
+  <delegateAnalysisEngineSpecifiers>
+    <delegateAnalysisEngine key="SpanishNormalizer">
+      <import name="eu.project.ttc.spanish.engines.spotter.SpanishNormalizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="SpanishStemmer">
+      <import name="eu.project.ttc.spanish.engines.spotter.SpanishStemmer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="SpanishFilter">
+      <import name="eu.project.ttc.spanish.engines.spotter.SpanishFilter"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="SpanishWordTokenizer">
+      <import name="eu.project.ttc.spanish.engines.spotter.SpanishWordTokenizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="Writer">
+      <import name="eu.project.ttc.all.engines.Writer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="Contextualizer">
+      <import name="eu.project.ttc.all.engines.spotter.Contextualizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="SpanishTermSpotter">
+      <import name="eu.project.ttc.spanish.engines.spotter.SpanishTermSpotter"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="SpanishTreeTagger">
+      <import name="eu.project.ttc.spanish.engines.spotter.SpanishTreeTagger"/>
+    </delegateAnalysisEngine>
+  </delegateAnalysisEngineSpecifiers>
+  <analysisEngineMetaData>
+    <name>Spanish Spotter</name>
+    <description/>
+    <version>1.0</version>
+    <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
+    <configurationParameters searchStrategy="language_fallback">
+      <configurationParameter>
+        <name>TreeTaggerHomeDirectory</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>SpanishTreeTagger/TreeTaggerHomeDirectory</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>Directory</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>Writer/Directory</parameter>
+        </overrides>
+      </configurationParameter>
+    </configurationParameters>
+    <configurationParameterSettings>
+      <nameValuePair>
+        <name>TreeTaggerHomeDirectory</name>
+        <value>
+          <string>/usr/share/tree-tagger</string>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>Directory</name>
+        <value>
+          <string>/tmp</string>
+        </value>
+      </nameValuePair>
+    </configurationParameterSettings>
+    <flowConstraints>
+      <fixedFlow>
+        <node>SpanishWordTokenizer</node>
+        <node>SpanishTreeTagger</node>
+        <node>SpanishNormalizer</node>
+        <node>SpanishStemmer</node>
+        <node>SpanishTermSpotter</node>
+        <node>SpanishFilter</node>
+        <node>Contextualizer</node>
+        <node>Writer</node>
+      </fixedFlow>
+    </flowConstraints>
+    <typePriorities/>
+    <fsIndexCollection/>
+    <capabilities>
+      <capability>
+        <inputs/>
+        <outputs>
+          <type allAnnotatorFeatures="true">eu.project.ttc.types.WordAnnotation</type>
+        </outputs>
+        <languagesSupported>
+          <language>es</language>
+        </languagesSupported>
+      </capability>
+    </capabilities>
+    <operationalProperties>
+      <modifiesCas>true</modifiesCas>
+      <multipleDeploymentAllowed>true</multipleDeploymentAllowed>
+      <outputsNewCASes>false</outputsNewCASes>
+    </operationalProperties>
+  </analysisEngineMetaData>
+  <resourceManagerConfiguration/>
+</analysisEngineDescription>

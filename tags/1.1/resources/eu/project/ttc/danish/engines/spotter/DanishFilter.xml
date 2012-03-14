@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
+  <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
+  <primitive>false</primitive>
+  <delegateAnalysisEngineSpecifiers>
+    <delegateAnalysisEngine key="DanishTermFilter">
+      <import name="eu.project.ttc.danish.engines.spotter.DanishTermFilter"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="DanishLemmaFilter">
+      <import name="eu.project.ttc.danish.engines.spotter.DanishLemmaFilter"/>
+    </delegateAnalysisEngine>
+  </delegateAnalysisEngineSpecifiers>
+  <analysisEngineMetaData>
+    <name>Danish Filter</name>
+    <description/>
+    <version>1.0</version>
+    <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
+    <configurationParameters searchStrategy="language_fallback"/>
+    <configurationParameterSettings/>
+    <flowConstraints>
+      <fixedFlow>
+        <node>DanishTermFilter</node>
+        <node>DanishLemmaFilter</node>
+      </fixedFlow>
+    </flowConstraints>
+    <typePriorities/>
+    <fsIndexCollection/>
+    <capabilities>
+      <capability>
+        <inputs>
+          <type allAnnotatorFeatures="true">eu.project.ttc.types.WordAnnotation</type>
+        </inputs>
+        <outputs/>
+        <languagesSupported>
+          <language>da</language>
+        </languagesSupported>
+      </capability>
+    </capabilities>
+    <operationalProperties>
+      <modifiesCas>true</modifiesCas>
+      <multipleDeploymentAllowed>true</multipleDeploymentAllowed>
+      <outputsNewCASes>false</outputsNewCASes>
+    </operationalProperties>
+  </analysisEngineMetaData>
+  <resourceManagerConfiguration>
+    <externalResources>
+      <externalResource>
+        <name>DanishFilter</name>
+        <description/>
+        <fileResourceSpecifier>
+          <fileUrl>eu/project/ttc/danish/resources/danish-stop-word-filter.xml</fileUrl>
+        </fileResourceSpecifier>
+        <implementationName>uima.sandbox.filter.resources.FilterResource</implementationName>
+      </externalResource>
+    </externalResources>
+    <externalResourceBindings>
+      <externalResourceBinding>
+        <key>DanishTermFilter/Filter</key>
+        <resourceName>DanishFilter</resourceName>
+      </externalResourceBinding>
+      <externalResourceBinding>
+        <key>DanishLemmaFilter/Filter</key>
+        <resourceName>DanishFilter</resourceName>
+      </externalResourceBinding>
+    </externalResourceBindings>
+  </resourceManagerConfiguration>
+</analysisEngineDescription>

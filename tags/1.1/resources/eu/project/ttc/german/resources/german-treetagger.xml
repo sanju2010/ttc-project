@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+  <entry key="name">TreeTagger's German Parameter</entry>
+  <entry key="encoding">iso8859-1</entry>
+  <entry key="file">german.par</entry>
+</properties>

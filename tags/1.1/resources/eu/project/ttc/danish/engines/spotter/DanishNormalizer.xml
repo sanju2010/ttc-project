@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
+  <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
+  <primitive>false</primitive>
+  <delegateAnalysisEngineSpecifiers>
+    <delegateAnalysisEngine key="DanishTreeTaggerCaseNormalizer">
+      <import name="eu.project.ttc.danish.engines.spotter.DanishCaseNormalizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="DanishTreeTaggerGenderNormalizer">
+      <import name="eu.project.ttc.danish.engines.spotter.DanishGenderNormalizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="DanishTreeTaggerTenseNormalizer">
+      <import name="eu.project.ttc.danish.engines.spotter.DanishTenseNormalizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="DanishTreeTaggerSubcategoryNormalizer">
+      <import name="eu.project.ttc.danish.engines.spotter.DanishSubcategoryNormalizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="DanishTreeTaggerNumberNormalizer">
+      <import name="eu.project.ttc.danish.engines.spotter.DanishNumberNormalizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="DanishTreeTaggerMoodNormalizer">
+      <import name="eu.project.ttc.danish.engines.spotter.DanishMoodNormalizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="DanishTreeTaggerCategoryNormalizer">
+      <import name="eu.project.ttc.danish.engines.spotter.DanishCategoryNormalizer"/>
+    </delegateAnalysisEngine>
+  </delegateAnalysisEngineSpecifiers>
+  <analysisEngineMetaData>
+    <name>Danish Normalizer</name>
+    <description/>
+    <version>1.0</version>
+    <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
+    <configurationParameters searchStrategy="language_fallback"/>
+    <configurationParameterSettings/>
+    <flowConstraints>
+      <fixedFlow>
+        <node>DanishTreeTaggerCategoryNormalizer</node>
+        <node>DanishTreeTaggerSubcategoryNormalizer</node>
+        <node>DanishTreeTaggerMoodNormalizer</node>
+        <node>DanishTreeTaggerTenseNormalizer</node>
+        <node>DanishTreeTaggerGenderNormalizer</node>
+        <node>DanishTreeTaggerNumberNormalizer</node>
+        <node>DanishTreeTaggerCaseNormalizer</node>
+      </fixedFlow>
+    </flowConstraints>
+    <typePriorities/>
+    <fsIndexCollection/>
+    <capabilities>
+      <capability>
+        <inputs/>
+        <outputs>
+          <type allAnnotatorFeatures="true">eu.project.ttc.types.WordAnnotation</type>
+        </outputs>
+        <languagesSupported>
+          <language>da</language>
+        </languagesSupported>
+      </capability>
+    </capabilities>
+    <operationalProperties>
+      <modifiesCas>true</modifiesCas>
+      <multipleDeploymentAllowed>true</multipleDeploymentAllowed>
+      <outputsNewCASes>false</outputsNewCASes>
+    </operationalProperties>
+  </analysisEngineMetaData>
+  <resourceManagerConfiguration/>
+</analysisEngineDescription>
