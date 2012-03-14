@@ -19,5 +19,5 @@ First, please check that are installed on your computer:
   * a Java 6 Runtime Environment ([http://www.java.com/fr/download/ Sun] or [http://openjdk.java.net/install/ OpenJDK]),
   * the part-of-speech tagger and lemmatizer [http://www.ims.uni-stuttgart.de/projekte/corplex/TreeTagger/ TreeTagger].
 
-You may download the [http://ttc-project.googlecode.com/files/ttc-term-suite-1.0-rc6.jar TTC Term Suite] executable Java archive and open it within a Java 6 Runtime Environment or by the help of the following command line:
- java -jar ttc-term-suite-1.0-rc6.jar
+You may download the [http://ttc-project.googlecode.com/files/ttc-term-suite-1.0-rc6.jar TTC Term Suite] executable Java archive and open it within a Java 6 Runtime Environment or by the help of the following command line (where _version_ corresponds to the right version number):
+ java -jar ttc-term-suite-_version_.jar
