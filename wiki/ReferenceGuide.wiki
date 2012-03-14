@@ -1,3 +1,0 @@
-#summary reference guide.
-
-= Reference Guide =
