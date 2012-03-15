@@ -31,7 +31,7 @@ Just check that the Java program is installed on your computer by running this f
   java -version
 }}}
 
-==== TreeTagger ====
+==== Tree Tagger ====
 
 Notice that the TreeTagger executable called _tree-tagger_ on Unix-based systems or _tree-tagger.exe_ on Windows ones is expected in the _bin/_ sub-directory of the TreeTagger home directory. 
 
