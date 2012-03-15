@@ -21,9 +21,9 @@ public class TermSpotter extends Matcher {
 				WordAnnotation word = (WordAnnotation) annotations[0];
 				term.setCategory(word.getCategory());
 				if (word.getLemma() == null) {
-					word.setLemma(word.getCoveredText());
+					word.setLemma(word.getCoveredText().toLowerCase());
 				} else if (word.getLemma().equals("@card@")) {
-					word.setLemma(word.getCoveredText());
+					word.setLemma(word.getCoveredText().toLowerCase());
 				}
 				term.setLemma(word.getLemma());
 				term.addToIndexes();
@@ -38,9 +38,9 @@ public class TermSpotter extends Matcher {
 				for (int index = 0; index < annotations.length; index++) {
 					WordAnnotation word = (WordAnnotation) annotations[index];
 					if (word.getLemma() == null) {
-						word.setLemma(word.getCoveredText());
+						word.setLemma(word.getCoveredText().toLowerCase());
 					} else if (word.getLemma().equals("@card@")) {
-						word.setLemma(word.getCoveredText());
+						word.setLemma(word.getCoveredText().toLowerCase());
 					}
 					lemma.append(word.getLemma());
 					if (index < annotations.length - 1) {

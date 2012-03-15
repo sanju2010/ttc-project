@@ -53,7 +53,7 @@ public class IndexerEngine implements TermSuiteEngine {
 
 	@Override
 	public void callBack(CAS cas) throws Exception {
-		this.getTool().getParent().getBanker().doLoad(cas.getJCas());	
+		// this.getTool().getParent().getBanker().doLoad(cas.getJCas());	
 	}
 
 	@Override

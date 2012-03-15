@@ -97,9 +97,8 @@ public class TildeTokenizer extends JCasMultiplier_ImplBase {
 			this.getTokens().clear();
 			return cas;
 		} catch (Exception e) {
-			throw new AnalysisEngineProcessException(e);
-		} finally {
 			cas.release();
+			throw new AnalysisEngineProcessException(e);
 		}
 	}
 	

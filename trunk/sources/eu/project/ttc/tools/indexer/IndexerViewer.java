@@ -140,7 +140,11 @@ public class IndexerViewer {
 					node.setUserObject(term.getCoveredText().replaceAll("\\s+", " "));
 					this.getRoot().add(node);
 					this.addNotes(node, term);
-					this.addComponents(node, cas, term);
+					try {
+						this.addComponents(node, cas, term);
+					} catch (Exception e) {
+						// ignore
+					}
 					this.addForms(node, cas, term);
 					this.addVariants(node, cas, term);
 				}

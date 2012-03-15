@@ -3,12 +3,6 @@
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>false</primitive>
   <delegateAnalysisEngineSpecifiers>
-    <delegateAnalysisEngine key="GermanTermFrequencyComputer">
-      <import name="eu.project.ttc.german.engines.indexer.GermanTermFrequencyComputer"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="GermanCompoundIndexer">
-      <import name="eu.project.ttc.german.engines.indexer.GermanCompoundIndexer"/>
-    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="Writer">
       <import name="eu.project.ttc.all.engines.Writer"/>
     </delegateAnalysisEngine>
@@ -17,6 +11,12 @@
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="TermCleaner">
       <import name="eu.project.ttc.all.engines.indexer.TermCleaner"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="GermanCompoundIndexer">
+      <import name="eu.project.ttc.german.engines.indexer.GermanCompoundIndexer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="GermanTermFrequencyComputer">
+      <import name="eu.project.ttc.german.engines.indexer.GermanTermFrequencyComputer"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="GermanTermGatherer">
       <import name="eu.project.ttc.german.engines.indexer.GermanTermGatherer"/>
@@ -191,7 +191,11 @@
         <node>TermBaseXchanger</node>
       </fixedFlow>
     </flowConstraints>
-    <typePriorities/>
+    <typePriorities>
+      <imports>
+        <import name="eu.project.ttc.types.TermSuiteTypePriorities"/>
+      </imports>
+    </typePriorities>
     <fsIndexCollection/>
     <capabilities>
       <capability>

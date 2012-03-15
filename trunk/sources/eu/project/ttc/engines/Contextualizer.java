@@ -10,6 +10,7 @@ public class Contextualizer extends uima.sandbox.contextualizer.engines.Contextu
 
 	@Override
 	protected void annotate(JCas cas, Annotation annotation, Annotation[] annotations) {
+		// System.out.println(annotation.getCoveredText());
 		if (annotation instanceof TermAnnotation) {
 			TermAnnotation term = (TermAnnotation) annotation;
 			int length = annotations.length;

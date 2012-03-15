@@ -188,10 +188,10 @@ public class AffixCompoundSplitter extends JCasAnnotator_ImplBase {
 		TermComponentAnnotation annotation = new TermComponentAnnotation(cas,begin,end);
 		annotation.setLemma(annotation.getCoveredText());
 		if (prefix) {
-			annotation.setCategory("initial");
+			annotation.setCategory(null/*"initial"*/);
 		} else {
 
-			annotation.setCategory("final");
+			annotation.setCategory(null/*"final"*/);
 		}
 		annotation.addToIndexes();
 		this.getComponents().add(annotation);

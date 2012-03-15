@@ -137,6 +137,10 @@ public class ComplexTermFrequency extends SimpleTermFrequency {
 				}
 			}
 			this.getComponents().put(term, components);
+		} catch (NullPointerException e) {
+			UIMAFramework.getLogger().log(Level.SEVERE, term);
+			UIMAFramework.getLogger().log(Level.SEVERE, annotation.toString());
+			// ignore throw e;
 		} catch (CASException e) {
 			UIMAFramework.getLogger().log(Level.WARNING,e.getMessage());
 		}

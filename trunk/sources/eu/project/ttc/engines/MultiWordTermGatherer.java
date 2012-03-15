@@ -180,6 +180,60 @@ public class MultiWordTermGatherer extends JCasAnnotator_ImplBase {
 		}
 	}
 	
+	private void getKeysNew(TermAnnotation annotation, List<String> keys, boolean norm) throws Exception {
+		JCas cas = annotation.getCAS().getJCas();
+		AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TermComponentAnnotation.type);
+		FSIterator<Annotation> iterator = index.subiterator(annotation);
+		String lemma = null;
+		List<String> lemmas = new ArrayList<String>();
+		Map<String, String> stems = new HashMap<String, String>();
+		while (iterator.hasNext()) {
+			TermComponentAnnotation component = (TermComponentAnnotation) iterator.next();
+			String category = component.getCategory();
+			if (category != null) {
+				if (lemma == null) {
+					lemma = this.lemma(component);
+				} else {
+					String l = this.lemma(component);
+					lemmas.add(l);
+					stems.put(l, this.stem(component));
+				}
+			}		
+		}
+		
+		// if (lemma != null) {
+			for (int i = 0 ; i < lemmas.size(); i++) {
+				String l = lemmas.get(i);
+				String s = stems.get(l);
+				if (l.isEmpty()) {
+					continue;
+				} else {
+					// keys.add(this.setKey(lemma, l, ""));
+					// keys.add(this.setKey(l, lemma, ""));
+					keys.add(this.setKey(lemma, s, ""));
+				}
+			}
+		// }
+	}
+	
+	private String lemma(TermComponentAnnotation annotation) {
+		if (annotation.getLemma() == null) {
+			return annotation.getCoveredText();
+		} else {
+			return annotation.getLemma();
+		}
+	}
+
+	private String stem(TermComponentAnnotation annotation) {
+		if (annotation.getStem() == null) {
+			this.getStemmer().setCurrent(annotation.getCoveredText());
+			this.getStemmer().stem();
+			return this.getStemmer().getCurrent();
+		} else {
+			return annotation.getStem();
+		}
+	}
+	
 	private void clean(JCas cas) {
 		HashMap<String, Set<TermAnnotation>> map = new HashMap<String, Set<TermAnnotation>>();
 		AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TermAnnotation.type);
