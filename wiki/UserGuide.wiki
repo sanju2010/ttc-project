@@ -44,7 +44,8 @@ I order to check if TreeTagger is correctly installed,
 please launch this command line:
 
 {{{
-  /path/to//tree-tagger-home-directory/bin/tree-tagger /path/to//tree-tagger-home-directory/models/english.par
+  cd tree-tagger-home-directory
+  ./bin/tree-tagger ./models/english.par
 }}}
 
 Exit the program by the keyboard short-cut Ctrl+D.
