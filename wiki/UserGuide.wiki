@@ -15,6 +15,8 @@ Before installing Term Suite on your computer,
 you have to install a Java Runtime Environment 
 and the TreeTagger part-of-speech tagger.
 
+Notice that you don't have to install neither the Java library Apache UIMA, nor the Java library tt4j as the TTC TermSuite Java archive already contains them.
+
 ==== Java Runtime Environment ====
 
 Several JREs exist: for instance that of [http://www.java.com/fr/download/ Sun's] or [http://openjdk.java.net/install/ OpenJDK].
@@ -47,17 +49,37 @@ please launch this command line:
 
 Exit the program by the keyboard short-cut Ctrl+D.
 
-=== Download the binary ===
+=== Install ===
 
-Just launch this command line:
+As Term Suite is provided as an executable Java archive, 
+you merely have to download it and put it 
+wherever you want on your computer. 
+
+There is no any packages of Term Suite for any distributions.
+
+Otherwise, you can regenerate the Java archive from 
+Term Suite source code. You then need both Subversion and Maven2 
+respectively for getting the source code and for packaging it.
+
+==== Download the binary ====
+
+Just launch this command line or follow its target link:
 
 {{{
  wget http://ttc-project.googlecode.com/files/ttc-term-suite-1.1.jar
 }}}
 
-=== Compilation from Sources ===
+==== Compilation from Sources ====
 
-Just launch these command lines:
+In order to regenerate the Term Suite package, 
+you first have to download the source code from 
+the Subversion repository hosted by Google Code. 
+Then using Maven, install every dependencies (modules) 
+in your local Maven repository.
+Finally, generate the Term Suite Java archive. 
+That's the way, the Term Suite is build.
+
+In few words, just launch these command lines:
 
 {{{
  svn checkout http://ttc-project.googlecode.com/svn/trunk ttc-term-suite
@@ -67,12 +89,7 @@ Just launch these command lines:
  mvn -f pom-term-suite.xml package
 }}}
 
-
-
-
-Notice that you don't have to install neither the Java library Apache UIMA, nor the Java library tt4j as the TTC TermSuite Java archive already contains them.
-
-== Launch == 
+== Usage == 
 
 You merely have to launch the following command line:
 
