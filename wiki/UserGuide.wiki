@@ -9,7 +9,7 @@ This user guide page explains how to install and use it.
 
 == Contents == 
 
-<wiki:toc max_depth="4" />
+<wiki:toc max_depth="3" />
 
 == Installation == 
 
