@@ -90,40 +90,82 @@ In few words, just launch these command lines:
  mvn -f pom-term-suite.xml package
 }}}
 
-== Usage == 
+== Execution == 
 
 You merely have to launch the following command line:
 
-  java -jar ttc-term-suite-_version_.jar
+{{{
+  java -Xms1g -Xmx4g -jar ttc-term-suite-1.1.jar
+}}}
 
-Or you just have to open it in a Java 6 Runtime Environment. 
+You are strongly suggested to set the JVM options -Xms1g 
+that allocate 1Go of RAM memory for this program 
+as terminology compilation and terminology alignment 
+each requires a certain amount of memory even for corpora 
+which sizes are around 300.000 tokens.
 
-It then displays a tiny Graphical User Interface with the 6 following buttons:
-  * About: pops up a small note about this tool;
-  * Help: opens this help pages if your JRE enables desktop integration;
-  * TreeTagger: launches the monolingual tagger and lemmatizer tool;
-  * Acabit: launches the monolingual terminology extraction tool;
-  * Ziggurat: launches the bilingual terminology alignment tool;
-  * Quit: exits this tool.
+== Description ==
 
-=== TreeTagger ===
+Having launched the previous command line, you face the Term Suite graphical user interface:
 
-The TreeTagger GUI provides a tool bar to launch and monitor the Collection Processing Engine, a tab for setting the CPE parameters and a tab for viewing the processing results. 
+http://ttc-project.googlecode.com/files/spotter.png
 
-This TreeTagger CPE performs:
-  * word segmentation,
-  * part-of-speech tagging
-  * grammatical category normalization
-  * lemmatization.
-It requires text files as inputs. It generates a XMI file in the output directory per text file in the input directory.
+It is basically made of a tool bar and 3 tabbed panels 
+respectively called: Spotter, Indexer and Aligner.
 
-The TreeTagger CPE requires the following parameters to be set:
-  * Language: the 2-letter code for the language of text files in the input directory;
-  * Input Directory: the folder where reading the text files;
-  * Output Directory: the folder where writing the XMI  files;
-  * TreeTagger Home Directory: the folder where TreeTagger has been installed.
+=== Tool Bar ===
 
-=== Acabit ===
+The tool bar contains 5 buttons and a progress bar which acts as follows when activated:
+
+ * the button About pops up a dialog with a tiny description of Term Suite.
+ * the button Run executes the UIMA component corresponding to the selected tab
+ * the button Stop is enabled when a UIMA component is under processing and interrupts the latter.
+ * the progress bar displays the progress of the execution task.
+ * the button Save makes possible to store the parameter values of every tabbed panels.
+ * the button Quit pops up a confirm dialog for exiting Term Suite.
+
+=== Spotter ===
+
+The Spotter tabbed panel has 2 embedded tabbed panels itself. 
+The first one called Edit makes possible to configure the UIMA component 
+that can be executed. The View panel displays its processing results. 
+
+In fact, UIMA components that can be executed by the Spotter performs:
+ * word tokenization,
+ * part-of-speech tagging and lemmatization thanks to TreeTagger,
+ * tag normalization from the different language-dependent tagsets of TreeTagger according to the Multext standard,
+ * stemming using Porter's algorithm,
+ * single-word and multi-word term occurrences detection,
+ * stop-word filtering,
+ * contextual window computing.
+
+It merely accepts text files as inputs and generates a XMI file in the output directory per text file in the input directory.
+
+The Spotter requires the following parameters to be set:
+  * the parameter _Language_ should be one of the languages given in the selection list,
+  * the parameter _Input Directory_ should refer to the directory where the text files are,
+  * the parameter _Output Directory_ should refer to the folder where  the XMI  files will be written,
+  * the parameter _TreeTagger Home Directory_ should refer to the directory where TreeTagger has been installed on your computer.
+
+==== Note ====
+
+Make sure that the TreeTagger parameter file that corresponds to the selected language of the Spotter exists in models/_ subdirectory of the TreeTagger home one. Otherwise, Term Suite will exit abnormally. 
+
+Moreover, make sure that these parameter file have the following encoding although TreeTagger lemmatization will return unexpected values. The table above explains for each language which parameter file is expected in the TreeTagger _models/ subdirectory and its encoding.
+
+|| Language || Parameter File || Encoding ||
+|| English || english.par || iso8859-1 ||
+|| French || french.par || iso8859-1 ||
+|| German || german.par || iso8859-1 ||
+|| Spanish || spanish.par || iso8859-1 ||
+|| Russian || russian.par || utf-8 ||
+|| Danish || danish.par || iso8859-1 ||
+|| Latvian ||  ||  ||
+|| Chinese || zh.par || utf-8 ||
+
+The Latvian language isn't yet supported by this version of Term Suite.
+
+=== Indexer ===
 
 The Acabit GUI provides a tool bar to launch and monitor the Collection Processing Engine, a tab for setting the CPE parameters, a tab for viewing the extracted terminology and a tab for viewing the processing results. 
 
@@ -140,7 +182,7 @@ The Acabit CPE requires the following parameters to be set:
   * Output Directory: the folder where writing the XMI  files;
   * Terminology File: the file that contains the term bank.
 
-=== Ziggurat === 
+=== Aligner === 
 
 The Ziggurat GUI provides a tool bar to launch and monitor the Collection Processing Engine, a tab for setting the CPE parameters and a tab for viewing the processing results. 
 
