@@ -31,9 +31,9 @@
 
 ==== _Language_ Word Tokenizer ====
 
-==== _Language_ TreeTagger ====
+==== _Language_ Tree-Tagger ====
 
-==== _Language_ TreeTagger Normalizer ====
+==== _Language_ Normalizer ====
 
 ==== _Language_ Stemmer ====
 
