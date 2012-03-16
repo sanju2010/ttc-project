@@ -27,9 +27,56 @@ First, please check that are installed on your computer:
 
 *Warning*: Term Suite expects to find TreeTagger's parameter files in the _lib/_ subdirectory of the TreeTagger home directory i.e. the folder where TreeTagger is installed on your computer. By default, these parameter files belong to the _lib/_ subdirectory. Please check that and create a link from  _models/_ to _lib/_ if necessary.
 
-== Install ==
+== Installation ==
 
 You may download the [http://ttc-project.googlecode.com/files/ttc-term-suite-1.1.jar TTC Term Suite] executable Java archive and open it within a Java 6 Runtime Environment or by the help of the following command line:
  java -jar ttc-term-suite-1.1.jar
 
 == Resources == 
+
+Term Suite requires you to provide at least 2 kinds of resources: 
+2 corpora and 1 list of terms to translate. The first kind of resources 
+is required by the first Term Suite's tool whereas the second kind of resources is required by the last one.
+
+=== Corpora ===
+
+The first kind of resources consists in _comparable_ corpora 
+that is provided by text files. These files should be 
+in the same directory, not in its subdirectories 
+and without any other text files in it.
+
+=== List of translations ===
+
+The list of terms to translate is provided by text files in a proper directory. Such files should at least look like that:
+{{{
+  renewable energy
+}}} 
+i.e. a file containing just a term.
+
+You can provide one or more correct translations of the given term 
+by separating the term and each translation by tabulations as below:
+{{{
+  énergie	energy	power
+}}}
+These correct translations can be useful for evaluation purpose.
+
+This can also be used as well for simple terms as for complex terms:
+{{{
+  énergie renouvelable	renewable energy
+}}}
+
+=== Dictionary ===
+
+A tiny bilingual dictionary is used by default in Term Suite. 
+However, you are strongly recommended to enrich it by your own dictionary. The latter should comply the following format: 
+a source entry per line separated by a tabulation with 
+In other words, dictionaries should look like that:
+{{{
+  ...
+  énergie	energy
+  énergie	power
+  énergie	vigueur
+  ...
+  puissance	power
+  ...
+}}}
