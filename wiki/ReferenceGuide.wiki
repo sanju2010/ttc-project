@@ -8,7 +8,16 @@
 
 == Type System == 
 
-The [http://code.google.com/p/ttc-project/source/browse/trunk/resources/eu/project/ttc/types/TermSuiteTypeSystem.xml UIMA Type System] define how information is structured by any Term Suite components and applications. 
+The [http://code.google.com/p/ttc-project/source/browse/trunk/resources/eu/project/ttc/types/TermSuiteTypeSystem.xml TermSuite Type System] define how information is structured by any Term Suite components and applications. 
+
+There exist 3 main annotation types that are respectively:
+ * the type _WordAnnotation_ identifies a word with Multext-compliant  grammatical features;
+ * the type _TermAnnotation_ is used as well term occurrence detection as for term entry indexation;
+ * the type _TranslationCandidateAnnotation_ receives every alignment results for a given term to translate.
+
+*Note:* every annotation types should be prefixed by the path _eu.project.ttc.types._; such prefix is here removed for shortening their notations. 
+
+Moreover, annotation types such as _TranslationCandidateAnnotation_ are refered below as _Translation Candidate Annotation_ for readability reasons.
 
 === Word Annotation ===
 
