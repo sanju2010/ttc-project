@@ -8,6 +8,8 @@
 
 == Type System == 
 
+The [http://code.google.com/p/ttc-project/source/browse/trunk/resources/eu/project/ttc/types/TermSuiteTypeSystem.xml UIMA Type System] define how information is structured by any Term Suite components and applications. 
+
 === Word Annotation ===
 
 === Term Annotation ===
@@ -18,11 +20,11 @@
 
 ==== Term Component Annotation ====
 
-==== Translation Annotation ====
+=== Translation Annotation ===
 
-==== Translation Candidate Annotation ====
+=== Translation Candidate Annotation ===
 
-==== Source Document Information ====
+=== Source Document Information ===
 
 == Components == 
 
