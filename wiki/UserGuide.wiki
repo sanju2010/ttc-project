@@ -54,6 +54,24 @@ please launch this command line:
 
 Exit the program by the keyboard short-cut Ctrl+D.
 
+===== Warnings =====
+
+Make sure that the TreeTagger parameter file that corresponds to the selected language of the Spotter exists in _models/_ subdirectory of the TreeTagger home one. Otherwise, Term Suite will exit abnormally. 
+
+Moreover, make sure that these parameter file have the following encoding although TreeTagger lemmatization will return unexpected values. The table above explains for each language which parameter file is expected in the TreeTagger _models/_ subdirectory and its encoding.
+
+|| Language || Parameter File || Encoding ||
+|| English || english.par || iso8859-1 ||
+|| French || french.par || iso8859-1 ||
+|| German || german.par || iso8859-1 ||
+|| Spanish || spanish.par || iso8859-1 ||
+|| Russian || russian.par || utf-8 ||
+|| Danish || danish.par || iso8859-1 ||
+|| Latvian ||  ||  ||
+|| Chinese || zh.par || utf-8 ||
+
+The Latvian language isn't yet supported by this version of Term Suite.
+
 === Install ===
 
 As Term Suite is provided as an executable Java archive, 
