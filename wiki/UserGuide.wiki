@@ -112,6 +112,12 @@ In few words, just launch these command lines:
  mvn -f pom-term-suite.xml package
 }}}
 
+In order to install Subversion and Maven2 on Unix boxes, please 
+run this command line as root:
+{{{
+  sudo apt-get install subversion maven2
+}}}
+
 == Execution == 
 
 You merely have to launch the following command line:
