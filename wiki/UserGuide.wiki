@@ -106,10 +106,8 @@ In few words, just launch these command lines:
 
 {{{
  svn checkout http://ttc-project.googlecode.com/svn/trunk ttc-term-suite
- cd ttc-term-suite/modules
- for module in * ; do cd $module ; mvn install ; cd .. ; done
- cd ..
- mvn -f pom-term-suite.xml package
+ cd ttc-term-suite/
+ mvn package
 }}}
 
 In order to install Subversion and Maven2 on Unix boxes, please 
@@ -171,7 +169,7 @@ In fact, UIMA components that can be executed by the Spotter performs:
 
 ==== Inputs & Outputs ====
 
-It merely accepts text files as inputs and generates a XMI file in the output directory per text file in the input directory.
+It merely accepts UTF-8 text files as inputs and generates a XMI file in the output directory per text file in the input directory.
 
 ==== Settings ====
 
