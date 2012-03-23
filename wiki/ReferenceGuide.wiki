@@ -36,14 +36,22 @@ The annotation type _Word Annotation_ extends that of _Term Component Annotation
  * the String feature _number_ corresponds to the number of the Multext categories noun, verb, adjective, pronoun, determiner, article and numeral
  * the String feature _gender_ corresponds to the gender of the Multext categories noun, verb, adjective, pronoun, determiner, article and numeral
  * the String feature _case_ corresponds to the case of the Multext categories noun, adjective, pronoun, determiner, article and numeral
-* the String feature _person_ corresponds to the case of the Multext categories verb, pronoun, determiner and article 
-* the String feature _possessor_ corresponds to the case of the Multext categories pronoun and determiner
-* the String feature _degree_ corresponds to the case of the Multext category adverb
-* the String feature _formation_ corresponds to the case of the Multext category adposition
+ * the String feature _person_ corresponds to the case of the Multext categories verb, pronoun, determiner and article 
+ * the String feature _possessor_ corresponds to the case of the Multext categories pronoun and determiner
+ * the String feature _degree_ corresponds to the case of the Multext category adverb
+ * the String feature _formation_ corresponds to the case of the Multext category adposition
 
 === Term Annotation ===
 
-The annotation type _Term Annotation_ is used both for term instances in corpus documents and term entries of the corpus terminology. 
+The annotation type _Term Annotation_ is used both for term instances in corpus documents and term entries of the corpus terminology. It owns the following features:
+ * the String feature _category_ corresponds to the identifier of the syntactic pattern which such term instances or term entries has been 
+detected from * the Double feature _lemma_ corresponds to the lemmatized for of such terms i.e. the lemma for a simple term or the lemma sequence of complex term components
+ * the _Integer_ feature _occurrences_ corresponds to the absolute frequency of term entries
+ * the _Double_ feature _frequency_ corresponds to the relative frequency of term entries
+ * the _Double_ feature _specificity_ corresponds to the domain specificity of term entries i.e. the quotient of such term relative frequency against the relative frequency of the same term in a general language corpus
+ * the array of _String_ feature _forms_ lists every term instance forms this term entry is indexed from
+ * the array of _Term Annotation_ feature _variants_ references the term variants of term entries
+ * the array of _Term Annotation_ feature _context_ references term annotations in the contextual window of term instances
 
 ==== Single-Word Term Annotation ====
 
