@@ -96,12 +96,13 @@ public abstract class Indexer extends JCasMultiplier_ImplBase {
 
 	@Override
 	public JCas next() throws AnalysisEngineProcessException {
-		try {
-			this.enableHasNext(false);
-			JCas cas = this.getEmptyJCas();
+		this.enableHasNext(false);
+		JCas cas = this.getEmptyJCas();
+		try {			
 			this.release(cas);
 			return cas;
 		} catch (Exception e) {
+			cas.release();
 			throw new AnalysisEngineProcessException(e);
 		}
 	}
