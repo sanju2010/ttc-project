@@ -46,7 +46,7 @@ The annotation type _Word Annotation_ extends that of _Term Component Annotation
 The annotation type _Term Annotation_ is used both for term instances in corpus documents and term entries of the corpus terminology. It owns the following features:
  * the _String_ feature _category_ corresponds to the identifier of the syntactic pattern which such term instances or term entries has been 
 detected from 
-* the _Double_ feature _lemma_ corresponds to the lemmatized for of such terms i.e. the lemma for a simple term or the lemma sequence of complex term components
+ * the _Double_ feature _lemma_ corresponds to the lemmatized for of such terms i.e. the lemma for a simple term or the lemma sequence of complex term components
  * the _Integer_ feature _occurrences_ corresponds to the absolute frequency of term entries
  * the _Double_ feature _frequency_ corresponds to the relative frequency of term entries
  * the _Double_ feature _specificity_ corresponds to the domain specificity of term entries i.e. the quotient of such term relative frequency against the relative frequency of the same term in a general language corpus
