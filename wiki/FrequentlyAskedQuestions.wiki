@@ -1,0 +1,17 @@
+#summary frequently asked questions.
+
+= Frequently Asked Questions =
+
+== What do I need to run Term Suite? ==
+
+== Can I run Term Suite in command line? ==
+
+== Can I process HTML, PDF or DOC files? ==
+
+== Can I process ASCII, LATIN-1 encoded files? ==
+
+== How can I add/delete/modify a term detection rule? ==
+
+== How can I add/delete/modify a term conflation rule? ==
+
+== How can I extend Term Suite to another language? ==
