@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
@@ -81,8 +82,8 @@ public class Exporter extends JCasAnnotator_ImplBase {
 			builder.append(annotation.getTag());
 			builder.append('\t');
 			builder.append(annotation.getLemma());
-			builder.append('\t');
-			builder.append(annotation.getStem());
+			// builder.append('\t');
+			// builder.append(annotation.getStem());
 			builder.append('\n');
 		}
 		return builder.toString();
@@ -97,8 +98,9 @@ public class Exporter extends JCasAnnotator_ImplBase {
 			} else {
 				File file = new File(this.getDirectory(), name);
 				OutputStream stream = new FileOutputStream(file);
+				OutputStreamWriter writer = new OutputStreamWriter(stream, "UTF-8");
 				try {
-					stream.write(this.analysis(cas).getBytes());
+					writer.write(this.analysis(cas));
 					this.getContext().getLogger().log(Level.CONFIG,"Converting " + file.getAbsolutePath());
 				} catch (Exception e) {
 					this.getContext().getLogger().log(Level.WARNING,"Error while converting " + file.getAbsolutePath() + "\n" + e.getMessage());
