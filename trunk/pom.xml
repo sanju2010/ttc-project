@@ -22,7 +22,7 @@
       <version>2.3.1</version>
     </dependency>
     <dependency>
-    	<groupId>fr.univnantes.lina</groupId>
+    	<groupId>eu.project.ttc</groupId>
     	<artifactId>uima-tree-tagger-wrapper</artifactId>
     	<version>1.0</version>
     </dependency>
