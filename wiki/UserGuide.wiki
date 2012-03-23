@@ -13,7 +13,7 @@ This user guide page explains how to install and use it.
 
 == Installation == 
 
-=== Prerequisites ===
+=== Requirements ===
 
 Before installing Term Suite on your computer, 
 you have to install a Java Runtime Environment 
@@ -72,7 +72,7 @@ Moreover, make sure that these parameter file have the following encoding althou
 
 The Latvian language isn't yet supported by this version of Term Suite.
 
-=== Install ===
+=== Term Suite ===
 
 As Term Suite is provided as an executable Java archive, 
 you merely have to download it and put it 
@@ -95,13 +95,9 @@ Just launch this command line or follow its target link:
 ==== Compilation from Sources ====
 
 In order to regenerate the Term Suite package, 
-you first have to download the source code from 
+you have to download the source code from 
 the Subversion repository hosted by Google Code. 
-Then using Maven, install every dependencies (modules) 
-in your local Maven repository.
-Finally, generate the Term Suite Java archive. 
-That's the way, the Term Suite is build.
-
+Then, you can generate the Term Suite Java archive. 
 In few words, just launch these command lines:
 
 {{{
