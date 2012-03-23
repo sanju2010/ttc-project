@@ -163,9 +163,9 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 		// System.out.println("START");
 		try {
 			this.setAnalysisEngine();
-		} catch (Exception e) {
+		} catch (Throwable e) {
 			e.printStackTrace();
-			throw e;
+			System.exit(1);
 		}
 		// System.out.println("INITIALIZED");
 		int max = this.data.size();
@@ -180,18 +180,18 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
         	// this.publish(file);
         	try {
         		this.process(file, this.encoding, this.language, this.input, last);
-        	} catch (Exception e) {
+        	} catch (Throwable e) {
         		e.printStackTrace();
-        		throw e;
+        		System.exit(2);
         	}
         	int progress = (index * 100) / max;
         	this.setProgress(progress);
         }
         try {
         	this.analysisEngine.collectionProcessComplete();
-        } catch (Exception e) {
+        } catch (Throwable e) {
         	e.printStackTrace();
-        	throw e;
+        	System.exit(2);
         }
     	this.setProgress(100);
         return null;
@@ -249,12 +249,16 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 				JCasIterator iterator = this.analysisEngine.processAndOutputNewCASes(cas);
 				while (iterator.hasNext()) {
 					JCas c = iterator.next();
-					this.engine.callBack(c.getCas());
+					if (this.engine != null) { 
+						this.engine.callBack(c.getCas());
+					}
 				}
 				iterator.release();
 			} else {
 				this.analysisEngine.process(cas);
-				this.engine.callBack(cas.getCas());
+				if (this.engine != null) {
+					this.engine.callBack(cas.getCas());
+				}
 			}
 		} finally {
 			this.pool.releaseJCas(cas);
@@ -262,8 +266,12 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 	}
 	
 	private void reset() {
-		this.termSuite.getToolBar().getRun().setEnabled(true);
-		this.termSuite.getToolBar().getStop().setEnabled(false);
+		if (this.termSuite == null) {
+			return;
+		} else {
+			this.termSuite.getToolBar().getRun().setEnabled(true);
+			this.termSuite.getToolBar().getStop().setEnabled(false);
+		}
 	}
 	
 	private String extract(File file, String encoding) throws Exception {
@@ -334,5 +342,15 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
         this.setDescription(this.engine.get(), this.engine.settings());
         this.setData(this.engine.data(), this.input);
 	}
+
+	public TermSuiteRunner(AnalysisEngineDescription description, String directory,	int input, String language, String encoding) throws Exception {
+		this.input = input;
+		this.language = language;
+		this.encoding = encoding;
+        this.setDescription(description, description.getAnalysisEngineMetaData().getConfigurationParameterSettings());
+        this.setData(directory, this.input);
+	}
+	
+	
 	
 }

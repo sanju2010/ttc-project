@@ -15,11 +15,11 @@
     <delegateAnalysisEngine key="TermBaseXchanger">
       <import name="eu.project.ttc.all.engines.TermBaseXchanger"/>
     </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="TermCleaner">
-      <import name="eu.project.ttc.all.engines.indexer.TermCleaner"/>
-    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="FrenchTermGatherer">
       <import name="eu.project.ttc.french.engines.indexer.FrenchTermGatherer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="TermCleaner">
+      <import name="eu.project.ttc.all.engines.indexer.TermCleaner"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="TermIndexer">
       <import name="eu.project.ttc.all.engines.indexer.TermIndexer"/>
@@ -208,7 +208,7 @@
     <operationalProperties>
       <modifiesCas>true</modifiesCas>
       <multipleDeploymentAllowed>true</multipleDeploymentAllowed>
-      <outputsNewCASes>false</outputsNewCASes>
+      <outputsNewCASes>true</outputsNewCASes>
     </operationalProperties>
   </analysisEngineMetaData>
   <resourceManagerConfiguration/>

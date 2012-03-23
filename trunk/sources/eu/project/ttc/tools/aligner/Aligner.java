@@ -20,16 +20,16 @@ public class Aligner implements TermSuiteTool {
 
 	private AlignerSettings settings;
 	
-	private void setSettings() {
-		this.settings = new AlignerSettings(System.getProperty("user.home") + File.separator + ".term-suite-aligner.settings");
+	private void setSettings(File home) {
+		this.settings = new AlignerSettings(home.getAbsolutePath() + File.separator + "aligner.settings");
 	}
 	
 	public AlignerSettings getSettings() {
 		return this.settings;
 	}
 	
-	public Aligner() {
-		this.setSettings();
+	public Aligner(File home) {
+		this.setSettings(home);
 	}
 
 	@Override

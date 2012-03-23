@@ -20,16 +20,16 @@ public class Spotter implements TermSuiteTool {
 	
 	private SpotterSettings settings;
 	
-	private void setSettings() {
-		this.settings = new SpotterSettings(System.getProperty("user.home") + File.separator + ".term-suite-spotter.settings");
+	private void setSettings(File home) {
+		this.settings = new SpotterSettings(home.getAbsolutePath() + File.separator + "spotter.settings");
 	}
 	
 	public SpotterSettings getSettings() {
 		return this.settings;
 	}
 	
-	public Spotter() {
-		this.setSettings();
+	public Spotter(File home) {
+		this.setSettings(home);
 	}
 
 	@Override

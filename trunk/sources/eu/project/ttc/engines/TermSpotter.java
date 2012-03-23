@@ -37,6 +37,11 @@ public class TermSpotter extends Matcher {
 				StringBuilder lemma = new StringBuilder();
 				for (int index = 0; index < annotations.length; index++) {
 					WordAnnotation word = (WordAnnotation) annotations[index];
+					if (word.getBegin() < word.getEnd()) {
+						
+					} else {
+						continue;
+					}
 					if (word.getLemma() == null) {
 						word.setLemma(word.getCoveredText().toLowerCase());
 					} else if (word.getLemma().equals("@card@")) {

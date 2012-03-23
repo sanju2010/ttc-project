@@ -80,12 +80,17 @@ public class Context {
 		int size = occurrences.size();
 		for (String key: occurrences.keySet()) {
 			index++;
-			builder.append(key);
-			builder.append('\t');
-			double value = occurrences.get(key).doubleValue();
-			builder.append(value);
+			Double occ = occurrences.get(key);
+			if (occ == null) {
+				continue;
+			} else {
+				builder.append(key);
+				builder.append('\t');
+				double value = occ.doubleValue();
+				builder.append(value);
+			}
 			if (index < size) {
-				builder.append('\n');				
+				builder.append('\n');
 			}
 		}
 		return builder.toString();

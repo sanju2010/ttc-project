@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -22,7 +23,6 @@ import org.apache.uima.util.Level;
 import eu.project.ttc.tools.aligner.Aligner;
 import eu.project.ttc.tools.aligner.AlignerEngine;
 import eu.project.ttc.tools.aligner.AlignerViewer;
-import eu.project.ttc.tools.help.Help;
 import eu.project.ttc.tools.indexer.Indexer;
 import eu.project.ttc.tools.indexer.IndexerEngine;
 import eu.project.ttc.tools.indexer.IndexerViewer;
@@ -82,6 +82,21 @@ public class TermSuite implements Runnable {
 		return this.about;
 	}
 	
+	private File home;
+	
+	private void setHome() {
+		String home = System.getProperty("user.home") + File.separator + ".term-suite" + File.separator + this.getPreferences().getVersion();
+		this.home = new File(home);
+		if (!this.home.exists()) {
+			this.home.mkdirs();
+		}
+	}
+	
+	public File getHome() {
+		return this.home;
+	}
+	
+	/*
 	private Help help;
 	
 	private void setHelp() {
@@ -91,6 +106,7 @@ public class TermSuite implements Runnable {
 	public Help getHelp() {
 		return this.help;
 	}
+	*/
 	
 	public Preferences  getPreferences() {
 		return this.preferences;
@@ -160,7 +176,7 @@ public class TermSuite implements Runnable {
 	private Spotter spotter;
 	
 	private void setTagger() {
-		this.spotter = new Spotter();
+		this.spotter = new Spotter(this.getHome());
 		this.spotter.setParent(this);
 	}
 	
@@ -181,7 +197,7 @@ public class TermSuite implements Runnable {
 	private Indexer indexer;
 	
 	private void setIndexer() {
-		this.indexer = new Indexer();
+		this.indexer = new Indexer(this.getHome());
 		this.indexer.setParent(this);
 	}
 	
@@ -202,7 +218,7 @@ public class TermSuite implements Runnable {
 	private Aligner aligner;
 	
 	private void setAligner() {
-		this.aligner = new Aligner();
+		this.aligner = new Aligner(this.getHome());
 		this.aligner.setParent(this);
 	}
 	
@@ -299,8 +315,9 @@ public class TermSuite implements Runnable {
 	
 	public TermSuite() {
 		this.setDesktop();
-		this.setHelp();
+		// this.setHelp();
 		this.setPreferences();
+		this.setHome();
 		this.setAbout();
 		this.setToolBar();
 		this.setTagger();

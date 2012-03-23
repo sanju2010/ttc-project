@@ -20,8 +20,8 @@ public class Indexer implements TermSuiteTool {
 
 	private IndexerSettings settings;
 	
-	private void setSettings() {
-		this.settings = new IndexerSettings(System.getProperty("user.home") + File.separator + ".term-suite-indexer.settings");
+	private void setSettings(File home) {
+		this.settings = new IndexerSettings(home.getAbsolutePath() + File.separator + "indexer.settings");
 	}
 	
 	public IndexerSettings getSettings() {
@@ -33,8 +33,8 @@ public class Indexer implements TermSuiteTool {
 		return this.getSettings().getComponent();
 	}
 		
-	public Indexer() {
-		this.setSettings();
+	public Indexer(File home) {
+		this.setSettings(home);
 	}
 		
 }

@@ -5,11 +5,16 @@
   <version>1.2</version>
   <packaging>jar</packaging>
   <name>TTC TermSuite</name>
-  <dependencies>
+   <dependencies>
     <dependency>
       <groupId>org.apache.uima</groupId>
       <artifactId>uimaj-core</artifactId>
-      <version>2.3.1</version>
+      <version>2.4.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.uima</groupId>
+      <artifactId>uimaj-cpe</artifactId>
+      <version>2.4.0</version>
     </dependency>
     <dependency>
       <groupId>org.apache.uima</groupId>
@@ -71,7 +76,7 @@
     	<artifactId>uima-catcher</artifactId>
     	<version>1.0</version>
     </dependency>
-  </dependencies>
+   </dependencies>
   <url>http://code.google.com/p/ttc-project/</url>
   <licenses>
     <license>
@@ -95,11 +100,42 @@
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>unpack-dependencies</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>unpack-dependencies</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/classes</outputDirectory>
+              <overWriteReleases>false</overWriteReleases>
+              <overWriteSnapshots>false</overWriteSnapshots>
+              <overWriteIfNewer>true</overWriteIfNewer>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifest>
+              <addClasspath>false</addClasspath>
+              <mainClass>eu.project.ttc.tools.TermSuite</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
           <source>1.6</source>
           <target>1.6</target>
-        </configuration>
+	</configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -146,9 +182,8 @@
     	<url>http://annolab.org/m2/releases/</url>
     </repository>
     <repository>
-    	<id>uima-sandbox</id>
-    	<name>UIMA SandBox</name>
-    	<url>http://uima-sandbox.googlecode.com/svn/maven-repository/</url>
+      <id>ttc-project</id>
+      <url>http://ttc-project.googlecode.com/svn/repository</url>
     </repository>
   </repositories>
 </project>

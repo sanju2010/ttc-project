@@ -46,14 +46,6 @@ public class Preferences {
 		return this.getProperties().getProperty("version");
 	}
 	
-	public String getIcon() {
-		return this.getProperties().getProperty("icon");
-	}
-	
-	public String getHelp() {
-		return this.getProperties().getProperty("help");
-	}
-	
 	public Preferences(String resource) {
 		this.setResource(resource);
 		this.setProperties();

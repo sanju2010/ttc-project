@@ -99,22 +99,22 @@ public class TermIndexer extends Indexer {
 		}
 	}
 	
-	private void display(JCas cas, boolean mode) {
+	private void process(JCas cas, boolean mode) {
 		AnnotationIndex<Annotation> index = cas.getAnnotationIndex(SourceDocumentInformation.type);
 		FSIterator<Annotation> iterator = index.iterator();
 		if (iterator.hasNext()) {
 			SourceDocumentInformation sdi = (SourceDocumentInformation) iterator.next();
 			if (mode) {
-				this.getContext().getLogger().log(Level.INFO, "Indexing terms from " + sdi.getUri());				
+				this.getContext().getLogger().log(Level.INFO, "Indexing " + sdi.getUri());				
 			} else {
-				this.getContext().getLogger().log(Level.INFO, "Releasing term index in " + sdi.getUri());
+				this.getContext().getLogger().log(Level.INFO, "Releasing " + sdi.getUri());
 			}
 		}
 	}
 	
 	@Override
 	public void update(JCas cas) throws Exception {
-		this.display(cas, true);
+		this.process(cas, true);
 		AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TermAnnotation.type);
 		FSIterator<Annotation> iterator = index.iterator();
 		while (iterator.hasNext()) {
@@ -149,7 +149,7 @@ public class TermIndexer extends Indexer {
 	
 	@Override
 	public void release(JCas cas) throws Exception {
-		this.display(cas, false);
+		this.process(cas, false);
 		cas.setDocumentLanguage(this.getLanguage());
 		StringBuilder builder = new StringBuilder();
 		this.release(cas, builder, this.getSingleWordTermFrequency());
