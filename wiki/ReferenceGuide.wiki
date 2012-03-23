@@ -19,9 +19,31 @@ There exist 3 main annotation types that are respectively:
 
 Moreover, annotation types such as _TranslationCandidateAnnotation_ are refered below as _Translation Candidate Annotation_ for readability reasons.
 
+=== Term Component Annotation ===
+
+The annotation type _Term Component Annotation_ defines the required features for multi-word term components as well as for single-word compounds:
+ * the String feature _category_ corresponds to the Multext grammatical category normalized and expansed value i.e. it ranges over noun, verb, adjective, pronoun, determiner, article, adposition, conjunction, abbreviation (see [http://aune.lpl.univ-aix.fr/projects/multext/LEX/LEX.Specification.html Multext])
+ * the String feature _lemma_ corresponds to the TreeTagger lemma
+ * the String feature _stem_ corresponds to the stem provided by Porter's algorithm
+
 === Word Annotation ===
 
+The annotation type _Word Annotation_ extends that of _Term Component Annotation_ by these following features:
+ * the String feature _tag_ corresponds to the TreeTagger original tag
+ * the String feature _subCategory_ corresponds to the sub-category of the Multext category
+ * the String feature _mood_ corresponds to the mood of the Multext category verb
+ * the String feature _tense_ corresponds to the mood of the Multext category verb
+ * the String feature _number_ corresponds to the number of the Multext categories noun, verb, adjective, pronoun, determiner, article and numeral
+ * the String feature _gender_ corresponds to the gender of the Multext categories noun, verb, adjective, pronoun, determiner, article and numeral
+ * the String feature _case_ corresponds to the case of the Multext categories noun, adjective, pronoun, determiner, article and numeral
+* the String feature _person_ corresponds to the case of the Multext categories verb, pronoun, determiner and article 
+* the String feature _possessor_ corresponds to the case of the Multext categories pronoun and determiner
+* the String feature _degree_ corresponds to the case of the Multext category adverb
+* the String feature _formation_ corresponds to the case of the Multext category adposition
+
 === Term Annotation ===
+
+The annotation type _Term Annotation_ is used both for term instances in corpus documents and term entries of the corpus terminology. 
 
 ==== Single-Word Term Annotation ====
 
