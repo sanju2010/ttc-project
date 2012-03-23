@@ -273,8 +273,10 @@ But also may define translations of this term (for evaluation purpose):
 }}}
 where these translations are separated by tabulations.
 
-Notice that the target language is implicit 
+*Warning:* Notice that the target language is implicit 
 and users should pay attention to set the right source and target terminologies according to these input term files.
+
+*Note:* These term files should be UTF-8 encoded!
 
 ===== Bilingual Dictionaries =====
 
@@ -289,6 +291,8 @@ are in the second row.
 }}}
 A source entry can have more than one target entries.
 Moreover, A target entry can be related to more than one source entries.
+
+*Note:* These dictionaries should be UTF-8 encoded!
 
 ==== Settings ====
 
