@@ -56,15 +56,34 @@ detected from
 
 ==== Single-Word Term Annotation ====
 
+The annotation type _Single Word Term Annotation_ extends that of _Term Annotation_ by 2 boolean features:
+ * a feature _compound_ meaning that this single-word term is e compound one;
+ * another feature _neoclassical_ meaning that this single-word term is a neoclassical compound one.
+
+Term components of single-word compounds are obtained by the _subiterator_ call over _Term Component Annotation_ index and the given term annotation: it retrieves every annotations of type _Term Component Annotation_ that are covered by the given single-word term.
+
 ==== Multi-Word Term Annotation ====
 
-==== Term Component Annotation ====
+The annotation type _Multi Word Term Annotation_ extends that of _Term Annotation_ by an optional feature _components_ that is an array of _Term Component Annotation_. The latter may contain every components of the given term this feature belongs to. But term components could also be retrieved using a _subiterator_ call.
 
 === Translation Annotation ===
 
+Annotations of type _Translation Annotation_ are used within the Aligner tool for eveluation purpose i.e. it defines the gold standard for a term to translate. Such annotations are defined by these 2 features:
+ * the String feature _language_ that sets the target language of such translation
+ * the String feature _term_ that defines the right translation to the term such annotations cover. 
+
 === Translation Candidate Annotation ===
 
+The annotation type _Translation Candidate Annotation_ corresponds to the alignment results as they are defined by these 3 features:
+ * the String feature _translation_ defines the translation candidate for the term such annotations cover
+ * the Double feature _score_ specifies the confidence into this translation candidate accuracy 
+ * the Integer feature _rank_ consists in the top-rank of this translation candidate among all other candidates.
+
 === Source Document Information ===
+
+The annotation type _Source Document Information_ is directly provided by the Apache UIMA framework. The features that are used with Term Suite:
+ * the String feature _uri_ that specifies the standardized idenitifier of the source document
+ * the Boolean feature _lastSegment_ that specifies if this document is the last one to process in a given corpora. 
 
 == Components == 
 
