@@ -6,7 +6,7 @@
 
 <wiki:toc max_depth="4" />
 
-== Type System == 
+== UIMA Type System == 
 
 The [http://code.google.com/p/ttc-project/source/browse/trunk/resources/eu/project/ttc/types/TermSuiteTypeSystem.xml TermSuite Type System] define how information is structured by any Term Suite components and applications. 
 
@@ -142,7 +142,7 @@ The _Language Spotter_ is an aggrzgate analysis engine made of the following one
 ==== _Language_ Word Tokenizer ====
 
 UIMA analysis engines that correspond to the _Language Analysis Engine_ 
-are primitive ones. They are all realized by the Java class [http://code.google.com/p/ttc-project/source/browse/modules/uima-tokenizer/sources/uima/sandbox/lexer/engines/Lexer.java _Lexer_] 
+are primitive ones. They are all realized by the Java class _[http://code.google.com/p/ttc-project/source/browse/modules/uima-tokenizer/sources/uima/sandbox/lexer/engines/Lexer.java Lexer]_ 
 but the Latvian one implemented by the Java class [http://code.google.com/p/ttc-project/source/browse/tags/1.1/sources/eu/project/ttc/engines/TildeTokenizer.java _TildeTokenizer_]
 and the Chinese one implemented by the Java class [http://code.google.com/p/ttc-project/source/browse/modules/uima-chinese-segmenter/sources/fr/univnantes/lina/uima/engines/ChineseSegmenter.java _ChineseSegmenter_] 
 
@@ -171,6 +171,8 @@ the token sequence previously detected.
 In fact, it fills the feature _tag_ and _lemma_ of annotations of type _Word Annotation_
 from the output of TreeTagger.
 
+They are implemented by the Java class _[http://code.google.com/p/ttc-project/source/browse/modules/uima-tree-tagger-wrapper/sources/fr/univnantes/lina/uima/engines/TreeTaggerWrapper.java TreeTaggerWrapper]_.
+
 Such analysis engines require a simple configuration file that specifies 
 the parameter file (language model) and its encoding that the tree-taggaer executable 
 should used. For instance, see the [http://code.google.com/p/ttc-project/source/browse/tags/1.1/resources/eu/project/ttc/french/resources/french-treetagger.xml French TreeTagger configuration file].
@@ -193,7 +195,7 @@ UIMA analysis engines _Language Normalizer_ are aggregate ones. They are compose
  * _Language Case Normalizer_ that extracts the Multext case from TreeTagger tags.
 
 All these aggregated analysis engines are primitives ones that are implemented by 
-the Jaca class [http://code.google.com/p/ttc-project/source/browse/modules/uima-mapper/sources/uima/sandbox/mapper/engines/Mapper.java _Mapper_]. 
+the Jaca class _[http://code.google.com/p/ttc-project/source/browse/modules/uima-mapper/sources/uima/sandbox/mapper/engines/Mapper.java Mapper]_. 
 The latter depends on a given tag mapping resource. For example, have a look to the [http://code.google.com/p/ttc-project/source/browse/tags/1.1/resources/eu/project/ttc/french/resources/french-category-mapping.xml French category mapping]
 
 Indeed, they respectively fill the features _category_, _subCategory_, _tense_, _mood_, _gender_, _number_ and  _case_ of 
@@ -201,7 +203,7 @@ _word Annotation_ typed annotations.
 
 ==== _Language_ Stemmer ====
 
-_Language Stemmer_ analysis engines are primitive ones that are implemented by the Java class [http://code.google.com/p/ttc-project/source/browse/modules/uima-stemmer/sources/fr/free/rocheteau/jerome/engines/Stemmer.java _Stemmer_]. 
+_Language Stemmer_ analysis engines are primitive ones that are implemented by the Java class _[http://code.google.com/p/ttc-project/source/browse/modules/uima-stemmer/sources/fr/free/rocheteau/jerome/engines/Stemmer.java Stemmer]_. 
 
 It applies Porter's algorithm accordinf to the Tartus Snowball implementation. 
 It only depends on a String _Language_ parameter. 
@@ -213,7 +215,7 @@ It provides the feature _stem_ value for any _word annotations_.
 _Language Term Spotter_ are aggregate analysis engines composed of the an analysis engine
 that detects single-word term occurrences and another that detects multi-word term occurrences.
 
-Both of them are implemented by the same Java class [http://code.google.com/p/ttc-project/source/browse/trunk/sources/eu/project/ttc/engines/TermSpotter.java _TermSpotter_]. Thus, they use the same kind of resources: 
+Both of them are implemented by the same Java class _[http://code.google.com/p/ttc-project/source/browse/trunk/sources/eu/project/ttc/engines/TermSpotter.java TermSpotter]_. Thus, they use the same kind of resources: 
 regular expressons over annotations. 
 
 However, they require different resources.
@@ -235,7 +237,9 @@ For exemple, see the [http://code.google.com/p/ttc-project/source/browse/tags/1.
 ==== _Language_ Filter ====
 
 UIMA analysis engines _Language Filter_ load language-dependent stop-words as resources and 
-remove _term annotations_ either if their covered text or their lemma belongs to this stop-word list.
+remove _term annotations_ either if their covered text or their lemma belongs to this stop-word list. 
+
+It is implemented by the _[http://code.google.com/p/ttc-project/source/browse/modules/uima-filter/sources/uima/sandbox/filter/engines/Filter.java so-called Java class].
 
 This is an aggregate analysis engine made of the 2 following ones:
  * _Language_ Term Filter that remove term annotations according to their covered text;
@@ -258,7 +262,31 @@ It is a primitive one implemented by [http://code.google.com/p/ttc-project/sourc
 
 It require a String parameter _Directory_ to be set that specifies wher to write such XMI files.
 
+Within the _Language Spotter_ analysis engine, it outputs 1 XMI file per input text file.
+
 === _Language_ Indexer ===
+
+The UIMA analysis engines _Language Indexer_ provides the monolingual terminologies 
+from previously analyzed documents of a given corpus. 
+
+They are aggregate analysis engines that are composed of:
+ * _Language Term Indexer_ that indexes every term occurrences into term entries;
+ * _Language Term Frequency Computer_ that computes the term relative frequencies and their domain specificity;
+ * _Language Compound Indexer_ that detects compound term among single-word term entries;
+  * _Language Compound Splitter_ that detects word concatenation compounds;
+  * _Language Prefix Splitter_ that detects compound by their prefix components;
+  * _Language Neoclassical Splitter_ that detects compounds by their neoclassical elements;
+ * _Language Term Gatherer_ that conflates terms according to graphical, morphological and syntactical variation rules;
+  * Single-Word Term Gatherer_ that conflates terms according to graphical variation rules from edit-distance-based similarity;
+  * _Language Multi-Word Term Gatherer_ that conflates terms according to morpho-syntactic variation rules from conflation patterns;
+ * _Language Term Cleaner_ that removes hapax from terminologies;
+ * _Writer_ that stores terminologies in XMI format;
+ * _TermBaseXchanger_ that stores terminologies in TBX format.
+
+This analysis engine depends on the following mandatory parameters:
+ * the String parameter _Language_ that specifies the terminology language;
+ * the String parameter _Input Directory_ that specifies where to find XMI input files;
+ * the String parameter _Output Directory_ that specifies where to writes the XMI and TBX files.
 
 ==== _Language_ Term Indexer ====
 
@@ -282,7 +310,14 @@ It require a String parameter _Directory_ to be set that specifies wher to write
 
 ==== Writer ====
 
-==== TermBaseXchanger ====
+The _Writer_ analysis engine stores the previous analysis into XMI files. 
+It is a primitive one implemented by [http://code.google.com/p/ttc-project/source/browse/trunk/sources/eu/project/ttc/engines/Writer.java the so-called Jaca class].
+
+It require a String parameter _Directory_ to be set that specifies wher to write such XMI files.
+
+Within the _Language Indexer_ analysis engine, it outputs 1 XMI file for the monolingual terminology.
+
+==== Term Base eXchanger ====
 
 === Aligner ===
 
@@ -292,9 +327,16 @@ It require a String parameter _Directory_ to be set that specifies wher to write
 
 ==== Writer ====
 
-== UIMA Annotators == 
+The _Writer_ analysis engine stores the previous analysis into XMI files. 
+It is a primitive one implemented by [http://code.google.com/p/ttc-project/source/browse/trunk/sources/eu/project/ttc/engines/Writer.java the so-called Jaca class].
 
-== Interfaces == 
+It require a String parameter _Directory_ to be set that specifies wher to write such XMI files.
+
+Within the _Aligner_ analysis engine, it outputs 1 XMI file per input term-to-translate file.
+
+== Resource XSD == 
+
+== CLI & GUI Interfaces == 
 
 === Command Line Interface ===
 
