@@ -85,33 +85,178 @@ The annotation type _Source Document Information_ is directly provided by the Ap
  * the String feature _uri_ that specifies the standardized idenitifier of the source document
  * the Boolean feature _lastSegment_ that specifies if this document is the last one to process in a given corpora. 
 
-== Components == 
+== UIMA Analysis Engines == 
+
+There are 210 XML descriptors of UIMA Analysis Engines within Term Suite. 
+All of these analysis engines share the TTC type system previously presented. 
+UIMA analysis engines can be:
+ * either primitive ones i.e. they are defined by a Java class that corresponds to a UIMA annotator;
+ * or aggregate ones i.e. they are defined by a list of analysis engines (primitives or aggregates).
+UIMA annotators are defined by a first method at initialization for configuration needs and 
+a second method for processing data.
+
+Every analysis engines can be configured (1) by some typed parameter values and (2) by some resources.
+Within the UIMA framework, a resource has only one instance, a resource is shared between every instances 
+of an anakysis engineand it can be shared between several different (instances of) anaysis engines 
+(if an aggregate analysis engine declares such a resource and binds it to resources 
+to several of its delegated analysis engines).
+
+Processed data within the UIMA framework are called Common Analysis Structures and can be seen as a structure equipped by:
+ * a text
+ * an annotation index
+ * a type system
+such that every annotation type in the index belongs to the type system 
+and inf and sup limits of annotations correspond to the text offsets that this annotation applies to.
+UIMA analysis engine behaviour consists in modifying the annotation index.
+
+That's why UIMA analysis engines involved within Term Suite are described below 
+according to their configuration settings from their parameters and their resources 
+and according to their behaviour in the case of primitive analysis engines 
+or their analysis engine hierachy in the case of aggregates ones.
+
+UIMA analysis engines involved within Term Suite are abstract or generic ones.
+In fact, some of them are called _Language Something_ where _Something_ should 
+explain its functionality for the best and where _Language_ ranges over languages supported 
+by Term Suite i.e. _English_, _French_, _German, _Spanish_, _Russian_, _Danish_, _Latvian_ and _Chinese_.
+In fact, every UIMA analysis engines within Term Suite behave the same way 
+altough they are configured by different parameters and resources.
+
+These UIMa analysis engines are divided into 3 main groups: the first one 
+corresponds to those that are involoved in the Spotter tool and they are called _Language Spotter_; 
+the second group corrsponds to analysis engines involved int the Index tool and are called 
+_Language Indexer_; the last group merely called _Aligner_ corresponds to analyais engines
+realizing the Aligner tool.
 
 === _Language_ Spotter ===
 
+The _Language Spotter_ is an aggrzgate analysis engine made of the following ones:
+ * _Language Word Tokenizer_ that splits a text into lexical units or tokens;
+ * _Language TreeTagger_ that performs part-of-speech tagging and lemmatization thabnks to TreeTagger;
+ * _Language Normalizer_ that rewrites TreeTagger tags in every language tagsets into a unique tagset compliant with Multext;
+ * _Language Stemmer_ that applies Porter's algorithm over every tokens;
+ * _Language Term Spotter_ that detects (single and multi-word) term occurrences; 
+ * _Language Filter_ that filters out stop-word terms;
+ * _Language Contextualizer_that computes contextual window of every single-word term occurrences;
+ * _Language Writer_ that stores analysis results into XMI files.
+
 ==== _Language_ Word Tokenizer ====
+
+UIMA analysis engines that correspond to the _Language Analysis Engine_ 
+are primitive ones. They are all realized by the Java class [http://code.google.com/p/ttc-project/source/browse/modules/uima-tokenizer/sources/uima/sandbox/lexer/engines/Lexer.java _Lexer_] 
+but the Latvian one implemented by the Java class [http://code.google.com/p/ttc-project/source/browse/tags/1.1/sources/eu/project/ttc/engines/TildeTokenizer.java _TildeTokenizer_]
+and the Chinese one implemented by the Java class [http://code.google.com/p/ttc-project/source/browse/modules/uima-chinese-segmenter/sources/fr/univnantes/lina/uima/engines/ChineseSegmenter.java _ChineseSegmenter_] 
+
+Such tokenizers require one resource that poualte 3 character trees which branches 
+corresponds either to initial segments to cut off from tokens,
+or final segments to cut off too, or compound segments. 
+For example, the resource of the French tokenizer is hold by this [http://code.google.com/p/ttc-project/source/browse/tags/1.1/resources/eu/project/ttc/french/resources/french-segment-bank.xml resource].
+
+In fact, such tokenizers behave in a 3-pass process. 
+ # it splits text into tokens sparated by whitespaces
+ # it cuts off initial and final segments of every previously detected tokens
+ # it detects compound tokens
+For example, the French compound token "d'une part" is processed as follows:
+ # firstly, two tokens are detected "d'une" and "part" because of the whitespace
+ # secondly, three tokens are detected "d'" "une" and "part" because of the initial segment "d'"
+ # finally, only one token is dected because of the compound segment "d'une part".
+The latter is the final result.
+
+This analysis engine creates one annotation of type _Word Annotation_ per final token.
 
 ==== _Language_ Tree-Tagger ====
 
+This analysis engine merely consists in applying the external executable 'tree-tagger' onto 
+the token sequence previously detected.
+
+In fact, it fills the feature _tag_ and _lemma_ of annotations of type _Word Annotation_
+from the output of TreeTagger.
+
+Such analysis engines require a simple configuration file that specifies 
+the parameter file (language model) and its encoding that the tree-taggaer executable 
+should used. For instance, see the [http://code.google.com/p/ttc-project/source/browse/tags/1.1/resources/eu/project/ttc/french/resources/french-treetagger.xml French TreeTagger configuration file].
+
+This analysis engine depends on the String parameter _TreeTagger Home Directory_ 
+in order to locate both the executable and its parameter files on the user operating system.
+
 ==== _Language_ Normalizer ====
+
+_Language Normalizer_ normalizes TreeTagger tags from different tagsets in different languages 
+by tags in a unique tagset: Multext.
+
+UIMA analysis engines _Language Normalizer_ are aggregate ones. They are composed of the following ones:
+ * _Language Category Normalizer_ that extracts the Multext category from TreeTagger tags;
+ * _Language Subcategory Normalizer_ that extracts the Multext subcategory from TreeTagger tags;
+ * _Language Tense Normalizer_ that extracts the Multext tense from TreeTagger verb tags;
+ * _Language Mood Normalizer_ that extracts the Multext mood from TreeTagger verb tags;
+ * _Language Gender Normalizer_ that extracts the Multext gender from TreeTagger tags;
+ * _Language Number Normalizer_ that extracts the Multext number from TreeTagger tags;
+ * _Language Case Normalizer_ that extracts the Multext case from TreeTagger tags.
+
+All these aggregated analysis engines are primitives ones that are implemented by 
+the Jaca class [http://code.google.com/p/ttc-project/source/browse/modules/uima-mapper/sources/uima/sandbox/mapper/engines/Mapper.java _Mapper_]. 
+The latter depends on a given tag mapping resource. For example, have a look to the [http://code.google.com/p/ttc-project/source/browse/tags/1.1/resources/eu/project/ttc/french/resources/french-category-mapping.xml French category mapping]
+
+Indeed, they respectively fill the features _category_, _subCategory_, _tense_, _mood_, _gender_, _number_ and  _case_ of 
+_word Annotation_ typed annotations.
 
 ==== _Language_ Stemmer ====
 
+_Language Stemmer_ analysis engines are primitive ones that are implemented by the Java class [http://code.google.com/p/ttc-project/source/browse/modules/uima-stemmer/sources/fr/free/rocheteau/jerome/engines/Stemmer.java _Stemmer_]. 
+
+It applies Porter's algorithm accordinf to the Tartus Snowball implementation. 
+It only depends on a String _Language_ parameter. 
+
+It provides the feature _stem_ value for any _word annotations_.
+
 ==== _Language_ Term Spotter ====
+
+_Language Term Spotter_ are aggregate analysis engines composed of the an analysis engine
+that detects single-word term occurrences and another that detects multi-word term occurrences.
+
+Both of them are implemented by the same Java class [http://code.google.com/p/ttc-project/source/browse/trunk/sources/eu/project/ttc/engines/TermSpotter.java _TermSpotter_]. Thus, they use the same kind of resources: 
+regular expressons over annotations. 
+
+However, they require different resources.
 
 ===== Single-Word Term Spotter =====
 
+In one hand, the UIMA analysis engine _Single-Word Term Spotter_ is language independent 
+as its [http://code.google.com/p/ttc-project/source/browse/trunk/resources/eu/project/ttc/all/resources/all-single-word-rule-system.xml resource] consists in simple regular expressions that define 
+a single-word term occurrence as a noun, an adjective or a verb. 
+
 ===== _Language_ Multi-Word Term Spotter =====
+
+In the other hand, UIMA analysis engines _Language Multi-Word Term Spotter_ depends on 
+a language-oriented resource. In fact, multi-word terms in French and English do not 
+share the same syntactic patterns. This is a rule-based term occurrence detection algorithm. 
+
+For exemple, see the [http://code.google.com/p/ttc-project/source/browse/tags/1.1/resources/eu/project/ttc/french/resources/french-multi-word-rule-system.xml French syntactric patterns].
 
 ==== _Language_ Filter ====
 
-==== _Language_ Term Filter ====
+UIMA analysis engines _Language Filter_ load language-dependent stop-words as resources and 
+remove _term annotations_ either if their covered text or their lemma belongs to this stop-word list.
 
-==== _Language_ Lemma Filter ====
+This is an aggregate analysis engine made of the 2 following ones:
+ * _Language_ Term Filter that remove term annotations according to their covered text;
+ * _Language_ Lemma Filter that remove term annotations according to their lemma.
+
+Stop-words are mainly drawn out from [http://www.ranks.nl/resources/stopwords.html this site]. 
+For instance, see [http://code.google.com/p/ttc-project/source/browse/tags/1.1/resources/eu/project/ttc/french/resources/french-stop-word-filter.xml those of French].
 
 ==== Contextualizer ====
 
+The _Contextualizer_ analysis engine creates contextual windows for every term annotations previously detected. 
+It merely depends on an Integer parameter _Size_ set to 7 i.e. 3 term occurrences before and 3 after a given term occurrence.
+
+It is a primitive analysis engine that is implemented by the [http://code.google.com/p/ttc-project/source/browse/trunk/sources/eu/project/ttc/engines/Contextualizer.java so-called Java class].
+
 ==== Writer ====
+
+The _Writer_ analysis engine stores the previous analysis into XMI files. 
+It is a primitive one implemented by [http://code.google.com/p/ttc-project/source/browse/trunk/sources/eu/project/ttc/engines/Writer.java the so-called Jaca class].
+
+It require a String parameter _Directory_ to be set that specifies wher to write such XMI files.
 
 === _Language_ Indexer ===
 
@@ -146,3 +291,11 @@ The annotation type _Source Document Information_ is directly provided by the Ap
 ==== Term Aligner ====
 
 ==== Writer ====
+
+== UIMA Annotators == 
+
+== Interfaces == 
+
+=== Command Line Interface ===
+
+=== Graphical User Interface ===
