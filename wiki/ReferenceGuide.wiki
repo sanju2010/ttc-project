@@ -270,7 +270,7 @@ The UIMA analysis engines _Language Indexer_ provides the monolingual terminolog
 from previously analyzed documents of a given corpus. 
 
 They are aggregate analysis engines that are composed of:
- * _Language Term Indexer_ that indexes every term occurrences into term entries;
+ * _Term Indexer_ that indexes every term occurrences into term entries;
  * _Language Term Frequency Computer_ that computes the term relative frequencies and their domain specificity;
  * _Language Compound Indexer_ that detects compound term among single-word term entries;
   * _Language Compound Splitter_ that detects word concatenation compounds;
@@ -288,9 +288,32 @@ This analysis engine depends on the following mandatory parameters:
  * the String parameter _Input Directory_ that specifies where to find XMI input files;
  * the String parameter _Output Directory_ that specifies where to writes the XMI and TBX files.
 
-==== _Language_ Term Indexer ====
+==== Term Indexer ====
+
+The UIMA analysis engine _Term Indexer_ is a primitive one that is implemented by 
+[http://code.google.com/p/ttc-project/source/browse/trunk/sources/eu/project/ttc/engines/TermIndexer.java the so-called Java class]. 
+
+This class corresponds to a special UIMA annotator as it output only 1 common analysis structure after 
+having processed all of the input ones. The latter corresponds to every analyzed documents in XMI format 
+and the output stands for the monoloingual terminology. 
+
+This analysis engine merely computes term entries from their occurrences. 
+Occurrences which lemmas are identical are indexed by the same entry.
+One annotation _Term Annotation_ is created per entry according to their complexity (single-word vs multi-word).
+Absolute frequency is then computed for every term annotations and then fills the Integer feature _occurrences_. 
 
 ==== _Language_ Term Frequency Computer ====
+
+_Language Term Frequency Computer_ computes both term relative frequency and term domain specificty.
+The first computing is language independent wheras the second one depends on a term absolute frequency list
+compiled from a general language corpus. 
+
+This analysis engine firstly computes relative frequency by dividing each term annotation absolute frequency 
+by the sum of every term absolute frequencies. The feature _frequency_ of term annotations 
+are then set. 
+
+This analysis engine secondly computes domain specificty by divinding term annotation relative frequency 
+by the relative frequency of the same term entry within a general corpus frequency list. 
 
 ==== _Language_ Compound Indexer ====
 
