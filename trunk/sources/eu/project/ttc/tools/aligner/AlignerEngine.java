@@ -28,17 +28,18 @@ public class AlignerEngine implements TermSuiteEngine {
 	@Override
 	public ConfigurationParameterSettings settings() throws Exception {
 		ConfigurationParameterSettings parameters = this.getTool().getSettings().getMetaData().getConfigurationParameterSettings();
+		ConfigurationParameterSettings advancedParameters = this.getTool().getAdvancedSettings().getMetaData().getConfigurationParameterSettings();
 		ConfigurationParameterSettings settings = UIMAFramework.getResourceSpecifierFactory().createConfigurationParameterSettings();
 		settings.setParameterValue("SourceLanguage",parameters.getParameterValue("SourceLanguage"));
 		settings.setParameterValue("TargetLanguage",parameters.getParameterValue("TargetLanguage"));
-		settings.setParameterValue("SimilarityDistanceClassName",parameters.getParameterValue("SimilarityDistanceClassName"));
 		settings.setParameterValue("DictionaryFile",parameters.getParameterValue("DictionaryFile"));
 		settings.setParameterValue("SourceTerminologyFile",parameters.getParameterValue("SourceTerminologyFile"));
 		settings.setParameterValue("TargetTerminologyFile",parameters.getParameterValue("TargetTerminologyFile"));
-		settings.setParameterValue("DistributionalMethod",parameters.getParameterValue("DistributionalMethod") == null ? Boolean.FALSE : parameters.getParameterValue("DistributionalMethod"));
-		settings.setParameterValue("CompositionalMethod",parameters.getParameterValue("CompositionalMethod") == null ? Boolean.FALSE : parameters.getParameterValue("CompositionalMethod"));
 		settings.setParameterValue("Directory", parameters.getParameterValue("Directory"));
 		settings.setParameterValue("Action", "drop");
+		settings.setParameterValue("SimilarityDistanceClassName",advancedParameters.getParameterValue("SimilarityDistanceClassName"));
+		settings.setParameterValue("DistributionalMethod",advancedParameters.getParameterValue("DistributionalMethod") == null ? Boolean.TRUE : advancedParameters.getParameterValue("DistributionalMethod"));
+		settings.setParameterValue("CompositionalMethod",advancedParameters.getParameterValue("CompositionalMethod") == null ? Boolean.TRUE : advancedParameters.getParameterValue("CompositionalMethod"));
 		return settings;
 	}
 

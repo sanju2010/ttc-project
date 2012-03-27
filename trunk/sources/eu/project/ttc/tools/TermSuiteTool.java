@@ -10,6 +10,8 @@ public interface TermSuiteTool {
 
 	public TermSuiteSettings getSettings();
 
+	public TermSuiteSettings getAdvancedSettings();
+	
 	public Component getComponent();
 
 }

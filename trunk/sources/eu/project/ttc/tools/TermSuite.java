@@ -25,6 +25,7 @@ import eu.project.ttc.tools.aligner.AlignerEngine;
 import eu.project.ttc.tools.aligner.AlignerViewer;
 import eu.project.ttc.tools.indexer.Indexer;
 import eu.project.ttc.tools.indexer.IndexerEngine;
+import eu.project.ttc.tools.indexer.IndexerParameters;
 import eu.project.ttc.tools.indexer.IndexerViewer;
 import eu.project.ttc.tools.spotter.Spotter;
 import eu.project.ttc.tools.spotter.SpotterEngine;
@@ -214,7 +215,7 @@ public class TermSuite implements Runnable {
 	public IndexerViewer getBanker() {
 		return this.banker;
 	}
-
+	
 	private Aligner aligner;
 	
 	private void setAligner() {
@@ -242,7 +243,13 @@ public class TermSuite implements Runnable {
 		tabs.addTab(" View ", view);
 		return tabs;
 	}
-	
+	private JTabbedPane embed2(Component edit, Component view, Component param) {
+		JTabbedPane tabs = new JTabbedPane(JTabbedPane.TOP);
+		tabs.addTab(" Edit ", edit);
+		tabs.addTab(" View ", view);
+		tabs.addTab(" Param ", param);
+		return tabs;
+	}
 	private JTabbedPane content;
 	
 	private void setContent() {
@@ -351,6 +358,9 @@ public class TermSuite implements Runnable {
 			this.getSpotter().getSettings().doSave();
 			this.getIndexer().getSettings().doSave();
 			this.getAligner().getSettings().doSave();
+			this.getSpotter().getAdvancedSettings().doSave();
+			this.getIndexer().getAdvancedSettings().doSave();
+			this.getAligner().getAdvancedSettings().doSave();
 		} catch (Exception e) {
 			this.error(e);
 		}
