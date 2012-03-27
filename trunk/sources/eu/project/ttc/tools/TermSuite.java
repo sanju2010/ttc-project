@@ -25,7 +25,6 @@ import eu.project.ttc.tools.aligner.AlignerEngine;
 import eu.project.ttc.tools.aligner.AlignerViewer;
 import eu.project.ttc.tools.indexer.Indexer;
 import eu.project.ttc.tools.indexer.IndexerEngine;
-import eu.project.ttc.tools.indexer.IndexerParameters;
 import eu.project.ttc.tools.indexer.IndexerViewer;
 import eu.project.ttc.tools.spotter.Spotter;
 import eu.project.ttc.tools.spotter.SpotterEngine;
