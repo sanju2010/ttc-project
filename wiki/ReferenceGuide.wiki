@@ -526,8 +526,46 @@ Within the _Aligner_ analysis engine, it outputs 1 XMI file per input term-to-tr
 
 == Resource XSD == 
 
-== CLI & GUI Interfaces == 
+This section lists every UIMA component resources and provide links to the corresponding format (XSD files) and a example (XML files).
 
-=== Command Line Interface ===
+This is useful if you intend to extend or configure Term Suite with your own resources.
 
-=== Graphical User Interface ===
+=== Language Word Tokenizer ===
+
+ * [http://code.google.com/p/ttc-project/source/browse/modules/uima-tokenizer/resources/segments.xsd XSD definition]
+ * [http://code.google.com/p/ttc-project/source/browse/trunk/resources/eu/project/ttc/french/resources/french-segment-bank.xml XML example]
+
+=== Language TreeTagger ===
+
+ * [http://java.sun.com/dtd/properties.dtd XSD definition]
+ * [http://code.google.com/p/ttc-project/source/browse/trunk/resources/eu/project/ttc/french/resources/french-treetagger.xml XML example]
+
+=== Language Normalizer ===
+
+ * [http://code.google.com/p/ttc-project/source/browse/modules/uima-mapper/resources/mapping.xsd XSD definition]
+ * [http://code.google.com/p/ttc-project/source/browse/trunk/resources/eu/project/ttc/french/resources/french-category-mapping.xml XML example]
+
+=== Language Term Spotter ===
+
+ * [http://code.google.com/p/ttc-project/source/browse/modules/uima-pattern-matcher/resources/patterns.xsd XSD definition]
+ * [http://code.google.com/p/ttc-project/source/browse/trunk/resources/eu/project/ttc/french/resources/french-multi-word-rule-system.xml XML example]
+
+=== Language Filter ===
+
+ * [http://code.google.com/p/ttc-project/source/browse/modules/uima-filter/resources/filter.xsd XSD definition]
+ * [http://code.google.com/p/ttc-project/source/browse/trunk/resources/eu/project/ttc/french/resources/french-stop-word-filter.xml XML example]
+
+=== Language Term Frequency Computer ===
+
+ * such resources are text files with 3 items per line that should be separated by 2 colons and where the first corresponds to the term and the last to its absolute frequency in a general language corpus
+ * [http://code.google.com/p/ttc-project/source/browse/trunk/resources/eu/project/ttc/french/resources/GeneralLanguage.French text example]
+
+=== Language Compound Splitter ===
+
+ * such resources are text files with only one item per line that should either start by a dash or end with a dash
+ * [http://code.google.com/p/ttc-project/source/browse/trunk/resources/eu/project/ttc/french/resources/RootBank.French text example]
+
+=== Language Term Gatherer ===
+
+ * [http://code.google.com/p/ttc-project/source/browse/modules/uima-catcher/resources/rules.xsd XSD definition]
+ * [http://code.google.com/p/ttc-project/source/browse/trunk/resources/eu/project/ttc/french/resources/french-variant-rule-system.xml XML example]
