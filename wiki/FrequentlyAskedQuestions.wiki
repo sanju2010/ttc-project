@@ -2,16 +2,37 @@
 
 = Frequently Asked Questions =
 
-== What do I need to run Term Suite? ==
+If you have any questions, please check if it has not already been asked.
+Otherwise, please let a comment or add an issue [http://code.google.com/p/ttc-project/issues/list here].
 
-== Can I run Term Suite in command line? ==
+=== What do I need to run Term Suite? ===
 
-== Can I process HTML, PDF or DOC files? ==
+You only need:
+ * a Java Runtime Environment 
+ * TreeTagger
 
-== Can I process ASCII, LATIN-1 encoded files? ==
+=== Can I launch Term Suite without its GUI? ===
 
-== How can I add/delete/modify a term detection rule? ==
+No. Term Suite GUI makes possible to launch different 
+UIMA analysis engines from the same control panel. 
+As they are no only 1 analysis engine to process, there is 
+no CLI usage of Term Suite.
 
-== How can I add/delete/modify a term conflation rule? ==
+However, *every UIMA analysis engines can be launched in CLI* 
+by the help of the inner devoted Java class _TermSuiteRunner_. 
+For example, the French Spotter can be launched over UTF-8 text files s follows:
+{{{
+  java -cp target/ttc-term-suite-1.2.jar eu.project.ttc.tools.TermSuiteRunner -txt -analysis-engine eu.project.ttc.french.engines.spotter.FrenchSpotter -directory /path/to/corpus/wind-energy/French/txt -language fr -encoding utf-8 --TreeTaggerHomeDirectory /usr/local/share/tree-tagger
+}}}
 
-== How can I extend Term Suite to another language? ==
+Notice that every UIMA analysis engines can be launched by other launchers like Apache UIMA RunAE, Apache UIMA DocumentAnalyzer, UIMA SandBox Runner, etc.
+
+=== Can I process HTML, PDF or DOC files? ===
+
+=== Can I process ASCII, LATIN-1 encoded files? ===
+
+=== How can I add/delete/modify a term detection rule? ===
+
+=== How can I add/delete/modify a term conflation rule? ===
+
+=== How can I extend Term Suite to another language? ===
