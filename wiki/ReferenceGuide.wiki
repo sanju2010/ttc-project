@@ -535,7 +535,7 @@ This is useful if you intend to extend or configure Term Suite with your own res
  * [http://code.google.com/p/ttc-project/source/browse/modules/uima-tokenizer/resources/segments.xsd XSD definition]
  * [http://code.google.com/p/ttc-project/source/browse/trunk/resources/eu/project/ttc/french/resources/french-segment-bank.xml XML example]
 
-=== Language TreeTagger ===
+=== Language Tree Tagger ===
 
  * [http://java.sun.com/dtd/properties.dtd XSD definition]
  * [http://code.google.com/p/ttc-project/source/browse/trunk/resources/eu/project/ttc/french/resources/french-treetagger.xml XML example]
