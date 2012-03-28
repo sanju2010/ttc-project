@@ -46,8 +46,8 @@ NO. The text extraction should be done before using Term Suite.
 
 YES. Whatever the text encoding, Term Suite converts it into UTF-8.
 
-=== How can I add/delete/modify a term detection rule? ===
+=== How can I insert or modify a term detection rule? ===
 
-=== How can I add/delete/modify a term conflation rule? ===
+=== How can I insert or modify a term conflation rule? ===
 
 === How can I extend Term Suite to another language? ===
