@@ -5,11 +5,14 @@
 If you have any questions, please check if it has not already been asked.
 Otherwise, please let a comment or add an issue [http://code.google.com/p/ttc-project/issues/list here].
 
-=== What do I need to run Term Suite? ===
+=== What do I need to install and run Term Suite? ===
 
 You only need:
- * a Java Runtime Environment 
- * TreeTagger
+ * to install a Java Runtime Environment (see [http://openjdk.java.net/install/ OpenJDK])
+ * to install [http://www.ims.uni-stuttgart.de/projekte/corplex/TreeTagger/ TreeTagger]
+ * to download [http://ttc-project.googlecode.com/files/ttc-term-suite-1.1.jar Term Suite] on your computer
+
+That's all!
 
 === Does Term Suite run on Windows? ===
 
