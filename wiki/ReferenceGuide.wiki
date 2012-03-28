@@ -17,7 +17,7 @@ There exist 3 main annotation types that are respectively:
 
 *Note:* every annotation types should be prefixed by the path _eu.project.ttc.types._; such prefix is here removed for shortening their notations. 
 
-Moreover, annotation types such as _TranslationCandidateAnnotation_ are refered below as _Translation Candidate Annotation_ for readability reasons.
+Moreover, annotation types such as _TranslationCandidateAnnotation_ are referred below as _Translation Candidate Annotation_ for readability reasons.
 
 === Term Component Annotation ===
 
@@ -68,7 +68,7 @@ The annotation type _Multi Word Term Annotation_ extends that of _Term Annotatio
 
 === Translation Annotation ===
 
-Annotations of type _Translation Annotation_ are used within the Aligner tool for eveluation purpose i.e. it defines the gold standard for a term to translate. Such annotations are defined by these 2 features:
+Annotations of type _Translation Annotation_ are used within the Aligner tool for evaluation purpose i.e. it defines the gold standard for a term to translate. Such annotations are defined by these 2 features:
  * the String feature _language_ that sets the target language of such translation
  * the String feature _term_ that defines the right translation to the term such annotations cover. 
 
@@ -79,10 +79,17 @@ The annotation type _Translation Candidate Annotation_ corresponds to the alignm
  * the Double feature _score_ specifies the confidence into this translation candidate accuracy 
  * the Integer feature _rank_ consists in the top-rank of this translation candidate among all other candidates.
 
+=== Document Annotation ===
+
+This annotation type is a built-in type provided by the UIMA framework. 
+It has 2 main features:
+ * a String feature _text_ that owns all the text content to process;
+ * a String feature _language_ that specifies the language of the previous feature value.
+
 === Source Document Information ===
 
 The annotation type _Source Document Information_ is directly provided by the Apache UIMA framework. The features that are used with Term Suite:
- * the String feature _uri_ that specifies the standardized idenitifier of the source document
+ * the String feature _uri_ that specifies the standardized identifier of the source document
  * the Boolean feature _lastSegment_ that specifies if this document is the last one to process in a given corpora. 
 
 == UIMA Analysis Engines == 
@@ -97,7 +104,7 @@ a second method for processing data.
 
 Every analysis engines can be configured (1) by some typed parameter values and (2) by some resources.
 Within the UIMA framework, a resource has only one instance, a resource is shared between every instances 
-of an anakysis engineand it can be shared between several different (instances of) anaysis engines 
+of an analysis engine and it can be shared between several different (instances of) analysis engines 
 (if an aggregate analysis engine declares such a resource and binds it to resources 
 to several of its delegated analysis engines).
 
@@ -106,33 +113,33 @@ Processed data within the UIMA framework are called Common Analysis Structures a
  * an annotation index
  * a type system
 such that every annotation type in the index belongs to the type system 
-and inf and sup limits of annotations correspond to the text offsets that this annotation applies to.
+and inf. and sup. limits of annotations correspond to the text offsets that this annotation applies to.
 UIMA analysis engine behaviour consists in modifying the annotation index.
 
 That's why UIMA analysis engines involved within Term Suite are described below 
 according to their configuration settings from their parameters and their resources 
 and according to their behaviour in the case of primitive analysis engines 
-or their analysis engine hierachy in the case of aggregates ones.
+or their analysis engine hierarchy in the case of aggregates ones.
 
 UIMA analysis engines involved within Term Suite are abstract or generic ones.
 In fact, some of them are called _Language Something_ where _Something_ should 
 explain its functionality for the best and where _Language_ ranges over languages supported 
 by Term Suite i.e. _English_, _French_, _German, _Spanish_, _Russian_, _Danish_, _Latvian_ and _Chinese_.
 In fact, every UIMA analysis engines within Term Suite behave the same way 
-altough they are configured by different parameters and resources.
+although they are configured by different parameters and resources.
 
-These UIMa analysis engines are divided into 3 main groups: the first one 
-corresponds to those that are involoved in the Spotter tool and they are called _Language Spotter_; 
-the second group corrsponds to analysis engines involved int the Index tool and are called 
-_Language Indexer_; the last group merely called _Aligner_ corresponds to analyais engines
+These UIMA analysis engines are divided into 3 main groups: the first one 
+corresponds to those that are involved in the Spotter tool and they are called _Language Spotter_; 
+the second group corresponds to analysis engines involved in the Index tool and are called 
+_Language Indexer_; the last group merely called _Aligner_ corresponds to analysis engines
 realizing the Aligner tool.
 
 === _Language_ Spotter ===
 
-The _Language Spotter_ is an aggrzgate analysis engine made of the following ones:
+The _Language Spotter_ is an aggregate analysis engine made of the following ones:
  * _Language Word Tokenizer_ that splits a text into lexical units or tokens;
  * _Language TreeTagger_ that performs part-of-speech tagging and lemmatization thabnks to TreeTagger;
- * _Language Normalizer_ that rewrites TreeTagger tags in every language tagsets into a unique tagset compliant with Multext;
+ * _Language Normalizer_ that rewrites TreeTagger tags in every language tag-sets into a unique tag-set compliant with Multext;
  * _Language Stemmer_ that applies Porter's algorithm over every tokens;
  * _Language Term Spotter_ that detects (single and multi-word) term occurrences; 
  * _Language Filter_ that filters out stop-word terms;
@@ -146,19 +153,19 @@ are primitive ones. They are all realized by the Java class _[http://code.google
 but the Latvian one implemented by the Java class [http://code.google.com/p/ttc-project/source/browse/tags/1.1/sources/eu/project/ttc/engines/TildeTokenizer.java _TildeTokenizer_]
 and the Chinese one implemented by the Java class [http://code.google.com/p/ttc-project/source/browse/modules/uima-chinese-segmenter/sources/fr/univnantes/lina/uima/engines/ChineseSegmenter.java _ChineseSegmenter_] 
 
-Such tokenizers require one resource that poualte 3 character trees which branches 
+Such tokenizers require one resource that populate 3 character trees which branches 
 corresponds either to initial segments to cut off from tokens,
 or final segments to cut off too, or compound segments. 
 For example, the resource of the French tokenizer is hold by this [http://code.google.com/p/ttc-project/source/browse/tags/1.1/resources/eu/project/ttc/french/resources/french-segment-bank.xml resource].
 
 In fact, such tokenizers behave in a 3-pass process. 
- # it splits text into tokens sparated by whitespaces
+ # it splits text into tokens separated by white-spaces
  # it cuts off initial and final segments of every previously detected tokens
  # it detects compound tokens
 For example, the French compound token "d'une part" is processed as follows:
- # firstly, two tokens are detected "d'une" and "part" because of the whitespace
+ # firstly, two tokens are detected "d'une" and "part" because of the white-space
  # secondly, three tokens are detected "d'" "une" and "part" because of the initial segment "d'"
- # finally, only one token is dected because of the compound segment "d'une part".
+ # finally, only one token is detected because of the compound segment "d'une part".
 The latter is the final result.
 
 This analysis engine creates one annotation of type _Word Annotation_ per final token.
@@ -174,7 +181,7 @@ from the output of TreeTagger.
 They are implemented by the Java class _[http://code.google.com/p/ttc-project/source/browse/modules/uima-tree-tagger-wrapper/sources/fr/univnantes/lina/uima/engines/TreeTaggerWrapper.java TreeTaggerWrapper]_.
 
 Such analysis engines require a simple configuration file that specifies 
-the parameter file (language model) and its encoding that the tree-taggaer executable 
+the parameter file (language model) and its encoding that the tree-tagger executable 
 should used. For instance, see the [http://code.google.com/p/ttc-project/source/browse/tags/1.1/resources/eu/project/ttc/french/resources/french-treetagger.xml French TreeTagger configuration file].
 
 This analysis engine depends on the String parameter _TreeTagger Home Directory_ 
@@ -182,8 +189,8 @@ in order to locate both the executable and its parameter files on the user opera
 
 ==== _Language_ Normalizer ====
 
-_Language Normalizer_ normalizes TreeTagger tags from different tagsets in different languages 
-by tags in a unique tagset: Multext.
+_Language Normalizer_ normalizes TreeTagger tags from different tag-sets in different languages 
+by tags in a unique tag-set: Multext.
 
 UIMA analysis engines _Language Normalizer_ are aggregate ones. They are composed of the following ones:
  * _Language Category Normalizer_ that extracts the Multext category from TreeTagger tags;
@@ -205,7 +212,7 @@ _word Annotation_ typed annotations.
 
 _Language Stemmer_ analysis engines are primitive ones that are implemented by the Java class _[http://code.google.com/p/ttc-project/source/browse/modules/uima-stemmer/sources/fr/free/rocheteau/jerome/engines/Stemmer.java Stemmer]_. 
 
-It applies Porter's algorithm accordinf to the Tartus Snowball implementation. 
+It applies Porter's algorithm according to the Tartus Snowball implementation. 
 It only depends on a String _Language_ parameter. 
 
 It provides the feature _stem_ value for any _word annotations_.
@@ -216,7 +223,7 @@ _Language Term Spotter_ are aggregate analysis engines composed of the an analys
 that detects single-word term occurrences and another that detects multi-word term occurrences.
 
 Both of them are implemented by the same Java class _[http://code.google.com/p/ttc-project/source/browse/trunk/sources/eu/project/ttc/engines/TermSpotter.java TermSpotter]_. Thus, they use the same kind of resources: 
-regular expressons over annotations. 
+regular expressions over annotations. 
 
 However, they require different resources.
 
@@ -232,7 +239,7 @@ In the other hand, UIMA analysis engines _Language Multi-Word Term Spotter_ depe
 a language-oriented resource. In fact, multi-word terms in French and English do not 
 share the same syntactic patterns. This is a rule-based term occurrence detection algorithm. 
 
-For exemple, see the [http://code.google.com/p/ttc-project/source/browse/tags/1.1/resources/eu/project/ttc/french/resources/french-multi-word-rule-system.xml French syntactric patterns].
+For exemple, see the [http://code.google.com/p/ttc-project/source/browse/tags/1.1/resources/eu/project/ttc/french/resources/french-multi-word-rule-system.xml French syntactic patterns].
 
 ==== _Language_ Filter ====
 
@@ -258,9 +265,9 @@ It is a primitive analysis engine that is implemented by the [http://code.google
 ==== Writer ====
 
 The _Writer_ analysis engine stores the previous analysis into XMI files. 
-It is a primitive one implemented by [http://code.google.com/p/ttc-project/source/browse/trunk/sources/eu/project/ttc/engines/Writer.java the so-called Jaca class].
+It is a primitive one implemented by [http://code.google.com/p/ttc-project/source/browse/trunk/sources/eu/project/ttc/engines/Writer.java the so-called Java class].
 
-It require a String parameter _Directory_ to be set that specifies wher to write such XMI files.
+It require a String parameter _Directory_ to be set that specifies where to write such XMI files.
 
 Within the _Language Spotter_ analysis engine, it outputs 1 XMI file per input text file.
 
@@ -294,8 +301,8 @@ The UIMA analysis engine _Term Indexer_ is a primitive one that is implemented b
 [http://code.google.com/p/ttc-project/source/browse/trunk/sources/eu/project/ttc/engines/TermIndexer.java the so-called Java class]. 
 
 This class corresponds to a special UIMA annotator as it output only 1 common analysis structure after 
-having processed all of the input ones. The latter corresponds to every analyzed documents in XMI format 
-and the output stands for the monoloingual terminology. 
+having processed all of the input ones. The latter corresponds to every analysed documents in XMI format 
+and the output stands for the monolingual terminology. 
 
 This analysis engine merely computes term entries from their occurrences. 
 Occurrences which lemmas are identical are indexed by the same entry.
@@ -304,56 +311,216 @@ Absolute frequency is then computed for every term annotations and then fills th
 
 ==== _Language_ Term Frequency Computer ====
 
-_Language Term Frequency Computer_ computes both term relative frequency and term domain specificty.
-The first computing is language independent wheras the second one depends on a term absolute frequency list
+_Language Term Frequency Computer_ computes both term relative frequency and term domain specificity.
+The first computing is language independent whereas the second one depends on a term absolute frequency list
 compiled from a general language corpus. 
 
 This analysis engine firstly computes relative frequency by dividing each term annotation absolute frequency 
 by the sum of every term absolute frequencies. The feature _frequency_ of term annotations 
 are then set. 
 
-This analysis engine secondly computes domain specificty by divinding term annotation relative frequency 
+This analysis engine secondly computes domain specificity by dividing term annotation relative frequency 
 by the relative frequency of the same term entry within a general corpus frequency list. 
 
 ==== _Language_ Compound Indexer ====
 
+The _Language Compound Indexer_ is an aggregate analysis engine that detects compounds among single-word terms. 
+It is composed of the following primitive analysis engines:
+ * _Language Compound Splitter_ that detects compounds made of several simplest terms;
+ * _Language Prefix Splitter_ that detects compounds made of a prefix and a term;
+ * _Language Neoclassical Splitter_ that detects compounds made of neoclassical elements and terms.
+
 ===== _Language_ Compound Splitter =====
+
+The _Language Compound Splitter_ is a primitive analysis engine that is implemented by the Java class 
+_[http://code.google.com/p/ttc-project/source/browse/trunk/sources/eu/project/ttc/engines/CompoundSplitter.java CompoundSplitter]_.
+
+It merely consists in detecting single-word term components that are separated by dashes. 
+It should be enriched by algorithms able to detects those that are not separated by dashes 
+but that are concatenated together with possible inflections. 
 
 ===== _Language_ Prefix Splitter =====
 
+The _Language Prefix Splitter_ is a primitive analysis engine that is implemented by the Java class 
+_[http://code.google.com/p/ttc-project/source/browse/trunk/sources/eu/project/ttc/engines/AffixCompoundSplitter.java AffixCompoundSplitter]_. 
+
+This analysis engine is configured by a given resource that contains 2 character trees.
+Branches of the first correspond to prefix or initial segments, branches of the second correspond to suffix or final ones. 
+Here, only the first tree is defined by resources of such analysis engines. 
+For example, see the [http://code.google.com/p/ttc-project/source/browse/trunk/resources/eu/project/ttc/french/resources/Prefix.French French prefix resource].
+
 ===== _Language_ Neoclassical Splitter =====
+
+The _Language Neoclassical Splitter_ is a primitive analysis engine that is implemented by the same Java class 
+_[http://code.google.com/p/ttc-project/source/browse/trunk/sources/eu/project/ttc/engines/AffixCompoundSplitter.java AffixCompoundSplitter]_. 
+
+Here, this analysis engine resource defines both the first and the second character trees 
+that are made of neoclassical roots with Greek or Latin origin.
+For example, see the [http://code.google.com/p/ttc-project/source/browse/trunk/resources/eu/project/ttc/french/resources/RootBank.French French neoclassical resource].
 
 ==== _Language_ Term Gatherer ====
 
+The analysis engine _Language Term Gatherer_ is an aggregate one composed of: 
+ * _Single-Word Term Gatherer_ that conflates single-word terms together according to a edit-distance-based similarity;
+ * _Language Multi-Word Term Gatherer_ that conflates compounds and multi-word terms together according to morpho-syntactic rules.
+
 ===== Single-Word Term Gatherer =====
+
+The analysis engine _Single-Word Term Gatherer_ is a primitive analysis engine that is implemented by the Java class 
+_[http://code.google.com/p/ttc-project/source/browse/trunk/sources/eu/project/ttc/engines/SingleWordGatherer.java SingleWordGatherer]_. 
+
+The latter is configured by 4 parameters:
+ * a Boolean parameter _Enable_ that specifies to enable or not term conflation
+ * a String parameter _Edit Distance Class Name_ that specifies on which edit distance the similarity is based
+ * a Float parameter _Edit Distance Threshold_ that defines over which values term are conflated together (this value should range from 0 to 1)
+ * an Integer parameter _Edit Distance Ngrams_ that defines the length of data for the similarity i.e. unigrams, bigrams or trigrams.
+
+This analysis engine is also configured by a resource that stands for a character equivalence table. 
+In fact, single-word term annotations are indexed by their first letter up to this equivalence table. 
+This is implemented as [http://code.google.com/p/ttc-project/source/browse/trunk/resources/eu/project/ttc/all/resources/all-character-mapping.xml this mapping resource]. 
+This makes possible to index under the same key term annotations like "énergie" and "energie" as the character 'é' 
+is rewritten into the character 'e' by this equivalence table.
+
+If the similarity over a couple of terms exceeds the threshold, then it fills the feature _variants_ 
+of the most frequent term annotation of the two terms by the less frequent one. 
 
 ===== _Language_ Multi-Word Term Gatherer =====
 
+The analysis engine _Language Multi-Word Term Gatherer_ is a primitive one implemented by the Java class 
+_[http://code.google.com/p/ttc-project/source/browse/trunk/sources/eu/project/ttc/engines/MultiWordTermGatherer.java MultiWordTermGatherer]_. 
+
+The latter is merely configured by a resource that contains a list of rules for 
+conflating a couple of terms. Such resources describe under which logical conditions
+over their feature values two terms can be conflated together. 
+For example, see the [http://code.google.com/p/ttc-project/source/browse/trunk/resources/eu/project/ttc/french/resources/french-variant-rule-system.xml French variation rule resource].
+
+Such analysis engines behave as follows:
+
+(1) they splits the term annotation index in term spaces made of terms indexed by the same key.
+These keys are generated by the lemma and stems of term components. 
+For instance, the French (lemmatized) term "énergie éolien" is only indexed by the key "énergie+éol" 
+i.e. the lemma of the first component and the stem of the second component. 
+The order between term components is defined by the lexicographical order. 
+That's why "énergie" is less than "éolien", hence the key "énergie+éol". 
+By the way, the other French term "énergie de origine éolien" is indexed by the 3 following keys:
+"énergie+éol", "origine+énergi" and "origine+éol". 
+
+(2) they applies every variation rules over every couples of terms in every term spaces 
+indexed as previously described. Such indexes reduce the number of comparisons between term pairs 
+but preserve term variation specifications as every term variants share at least two components together 
+up to their lemmas and stems.
+
+(3) If a rule match a couple of terms, then it fills the feature _variants_ 
+of the most frequent term annotation by the less frequent one. 
+
 ==== Term Cleaner ====
+
+_Term Cleaner_ is a primitive analysis engine that is implemented by the so-called Java class _[http://code.google.com/p/ttc-project/source/browse/trunk/sources/eu/project/ttc/engines/TermCleaner.java TermCleaner]_.
+
+It merely consists in removing term annotations from index which absolute frequency 
+does not exceed a threshold provided by a Integer parameter _Threshold_.
 
 ==== Writer ====
 
 The _Writer_ analysis engine stores the previous analysis into XMI files. 
-It is a primitive one implemented by [http://code.google.com/p/ttc-project/source/browse/trunk/sources/eu/project/ttc/engines/Writer.java the so-called Jaca class].
+It is a primitive one implemented by [http://code.google.com/p/ttc-project/source/browse/trunk/sources/eu/project/ttc/engines/Writer.java the so-called Java class].
 
-It require a String parameter _Directory_ to be set that specifies wher to write such XMI files.
+It require a String parameter _Directory_ to be set that specifies where to write such XMI files.
 
 Within the _Language Indexer_ analysis engine, it outputs 1 XMI file for the monolingual terminology.
 
 ==== Term Base eXchanger ====
 
+The _Term Base eXchanger_ analysis engine stores the previous analysis into XMI files. 
+It is a primitive one implemented by [http://code.google.com/p/ttc-project/source/browse/trunk/sources/eu/project/ttc/engines/TermBaseXchanger.java the so-called Java class].
+
+It require a String parameter _Directory_ to be set that specifies where to write such XMI files.
+
+Within the _Language Indexer_ analysis engine, it outputs 1 TBX file for the monolingual terminology.
+
 === Aligner ===
+
+The _Aligner_ is an aggregate analysis engine composed of 3 primitive analysis engines:
+ * _Term Dispatcher_ that prepare the term to translate and its eventual correct translations
+ * _Term Aligner_ that process alignment methods on terms to translate from source and target terminologies previously generated and produced its translation candidates
+ * _Writer_ that outputs a XMI file per term to translate with its translation candidates
 
 ==== Term Dispatcher ====
 
+The analysis engine _Term Dispatcher_ is a primitive analysis engine that initializes the term to translate. 
+It is implemented by the Java class _[http://code.google.com/p/ttc-project/source/browse/trunk/sources/eu/project/ttc/engines/TermPopulater.java TermPopulater]_.
+
+It reads texts made of only 1 line and with tabulation-separated values as follows:
+{{{
+  wind energy	énergie éolien
+}}}
+
+It then create 1 annotation of type _Term Annotation_ that covers the first element 
+e.g. "wind energy" in the example above and it creates 1 annotation of type _Translation Annotation_ 
+per elements after the first one (e.g. "énergie éolien" in this case).
+
+The term annotation corresponds to the term to translate whereas the translation annotations 
+can be useful for evaluating the alignment according to precision measure.
+
+It is merely configured by 2 parameters: a String parameter _Source Language_ and a String parameter _Target Language_ 
+used for setting feature values of translation annotations and document annotations.
+
 ==== Term Aligner ====
+
+The _Term Aligner_ analysis engine is a primitive one. It is implemented by the Java class 
+_[http://code.google.com/p/ttc-project/source/browse/trunk/sources/eu/project/ttc/engines/TermAligner.java TermAligner]_. 
+
+It processes alignment using both the distributional method or the compositional one. 
+This is configured by 2 so-called Boolean parameters _Distributional Method_ and _Compositional Method_. 
+
+This analysis engine is also configured by 2 String parameters _Source Terminology File_ 
+and _Target Terminology File_ that should referred to the XMI files that respectively stand for 
+the terminologies in source and target language.
+
+This also can (and should) be configured by a String parameter _Dictionary File_ that 
+provide single-word term alignments in the following format:
+{{{
+  energy	énergie
+  energy	force
+  energy	puissance
+  ...
+}}}
+Dictionaries comply with a 1-tabulation separated values format 
+which left item is a term in the source language and which right item 
+is one of its possible translations.
+
+Moreover, the similarity distance used within the distributional method can be configured 
+by the String parameter _Similarity Distance Class Name_ which value should range over 
+_Jaccard_ for the weighted Jaccard similarity and _Cosine_ for the Cosine one.
+
+This analysis engine behaves as follows:
+
+(1) It retrieves the term to translate from the source terminology.
+
+(2) If the compositional method is enabled and if the term to translate corresponds 
+either to a compound single-word term or a multi-word term, then a basic compositional method is launched:
+ * every term components are retrieved
+ * every term component are translated using the dictionary
+ * every term component translation combinations are generated
+ * every possible combination permutations are generated
+ * every permutations are flattened in order to produce translation candidates
+ * every translation candidates are filtered in according to the target terminology
+ * a translation candidate annotation is created per retained translation candidate
+
+(3) if the distributional method is enabled and if the term to translate is a single-word one
+then the standard approach is launched by:
+ * the context vector of the term is retrieved from the source terminology
+ * every term in this context vector is translated by the help of the dictionary
+ * the translated context vector is compared against every term context vectors of the target terminology
+ * the translation candidates are sorted according to the decreasing order of their scores 
+ * the 100 best-score translation candidates are annotated by translation candidate annotations
 
 ==== Writer ====
 
 The _Writer_ analysis engine stores the previous analysis into XMI files. 
-It is a primitive one implemented by [http://code.google.com/p/ttc-project/source/browse/trunk/sources/eu/project/ttc/engines/Writer.java the so-called Jaca class].
+It is a primitive one implemented by [http://code.google.com/p/ttc-project/source/browse/trunk/sources/eu/project/ttc/engines/Writer.java the so-called Java class].
 
-It require a String parameter _Directory_ to be set that specifies wher to write such XMI files.
+It require a String parameter _Directory_ to be set that specifies where to write such XMI files.
 
 Within the _Aligner_ analysis engine, it outputs 1 XMI file per input term-to-translate file.
 
