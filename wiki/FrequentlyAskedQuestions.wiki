@@ -11,6 +11,14 @@ You only need:
  * a Java Runtime Environment 
  * TreeTagger
 
+=== Does Term Suite run on Windows? ===
+
+No. Some critical troubles have been reported by users on Widnows. 
+They haven't been fixed yet.
+
+Term Suite has been successfully tested under Linux and OpenJDK. 
+They are free software. 
+
 === Can I launch Term Suite without its GUI? ===
 
 No. Term Suite GUI makes possible to launch different 
