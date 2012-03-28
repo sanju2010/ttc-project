@@ -37,7 +37,11 @@ Notice that every UIMA analysis engines can be launched by other launchers like 
 
 === Can I process HTML, PDF or DOC files? ===
 
+NO. The text extraction should be done before using Term Suite.
+
 === Can I process ASCII, LATIN-1 encoded files? ===
+
+YES. Whatever the text encoding, Term Suite converts it into UTF-8.
 
 === How can I add/delete/modify a term detection rule? ===
 
