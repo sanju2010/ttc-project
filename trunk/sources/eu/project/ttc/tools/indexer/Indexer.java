@@ -25,7 +25,7 @@ public class Indexer implements TermSuiteTool {
 	
 	private void setSettings(File home) {
 		this.settings = new IndexerSettings(home.getAbsolutePath() + File.separator + "indexer.settings");
-		this.settings.getComponent().setBorder(BorderFactory.createTitledBorder("Default Settings"));
+		this.settings.getComponent().setBorder(BorderFactory.createTitledBorder("Settings"));
 	}
 	
 	public IndexerSettings getSettings() {
@@ -52,7 +52,6 @@ public class Indexer implements TermSuiteTool {
 		this.component.setContinuousLayout(true);
 		this.component.setResizeWeight(0.5);
 		this.component.setOneTouchExpandable(true);
-		this.component.setDividerSize(50);
 	}
 	
 	@Override

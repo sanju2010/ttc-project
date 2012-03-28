@@ -3,10 +3,10 @@ package eu.project.ttc.tools.aligner;
 import java.awt.Component;
 import java.io.File;
 
+import javax.swing.BorderFactory;
 import javax.swing.JSplitPane;
 
 import eu.project.ttc.tools.TermSuite;
-import eu.project.ttc.tools.TermSuiteSettings;
 import eu.project.ttc.tools.TermSuiteTool;
 
 public class Aligner implements TermSuiteTool {
@@ -25,6 +25,7 @@ public class Aligner implements TermSuiteTool {
 	
 	private void setSettings(File home) {
 		this.settings = new AlignerSettings(home.getAbsolutePath() + File.separator + "aligner.settings");
+		this.settings.getComponent().setBorder(BorderFactory.createTitledBorder("Settings"));
 	}
 	
 	public AlignerSettings getSettings() {
@@ -35,6 +36,7 @@ public class Aligner implements TermSuiteTool {
 	
 	private void setAdvancedSettings(File home) {
 		this.advancedSettings = new AlignerAdvancedSettings(home.getAbsolutePath() + File.separator + "aligner.advanced-settings");
+		this.advancedSettings.getComponent().setBorder(BorderFactory.createTitledBorder("Advanced Settings"));
 	}
 	
 	@Override
@@ -54,6 +56,9 @@ public class Aligner implements TermSuiteTool {
 		this.component = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 		this.component.setTopComponent(this.getSettings().getComponent());
 		this.component.setBottomComponent(this.getAdvancedSettings().getComponent());
+		this.component.setContinuousLayout(true);
+		this.component.setResizeWeight(0.5);
+		this.component.setOneTouchExpandable(true);
 	}
 	
 	@Override

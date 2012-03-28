@@ -3,7 +3,6 @@ package eu.project.ttc.tools;
 import java.awt.Component;
 import java.awt.Desktop;
 import java.awt.Dimension;
-import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
@@ -96,18 +95,6 @@ public class TermSuite implements Runnable {
 		return this.home;
 	}
 	
-	/*
-	private Help help;
-	
-	private void setHelp() {
-		this.help = new Help();
-	}
-	
-	public Help getHelp() {
-		return this.help;
-	}
-	*/
-	
 	public Preferences  getPreferences() {
 		return this.preferences;
 	}
@@ -170,7 +157,7 @@ public class TermSuite implements Runnable {
 	}	
 	
 	private Dimension getDimension() {
-		return Toolkit.getDefaultToolkit().getScreenSize();
+		return new Dimension(800,800);
 	}
 	
 	private Spotter spotter;
@@ -242,13 +229,7 @@ public class TermSuite implements Runnable {
 		tabs.addTab(" View ", view);
 		return tabs;
 	}
-	private JTabbedPane embed2(Component edit, Component view, Component param) {
-		JTabbedPane tabs = new JTabbedPane(JTabbedPane.TOP);
-		tabs.addTab(" Edit ", edit);
-		tabs.addTab(" View ", view);
-		tabs.addTab(" Param ", param);
-		return tabs;
-	}
+
 	private JTabbedPane content;
 	
 	private void setContent() {
@@ -321,7 +302,6 @@ public class TermSuite implements Runnable {
 	
 	public TermSuite() {
 		this.setDesktop();
-		// this.setHelp();
 		this.setPreferences();
 		this.setHome();
 		this.setAbout();
