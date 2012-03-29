@@ -57,6 +57,8 @@ YES. Whatever the text encoding, Term Suite converts it into UTF-8.
 
 == Error Messages ==
 
+For any questions about errors from Term Suite, please check that it has not been previously declared in this [http://code.google.com/p/ttc-project/issues/list bug tracker]. If not, please create a new issue.
+
 === I've got an error with the Spotter ===
 
 One issue has been reported: the issue 9. 
