@@ -80,6 +80,15 @@ In order to modify and package Term Suite from sources, we strongly suggest you 
 
 === How to add, remove or modify a term detection rule? ===
 
+Assume that I would like to add a term detection rule in French.
+So I have to edit the XML resource file [http://code.google.com/p/ttc-project/source/browse/trunk/resources/eu/project/ttc/french/resources/french-multi-word-rule-system.xml resources/eu/project/ttc/french/resources/french-multi-word-rule-system.xml] accoridngly to its XML schema definition ([http://code.google.com/p/ttc-project/source/browse/modules/uima-pattern-matcher/resources/patterns.xsd XSD]).
+
+Once this is achieved, just change the version number and repackage Term Suite as follows:
+{{{
+  sed -i 's/version>1.2/version>1.2-mine.1/' pom.xml
+  mvn clean package
+}}}
+
 === How to add, remove or modify a term conflation rule? ===
 
 === How to add another language in Term Suite? ===
