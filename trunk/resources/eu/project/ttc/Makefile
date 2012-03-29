@@ -43,6 +43,23 @@ spotterTargets = $(addprefix $(tgt)/engines/spotter/$(target),$(spotter))
 indexSources = $(addprefix $(src)/engines/indexer/$(source),$(indexer))
 spotterSources = $(addprefix $(src)/engines/spotter/$(source),$(spotter))
 
+xmlResources =case-mapping.xml
+xmlResources+=category-mapping.xml
+xmlResources+=gender-mapping.xml
+xmlResources+=mood-mapping.xml
+xmlResources+=multi-word-rule-system.xml
+xmlResources+=number-mapping.xml
+xmlResources+=segment-bank.xml
+xmlResources+=stop-word-filter.xml
+xmlResources+=subcategory-mapping.xml
+xmlResources+=tense-mapping.xml
+xmlResources+=treetagger.xml
+xmlResources+=variant-rule-system.xml
+
+txtResources =GeneralLanguage
+txtResources+=Prefix
+txtResources+=RootBank
+
 help: 
 	@echo "make copy target=<Uppercase directory> code=<2-letter language code>"
 
@@ -71,3 +88,14 @@ edit-spotter: $(addprefix $(tgt)/engines/spotter/$(target),$(file))
 	@sed -i 's/$(src)/$(tgt)/g' $(addprefix $(tgt)/engines/spotter/$(target),$(file))
 	@sed -i 's/language>$(srcCode)/language>$(tgtCode)/g' $(addprefix $(tgt)/engines/spotter/$(target),$(file))
 	@sed -i 's/string>$(srcCode)/string>$(tgtCode)/g' $(addprefix $(tgt)/engines/spotter/$(target),$(file))
+
+plug: $(addprefix $(src)/resources/$(src)-, $(xmlResources)) $((addprefix $(src)/resources/, $(txtResources)):=.$(source))
+	@mkdir -p $(tgt)/resources
+	@for file in $(xmlResources) ; do make -s xml-resource file=$$file ; done
+	@for file in $(txtResources) ; do make -s txt-resource file=$$file ; done
+
+xml-resource: $(addprefix $(src)/resources/$(src)-, $(file))
+	@cp $(addprefix $(src)/resources/$(src)-, $(file)) $(addprefix $(tgt)/resources/$(tgt)-, $(file))
+
+txt-resource: $(addprefix $(src)/resources/, $(file)).$(source)
+	@cp $(addprefix $(src)/resources/, $(file)).$(source) $(addprefix $(tgt)/resources/, $(file)).$(target)
