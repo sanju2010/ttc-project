@@ -57,12 +57,16 @@ YES. Whatever the text encoding, Term Suite converts it into UTF-8.
 
 == Error Messages ==
 
-=== I've got a error *ArrayIndexOutOfBounds* ===
+=== I've got an error with the Spotter ===
+
+=== I've got an error with the Indexer ===
+
+=== I've got an error with the Aligner ===
 
 == Advanced User Questions ==
 
-=== How can I insert or modify a term detection rule? ===
+=== How to add or modify a term detection rule? ===
 
-=== How can I insert or modify a term conflation rule? ===
+=== How to add or modify a term conflation rule? ===
 
-=== How can I extend Term Suite to another language? ===
+=== How to add another language in Term Suite? ===
