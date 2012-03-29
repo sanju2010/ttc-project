@@ -55,6 +55,10 @@ NO. The text extraction should be done before using Term Suite.
 
 YES. Whatever the text encoding, Term Suite converts it into UTF-8.
 
+== Error Messages ==
+
+=== I've got a error *ArrayIndexOutOfBounds* ===
+
 == Advanced User Questions ==
 
 === How can I insert or modify a term detection rule? ===
