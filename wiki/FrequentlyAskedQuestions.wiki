@@ -101,4 +101,4 @@ Secondly, go to the directory resources/eu/project/ttc/. Then create the italian
   make plug target=Italian code=it
 }}}
 
-Finally, the big job consist in modifying every language resource files in the directory italian/resources in order to fit Italian processing.
+Finally, the big job consists in modifying every language resource files in the directory italian/resources in order to fit Italian processing.
