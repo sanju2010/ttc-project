@@ -89,7 +89,7 @@ Once this is achieved, just change the version number and repackage Term Suite a
   mvn clean package
 }}}
 
-=== How to add, remove or modify a term conflation rule? ===
+=== How to add, remove or modify a term/variant conflation rule? ===
 
 Assume that I would like to add a term detection rule in French.
 So I have to edit the XML resource file [http://code.google.com/p/ttc-project/source/browse/trunk/resources/eu/project/ttc/french/resources/french-variant-rule-system.xml resources/eu/project/ttc/french/resources/french-variant-rule-system.xml] accoridngly to its XML schema definition ([http://code.google.com/p/ttc-project/source/browse/modules/uima-catcher/resources/rules.xsd XSD]).
