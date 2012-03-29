@@ -3,10 +3,12 @@
 
 = Frequently Asked Questions =
 
+<wiki:toc max_depth="2" />
+
 If you have any questions, please check if it has not already been asked.
 Otherwise, please let a comment or add an issue [http://code.google.com/p/ttc-project/issues/list here].
 
-=== What do I need to install and run Term Suite? ===
+=== What do I need to install Term Suite? ===
 
 You only need:
  * to install a Java Runtime Environment (see [http://openjdk.java.net/install/ OpenJDK])
@@ -14,6 +16,10 @@ You only need:
  * to download [http://ttc-project.googlecode.com/files/ttc-term-suite-1.1.jar Term Suite] on your computer
 
 That's all!
+
+=== How can I test Term Suite? ===
+
+Please, have a look to the GettingStarted wiki page.
 
 === Does Term Suite run on Windows? ===
 
