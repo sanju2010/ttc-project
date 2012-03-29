@@ -91,6 +91,15 @@ Once this is achieved, just change the version number and repackage Term Suite a
 
 === How to add, remove or modify a term conflation rule? ===
 
+Assume that I would like to add a term detection rule in French.
+So I have to edit the XML resource file [http://code.google.com/p/ttc-project/source/browse/trunk/resources/eu/project/ttc/french/resources/french-variant-rule-system.xml resources/eu/project/ttc/french/resources/french-variant-rule-system.xml] accoridngly to its XML schema definition ([http://code.google.com/p/ttc-project/source/browse/modules/uima-catcher/resources/rules.xsd XSD]).
+
+Once this is achieved, just change the version number and repackage Term Suite as follows:
+{{{
+  sed -i 's/version>1.2/version>1.2-mine.2/' pom.xml
+  mvn clean package
+}}}
+
 === How to add another language in Term Suite? ===
 
 Suppose that I would like to extend Term Suite to Italian.
@@ -103,7 +112,7 @@ First of all, modify the version in the file pom.xml; for example from _1.2_ to 
   sed -i 's/values:en|fr|de|es/values:en|fr|de|es|it/g' sources/eu/project/ttc/tools/spotter/SpotterSettings.java sources/eu/project/ttc/tools/indexer/IndexerSettings.java sources/eu/project/ttc/tools/aligner/AlignerSettings.java
 }}}
 
-Secondly, go to the directory resources/eu/project/ttc/. Then create the italian UIMa analysis engines and resources by the help of the given GNU Make program as follows:
+Secondly, go to the directory resources/eu/project/ttc/. Then create the italian UIMA analysis engines and resources by the help of the given GNU Make program as follows:
 {{{
   cd resources/eu/project/ttc/
   make copy target=Italian code=it
