@@ -64,7 +64,6 @@ Just create a text file called for instance _dico-en-fr.txt_ and fill it by thes
 dynamic	dynamique
 dynamic	énergique
 dynamic	efficace
-dynamic	plein d'entrain
 energy	énergie
 energy	dynamisme
 energy	vitalité
