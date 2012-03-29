@@ -59,6 +59,13 @@ YES. Whatever the text encoding, Term Suite converts it into UTF-8.
 
 === I've got an error with the Spotter ===
 
+One issue has been reported: the issue 9. 
+It comes from the Apache UIMA 2.3.1 library. 
+
+But the same version of Term Suite over the same corpus 
+doesn"t lead tot the same error on other boxes 
+with the same operating system. 
+
 === I've got an error with the Indexer ===
 
 === I've got an error with the Aligner ===
