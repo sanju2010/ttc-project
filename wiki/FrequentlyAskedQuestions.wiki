@@ -31,21 +31,21 @@ They haven't been fixed yet.
 Term Suite has been successfully tested under Linux and OpenJDK. 
 They are free software. 
 
-=== Can I launch Term Suite without its GUI? ===
+=== Can I launch Term Suite without in CLI only? ===
 
-No. Term Suite GUI makes possible to launch different 
+NO. Term Suite GUI makes possible to launch different 
 UIMA analysis engines from the same control panel. 
-As they are no only 1 analysis engine to process, there is 
+As they are not only 1 analysis engine to process, there is 
 no CLI usage of Term Suite.
 
 However, *every UIMA analysis engines can be launched in CLI* 
 by the help of the inner devoted Java class _TermSuiteRunner_. 
 For example, the French Spotter can be launched over UTF-8 text files s follows:
 {{{
-  java -cp target/ttc-term-suite-1.2.jar eu.project.ttc.tools.TermSuiteRunner -txt -analysis-engine eu.project.ttc.french.engines.spotter.FrenchSpotter -directory /path/to/corpus/wind-energy/French/txt -language fr -encoding utf-8 --TreeTaggerHomeDirectory /usr/local/share/tree-tagger
+  java -cp ttc-term-suite-1.2.jar eu.project.ttc.tools.TermSuiteRunner -txt -analysis-engine eu.project.ttc.french.engines.spotter.FrenchSpotter -directory /path/to/corpus/wind-energy/French/txt -language fr -encoding utf-8 --TreeTaggerHomeDirectory /usr/local/share/tree-tagger
 }}}
 
-Notice that every UIMA analysis engines can be launched by other launchers like Apache UIMA RunAE, Apache UIMA DocumentAnalyzer, UIMA SandBox Runner, etc.
+Notice that every UIMA analysis engines can be launched by other launchers like [http://svn.apache.org/viewvc/uima/uimaj/trunk/uimaj-tools/src/main/java/org/apache/uima/tools/RunAE.java?view=markup Apache UIMA RunAE], [http://svn.apache.org/viewvc/uima/uimaj/trunk/uimaj-tools/src/main/java/org/apache/uima/tools/docanalyzer/DocumentAnalyzer.java?view=markup Apache UIMA Document Analyzer], [http://code.google.com/p/uima-sandbox/source/browse/trunk/runner/sources/uima/sandbox/runner/gui/Runner.java UIMA SandBox Runner], etc.
 
 === Can I process HTML, PDF or DOC files? ===
 
@@ -74,8 +74,31 @@ with the same operating system.
 
 == Advanced User Questions ==
 
-=== How to add or modify a term detection rule? ===
+Advanced user questions involve to modify Term Suite source code and to recompile and repackage Term Suite.
 
-=== How to add or modify a term conflation rule? ===
+In order to modify and package Term Suite from sources, we strongly suggest you to use [http://www.eclipse.org/ Eclipse IDE] with [http://www.eclipse.org/subversive/ Subversion], [http://www.eclipse.org/m2e/ Maven] and [http://uima.apache.org/downloads.cgi UIMA] plugins.
+
+=== How to add, remove or modify a term detection rule? ===
+
+=== How to add, remove or modify a term conflation rule? ===
 
 === How to add another language in Term Suite? ===
+
+Suppose that I would like to extend Term Suite to Italian.
+
+The main point is that there already exists en [ftp://ftp.ims.uni-stuttgart.de/pub/corpora/italian-par-linux-3.1.bin.gz Italian parameter file] for TreeTagger! And its [ftp://ftp.ims.uni-stuttgart.de/pub/corpora/italian-tagset.txt tag-set] is pretty similar as that of French!
+
+First of all, modify the version in the file pom.xml; for example from _1.2_ to _1.2+italian_ and the add Italian to language selection lists in the GUI:
+{{{
+  sed -i 's/version>1.2/version>1.2+italian/' pom.xml
+  sed -i 's/values:en|fr|de|es/values:en|fr|de|es|it/g' sources/eu/project/ttc/tools/spotter/SpotterSettings.java sources/eu/project/ttc/tools/indexer/IndexerSettings.java sources/eu/project/ttc/tools/aligner/AlignerSettings.java
+}}}
+
+Secondly, go to the directory resources/eu/project/ttc/. Then create the italian UIMa analysis engines and resources by the help of the given GNU Make program as follows:
+{{{
+  cd resources/eu/project/ttc/
+  make copy target=Italian code=it
+  make plug target=Italian code=it
+}}}
+
+Finally, the big job consist in modifying every language resource files in the directory italian/resources in order to fit Italian processing.
