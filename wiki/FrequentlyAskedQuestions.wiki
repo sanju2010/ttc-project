@@ -3,10 +3,12 @@
 
 = Frequently Asked Questions =
 
-<wiki:toc max_depth="2" />
+<wiki:toc max_depth="3" />
 
 If you have any questions, please check if it has not already been asked.
 Otherwise, please let a comment or add an issue [http://code.google.com/p/ttc-project/issues/list here].
+
+== User Questions ==
 
 === What do I need to install Term Suite? ===
 
@@ -52,6 +54,8 @@ NO. The text extraction should be done before using Term Suite.
 === Can I process ASCII, LATIN-1 encoded files? ===
 
 YES. Whatever the text encoding, Term Suite converts it into UTF-8.
+
+== Advanced User Questions ==
 
 === How can I insert or modify a term detection rule? ===
 
