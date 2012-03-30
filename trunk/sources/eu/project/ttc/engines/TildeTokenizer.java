@@ -45,10 +45,10 @@ public class TildeTokenizer extends JCasMultiplier_ImplBase {
 				String line = scanner.next();
 				String[] items = line.split("\t");
 				if (items.length == 4) {
-					String word = items[0];
+					String word = items[0].trim();
 					// String tag = items[1];
-					String lemma = items[2];
-					String tag = items[3];
+					String lemma = items[2].trim();
+					String tag = items[3].trim();
 					Token token = new Token(word, tag, lemma);
 					this.getTokens().add(token);
 				} 
@@ -126,6 +126,10 @@ public class TildeTokenizer extends JCasMultiplier_ImplBase {
 			this.word = word;
 			this.tag = tag;
 			this.lemma = lemma;
+		}
+		
+		public String toString() {
+			return this.word + " " + this.tag + " " + this.lemma;
 		}
 		
 	}

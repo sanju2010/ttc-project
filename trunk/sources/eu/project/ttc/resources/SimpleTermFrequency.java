@@ -59,6 +59,10 @@ public class SimpleTermFrequency implements SharedResourceObject {
 			return null;
 		} else if (term.length() <= 2) {
 			return null;
+		} else if (term.length() > 50) {
+			return null;
+		} else if (term.startsWith("http:") || term.startsWith("www")) {
+			return null;
 		} else if (this.allow(term)) {
 			Integer frequency = this.getFrequencies().get(term);
 			int freq = frequency == null ? 1 : frequency.intValue() + 1;

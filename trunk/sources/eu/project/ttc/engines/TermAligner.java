@@ -41,7 +41,7 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 		this.dictionary = dictionary;
 		String src = this.getSourceTerminology().getJCas().getDocumentLanguage();
 		String tgt = this.getTargetTerminology().getJCas().getDocumentLanguage();
-		String name = "/eu/project/ttc/all/dictionaries/dictionary" + src + "-" + tgt + ".txt";
+		String name = "/eu/project/ttc/all/dictionaries/dictionary-" + src + "-" + tgt + ".txt";
 		InputStream is = this.getClass().getResourceAsStream(name);
 		if (is == null) {
 			throw new NullPointerException(name);
