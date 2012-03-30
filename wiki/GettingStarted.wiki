@@ -35,7 +35,7 @@ building a dictionary and building  term-to-translate files.
 
 Alignment will be here tested from English to French.
 
-==== Building term-o-translate files ====
+==== Building term-to-translate files ====
 
 I suggest you to create 3 text files in a new directory: 
 
