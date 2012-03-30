@@ -25,11 +25,9 @@ Please, have a look to the GettingStarted wiki page.
 
 === Does Term Suite run on Windows? ===
 
-No. Some critical troubles have been reported by users on Widnows. 
-They haven't been fixed yet.
+Up to known. some critical troubles have been reported by users on Widnows. It has been successfully tested under Windows XP 2002 SP3.
 
-Term Suite has been successfully tested under Linux and OpenJDK. 
-They are free software. 
+Term Suite has been successfully tested under Linux 11.4 and 11.10 with OpenJDK (1.6.0-23). They are free softwares. 
 
 === Can I launch Term Suite without in CLI only? ===
 
@@ -127,3 +125,5 @@ Secondly, go to the directory resources/eu/project/ttc/. Then create the italian
 }}}
 
 Finally, the big job consists in modifying every language resource files in the directory italian/resources in order to fit Italian processing.
+
+=== How to modify a general language corpus term frequency list? ===
