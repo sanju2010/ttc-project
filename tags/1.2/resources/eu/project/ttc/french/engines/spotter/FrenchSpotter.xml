@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
+  <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
+  <primitive>false</primitive>
+  <delegateAnalysisEngineSpecifiers>
+    <delegateAnalysisEngine key="FrenchNormalizer">
+      <import name="eu.project.ttc.french.engines.spotter.FrenchNormalizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="FrenchStemmer">
+      <import name="eu.project.ttc.french.engines.spotter.FrenchStemmer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="FrenchFilter">
+      <import name="eu.project.ttc.french.engines.spotter.FrenchFilter"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="FrenchWordTokenizer">
+      <import name="eu.project.ttc.french.engines.spotter.FrenchWordTokenizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="Writer">
+      <import name="eu.project.ttc.all.engines.Writer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="Contextualizer">
+      <import name="eu.project.ttc.all.engines.spotter.Contextualizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="FrenchTermSpotter">
+      <import name="eu.project.ttc.french.engines.spotter.FrenchTermSpotter"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="FrenchTreeTagger">
+      <import name="eu.project.ttc.french.engines.spotter.FrenchTreeTagger"/>
+    </delegateAnalysisEngine>
+  </delegateAnalysisEngineSpecifiers>
+  <analysisEngineMetaData>
+    <name>French Spotter</name>
+    <description/>
+    <version>1.0</version>
+    <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
+    <configurationParameters searchStrategy="language_fallback">
+      <configurationParameter>
+        <name>TreeTaggerHomeDirectory</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>FrenchTreeTagger/TreeTaggerHomeDirectory</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>Directory</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>Writer/Directory</parameter>
+        </overrides>
+      </configurationParameter>
+    </configurationParameters>
+    <configurationParameterSettings>
+      <nameValuePair>
+        <name>TreeTaggerHomeDirectory</name>
+        <value>
+          <string>/usr/share/tree-tagger</string>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>Directory</name>
+        <value>
+          <string>/tmp</string>
+        </value>
+      </nameValuePair>
+    </configurationParameterSettings>
+    <flowConstraints>
+      <fixedFlow>
+        <node>FrenchWordTokenizer</node>
+        <node>FrenchTreeTagger</node>
+        <node>FrenchNormalizer</node>
+        <node>FrenchStemmer</node>
+        <node>FrenchTermSpotter</node>
+        <node>FrenchFilter</node>
+        <node>Contextualizer</node>
+        <node>Writer</node>
+      </fixedFlow>
+    </flowConstraints>
+    <typePriorities/>
+    <fsIndexCollection/>
+    <capabilities>
+      <capability>
+        <inputs/>
+        <outputs>
+          <type allAnnotatorFeatures="true">eu.project.ttc.types.WordAnnotation</type>
+        </outputs>
+        <languagesSupported>
+          <language>fr</language>
+        </languagesSupported>
+      </capability>
+    </capabilities>
+    <operationalProperties>
+      <modifiesCas>true</modifiesCas>
+      <multipleDeploymentAllowed>true</multipleDeploymentAllowed>
+      <outputsNewCASes>false</outputsNewCASes>
+    </operationalProperties>
+  </analysisEngineMetaData>
+  <resourceManagerConfiguration/>
+</analysisEngineDescription>

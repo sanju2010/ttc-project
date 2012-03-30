@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
+  <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
+  <primitive>false</primitive>
+  <delegateAnalysisEngineSpecifiers>
+    <delegateAnalysisEngine key="DanishNormalizer">
+      <import name="eu.project.ttc.danish.engines.spotter.DanishNormalizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="DanishStemmer">
+      <import name="eu.project.ttc.danish.engines.spotter.DanishStemmer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="DanishFilter">
+      <import name="eu.project.ttc.danish.engines.spotter.DanishFilter"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="DanishWordTokenizer">
+      <import name="eu.project.ttc.danish.engines.spotter.DanishWordTokenizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="Writer">
+      <import name="eu.project.ttc.all.engines.Writer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="Contextualizer">
+      <import name="eu.project.ttc.all.engines.spotter.Contextualizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="DanishTermSpotter">
+      <import name="eu.project.ttc.danish.engines.spotter.DanishTermSpotter"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="DanishTreeTagger">
+      <import name="eu.project.ttc.danish.engines.spotter.DanishTreeTagger"/>
+    </delegateAnalysisEngine>
+  </delegateAnalysisEngineSpecifiers>
+  <analysisEngineMetaData>
+    <name>Danish Spotter</name>
+    <description/>
+    <version>1.0</version>
+    <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
+    <configurationParameters searchStrategy="language_fallback">
+      <configurationParameter>
+        <name>TreeTaggerHomeDirectory</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>DanishTreeTagger/TreeTaggerHomeDirectory</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>Directory</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>Writer/Directory</parameter>
+        </overrides>
+      </configurationParameter>
+    </configurationParameters>
+    <configurationParameterSettings>
+      <nameValuePair>
+        <name>TreeTaggerHomeDirectory</name>
+        <value>
+          <string>/usr/share/tree-tagger</string>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>Directory</name>
+        <value>
+          <string>/tmp</string>
+        </value>
+      </nameValuePair>
+    </configurationParameterSettings>
+    <flowConstraints>
+      <fixedFlow>
+        <node>DanishWordTokenizer</node>
+        <node>DanishTreeTagger</node>
+        <node>DanishNormalizer</node>
+        <node>DanishStemmer</node>
+        <node>DanishTermSpotter</node>
+        <node>DanishFilter</node>
+        <node>Contextualizer</node>
+        <node>Writer</node>
+      </fixedFlow>
+    </flowConstraints>
+    <typePriorities/>
+    <fsIndexCollection/>
+    <capabilities>
+      <capability>
+        <inputs/>
+        <outputs>
+          <type allAnnotatorFeatures="true">eu.project.ttc.types.WordAnnotation</type>
+        </outputs>
+        <languagesSupported>
+          <language>da</language>
+        </languagesSupported>
+      </capability>
+    </capabilities>
+    <operationalProperties>
+      <modifiesCas>true</modifiesCas>
+      <multipleDeploymentAllowed>true</multipleDeploymentAllowed>
+      <outputsNewCASes>false</outputsNewCASes>
+    </operationalProperties>
+  </analysisEngineMetaData>
+  <resourceManagerConfiguration/>
+</analysisEngineDescription>
