@@ -127,3 +127,15 @@ Secondly, go to the directory resources/eu/project/ttc/. Then create the italian
 Finally, the big job consists in modifying every language resource files in the directory italian/resources in order to fit Italian processing.
 
 === How to modify a general language corpus term frequency list? ===
+
+such resources are text files with 3 items per line that should be separated by 2 colons and where the first corresponds to the term and the last to its absolute frequency in a general language corpus. They look like that:
+{{{
+wind energy::noun::15
+ernergy::noun::145
+...
+}}}
+
+Just edit such resource files and repackage Term Suite by the help of maven:
+{{{
+mvn clean package
+}}}
