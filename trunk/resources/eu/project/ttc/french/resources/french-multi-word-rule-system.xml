@@ -5,9 +5,9 @@
 			<patterns>
 				<pattern>
 					<annotation type="eu.project.ttc.types.WordAnnotation">
-					<constraint>
-						<eq key="category" value="noun" />
-					</constraint>
+						<constraint>
+							<eq key="category" value="noun" />
+						</constraint>
 					</annotation>
 				</pattern>
 				<pattern>
@@ -34,15 +34,15 @@
 			<patterns>
 				<pattern>
 					<annotation type="eu.project.ttc.types.WordAnnotation">
-					<constraint>
-						<eq key="category" value="noun" />
+						<constraint>
+							<eq key="category" value="noun" />
 						</constraint>
 					</annotation>
 				</pattern>
 				<pattern>
 					<annotation type="eu.project.ttc.types.WordAnnotation">
-					<constraint>
-						<eq key="category" value="adjective" />
+						<constraint>
+							<eq key="category" value="adjective" />
 						</constraint>
 					</annotation>
 				</pattern>
@@ -54,17 +54,17 @@
 			<patterns>
 				<pattern>
 					<annotation type="eu.project.ttc.types.WordAnnotation">
-					<constraint>
-						<eq key="category" value="noun" />
+						<constraint>
+							<eq key="category" value="noun" />
 						</constraint>
 					</annotation>
 				</pattern>
 				<pattern>
-					<loop  mandatory="true">
+					<loop mandatory="true">
 						<pattern>
 							<annotation type="eu.project.ttc.types.WordAnnotation">
-							<constraint>
-								<eq key="category" value="adverb" />
+								<constraint>
+									<eq key="category" value="adverb" />
 								</constraint>
 							</annotation>
 						</pattern>
@@ -72,8 +72,8 @@
 				</pattern>
 				<pattern>
 					<annotation type="eu.project.ttc.types.WordAnnotation">
-					<constraint>
-						<eq key="category" value="adjective" />
+						<constraint>
+							<eq key="category" value="adjective" />
 						</constraint>
 					</annotation>
 				</pattern>
@@ -85,27 +85,27 @@
 			<patterns>
 				<pattern>
 					<annotation type="eu.project.ttc.types.WordAnnotation">
-					<constraint>
-						<eq key="category" value="noun" />
+						<constraint>
+							<eq key="category" value="noun" />
 						</constraint>
 					</annotation>
 				</pattern>
 				<pattern>
 					<annotation type="eu.project.ttc.types.WordAnnotation">
-					<constraint>
-						<and>
-							<constraints>
-								<constraint>
-									<eq key="category" value="verb" />
-								</constraint>
-								<constraint>
-									<eq key="mood" value="participle" />
-								</constraint>
-								<constraint>
-									<eq key="tense" value="past" />
-								</constraint>
-							</constraints>
-						</and>
+						<constraint>
+							<and>
+								<constraints>
+									<constraint>
+										<eq key="category" value="verb" />
+									</constraint>
+									<constraint>
+										<eq key="mood" value="participle" />
+									</constraint>
+									<constraint>
+										<eq key="tense" value="past" />
+									</constraint>
+								</constraints>
+							</and>
 						</constraint>
 					</annotation>
 				</pattern>
@@ -165,7 +165,8 @@
 						</constraint>
 					</annotation>
 				</pattern>
-				<!-- TODO option determiner for some preposition "dans sous avant après chez " + det déf "sur"   + dét déf? "en pour par" no dét -->
+				<!-- TODO option determiner for some preposition "dans sous avant après 
+					chez " + det déf "sur" + dét déf? "en pour par" no dét -->
 				<pattern>
 					<option>
 						<pattern>
@@ -423,20 +424,20 @@
 					</annotation>
 				</pattern>
 				<pattern>
-							<annotation type="eu.project.ttc.types.WordAnnotation">
-								<constraint>
-									<or>
-										<constraints>
-											<constraint>
-												<eq key="coveredText" value='"' />
-											</constraint>
-											<constraint>
-												<eq key="coveredText" value='«' />
-											</constraint>
-										</constraints>
-									</or>
-								</constraint>
-							</annotation>
+					<annotation type="eu.project.ttc.types.WordAnnotation">
+						<constraint>
+							<or>
+								<constraints>
+									<constraint>
+										<eq key="coveredText" value='"' />
+									</constraint>
+									<constraint>
+										<eq key="coveredText" value='«' />
+									</constraint>
+								</constraints>
+							</or>
+						</constraint>
+					</annotation>
 				</pattern>
 				<pattern>
 					<annotation type="eu.project.ttc.types.WordAnnotation">
@@ -458,20 +459,20 @@
 					</annotation>
 				</pattern>
 				<pattern>
-							<annotation type="eu.project.ttc.types.WordAnnotation">
-								<constraint>
-									<or>
-										<constraints>
-											<constraint>
-												<eq key="coveredText" value='"' />
-											</constraint>
-											<constraint>
-												<eq key="coveredText" value='»' />
-											</constraint>
-										</constraints>
-									</or>
-								</constraint>
-							</annotation>
+					<annotation type="eu.project.ttc.types.WordAnnotation">
+						<constraint>
+							<or>
+								<constraints>
+									<constraint>
+										<eq key="coveredText" value='"' />
+									</constraint>
+									<constraint>
+										<eq key="coveredText" value='»' />
+									</constraint>
+								</constraints>
+							</or>
+						</constraint>
+					</annotation>
 				</pattern>
 			</patterns>
 		</sequence>
@@ -501,7 +502,71 @@
 									<constraint>
 										<eq key="coveredText" value="et" />
 										<eq key="coveredText" value="ou" />
-										<eq key="coveredText" value="," />
+									</constraint>
+								</constraints>
+							</or>
+						</constraint>
+					</annotation>
+				</pattern>
+				<pattern>
+					<annotation type="eu.project.ttc.types.WordAnnotation">
+						<constraint>
+							<eq key="category" value="adjective" />
+						</constraint>
+					</annotation>
+				</pattern>
+			</patterns>
+		</sequence>
+	</pattern>
+	<pattern id="noun-adjective-conjunction-adjectives">
+		<sequence>
+			<patterns>
+				<pattern>
+					<annotation type="eu.project.ttc.types.WordAnnotation">
+						<constraint>
+							<eq key="category" value="noun" />
+						</constraint>
+					</annotation>
+				</pattern>
+				<pattern>
+					<annotation type="eu.project.ttc.types.WordAnnotation">
+						<constraint>
+							<eq key="category" value="adjective" />
+						</constraint>
+					</annotation>
+				</pattern>
+				<pattern>
+					<option>
+						<pattern>
+							<sequence>
+								<patterns>
+									<pattern>
+										<annotation type="eu.project.ttc.types.WordAnnotation">
+											<constraint>
+												<eq key="coveredText" value="," />
+											</constraint>
+										</annotation>
+									</pattern>
+									<pattern>
+										<annotation type="eu.project.ttc.types.WordAnnotation">
+											<constraint>
+												<eq key="category" value="adjective" />
+											</constraint>
+										</annotation>
+									</pattern>
+								</patterns>
+							</sequence>
+						</pattern>
+					</option>
+				</pattern>
+				<pattern>
+					<annotation type="eu.project.ttc.types.WordAnnotation">
+						<constraint>
+							<or>
+								<constraints>
+									<constraint>
+										<eq key="coveredText" value="et" />
+										<eq key="coveredText" value="ou" />
 									</constraint>
 								</constraints>
 							</or>
@@ -678,5 +743,5 @@
 				</pattern>
 			</patterns>
 		</sequence>
-	</pattern>	
+	</pattern>
 </patterns>

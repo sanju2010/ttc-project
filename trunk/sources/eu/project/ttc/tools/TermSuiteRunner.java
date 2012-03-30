@@ -182,7 +182,6 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 		try {
 			this.setAnalysisEngine();
 		} catch (Throwable e) {
-			e.printStackTrace();
 			System.exit(1);
 		}
 		// System.out.println("INITIALIZED");
@@ -199,8 +198,9 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 			try {
 				this.process(file, this.encoding, this.language, this.input, last);
 			} catch (Throwable e) {
+				TermSuiteRunner.warning(e.getMessage());
 				e.printStackTrace();
-				System.exit(2);
+				// System.exit(3);
 			}
 			int progress = (index * 100) / max;
 			this.setProgress(progress);
@@ -208,7 +208,6 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 		try {
 			this.analysisEngine.collectionProcessComplete();
 		} catch (Throwable e) {
-			e.printStackTrace();
 			System.exit(2);
 		}
 		this.setProgress(100);

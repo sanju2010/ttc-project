@@ -133,7 +133,9 @@ public class IndexerViewer {
 			FSIterator<Annotation> iterator = index.iterator();
 			while (iterator.hasNext()) {
 				TermAnnotation term = (TermAnnotation) iterator.next();
-				if (term.getCategory().equals("verb")) { 
+				if (term.getCategory() == null) {
+					continue;
+				} else if (term.getCategory().equals("verb")) { 
 					continue;
 				} else {
 					DefaultMutableTreeNode node = new DefaultMutableTreeNode();
