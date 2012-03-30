@@ -3,7 +3,7 @@
 
 = User Guide =
 
-TTC TermSuite is the name of the tool provided [http://ttc-project.googlecode.com/files/ttc-term-suite-1.1.jar here] as an executable Java archive. This archive also owns hundreds of 
+TTC TermSuite is the name of the tool provided [http://ttc-project.googlecode.com/files/ttc-term-suite-1.2.jar here] as an executable Java archive. This archive also owns hundreds of 
 UIMA analysis engines runnable by the help of an appropriate tool. 
 This user guide page explains how to install and use it.
 
@@ -93,7 +93,7 @@ respectively for getting the source code and for packaging it.
 Just launch this command line or follow its target link:
 
 {{{
- wget http://ttc-project.googlecode.com/files/ttc-term-suite-1.1.jar
+ wget http://ttc-project.googlecode.com/files/ttc-term-suite-1.2.jar
 }}}
 
 ==== Compilation from Sources ====
@@ -121,7 +121,7 @@ run this command line as root:
 You merely have to launch the following command line:
 
 {{{
-  java -Xms1g -Xmx4g -jar ttc-term-suite-1.1.jar
+  java -Xms1g -Xmx4g -jar ttc-term-suite-1.2.jar
 }}}
 
 You are strongly suggested to set the JVM options -Xms1g 
