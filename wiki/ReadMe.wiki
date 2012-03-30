@@ -29,8 +29,8 @@ First, please check that are installed on your computer:
 
 == Installation ==
 
-You may download the [http://ttc-project.googlecode.com/files/ttc-term-suite-1.1.jar TTC Term Suite] executable Java archive and open it within a Java 6 Runtime Environment or by the help of the following command line:
- java -jar ttc-term-suite-1.1.jar
+You may download the [http://ttc-project.googlecode.com/files/ttc-term-suite-1.2.jar TTC Term Suite] executable Java archive and open it within a Java 6 Runtime Environment or by the help of the following command line:
+ java -jar ttc-term-suite-1.2.jar
 
 == Resources == 
 
