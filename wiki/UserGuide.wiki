@@ -202,7 +202,7 @@ The Latvian language isn't yet supported by this version of Term Suite.
 There is no TreeTagger parameter file for Latvian. 
 That's why, Latvian processing in Term Suite does not start
 from text files but from tagged and lemmatized text files.
-Such files comes from the output of Tilde's services in 
+Such files comes from the output of [https://www.tilde.com/tagger/Service.asmx/ Tilde's services] in 
 a TreeTagger like output:
 {{{
 Vējdzirnavas    N       vējdzirnavas    N-fpn---------n-----------f-
