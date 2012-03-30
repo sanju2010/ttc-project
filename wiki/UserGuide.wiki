@@ -72,6 +72,10 @@ Moreover, make sure that these parameter file have the following encoding althou
 
 The Latvian language isn't yet supported by this version of Term Suite.
 
+  *Notice* that you have to rename some of these parameter files!
+  For example, the French parameter file original name is 
+  'french-par-linux-3.2.bin'.
+
 === Term Suite ===
 
 As Term Suite is provided as an executable Java archive, 
@@ -193,6 +197,25 @@ Moreover, make sure that these parameter file have the following encoding althou
 
 The Latvian language isn't yet supported by this version of Term Suite.
 
+==== Latvian ====
+
+There is no TreeTagger parameter file for Latvian. 
+That's why, Latvian processing in Term Suite does not start
+from text files but from tagged and lemmatized text files.
+Such files comes from the output of Tilde's services in 
+a TreeTagger like output:
+{{'
+Vējdzirnavas    N       vējdzirnavas    N-fpn---------n-----------f-
+ir      V       būt     Vp----3--i----------7-----l-
+vismaz  R       vismaz  R----p---------------g----l-
+4000    D       4000    D--pg-----------------------
+gadu    N       gads    N-mpg---------n-----------l-
+vecas   A       vecs    A-fsgp-n------------------l-
+.       SENT    .       T--------------------------.
+}}}
+
+Therefore, you have to provide such files in order to process Latvian in Term Suite.
+
 === Indexer ===
 
 The Indexer tabbed panel provides 2 embedded tabbed panels too; 
@@ -247,8 +270,8 @@ The Aligner performs:
 
 It requires several kind of files as inputs.
   * a directory in where there is text files corresponding to the terms to translate (see subsection below),
-  * a XMI file that contains the terminology ion the source language,
-  * a XMI file that contains the terminology ion the target language,
+  * a XMI file that contains the terminology in the source language,
+  * a XMI file that contains the terminology in the target language,
   * optionally a text file that stands for a bilingual dictionary
 
 It produced a XMI file per text file (or term to translate) in the same directory as that of these text files. this file contains annotations with the translation candidates aligned with the input term to translate.
