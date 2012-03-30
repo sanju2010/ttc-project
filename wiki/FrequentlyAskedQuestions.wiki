@@ -15,7 +15,7 @@ Otherwise, please let a comment or add an issue [http://code.google.com/p/ttc-pr
 You only need:
  * to install a Java Runtime Environment (see [http://openjdk.java.net/install/ OpenJDK])
  * to install [http://www.ims.uni-stuttgart.de/projekte/corplex/TreeTagger/ TreeTagger]
- * to download [http://ttc-project.googlecode.com/files/ttc-term-suite-1.1.jar Term Suite] on your computer
+ * to download [http://ttc-project.googlecode.com/files/ttc-term-suite-1.2.jar Term Suite] on your computer
 
 That's all!
 
