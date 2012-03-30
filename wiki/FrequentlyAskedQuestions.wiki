@@ -33,17 +33,24 @@ They are free software.
 
 === Can I launch Term Suite without in CLI only? ===
 
-NO. Term Suite GUI makes possible to launch different 
+YES but throught out 5 command lines. 
+In fact, Term Suite GUI makes possible to launch different 
 UIMA analysis engines from the same control panel. 
 As they are not only 1 analysis engine to process, there is 
-no CLI usage of Term Suite.
+no one CLI usage of Term Suite.
+
+{{{
+  java -cp ttc-term-suite-1.2.jar eu.project.ttc.tools.TermSuiteRunner -txt -analysis-engine eu.project.ttc.english.engines.spotter.FrenchSpotter -directory English/txt -language en -encoding utf-8 --Directory English/xmi --TreeTaggerHomeDirectory /usr/local/share/tree-tagger
+  java -cp ttc-term-suite-1.2.jar eu.project.ttc.tools.TermSuiteRunner -xmi -analysis-engine eu.project.ttc.english.engines.indexer.EnglishIndexer -directory English/xmi -language en -encoding utf-8 --Directory English/
+  java -cp ttc-term-suite-1.2.jar eu.project.ttc.tools.TermSuiteRunner -txt -analysis-engine eu.project.ttc.french.engines.spotter.FrenchSpotter -directory French/txt -language fr -encoding utf-8 --Directory French/xmi --TreeTaggerHomeDirectory /usr/local/share/tree-tagger
+  java -cp ttc-term-suite-1.2.jar eu.project.ttc.tools.TermSuiteRunner -xmi -analysis-engine eu.project.ttc.french.engines.indexer.FrenchIndexer -directory French/xmi -language fr -encoding utf-8 --Directory French/
+  java -cp ttc-term-suite-1.2.jar eu.project.ttc.tools.TermSuiteRunner -txt -analysis-engine eu.project.ttc.all.engines.aligner.Aligner -directory en-fr/ -language en -encoding utf-8 --Directory en-fr/ --SourceLanguage en --TargetLanguage fr --SourceTerminologyFile English/en-terminology.xml --TargetTerminology French/fr-terminology.xml
+}}}
+
 
 However, *every UIMA analysis engines can be launched in CLI* 
 by the help of the inner devoted Java class _TermSuiteRunner_. 
 For example, the French Spotter can be launched over UTF-8 text files s follows:
-{{{
-  java -cp ttc-term-suite-1.2.jar eu.project.ttc.tools.TermSuiteRunner -txt -analysis-engine eu.project.ttc.french.engines.spotter.FrenchSpotter -directory /path/to/corpus/wind-energy/French/txt -language fr -encoding utf-8 --TreeTaggerHomeDirectory /usr/local/share/tree-tagger
-}}}
 
 Notice that every UIMA analysis engines can be launched by other launchers like [http://svn.apache.org/viewvc/uima/uimaj/trunk/uimaj-tools/src/main/java/org/apache/uima/tools/RunAE.java?view=markup Apache UIMA RunAE], [http://svn.apache.org/viewvc/uima/uimaj/trunk/uimaj-tools/src/main/java/org/apache/uima/tools/docanalyzer/DocumentAnalyzer.java?view=markup Apache UIMA Document Analyzer], [http://code.google.com/p/uima-sandbox/source/browse/trunk/runner/sources/uima/sandbox/runner/gui/Runner.java UIMA SandBox Runner], etc.
 
