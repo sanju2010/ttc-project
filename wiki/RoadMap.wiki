@@ -5,15 +5,19 @@
 
 == To Do ==
 
-=== Version 1.2 ===
+=== Version 1.3 ===
 
   * help system enabled
   * language package plug-in system enabled
   * multext management improved
-  * Latvian processing improved
-  * Chinese processing improved
 
 == Done ==
+
+=== Version 1.2 ===
+
+  * graphical interface improved
+  * Latvian processing improved
+  * Chinese processing improved
 
 === Version 1.1 ===
 
