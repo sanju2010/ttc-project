@@ -204,7 +204,7 @@ That's why, Latvian processing in Term Suite does not start
 from text files but from tagged and lemmatized text files.
 Such files comes from the output of Tilde's services in 
 a TreeTagger like output:
-{{'
+{{{
 Vējdzirnavas    N       vējdzirnavas    N-fpn---------n-----------f-
 ir      V       būt     Vp----3--i----------7-----l-
 vismaz  R       vismaz  R----p---------------g----l-
