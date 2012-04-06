@@ -64,6 +64,7 @@ public class WeirdField implements Field {
 	
 	private void setComponent() {
 		this.component = new JPanel();
+		this.component.setOpaque(false);
 		this.component.setBorder(this.getBorder());
 		this.component.add(this.getText());
 	}
@@ -77,5 +78,8 @@ public class WeirdField implements Field {
 	public boolean isModified() {
 		return false;
 	}
-
+	public void setListener(Field f1, Field f2, Field f3)
+	{
+		
+	}
 }

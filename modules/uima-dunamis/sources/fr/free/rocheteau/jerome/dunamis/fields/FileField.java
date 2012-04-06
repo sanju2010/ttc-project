@@ -1,5 +1,6 @@
 package fr.free.rocheteau.jerome.dunamis.fields;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -72,7 +73,7 @@ public class FileField implements Field {
 	private JButton getBrowse() {
 		return this.browse;
 	}
-	
+
 	private TitledBorder border;
 	
 	private void setBorder() {
@@ -90,6 +91,7 @@ public class FileField implements Field {
 	
 	private void setText() {
 		this.text = new JTextField(33);
+		
 	}
 
 	public JTextField getText() {
@@ -100,6 +102,7 @@ public class FileField implements Field {
 	
 	private void setComponent() {
 		this.component = new JPanel();
+		this.component.setOpaque(false);
 		this.component.setBorder(this.getBorder());
 		this.component.add(this.getText());
 		this.component.add(this.getBrowse());
@@ -153,5 +156,8 @@ public class FileField implements Field {
 	public boolean isModified() {
 		return true;
 	}
-	
+	public void setListener(Field f1, Field f2, Field f3)
+	{
+		
+	}
 }

@@ -26,6 +26,7 @@ public class FieldFactory {
 		} else {
 			if (type.equals("Boolean")) {
 				field = new BooleanField();
+				
 			} else if (type.equals("Integer")) {
 				field = new IntegerField();
 			} else if (type.equals("Float")) {

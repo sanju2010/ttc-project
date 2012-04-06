@@ -120,6 +120,7 @@ public class ListField<T> {
 
 	private void setComponent() {
 		this.component = new JPanel();
+		this.component.setOpaque(false);
 		this.component.add(this.getScroll());
 		this.component.add(this.getControls());
 		this.component.setBorder(this.getBorder());

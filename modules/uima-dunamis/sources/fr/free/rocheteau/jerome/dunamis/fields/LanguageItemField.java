@@ -31,7 +31,7 @@ public class LanguageItemField implements Field {
 	private Map<String, String> getLanguages() {
 		return this.languages;
 	}
-	
+
 	private String name;
 	
 	@Override
@@ -102,6 +102,7 @@ public class LanguageItemField implements Field {
 	
 	private void setComponent() {
 		this.component = new JPanel();
+		this.component.setOpaque(false);
 		this.component.setBorder(this.getBorder());
 		this.component.add(this.getText());
 	}
@@ -115,5 +116,8 @@ public class LanguageItemField implements Field {
 	public boolean isModified() {
 		return !this.getValue().equals(this.value);
 	}
-
+	public void setListener(Field f1, Field f2, Field f3)
+	{
+		
+	}
 }

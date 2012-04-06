@@ -15,5 +15,7 @@ public interface Field {
 	public boolean isModified();
 
 	public Component getComponent();
+	
+	public void setListener(Field f1, Field f2, Field f3);
 
 }

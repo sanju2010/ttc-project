@@ -49,5 +49,8 @@ public class StringListField extends ListField<String> implements Field {
 		super();
 		this.enableListeners();
 	}
-
+	public void setListener(Field f1, Field f2, Field f3)
+	{
+		
+	}
 }

@@ -17,7 +17,7 @@ public class FileListField extends ListField<File> implements Field {
 	public String getName() {
 		return this.name;
 	}
-	
+
 	@Override
 	public void setValue(Object value) {
 		if (value instanceof Object[]) {
@@ -50,5 +50,8 @@ public class FileListField extends ListField<File> implements Field {
 		super();
 		this.enableListeners();
 	}
-
+	public void setListener(Field f1, Field f2, Field f3)
+	{
+		
+	}
 }

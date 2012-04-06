@@ -29,7 +29,7 @@ public class IntegerField implements Field {
 	}
 		
 	private Integer value;
-	
+
 	@Override
 	public void setValue(Object value) {
 		if (value instanceof Integer) {
@@ -112,7 +112,7 @@ public class IntegerField implements Field {
 		this.spinner.setPreferredSize(new Dimension(300,25));
 	}
 	
-	private JSpinner getSpinner() {
+	public JSpinner getSpinner() {
 		return this.spinner;
 	}
 	
@@ -120,6 +120,7 @@ public class IntegerField implements Field {
 	
 	private void setComponent() {
 		this.component = new JPanel(new GridBagLayout());
+		this.component.setOpaque(false);
 		this.component.setBorder(this.getBorder());
 		this.component.add(this.getSpinner());
 	}
@@ -137,5 +138,8 @@ public class IntegerField implements Field {
 			return !this.getValue().equals(this.value);
 		}
 	}
-
+	public void setListener(Field f1, Field f2, Field f3)
+	{
+		
+	}
 }

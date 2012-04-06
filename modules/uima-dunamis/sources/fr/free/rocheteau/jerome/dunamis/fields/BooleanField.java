@@ -43,9 +43,14 @@ public class BooleanField implements Field {
 	
 	private void setComponent() {
 		this.component = new JCheckBox();
+		this.component.setOpaque(false);
 		this.component.setBorder(BorderFactory.createEmptyBorder(5, 7, 10, 0));
 	}
-
+	public void setListener(Field f1, Field f2, Field f3)
+	{
+		this.component.addActionListener(new BooleanFieldListener(f1, f2, f3));
+	}
+	
 	@Override
 	public JCheckBox getComponent() {
 		return this.component;

@@ -30,7 +30,7 @@ public class StringItemField implements Field {
 			this.getText().setSelectedItem(this.value);
 		}
 	}
-	
+
 	@Override
 	public String getValue() {
 		return (String) this.getText().getSelectedItem();
@@ -48,7 +48,8 @@ public class StringItemField implements Field {
 		Border border = BorderFactory.createEmptyBorder();
 		int position = TitledBorder.DEFAULT_POSITION;
 		int justrification = TitledBorder.DEFAULT_JUSTIFICATION;
-		this.border = BorderFactory.createTitledBorder(border,"",justrification,position);		
+		this.border = BorderFactory.createTitledBorder(border,"",justrification,position);	
+	
 	}
 	
 	private TitledBorder getBorder() {
@@ -69,6 +70,7 @@ public class StringItemField implements Field {
 	
 	private void setComponent() {
 		this.component = new JPanel();
+		this.component.setOpaque(false);
 		this.component.setBorder(this.getBorder());
 		this.component.add(this.getText());
 	}
@@ -82,5 +84,8 @@ public class StringItemField implements Field {
 	public boolean isModified() {
 		return !this.getValue().equals(this.value);
 	}
-
+	public void setListener(Field f1, Field f2, Field f3)
+	{
+		
+	}
 }
