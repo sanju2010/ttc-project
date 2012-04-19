@@ -170,6 +170,7 @@ In fact, UIMA components that can be executed by the Spotter performs:
 ==== Inputs & Outputs ====
 
 It merely accepts UTF-8 text files as inputs and generates a XMI file in the output directory per text file in the input directory.
+After running the spotter, the results are display by clicking on the "VIEW" tab.
 
 ==== Settings ====
 
@@ -325,3 +326,5 @@ The Aligner requires the following parameters to be set:
   * the parameter _Dictionary File_ may refer to the bilingual dictionary,
   * the parameter _Distributional Method_ enables the distributional method if checked,
   * the parameter _Compositional Method_ enables the compositional method if checked.
+
+After running the aligner, the results are display by clicking on the "VIEW" tab.
