@@ -33,8 +33,10 @@ public class Writer extends JCasAnnotator_ImplBase {
 				throw new IOException("This path '" + path + "' isn't a directory");
 			}
 		} else {
-			if (!directory.mkdirs()) {
-				throw new FileNotFoundException(path);				
+			if (directory.mkdirs()) {
+			        this.directory = directory;
+			} else {
+				throw new FileNotFoundException(path);		      
 			}
 		}
 	}
