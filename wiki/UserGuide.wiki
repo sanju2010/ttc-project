@@ -260,13 +260,15 @@ The Indexer requires the following parameters to be set:
 
 *Warning:* On the contrary on the spotter and the aligner, to view the results of the indexer, you need to load the language-terminology.xmi file. Select the View tab panel. Press the right mouse touch and select "Load from file". Once the terminology is loaded, you can sort the results alphabetically, or by frequency or by specificity. Press the right mouse touch and select the sort.
 
-http://ttc-project.googlecode.com/files/indexer.png
+
+
 
 === Aligner === 
 
 The Aligner tabbed panel has 2 embedded tabbed panels itself: the first called Edit makes possible to configure the UIMA component that performs terminology alignment, the second called View enables translation and evaluation display.
 
-http://code.google.com/p/ttc-project/downloads/detail?name=termSuiteImage.jpg&can=2&q=
+http://ttc-project.googlecode.com/files/aligner.png
+
 
 ==== Features ====
 
