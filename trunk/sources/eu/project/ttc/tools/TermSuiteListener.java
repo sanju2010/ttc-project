@@ -52,12 +52,13 @@ public class TermSuiteListener implements ActionListener, PropertyChangeListener
 		try {
 			this.getTermSuiteTool().getParent().getToolBar().getRun().setEnabled(false); 
 			this.runner = new TermSuiteRunner(this.getTermSuiteTool().getParent(), this.getTermSuiteEngine());
-	        this.runner.addPropertyChangeListener(this);
+			this.runner.addPropertyChangeListener(this);
 			this.runner.execute();
 			this.getTermSuiteTool().getParent().getToolBar().getStop().setEnabled(true);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(this.getTermSuiteTool().getParent().getFrame(),e.getMessage(),"Exception",JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
+			this.getTermSuiteTool().getParent().getToolBar().getRun().setEnabled(true);
 		} 
 	}
 	
