@@ -222,9 +222,9 @@ The Indexer tabbed panel provides 2 embedded tabbed panels too;
 one called Edit for settings parameter values of the corresponding 
 UIMA components, the other for displaying the monolingual terminology extraction.
 
-*Warning:* On the contrary on the spotter and the aligner, to view the results of the indexer, you need to load the language-terminology.xmi file. Select the View tab panel. Press the right mouse touch and select "Load from file". Once the terminology is loaded, you can sort the results alphabetically, or by frequency or by specificity. Press the right mouse touch and select the sort.
 
 http://ttc-project.googlecode.com/files/indexer.png
+
 
 ==== Features ====
 
@@ -254,6 +254,13 @@ The Indexer requires the following parameters to be set:
   * the parameter _Edit Distance Class Name_ defines the implementation that realzes the edit distance based similarity measure: it could either be Levenshtein or LongestCommonSubsequence,
   * the parameter _Edit Distance Threshold_ specifies the minimum value for conflating terms together using the edit-distance approach: it should be a value between 0 and 1,
   * the parameter _Edit Distance Ngrams_ defines the numbers of charcters taken in account while measuring the edit distance between two terms: it should be an integer between 1 and 3.
+
+
+=== Indexer view ====
+
+*Warning:* On the contrary on the spotter and the aligner, to view the results of the indexer, you need to load the language-terminology.xmi file. Select the View tab panel. Press the right mouse touch and select "Load from file". Once the terminology is loaded, you can sort the results alphabetically, or by frequency or by specificity. Press the right mouse touch and select the sort.
+
+http://ttc-project.googlecode.com/files/indexer.png
 
 === Aligner === 
 
