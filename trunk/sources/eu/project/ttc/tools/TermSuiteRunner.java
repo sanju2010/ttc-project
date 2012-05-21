@@ -117,7 +117,7 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 				this.data.add(file);
 			}
 		} else {
-			throw new FileNotFoundException(path);
+			throw new FileNotFoundException("unable to find : "+path);
 		}
 		Collections.sort(this.data, this.comparator);
 		// System.out.println("Number of documents to process: " + this.data.size());
@@ -193,6 +193,7 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 			}
 			File file = this.data.get(index);
 			// System.out.println("PROCESS " + file);
+			info("Process : " + file);
 			boolean last = index == this.data.size() - 1;
 			// this.publish(file);
 			try {
@@ -233,7 +234,7 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 			return;
 		}
 		String message = this.display(this.analysisEngine.getAnalysisEngineMetaData(), this.analysisEngine.getManagementInterface(), 0);
-		UIMAFramework.getLogger().log(Level.INFO, message);
+		info(message);//UIMAFramework.getLogger().log(Level.INFO, message);
 	}
 
 	private void process(File file, String encoding, String language, int mode, boolean last) throws Exception {
