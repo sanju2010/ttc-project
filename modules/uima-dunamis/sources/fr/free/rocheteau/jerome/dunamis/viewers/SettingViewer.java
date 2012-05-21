@@ -173,19 +173,19 @@ public class SettingViewer {
 	    		Object value = settings.getParameterValue(name);
 	    		String description = parameters[index].getDescription();
 	    		Field field = FieldFactory.getComponent(type,name,multi,value, description);
-	    	/*	if (field != null) {
+	    		if (field != null) {
+			    /*
     				if (name.endsWith("EnableTermConflating"))
-					{
-					cb=field;
-					JCheckBox c=(JCheckBox) cb.getComponent();
-					c.setSelected(false);
-					}
+				{
+				cb=field;
+				JCheckBox c=(JCheckBox) cb.getComponent();
+				c.setSelected(false);
+				}
     				else if (name.endsWith("EditDistanceClassName"))
     				{
     				f1=field;
     				StringItemField f=(StringItemField)f1;
     				f.getText().setEnabled(false);
-    				
     				}
     				else if (name.endsWith("EditDistanceThreshold"))
     				{
@@ -200,10 +200,11 @@ public class SettingViewer {
     				f.getSpinner().setEnabled(false);
     				cb.setListener(f1,f2,f3);
     				} 
-		    		this.getFields().add(field);
-		    		this.constraint.gridy++;
-		    		this.getComponent().add(field.getComponent(),this.constraint);
-		    	}*/
+			    */
+			    this.getFields().add(field);
+			    this.constraint.gridy++;
+			    this.getComponent().add(field.getComponent(),this.constraint);
+		    	}
 	    	}
 
 	    }
