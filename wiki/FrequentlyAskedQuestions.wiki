@@ -38,7 +38,7 @@ As they are not only 1 analysis engine to process, there is
 no one CLI usage of Term Suite.
 
 {{{
-  java -cp ttc-term-suite-1.2.jar eu.project.ttc.tools.TermSuiteRunner -txt -analysis-engine eu.project.ttc.english.engines.spotter.FrenchSpotter -directory English/txt -language en -encoding utf-8 --Directory English/xmi --TreeTaggerHomeDirectory /usr/local/share/tree-tagger
+  java -cp ttc-term-suite-1.2.jar eu.project.ttc.tools.TermSuiteRunner -txt -analysis-engine eu.project.ttc.french.engines.spotter.FrenchSpotter -directory English/txt -language en -encoding utf-8 --Directory English/xmi --TreeTaggerHomeDirectory /usr/local/share/tree-tagger
   java -cp ttc-term-suite-1.2.jar eu.project.ttc.tools.TermSuiteRunner -xmi -analysis-engine eu.project.ttc.english.engines.indexer.EnglishIndexer -directory English/xmi -language en -encoding utf-8 --Directory English/
   java -cp ttc-term-suite-1.2.jar eu.project.ttc.tools.TermSuiteRunner -txt -analysis-engine eu.project.ttc.french.engines.spotter.FrenchSpotter -directory French/txt -language fr -encoding utf-8 --Directory French/xmi --TreeTaggerHomeDirectory /usr/local/share/tree-tagger
   java -cp ttc-term-suite-1.2.jar eu.project.ttc.tools.TermSuiteRunner -xmi -analysis-engine eu.project.ttc.french.engines.indexer.FrenchIndexer -directory French/xmi -language fr -encoding utf-8 --Directory French/
