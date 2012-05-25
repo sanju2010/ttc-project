@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 import javax.swing.SwingWorker;
+import javax.swing.SwingUtilities;
 
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_engine.AnalysisEngine;
@@ -182,6 +183,7 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 		try {
 			this.setAnalysisEngine();
 		} catch (Throwable e) {
+		        e.printStackTrace();
 			System.exit(1);
 		}
 		// System.out.println("INITIALIZED");
@@ -446,6 +448,8 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 			AnalysisEngineDescription description = TermSuiteRunner.description(engine, parameters);
 			TermSuiteRunner runner = new TermSuiteRunner(description, directory, input, language, encoding);
 			runner.execute();
+			if (!SwingUtilities.isEventDispatchThread())
+			    runner.get();
 		}
 	}
 
