@@ -142,12 +142,20 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 		Element body = document.createElement("body");
 		text.appendChild(body);
 		this.process(cas, document, body);
+		
 		TransformerFactory transformerFactory = TransformerFactory.newInstance();
 		Transformer transformer = transformerFactory.newTransformer();
 		transformer.setOutputProperty(OutputKeys.ENCODING,"UTF-8");
 		transformer.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM,"http://ttc-project.googlecode.com/files/tbxcore.dtd");
 		transformer.setOutputProperty(OutputKeys.STANDALONE,"yes");
-		transformer.setOutputProperty(OutputKeys.INDENT,"no");
+		transformer.setOutputProperty(OutputKeys.INDENT,"yes");
+		try {
+			transformer.setOutputProperty(
+					"{http://xml.apache.org/xslt}indent-amount", "2");
+		} catch (IllegalArgumentException e) {
+			// Ignore
+		}
+		
 		DOMSource source = new DOMSource(document);
 		StreamResult result = new StreamResult(file);
 		transformer.transform(source, result);
