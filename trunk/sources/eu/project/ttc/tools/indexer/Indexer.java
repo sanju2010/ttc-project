@@ -5,6 +5,8 @@ import java.io.File;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 
 import eu.project.ttc.tools.TermSuite;
@@ -26,7 +28,7 @@ public class Indexer implements TermSuiteTool {
 	
 	private void setSettings(File home) {
 		this.settings = new IndexerSettings(home.getAbsolutePath() + File.separator + "indexer.settings");
-		this.settings.getComponent().setBorder(BorderFactory.createTitledBorder("Default Settings"));
+		this.settings.getComponent().setBorder(BorderFactory.createTitledBorder("Settings"));
 	}
 	
 	public IndexerSettings getSettings() {
@@ -44,15 +46,30 @@ public class Indexer implements TermSuiteTool {
 		return this.advancedSettings;
 	}
 	
+	private TBXSettings TBXSettings;
+	
+	private void setTBXSettings(File home) {
+		this.TBXSettings = new TBXSettings(home.getAbsolutePath() + File.separator + "indexer.tbx-settings");
+		this.TBXSettings.getComponent().setBorder(BorderFactory.createTitledBorder("TBX Settings"));
+	}
+	
+	public TBXSettings getTBSSettings() {
+		return this.TBXSettings;
+	}
 	private JSplitPane component;
 	
 	private void setComponent() {
-		this.component = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-		this.component.setTopComponent(this.getSettings().getComponent());
-		this.component.setBottomComponent(this.getAdvancedSettings().getComponent());
-		//this.component.setBottomComponent(new JButton("hi"));
+		this.component = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+		JScrollPane pp=this.getSettings().getComponent();
+		this.component.setTopComponent(pp);
+		JSplitPane componentAdvanced;
+		componentAdvanced = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+		componentAdvanced.setTopComponent(this.getAdvancedSettings().getComponent());
+		componentAdvanced.setBottomComponent(this.getTBSSettings().getComponent());
+		componentAdvanced.setResizeWeight(0.7);
+		this.component.setBottomComponent(componentAdvanced);
 		this.component.setContinuousLayout(true);
-	//	this.component.setResizeWeight(0.25);
+		this.component.setResizeWeight(0.6);
 		this.component.setOneTouchExpandable(true);
 	//	this.component.setDividerSize(1);
 	}
@@ -61,10 +78,20 @@ public class Indexer implements TermSuiteTool {
 	public Component getComponent() {
 		return this.component;
 	}
-		
-	public Indexer(File home) {
+	private VectorContextParameters vectorParameters;
+	private AdvancedParameters param;
+	public VectorContextParameters getVectorParameters()
+	{
+		this.vectorParameters=this.param.getSettings();
+		return this.vectorParameters;
+	}
+
+	public Indexer(File home, AdvancedParameters param1) 
+	{
+		this.param=param1;
 		this.setSettings(home);
 		this.setAdvancedSettings(home);
+		this.setTBXSettings(home); 
 		this.setComponent();
 	}
 		
