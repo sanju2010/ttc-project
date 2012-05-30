@@ -26,7 +26,17 @@ public class FieldFactory {
 		} else {
 			if (type.equals("Boolean")) {
 				field = new BooleanField();
-				
+				if (((value==null) && name.equalsIgnoreCase("AdjectivesAndNouns")))
+				{
+				value=true;
+				}
+				else if (value!=null)
+				{
+					if(value.equals(true) && name.equalsIgnoreCase("AdjectivesAndNouns"))
+						{
+						value=true;
+						}
+				}
 			} else if (type.equals("Integer")) {
 				field = new IntegerField();
 			} else if (type.equals("Float")) {

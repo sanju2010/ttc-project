@@ -46,6 +46,7 @@ public class BooleanField implements Field {
 		this.component.setOpaque(false);
 		this.component.setBorder(BorderFactory.createEmptyBorder(5, 7, 10, 0));
 	}
+
 	public void setListener(Field f1, Field f2, Field f3)
 	{
 		this.component.addActionListener(new BooleanFieldListener(f1, f2, f3));
