@@ -48,11 +48,6 @@
     </dependency>
     <dependency>
     	<groupId>eu.project.ttc</groupId>
-    	<artifactId>uima-dunamis</artifactId>
-    	<version>1.0</version>
-    </dependency>
-    <dependency>
-    	<groupId>eu.project.ttc</groupId>
     	<artifactId>uima-mapper</artifactId>
     	<version>1.0</version>
     </dependency>
@@ -75,6 +70,12 @@
     	<groupId>eu.project.ttc</groupId>
     	<artifactId>uima-catcher</artifactId>
     	<version>1.0</version>
+    </dependency>
+    <dependency>
+    	<groupId>eu.project.ttc</groupId>
+    	<artifactId>uima-dunamis</artifactId>
+    	<version>1.1</version>
+    	<scope>compile</scope>
     </dependency>
    </dependencies>
   <url>http://code.google.com/p/ttc-project/</url>

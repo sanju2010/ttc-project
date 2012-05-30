@@ -123,6 +123,33 @@
           <parameter>TermCleaner/Threshold</parameter>
         </overrides>
       </configurationParameter>
+      <configurationParameter>
+        <name>Verbs</name>
+        <type>Integer</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>TermBaseXchanger/Verbs</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>NounsAndAdjectives</name>
+        <type>Integer</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>TermBaseXchanger/NounsAndAdjectives</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>tbxThreshold</name>
+        <type>Integer</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>TermBaseXchanger/tbxThreshold</parameter>
+        </overrides>
+      </configurationParameter>
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
@@ -186,9 +213,9 @@
         <node>EnglishTermFrequencyComputer</node>
         <node>EnglishCompoundIndexer</node>
         <node>EnglishTermGatherer</node>
+        <node>TermBaseXchanger</node>
         <node>TermCleaner</node>
         <node>Writer</node>
-        <node>TermBaseXchanger</node>
       </fixedFlow>
     </flowConstraints>
     <typePriorities/>

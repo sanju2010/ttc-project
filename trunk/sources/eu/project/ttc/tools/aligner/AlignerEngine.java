@@ -32,10 +32,10 @@ public class AlignerEngine implements TermSuiteEngine {
 		ConfigurationParameterSettings settings = UIMAFramework.getResourceSpecifierFactory().createConfigurationParameterSettings();
 		settings.setParameterValue("SourceLanguage",parameters.getParameterValue("SourceLanguage"));
 		settings.setParameterValue("TargetLanguage",parameters.getParameterValue("TargetLanguage"));
-		settings.setParameterValue("DictionaryFile",parameters.getParameterValue("DictionaryFile"));
-		settings.setParameterValue("SourceTerminologyFile",parameters.getParameterValue("SourceTerminologyFile"));
-		settings.setParameterValue("TargetTerminologyFile",parameters.getParameterValue("TargetTerminologyFile"));
-		settings.setParameterValue("Directory", parameters.getParameterValue("Directory"));
+		settings.setParameterValue("DictionaryFile",parameters.getParameterValue("BilingualDictionaryFile"));
+		settings.setParameterValue("SourceTerminologyFile",parameters.getParameterValue("InputSourceTerminologyFile"));
+		settings.setParameterValue("TargetTerminologyFile",parameters.getParameterValue("OutputTargetTerminologyFile"));
+		settings.setParameterValue("Directory", parameters.getParameterValue("EvaluationInputOutputTranslationDirectory"));
 		settings.setParameterValue("Action", "drop");
 		settings.setParameterValue("SimilarityDistanceClassName",advancedParameters.getParameterValue("SimilarityDistanceClassName"));
 		settings.setParameterValue("DistributionalMethod",advancedParameters.getParameterValue("DistributionalMethod") == null ? Boolean.TRUE : advancedParameters.getParameterValue("DistributionalMethod"));
@@ -46,7 +46,7 @@ public class AlignerEngine implements TermSuiteEngine {
 	@Override
 	public String data() {
 		ConfigurationParameterSettings parameters = this.getTool().getSettings().getMetaData().getConfigurationParameterSettings();
-		return (String) parameters.getParameterValue("Directory");
+		return (String) parameters.getParameterValue("EvaluationInputOutputTranslationDirectory");
 	}
 
 	@Override

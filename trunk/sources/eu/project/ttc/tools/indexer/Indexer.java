@@ -4,6 +4,7 @@ import java.awt.Component;
 import java.io.File;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JSplitPane;
 
 import eu.project.ttc.tools.TermSuite;
@@ -25,7 +26,7 @@ public class Indexer implements TermSuiteTool {
 	
 	private void setSettings(File home) {
 		this.settings = new IndexerSettings(home.getAbsolutePath() + File.separator + "indexer.settings");
-		this.settings.getComponent().setBorder(BorderFactory.createTitledBorder("Settings"));
+		this.settings.getComponent().setBorder(BorderFactory.createTitledBorder("Default Settings"));
 	}
 	
 	public IndexerSettings getSettings() {
@@ -46,12 +47,14 @@ public class Indexer implements TermSuiteTool {
 	private JSplitPane component;
 	
 	private void setComponent() {
-		this.component = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+		this.component = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 		this.component.setTopComponent(this.getSettings().getComponent());
 		this.component.setBottomComponent(this.getAdvancedSettings().getComponent());
+		//this.component.setBottomComponent(new JButton("hi"));
 		this.component.setContinuousLayout(true);
-		this.component.setResizeWeight(0.5);
+	//	this.component.setResizeWeight(0.25);
 		this.component.setOneTouchExpandable(true);
+	//	this.component.setDividerSize(1);
 	}
 	
 	@Override

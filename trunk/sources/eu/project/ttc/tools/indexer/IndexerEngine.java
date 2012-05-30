@@ -4,6 +4,7 @@ import java.util.Locale;
 
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.cas.CAS;
+import org.apache.uima.resource.metadata.ConfigurationParameter;
 import org.apache.uima.resource.metadata.ConfigurationParameterSettings;
 
 import eu.project.ttc.tools.TermSuiteEngine;
@@ -33,19 +34,49 @@ public class IndexerEngine implements TermSuiteEngine {
 		ConfigurationParameterSettings parameters = this.getTool().getSettings().getMetaData().getConfigurationParameterSettings();
 		ConfigurationParameterSettings advancedParameters = this.getTool().getAdvancedSettings().getMetaData().getConfigurationParameterSettings();
 		String code = (String) parameters.getParameterValue("Language");
-        ConfigurationParameterSettings settings = UIMAFramework.getResourceSpecifierFactory().createConfigurationParameterSettings();
+
+
+		ConfigurationParameterSettings settings = UIMAFramework.getResourceSpecifierFactory().createConfigurationParameterSettings();
         settings.setParameterValue("Language", code);
         settings.setParameterValue("Directory", parameters.getParameterValue("OutputDirectory"));
+		settings.setParameterValue("Action", "drop");
+
+		if (this.getTool().toString().contains("Indexer"))
+		{	      
+		Indexer indexer=(Indexer)this.getTool();
+		
+		ConfigurationParameterSettings vectorparameters = indexer.getVectorParameters().getMetaData().getConfigurationParameterSettings();
+		settings.setParameterValue("Threshold", vectorparameters.getParameterValue("FrequencyFilteringThreshold"));
+	    settings.setParameterValue("AssociationRateClassName", vectorparameters.getParameterValue("AssociationMeasure"));
+		ConfigurationParameterSettings tbxParameters = indexer.getTBSSettings().getMetaData().getConfigurationParameterSettings();
+		if (tbxParameters.getParameterValue("VerbsAndOthers")==null || tbxParameters.getParameterValue("VerbsAndOthers").equals(false))
+		settings.setParameterValue("Verbs", 0);
+		else
+		settings.setParameterValue("Verbs", 1);
+
+		if (tbxParameters.getParameterValue("AdjectivesAndNouns")==null || tbxParameters.getParameterValue("AdjectivesAndNouns").equals(false))
+			settings.setParameterValue("NounsAndAdjectives", 0);
+			else
+			settings.setParameterValue("NounsAndAdjectives", 1);
+		
+		if (tbxParameters.getParameterValue("FrequencyFilteringThreshold")==null || tbxParameters.getParameterValue("FrequencyFilteringThreshold").equals(0))
+			settings.setParameterValue("tbxThreshold", 0);
+			else
+			settings.setParameterValue("tbxThreshold", tbxParameters.getParameterValue("FrequencyFilteringThreshold"));
+		}
+
+		
         // settings.setParameterValue("File", (String) parameters.getParameterValue("TerminologyFile"));
-        settings.setParameterValue("Action", "drop");
         /*
         settings.setParameterValue("MultiWordPatternRuleFile", (String) parameters.getParameterValue("MultiWordPatternRuleFile"));
         settings.setParameterValue("TermVariationRuleFile", (String) parameters.getParameterValue("TermVariationRuleFile"));
         settings.setParameterValue("NeoclassicalElementFile", (String) parameters.getParameterValue("NeoclassicalElementFile"));
         */
-        settings.setParameterValue("Threshold", advancedParameters.getParameterValue("HapaxFilteringThreshold"));
-        settings.setParameterValue("AssociationRateClassName", advancedParameters.getParameterValue("AssociationRateClassName"));
-        settings.setParameterValue("EnableTermGathering", advancedParameters.getParameterValue("EnableTermConflating") == null ? Boolean.FALSE : advancedParameters.getParameterValue("EnableTermConflating"));
+   //     settings.setParameterValue("Threshold", advancedParameters.getParameterValue("HapaxFilteringThreshold"));
+    //    settings.setParameterValue("AssociationRateClassName", advancedParameters.getParameterValue("AssociationRateClassName"));
+       
+        // nh 
+        settings.setParameterValue("EnableTermGathering", advancedParameters.getParameterValue("VariantsDetection") == null ? Boolean.FALSE : advancedParameters.getParameterValue("VariantsDetection"));
         settings.setParameterValue("EditDistanceClassName", advancedParameters.getParameterValue("EditDistanceClassName"));
         settings.setParameterValue("EditDistanceThreshold", advancedParameters.getParameterValue("EditDistanceThreshold"));
         settings.setParameterValue("EditDistanceNgrams", advancedParameters.getParameterValue("EditDistanceNgrams"));

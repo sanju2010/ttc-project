@@ -32,7 +32,7 @@
     </configurationParameterSettings>
     <typeSystemDescription>
       <imports>
-        <import name="eu.project.ttc.types.TermSuiteTypeSystem"/>
+        <import name="resources.eu.project.ttc.types.TermSuiteTypeSystem"/>
       </imports>
     </typeSystemDescription>
     <typePriorities/>

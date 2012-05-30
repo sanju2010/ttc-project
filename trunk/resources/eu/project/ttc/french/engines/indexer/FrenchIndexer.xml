@@ -15,11 +15,11 @@
     <delegateAnalysisEngine key="TermBaseXchanger">
       <import name="eu.project.ttc.all.engines.TermBaseXchanger"/>
     </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="FrenchTermGatherer">
-      <import name="eu.project.ttc.french.engines.indexer.FrenchTermGatherer"/>
-    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="TermCleaner">
       <import name="eu.project.ttc.all.engines.indexer.TermCleaner"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="FrenchTermGatherer">
+      <import name="eu.project.ttc.french.engines.indexer.FrenchTermGatherer"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="TermIndexer">
       <import name="eu.project.ttc.all.engines.indexer.TermIndexer"/>
@@ -123,6 +123,33 @@
           <parameter>TermCleaner/Threshold</parameter>
         </overrides>
       </configurationParameter>
+      <configurationParameter>
+        <name>Verbs</name>
+        <type>Integer</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>TermBaseXchanger/Verbs</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>NounsAndAdjectives</name>
+        <type>Integer</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>TermBaseXchanger/NounsAndAdjectives</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>tbxThreshold</name>
+        <type>Integer</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>TermBaseXchanger/tbxThreshold</parameter>
+        </overrides>
+      </configurationParameter>
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
@@ -179,6 +206,12 @@
           <integer>1</integer>
         </value>
       </nameValuePair>
+      <nameValuePair>
+        <name>Verbs</name>
+        <value>
+          <integer>1</integer>
+        </value>
+      </nameValuePair>
     </configurationParameterSettings>
     <flowConstraints>
       <fixedFlow>
@@ -186,9 +219,9 @@
         <node>FrenchTermFrequencyComputer</node>
         <node>FrenchCompoundIndexer</node>
         <node>FrenchTermGatherer</node>
+        <node>TermBaseXchanger</node>
         <node>TermCleaner</node>
         <node>Writer</node>
-        <node>TermBaseXchanger</node>
       </fixedFlow>
     </flowConstraints>
     <typePriorities/>

@@ -15,12 +15,43 @@
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
+      <configurationParameter>
+        <name>Verbs</name>
+        <type>Integer</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+      </configurationParameter>
+      <configurationParameter>
+        <name>NounsAndAdjectives</name>
+        <type>Integer</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+      </configurationParameter>
+      <configurationParameter>
+        <name>tbxThreshold</name>
+        <type>Integer</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+      </configurationParameter>
     </configurationParameters>
+    
     <configurationParameterSettings>
       <nameValuePair>
         <name>Directory</name>
         <value>
           <string>/tmp/</string>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>Verbs</name>
+        <value>
+          <integer>0</integer>
+        </value>
+      </nameValuePair>
+       <nameValuePair>
+      <name>NounsAndAdjectives</name>
+        <value>
+          <integer>0</integer>
         </value>
       </nameValuePair>
     </configurationParameterSettings>
