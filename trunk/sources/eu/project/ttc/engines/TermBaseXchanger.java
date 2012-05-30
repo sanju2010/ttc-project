@@ -38,6 +38,32 @@ import eu.project.ttc.types.TermAnnotation;
 public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 	
 	private File file;
+	private Integer Verbs=0;
+	private void setVerbs(Integer Verbs) {
+		this.Verbs = Verbs;
+	}
+
+	private Integer getVerbs() {
+		return Verbs;
+	}
+	
+	private Integer NounsAndAdjectives=0;
+	private void setNounsAndAdjectives(Integer NounsAndAdjectives) {
+		this.NounsAndAdjectives = NounsAndAdjectives;
+	}
+
+	private Integer getNounsAndAdjectives() {
+		return NounsAndAdjectives;
+	}
+	
+	private Integer tbxThreshold=0;
+	private void settbxThreshold(Integer tbxThreshold) {
+		this.tbxThreshold = tbxThreshold;
+	}
+
+	private Integer gettbxThreshold() {
+		return tbxThreshold;
+	}
 	
 	private void setDirectory(String path) throws IOException {
 		this.file = new File(path);
@@ -46,12 +72,18 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 	private File getDirectory() {
 		return this.file;
 	}
-	
+	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
 		try {
 			if (this.getDirectory() == null) {
 				String path = (String) context.getConfigParameterValue("Directory");
+				Integer verbs = (Integer) context.getConfigParameterValue("Verbs");
+				Integer NAs = (Integer) context.getConfigParameterValue("NounsAndAdjectives");
+				Integer tbxThreshold = (Integer) context.getConfigParameterValue("tbxThreshold");
+				this.setVerbs(verbs);
+				this.setNounsAndAdjectives(NAs);
+				this.settbxThreshold(tbxThreshold);
 				this.setDirectory(path);
 			}
 			if (this.variants == null) {
@@ -68,7 +100,8 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 			AnnotationIndex<Annotation> index = cas.getAnnotationIndex(SourceDocumentInformation.type);
 			FSIterator<Annotation> iterator = index.iterator();
 			String name = "terminology.tbx";
-			if (iterator.hasNext()) {
+			if (iterator.hasNext()) 
+			{
 				SourceDocumentInformation sdi = (SourceDocumentInformation) iterator.next();
 				String uri = sdi.getUri();
 				int first = uri.lastIndexOf('/');
@@ -90,7 +123,16 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 		FSIterator<Annotation> iterator = index.iterator();
 		while (iterator.hasNext()) {
 			TermAnnotation annotation = (TermAnnotation) iterator.next();
-			if (annotation.getCategory().equals("verb")) {
+			if ((this.getVerbs()==0)&&(annotation.getCategory().equals("verb")))
+			{
+				continue;
+			}
+			if (((annotation.getCategory().equals("noun")||annotation.getCategory().equals("adjective"))) && (this.getNounsAndAdjectives()==0))
+			{
+				continue;
+			}
+			if (annotation.getOccurrences()<this.gettbxThreshold().intValue())
+			{
 				continue;
 			}
 			if (annotation.getVariants() != null) {
@@ -179,7 +221,18 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 		FSIterator<Annotation> iterator = index.iterator();
 		while (iterator.hasNext()) {
 			TermAnnotation annotation = (TermAnnotation) iterator.next();
-			
+			if ((annotation.getCategory().equals("verb")) && (this.getVerbs()==0))
+			{
+				continue;
+			}
+			if (((annotation.getCategory().equals("noun")||annotation.getCategory().equals("adjective"))) && (this.getNounsAndAdjectives()==0))
+			{
+				continue;
+			}
+			if (annotation.getOccurrences()<this.gettbxThreshold().intValue())
+			{
+				continue;
+			}
 			Element termEntry = document.createElement("termEntry");
 			termEntry.setAttribute("xml:id", "entry-" + annotation.getAddress());
 			body.appendChild(termEntry);
@@ -217,6 +270,7 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 			this.addNote(document, langSet, tig, "partOfSpeech", "noun");
 			this.addNote(document, langSet, tig, "termPattern", annotation.getCategory());
 			this.addNote(document, langSet, tig, "termComplexity", this.getComplexity(annotation));
+			this.addNote(document, langSet, tig, "termSpecifity", annotation.getSpecificity());
 			this.addDescrip(document, langSet, tig, "nbOccurrences", annotation.getOccurrences());
 			this.addDescrip(document, langSet, tig, "relativeFrequency", format.format(annotation.getFrequency()));
 			// this.addDescrip(document, langSet, tig, "domainSpecificity", annotation.getSpecificity());
@@ -239,7 +293,7 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 			return "multi-word";
 		}
 	}
-	
+
 	private void addDescrip(Document document, Element lang, Element element, String type, Object value) {
 		Element descrip = document.createElement("descrip");
 		element.appendChild(descrip);

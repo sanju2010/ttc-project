@@ -183,6 +183,7 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 		try {
 			this.setAnalysisEngine();
 		} catch (Throwable e) {
+			System.out.print(e.toString());
 		        e.printStackTrace();
 			System.exit(1);
 		}
