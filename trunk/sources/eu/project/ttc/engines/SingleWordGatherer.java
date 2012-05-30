@@ -63,44 +63,33 @@ public class SingleWordGatherer extends JCasAnnotator_ImplBase {
 		this.enable = enabled;
 	}
 	
-	private Float treshold;
-	
-	private void setThreshold(Float value) {
-		this.treshold = value;
+	public boolean isEnabled() {
+		return enable;
 	}
 	
-	private Float getThreshold() {
-		return this.treshold;
-	}
+	private Float threshold;
 	
+	// Is this really used ?
 	private Integer ngrams;
-	
-	private void setNgrams(Integer value) {
-		this.ngrams = value;
-	}
-	
-	private Integer getNgrams() {
-		return this.ngrams;
-	}
-	
+
 	@Override 
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
 		try {
 			Boolean enabled = (Boolean) context.getConfigParameterValue("Enable");
 			this.enable(enabled == null ? false : enabled.booleanValue());
-			if (this.enable && this.getEditDistance() == null) {
+			if (this.isEnabled() && this.getEditDistance() == null) {
 				String editDistance = (String) context.getConfigParameterValue("EditDistanceClassName");
-				this.setEditDistance(editDistance);				
+				this.setEditDistance(editDistance);
+				
+				if (threshold == null) {
+					threshold = (Float) context.getConfigParameterValue("Threshold");
+				}
+				if (ngrams == null) {
+					ngrams = (Integer) context.getConfigParameterValue("Ngrams");
+				}
 			}
-			if (this.getThreshold() == null) {
-				Float threshold = (Float) context.getConfigParameterValue("Threshold");
-				this.setThreshold(threshold);								
-			}
-			if (this.getNgrams() == null) {
-				Integer ngrams = (Integer) context.getConfigParameterValue("Ngrams");
-				this.setNgrams(ngrams);
-			}
+			
 			if (this.getAnnotations() == null) {
 				this.setAnnotations();
 			}
@@ -189,14 +178,14 @@ public class SingleWordGatherer extends JCasAnnotator_ImplBase {
 		UIMAFramework.getLogger().log(Level.INFO, "Edit-distance gathering over " + this.getAnnotations().size() + " term classes");
 		for (String key : this.getAnnotations().keySet()) {
 			List<SingleWordTermAnnotation> list = this.getAnnotations().get(key);
-			UIMAFramework.getLogger().log(Level.FINE, "Edit-distance gathering over the '" + key + "' term class of size " + list.size());
+			UIMAFramework.getLogger().log(Level.INFO, "Edit-distance gathering over the '" + key + "' term class of size " + list.size());
 			for (int i = 0; i < list.size(); i++) {
+				String source = list.get(i).getCoveredText();
 				for (int j = i + 1; j < list.size(); j++) {
-					String source = list.get(i).getCoveredText();
 					String target = list.get(j).getCoveredText();
-					int distance = this.getEditDistance().compute(source, target);
-					double norm = this.getEditDistance().normalize(distance, source, target);
-					if (norm >= this.getThreshold().doubleValue()) {
+					int distance = editDistance.compute(source, target);
+					double norm = editDistance.normalize(distance, source, target);
+					if (norm >= threshold.doubleValue()) {
 						this.annotate(cas, list, i, j);
 					}
 				}

@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.net.URL;
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -43,7 +44,7 @@ import fr.free.rocheteau.jerome.dunamis.fields.FieldFactory;
 public class IndexerViewer {
 
 	private Dimension getDimension() {
-		return new Dimension(600,400);
+		return new Dimension(600, 400);
 	}
 
 	private DefaultMutableTreeNode root;
@@ -51,23 +52,23 @@ public class IndexerViewer {
 	private void setRoot() {
 		this.root = new DefaultMutableTreeNode("Terminology");
 	}
-	
+
 	private DefaultMutableTreeNode getRoot() {
 		return this.root;
 	}
-	
+
 	private DefaultTreeModel model;
-	
+
 	private void setModel() {
 		this.model = new DefaultTreeModel(this.getRoot());
 	}
-	
+
 	public DefaultTreeModel getModel() {
 		return this.model;
 	}
-	
+
 	private JTree tree;
-	
+
 	private void setTree() {
 		this.tree = new JTree(this.getModel());
 		this.tree.setRootVisible(false);
@@ -75,23 +76,23 @@ public class IndexerViewer {
 		// this.tree.setSelectionModel(TreeSelectionModel.SINGLE_TREE_SELECTION);
 		// TODO this.list.setCellRenderer(new Renderer());
 	}
-	
+
 	private JTree getTree() {
 		return this.tree;
 	}
-	
+
 	private JScrollPane scroll;
-	
+
 	private void setScroll() {
 		this.scroll = new JScrollPane();
-	    this.scroll.getViewport().add(this.getTree());
+		this.scroll.getViewport().add(this.getTree());
 		this.scroll.setMinimumSize(this.getDimension());
 	}
-	
+
 	public JScrollPane getComponent() {
 		return this.scroll;
 	}
-		
+
 	public IndexerViewer() {
 		this.setRoot();
 		this.setModel();
@@ -99,7 +100,7 @@ public class IndexerViewer {
 		this.setScroll();
 		this.enableListener();
 	}
-	
+
 	private void enableListener() {
 		ActionListener listener = new Listener(this);
 		JPopupMenu menu = new Menu(listener);
@@ -111,35 +112,42 @@ public class IndexerViewer {
 		InputStream inputStream = new FileInputStream(path);
 		this.doLoad(inputStream);
 	}
-	
+
 	public void doLoad(File file) throws Exception {
 		InputStream inputStream = new FileInputStream(file);
 		this.doLoad(inputStream);
 	}
-	
+
 	public void doLoad(InputStream inputStream) throws Exception {
-		URL url = this.getClass().getClassLoader().getResource("eu/project/ttc/all/engines/indexer/TermIndexer.xml");
+		URL url = this
+				.getClass()
+				.getClassLoader()
+				.getResource(
+						"eu/project/ttc/all/engines/indexer/TermIndexer.xml");
 		XMLInputSource source = new XMLInputSource(url);
 		XMLParser parser = UIMAFramework.getXMLParser();
-		AnalysisEngineDescription ae = parser.parseAnalysisEngineDescription(source); 
+		AnalysisEngineDescription ae = parser
+				.parseAnalysisEngineDescription(source);
 		CAS cas = CasCreationUtils.createCas(ae);
 		XmiCasDeserializer.deserialize(inputStream, cas);
 		this.doLoad(cas.getJCas());
 	}
-	
+
 	public void doLoad(JCas cas) {
 		try {
-			AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TermAnnotation.type);
+			AnnotationIndex<Annotation> index = cas
+					.getAnnotationIndex(TermAnnotation.type);
 			FSIterator<Annotation> iterator = index.iterator();
 			while (iterator.hasNext()) {
 				TermAnnotation term = (TermAnnotation) iterator.next();
 				if (term.getCategory() == null) {
 					continue;
-				} else if (term.getCategory().equals("verb")) { 
+				} else if (term.getCategory().equals("verb")) {
 					continue;
 				} else {
 					DefaultMutableTreeNode node = new DefaultMutableTreeNode();
-					node.setUserObject(term.getCoveredText().replaceAll("\\s+", " "));
+					node.setUserObject(term.getCoveredText().replaceAll("\\s+",
+							" "));
 					this.getRoot().add(node);
 					this.addNotes(node, term);
 					try {
@@ -156,23 +164,25 @@ public class IndexerViewer {
 			e.printStackTrace();
 		}
 	}
-	
-	private void addForms(DefaultMutableTreeNode root, JCas cas, TermAnnotation annotation) {
+
+	private void addForms(DefaultMutableTreeNode root, JCas cas,
+			TermAnnotation annotation) {
 		try {
 			if (annotation.getForms() != null) {
 				DefaultMutableTreeNode node = new DefaultMutableTreeNode();
 				node.setUserObject("forms");
 				root.add(node);
 				for (int i = 0; i < annotation.getForms().size(); i++) {
-					this.addNote(node, annotation.getForms(i));			
+					this.addNote(node, annotation.getForms(i));
 				}
 			}
 		} catch (Exception e) {
 			// ignore
 		}
 	}
-	
-	private void addContext(DefaultMutableTreeNode root, JCas cas, TermAnnotation annotation) {
+
+	private void addContext(DefaultMutableTreeNode root, JCas cas,
+			TermAnnotation annotation) {
 		try {
 			JCas jcas = cas.getView(annotation.getCoveredText());
 			String context = jcas.getDocumentText();
@@ -184,7 +194,7 @@ public class IndexerViewer {
 			// ignore
 		}
 	}
-	
+
 	private void addContext(DefaultMutableTreeNode root, String context) {
 		String[] scores = context.split("\n");
 		for (String score : scores) {
@@ -194,8 +204,9 @@ public class IndexerViewer {
 			}
 		}
 	}
-	
-	private void addVariants(DefaultMutableTreeNode root, JCas cas, TermAnnotation annotation) {
+
+	private void addVariants(DefaultMutableTreeNode root, JCas cas,
+			TermAnnotation annotation) {
 		if (annotation.getVariants() != null) {
 			String flag = "*";
 			if (annotation instanceof MultiWordTermAnnotation) {
@@ -206,7 +217,7 @@ public class IndexerViewer {
 			if (node == null) {
 				node = new DefaultMutableTreeNode();
 				node.setUserObject("variants");
-				root.add(node);				
+				root.add(node);
 			}
 			int length = annotation.getVariants().size();
 			for (int index = 0; index < length; index++) {
@@ -215,16 +226,19 @@ public class IndexerViewer {
 			}
 		}
 	}
-	
-	private void addVariant(DefaultMutableTreeNode root, JCas cas, TermAnnotation annotation) {
+
+	private void addVariant(DefaultMutableTreeNode root, JCas cas,
+			TermAnnotation annotation) {
 		DefaultMutableTreeNode node = new DefaultMutableTreeNode();
 		node.setUserObject(annotation.getCoveredText().replaceAll("\\s+", " "));
 		root.add(node);
 		this.addNotes(node, annotation);
 	}
-	
-	private void addComponents(DefaultMutableTreeNode root, JCas cas, TermAnnotation annotation) {
-		AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TermComponentAnnotation.type);
+
+	private void addComponents(DefaultMutableTreeNode root, JCas cas,
+			TermAnnotation annotation) {
+		AnnotationIndex<Annotation> index = cas
+				.getAnnotationIndex(TermComponentAnnotation.type);
 		FSIterator<Annotation> iterator = index.subiterator(annotation);
 		DefaultMutableTreeNode node = null;
 		while (iterator.hasNext()) {
@@ -233,7 +247,8 @@ public class IndexerViewer {
 				node.setUserObject("components");
 				root.add(node);
 			}
-			TermComponentAnnotation component = (TermComponentAnnotation) iterator.next();
+			TermComponentAnnotation component = (TermComponentAnnotation) iterator
+					.next();
 			DefaultMutableTreeNode child = new DefaultMutableTreeNode();
 			child.setUserObject(component.getCoveredText());
 			node.add(child);
@@ -246,22 +261,23 @@ public class IndexerViewer {
 	private DefaultMutableTreeNode getvariants(DefaultMutableTreeNode root) {
 		int count = root.getChildCount();
 		for (int index = 0; index < count; index++) {
-			DefaultMutableTreeNode child = (DefaultMutableTreeNode) root.getChildAt(index);
+			DefaultMutableTreeNode child = (DefaultMutableTreeNode) root
+					.getChildAt(index);
 			if (child.getUserObject().toString().equals("variants")) {
-				return (DefaultMutableTreeNode ) child;
+				return (DefaultMutableTreeNode) child;
 			}
 		}
 		return null;
 	}
 
-	private void addNotes(DefaultMutableTreeNode root,TermAnnotation annotation) {
+	private void addNotes(DefaultMutableTreeNode root, TermAnnotation annotation) {
 		this.addNote(root, "complexity", this.getComplexity(annotation));
 		this.addNote(root, "category", annotation.getCategory());
 		this.addNote(root, "occurrences", annotation.getOccurrences());
 		this.addNote(root, "frequency", annotation.getFrequency());
 		this.addNote(root, "specificity", annotation.getSpecificity());
 	}
-	
+
 	private String getComplexity(TermAnnotation annotation) {
 		if (annotation instanceof SingleWordTermAnnotation) {
 			SingleWordTermAnnotation swt = (SingleWordTermAnnotation) annotation;
@@ -279,25 +295,26 @@ public class IndexerViewer {
 		}
 	}
 
-	private void addNote(DefaultMutableTreeNode root,String key,Object value) {
+	private void addNote(DefaultMutableTreeNode root, String key, Object value) {
 		if (value != null) {
 			String string = key + " : " + value.toString();
 			this.addNote(root, string);
-		}	
+		}
 	}
-	
-	private void addNote(DefaultMutableTreeNode root,String value) {
+
+	private void addNote(DefaultMutableTreeNode root, String value) {
 		DefaultMutableTreeNode node = new DefaultMutableTreeNode();
 		if (value != null) {
 			node.setUserObject(value);
 			root.add(node);
-		}	
+		}
 	}
-	
+
 	public void sortBy(Comparator<DefaultMutableTreeNode> comparator) {
 		List<DefaultMutableTreeNode> nodes = new ArrayList<DefaultMutableTreeNode>();
 		for (int i = 0; i < this.getRoot().getChildCount(); i++) {
-			DefaultMutableTreeNode node = (DefaultMutableTreeNode) this.getRoot().getChildAt(i);
+			DefaultMutableTreeNode node = (DefaultMutableTreeNode) this
+					.getRoot().getChildAt(i);
 			nodes.add(node);
 		}
 		Collections.sort(nodes, comparator);
@@ -309,34 +326,38 @@ public class IndexerViewer {
 		this.getModel().reload();
 	}
 
+	/** Compare names in a locale sensitive manner */
+	private static final Collator NameCollator = Collator.getInstance();
 	
 	public void sortByName() {
 		this.sortBy(new NameComparator());
 	}
-	
+
 	public void sortByFreq() {
 		this.sortBy(new FreqComparator());
 	}
-	
+
 	public void sortBySpec() {
 		this.sortBy(new SpecComparator());
 	}
-	
+
 	private class NameComparator implements Comparator<DefaultMutableTreeNode> {
 		
 		@Override
-		public int compare(DefaultMutableTreeNode source, DefaultMutableTreeNode target) {
+		public int compare(DefaultMutableTreeNode source,
+				DefaultMutableTreeNode target) {
 			String src = (String) source.getUserObject();
 			String tgt = (String) target.getUserObject();
-			return src.compareTo(tgt);
+			return NameCollator.compare(src, tgt);
 		}
-		
+
 	}
-	
+
 	private class FreqComparator implements Comparator<DefaultMutableTreeNode> {
-		
+
 		@Override
-		public int compare(DefaultMutableTreeNode source, DefaultMutableTreeNode target) {
+		public int compare(DefaultMutableTreeNode source,
+				DefaultMutableTreeNode target) {
 			Double src = Double.valueOf(this.getFreq(source));
 			Double tgt = Double.valueOf(this.getFreq(target));
 			// String src = this.getFreq(source);
@@ -346,21 +367,23 @@ public class IndexerViewer {
 
 		private String getFreq(DefaultMutableTreeNode node) {
 			for (int i = 0; i < node.getChildCount(); i++) {
-				DefaultMutableTreeNode child = (DefaultMutableTreeNode) node.getChildAt(i);
+				DefaultMutableTreeNode child = (DefaultMutableTreeNode) node
+						.getChildAt(i);
 				String label = (String) child.getUserObject();
 				if (label.startsWith("frequency : ")) {
 					return label.substring(12).trim();
 				}
 			}
-			throw new NullPointerException((String) node.getUserObject()); 
+			throw new NullPointerException((String) node.getUserObject());
 		}
-		
+
 	}
-	
+
 	private class SpecComparator implements Comparator<DefaultMutableTreeNode> {
-		
+
 		@Override
-		public int compare(DefaultMutableTreeNode source, DefaultMutableTreeNode target) {
+		public int compare(DefaultMutableTreeNode source,
+				DefaultMutableTreeNode target) {
 			Double src = Double.valueOf(this.getSpec(source));
 			Double tgt = Double.valueOf(this.getSpec(target));
 			// String src = this.getSpec(source);
@@ -370,89 +393,97 @@ public class IndexerViewer {
 
 		private String getSpec(DefaultMutableTreeNode node) {
 			for (int i = 0; i < node.getChildCount(); i++) {
-				DefaultMutableTreeNode child = (DefaultMutableTreeNode) node.getChildAt(i);
+				DefaultMutableTreeNode child = (DefaultMutableTreeNode) node
+						.getChildAt(i);
 				String label = (String) child.getUserObject();
 				if (label.startsWith("specificity : ")) {
 					return label.substring(14).trim();
 				}
 			}
-			throw new NullPointerException((String) node.getUserObject()); 
+			throw new NullPointerException((String) node.getUserObject());
 		}
-		
+
 	}
-	
+
 	private class Listener implements ActionListener {
 
 		private IndexerViewer viewer;
-		
+
 		public Listener(IndexerViewer viewer) {
 			this.viewer = viewer;
 		}
-		
+
 		@Override
 		public void actionPerformed(ActionEvent event) {
 			Object object = event.getSource();
 			if (object instanceof JMenuItem) {
 				JMenuItem source = (JMenuItem) object;
 				String action = source.getActionCommand();
-				if (action.equals("load")) { 
-					int rv = FieldFactory.getChooser().showOpenDialog(/*this.getFileField().getComponent()*/null);
+				if (action.equals("load")) {
+					int rv = FieldFactory.getChooser().showOpenDialog(/*
+																	 * this.
+																	 * getFileField
+																	 * ().
+																	 * getComponent
+																	 * ()
+																	 */null);
 					if (rv == JFileChooser.APPROVE_OPTION) {
 						File file = FieldFactory.getChooser().getSelectedFile();
 						try {
 							this.viewer.doLoad(file);
 						} catch (Exception e) {
-							UIMAFramework.getLogger().log(Level.SEVERE, e.getMessage());
+							UIMAFramework.getLogger().log(Level.SEVERE,
+									e.getMessage());
 							e.printStackTrace();
 						}
 					}
-				} else if (action.equals("name")) { 
+				} else if (action.equals("name")) {
 					this.viewer.sortByName();
-				} else if (action.equals("freq")) { 
+				} else if (action.equals("freq")) {
 					this.viewer.sortByFreq();
-				} else if (action.equals("spec")) { 
+				} else if (action.equals("spec")) {
 					this.viewer.sortBySpec();
-				} 
+				}
 			}
 		}
-		
+
 	}
-	
+
 	private class Menu extends JPopupMenu {
-		
+
 		/**
 		 * 
 		 */
 		private static final long serialVersionUID = -3988974235600538309L;
-		
+
 		private JMenuItem load;
-		
+
 		private void setLoad() {
 			this.load = new JMenuItem("Load from file");
 			this.load.setActionCommand("load");
 		}
-		
+
 		private JMenuItem sortByName;
-		
+
 		private void setSortByName() {
 			this.sortByName = new JMenuItem("Sort by name");
 			this.sortByName.setActionCommand("name");
 		}
-		
+
 		private JMenuItem sortByFreq;
-		
+
 		private void setSortByFreq() {
 			this.sortByFreq = new JMenuItem("Sort by frequency");
 			this.sortByFreq.setActionCommand("freq");
 		}
-		
+
 		private JMenuItem sortBySpec;
-		
+
 		private void setSortBySpec() {
 			this.sortBySpec = new JMenuItem("Sort by specificity");
 			this.sortBySpec.setActionCommand("spec");
 		}
-		
+
 		public Menu(ActionListener listsner) {
 			this.setLoad();
 			this.setSortByName();
@@ -468,7 +499,7 @@ public class IndexerViewer {
 			this.sortByFreq.addActionListener(listsner);
 			this.sortBySpec.addActionListener(listsner);
 		}
-		
+
 	}
-		
+
 }

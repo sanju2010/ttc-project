@@ -353,7 +353,7 @@ public class MultiWordTermGatherer extends JCasAnnotator_ImplBase {
 		this.getContext().getLogger().log(Level.INFO, "Rule-based gathering over " + this.getAnnotations().size() + " term classes");
 		for (String key : this.getAnnotations().keySet()) {
 			List<TermAnnotation> list = this.getAnnotations().get(key);
-			this.getContext().getLogger().log(Level.FINE, "Rule-based gathering over the '" + key + "' term class of size " + list.size());			
+			this.getContext().getLogger().log(Level.INFO, "Rule-based gathering over the '" + key + "' term class of size " + list.size());			
 			for (int i = 0; i < list.size(); i++) {
 				for (int j = 0; j < list.size(); j++) {
 					if (i == j) {

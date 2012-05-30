@@ -17,7 +17,7 @@ public class IndexerAdvancedSettings extends Parameters implements TermSuiteSett
 	//	this.addParameter(declarations, "HapaxFilteringThreshold", ConfigurationParameter.TYPE_INTEGER, false, true);
 	//	this.addParameter(declarations, "AssociationRateClassName", ConfigurationParameter.TYPE_STRING, false, true, "values:eu.project.ttc.metrics.LogLikelihood|eu.project.ttc.metrics.MutualInformation");
 		this.addParameter(declarations, "VariantsDetection", ConfigurationParameter.TYPE_BOOLEAN, false, true);
-		this.addParameter(declarations, "EditDistanceClassName", ConfigurationParameter.TYPE_STRING, false, true, "values:eu.project.ttc.metrics.Levenshtein|eu.project.ttc.metrics.LongestCommonSubsequence");
+		this.addParameter(declarations, "EditDistanceClassName", ConfigurationParameter.TYPE_STRING, false, true, "values:eu.project.ttc.metrics.Levenshtein|eu.project.ttc.metrics.LongestCommonSubsequence|eu.project.ttc.metrics.DiacriticInsensitiveLevenshtein");
 		this.addParameter(declarations, "EditDistanceThreshold", ConfigurationParameter.TYPE_FLOAT, false, true);
 		this.addParameter(declarations, "EditDistanceNgrams", ConfigurationParameter.TYPE_INTEGER, false, true);
 	}
