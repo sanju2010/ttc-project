@@ -150,6 +150,15 @@
           <parameter>TermBaseXchanger/tbxThreshold</parameter>
         </overrides>
       </configurationParameter>
+      <configurationParameter>
+        <name>IgnoreDiacriticsInMultiwordTerms</name>
+        <type>Boolean</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>FrenchTermGatherer/IgnoreDiacriticsInMultiwordTerms</parameter>
+        </overrides>
+      </configurationParameter>
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>

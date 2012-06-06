@@ -20,6 +20,7 @@ public class IndexerAdvancedSettings extends Parameters implements TermSuiteSett
 		this.addParameter(declarations, "EditDistanceClassName", ConfigurationParameter.TYPE_STRING, false, true, "values:eu.project.ttc.metrics.Levenshtein|eu.project.ttc.metrics.LongestCommonSubsequence|eu.project.ttc.metrics.DiacriticInsensitiveLevenshtein");
 		this.addParameter(declarations, "EditDistanceThreshold", ConfigurationParameter.TYPE_FLOAT, false, true);
 		this.addParameter(declarations, "EditDistanceNgrams", ConfigurationParameter.TYPE_INTEGER, false, true);
+		this.addParameter(declarations, IndexerEngine.P_IGNORE_DIACRITICS, ConfigurationParameter.TYPE_BOOLEAN, false, false);
 	}
 		
 }

@@ -3,11 +3,11 @@
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>false</primitive>
   <delegateAnalysisEngineSpecifiers>
-    <delegateAnalysisEngine key="SingleWordTermGatherer">
-      <import name="eu.project.ttc.all.engines.indexer.SingleWordTermGatherer"/>
-    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="FrenchMultiWordTermGatherer">
       <import name="eu.project.ttc.french.engines.indexer.FrenchMultiWordTermGatherer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="SingleWordTermGatherer">
+      <import name="eu.project.ttc.all.engines.indexer.SingleWordTermGatherer"/>
     </delegateAnalysisEngine>
   </delegateAnalysisEngineSpecifiers>
   <analysisEngineMetaData>
@@ -51,6 +51,15 @@
         <mandatory>true</mandatory>
         <overrides>
           <parameter>SingleWordTermGatherer/Ngrams</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>IgnoreDiacriticsInMultiwordTerms</name>
+        <type>Boolean</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>SingleWordTermGatherer/IgnoreDiacriticsInMultiwordTerms</parameter>
         </overrides>
       </configurationParameter>
     </configurationParameters>

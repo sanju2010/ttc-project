@@ -97,5 +97,15 @@ public class LongestCommonSubsequence implements EditDistance {
 	public double normalize(int distance, String source, String target) {
 		return (double) (2 * distance) / (double) (source.length() + target.length());
 	}
+
+	@Override
+	public boolean isFailFast() {
+		return false;
+	}
+
+	@Override
+	public void setFailThreshold(double threshold) {
+		// Nothing
+	}
     
 }

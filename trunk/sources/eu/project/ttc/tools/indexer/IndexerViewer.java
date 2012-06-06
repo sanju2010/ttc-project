@@ -420,13 +420,7 @@ public class IndexerViewer {
 				JMenuItem source = (JMenuItem) object;
 				String action = source.getActionCommand();
 				if (action.equals("load")) {
-					int rv = FieldFactory.getChooser().showOpenDialog(/*
-																	 * this.
-																	 * getFileField
-																	 * ().
-																	 * getComponent
-																	 * ()
-																	 */null);
+					int rv = FieldFactory.getChooser().showOpenDialog(null);
 					if (rv == JFileChooser.APPROVE_OPTION) {
 						File file = FieldFactory.getChooser().getSelectedFile();
 						try {

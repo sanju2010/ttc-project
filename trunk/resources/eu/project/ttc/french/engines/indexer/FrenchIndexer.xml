@@ -15,11 +15,11 @@
     <delegateAnalysisEngine key="TermBaseXchanger">
       <import name="eu.project.ttc.all.engines.TermBaseXchanger"/>
     </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="TermCleaner">
-      <import name="eu.project.ttc.all.engines.indexer.TermCleaner"/>
-    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="FrenchTermGatherer">
       <import name="eu.project.ttc.french.engines.indexer.FrenchTermGatherer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="TermCleaner">
+      <import name="eu.project.ttc.all.engines.indexer.TermCleaner"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="TermIndexer">
       <import name="eu.project.ttc.all.engines.indexer.TermIndexer"/>
@@ -148,6 +148,15 @@
         <mandatory>true</mandatory>
         <overrides>
           <parameter>TermBaseXchanger/tbxThreshold</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>IgnoreDiacriticsInMultiwordTerms</name>
+        <type>Boolean</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>FrenchTermGatherer/IgnoreDiacriticsInMultiwordTerms</parameter>
         </overrides>
       </configurationParameter>
     </configurationParameters>

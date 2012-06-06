@@ -7,6 +7,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
@@ -106,50 +107,32 @@ public class ToolBar {
 	{
 
 	
+		JProgressBar tmpProgress = new JProgressBar();
 		
-	 try {
-		UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-	} catch (ClassNotFoundException e1) {
-		// TODO Auto-generated catch block
-		e1.printStackTrace();
-	} catch (InstantiationException e1) {
-		// TODO Auto-generated catch block
-		e1.printStackTrace();
-	} catch (IllegalAccessException e1) {
-		// TODO Auto-generated catch block
-		e1.printStackTrace();
-	} catch (UnsupportedLookAndFeelException e1) {
-		// TODO Auto-generated catch block
-		e1.printStackTrace();
-	}
-
-
-	   // UIManager.put("ProgressBar.selectionForeground", ColorUIResource.BLACK);
+		switchToLnF(UIManager.getCrossPlatformLookAndFeelClassName());
+	 
+	    UIManager.put("ProgressBar.selectionForeground", ColorUIResource.BLACK);
 	    UIManager.put("ProgressBar.selectionBackground", ColorUIResource.BLACK);
 		progressBar = new JProgressBar();
-		progressBar.setForeground(new Color(46,139,87));
+		//progressBar.setForeground(new Color(46,139,87));
+		progressBar.setForeground(new Color(163, 204, 184));
 		progressBar.setPreferredSize(new Dimension(333,33));
 		progressBar.setMaximum(0);
     	progressBar.setMaximum(100);
     	progressBar.setStringPainted(true);
     	progressBar.setIndeterminate(false);
 		progressBar.setValue(0);
+		progressBar.setBorder(tmpProgress.getBorder());
+		
+		switchToLnF(UIManager.getSystemLookAndFeelClassName());
+	}
+
+	private void switchToLnF(String lookAndFeelClassName) {
 		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UnsupportedLookAndFeelException e) {
-			// TODO Auto-generated catch block
+			UIManager.setLookAndFeel(lookAndFeelClassName);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	public JProgressBar getProgressBar() {

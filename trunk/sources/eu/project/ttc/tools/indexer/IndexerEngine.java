@@ -4,7 +4,6 @@ import java.util.Locale;
 
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.cas.CAS;
-import org.apache.uima.resource.metadata.ConfigurationParameter;
 import org.apache.uima.resource.metadata.ConfigurationParameterSettings;
 
 import eu.project.ttc.tools.TermSuiteEngine;
@@ -13,6 +12,9 @@ import eu.project.ttc.tools.TermSuiteTool;
 
 public class IndexerEngine implements TermSuiteEngine {
 
+	/** Name of the parameter that must be set to ignore diacritics in multiword term conflating */
+	public static final String P_IGNORE_DIACRITICS = "IgnoreDiacriticsInMultiwordTerms";
+	
 	private TermSuiteTool tool;
 	
 	public void setTool(TermSuiteTool tool) {
@@ -80,6 +82,11 @@ public class IndexerEngine implements TermSuiteEngine {
         settings.setParameterValue("EditDistanceClassName", advancedParameters.getParameterValue("EditDistanceClassName"));
         settings.setParameterValue("EditDistanceThreshold", advancedParameters.getParameterValue("EditDistanceThreshold"));
         settings.setParameterValue("EditDistanceNgrams", advancedParameters.getParameterValue("EditDistanceNgrams"));
+
+        // Addendum Sebastian Peña
+        settings.setParameterValue(P_IGNORE_DIACRITICS, 
+        		Boolean.valueOf(Boolean.TRUE.equals(advancedParameters.getParameterValue(P_IGNORE_DIACRITICS))));
+        
         return settings;
 	}
 

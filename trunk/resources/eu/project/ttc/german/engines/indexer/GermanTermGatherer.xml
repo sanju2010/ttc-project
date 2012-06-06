@@ -53,6 +53,15 @@
           <parameter>SingleWordTermGatherer/Ngrams</parameter>
         </overrides>
       </configurationParameter>
+      <configurationParameter>
+        <name>IgnoreDiacriticsInMultiwordTerms</name>
+        <type>Boolean</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>SingleWordTermGatherer/IgnoreDiacriticsInMultiwordTerms</parameter>
+        </overrides>
+      </configurationParameter>
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>

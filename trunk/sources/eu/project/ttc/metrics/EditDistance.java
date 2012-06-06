@@ -6,4 +6,7 @@ public interface EditDistance {
 	
 	public int compute(String source, String target);
 	
+	public boolean isFailFast();
+	
+	public void setFailThreshold(double threshold);
 }
