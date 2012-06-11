@@ -199,10 +199,9 @@ The Latvian language isn't yet supported by this version of Term Suite.
 
 ==== Latvian ====
 
-There is no TreeTagger parameter file for Latvian. 
-That's why, Latvian processing in Term Suite does not start
-from text files but from tagged and lemmatized text files.
-Such files comes from the output of [https://www.tilde.com/tagger/Service.asmx/ Tilde's services] in 
+There is no TreeTagger for Latvian.  Latvian processing in Term Suite start
+from tagged and lemmatized text files. 
+Tagged and lemmatized files come from the output of [https://www.tilde.com/tagger/Service.asmx/ Tilde's services] in 
 a TreeTagger like output:
 {{{
 Vējdzirnavas    N       vējdzirnavas    N-fpn---------n-----------f-
@@ -214,7 +213,7 @@ vecas   A       vecs    A-fsgp-n------------------l-
 .       SENT    .       T--------------------------.
 }}}
 
-Therefore, you have to provide such files in order to process Latvian in Term Suite.
+To run the spotter for Latvian, provides in the txt directory the tagged and lemmatized files. Give the treetagger directory path even if Treetagger will not be used. You will obtain xmi the files that could be used for the indexer.
 
 === Indexer ===
 
