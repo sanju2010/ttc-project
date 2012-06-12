@@ -3,11 +3,14 @@
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>false</primitive>
   <delegateAnalysisEngineSpecifiers>
-    <delegateAnalysisEngine key="SpanishTermFrequencyComputer">
-      <import name="eu.project.ttc.spanish.engines.indexer.SpanishTermFrequencyComputer"/>
-    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="SpanishCompoundIndexer">
       <import name="eu.project.ttc.spanish.engines.indexer.SpanishCompoundIndexer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="SpanishTermGatherer">
+      <import name="eu.project.ttc.spanish.engines.indexer.SpanishTermGatherer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="SpanishTermFrequencyComputer">
+      <import name="eu.project.ttc.spanish.engines.indexer.SpanishTermFrequencyComputer"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="Writer">
       <import name="eu.project.ttc.all.engines.Writer"/>
@@ -17,9 +20,6 @@
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="TermCleaner">
       <import name="eu.project.ttc.all.engines.indexer.TermCleaner"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="SpanishTermGatherer">
-      <import name="eu.project.ttc.spanish.engines.indexer.SpanishTermGatherer"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="TermIndexer">
       <import name="eu.project.ttc.all.engines.indexer.TermIndexer"/>
@@ -115,7 +115,7 @@
         </overrides>
       </configurationParameter>
       <configurationParameter>
-        <name>Threshold</name>
+        <name>OccurrenceThreshold</name>
         <type>Integer</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
@@ -124,39 +124,39 @@
         </overrides>
       </configurationParameter>
       <configurationParameter>
-        <name>Verbs</name>
-        <type>Integer</type>
-        <multiValued>false</multiValued>
-        <mandatory>true</mandatory>
-        <overrides>
-          <parameter>TermBaseXchanger/Verbs</parameter>
-        </overrides>
-      </configurationParameter>
-      <configurationParameter>
-        <name>NounsAndAdjectives</name>
-        <type>Integer</type>
-        <multiValued>false</multiValued>
-        <mandatory>true</mandatory>
-        <overrides>
-          <parameter>TermBaseXchanger/NounsAndAdjectives</parameter>
-        </overrides>
-      </configurationParameter>
-      <configurationParameter>
-        <name>tbxThreshold</name>
-        <type>Integer</type>
-        <multiValued>false</multiValued>
-        <mandatory>true</mandatory>
-        <overrides>
-          <parameter>TermBaseXchanger/tbxThreshold</parameter>
-        </overrides>
-      </configurationParameter>
-      <configurationParameter>
         <name>IgnoreDiacriticsInMultiwordTerms</name>
         <type>Boolean</type>
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
         <overrides>
-          <parameter>FrenchTermGatherer/IgnoreDiacriticsInMultiwordTerms</parameter>
+          <parameter>SpanishTermGatherer/IgnoreDiacriticsInMultiwordTerms</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>FilterRule</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>TermBaseXchanger/FilterRule</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>FilterRuleThreshold</name>
+        <type>Float</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>TermBaseXchanger/FilterRuleThreshold</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>KeepVerbsAndOthers</name>
+        <type>Boolean</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>TermBaseXchanger/KeepVerbsAndOthers</parameter>
         </overrides>
       </configurationParameter>
     </configurationParameters>
@@ -210,7 +210,25 @@
         </value>
       </nameValuePair>
       <nameValuePair>
-        <name>Threshold</name>
+        <name>KeepVerbsAndOthers</name>
+        <value>
+          <boolean>false</boolean>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>FilterRuleThreshold</name>
+        <value>
+          <float>0.0</float>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>FilterRule</name>
+        <value>
+          <string>None</string>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>OccurrenceThreshold</name>
         <value>
           <integer>1</integer>
         </value>
@@ -224,7 +242,7 @@
         <node>SpanishTermGatherer</node>
         <node>TermBaseXchanger</node>
         <node>TermCleaner</node>
-        <node>Writer</node>  
+        <node>Writer</node>
       </fixedFlow>
     </flowConstraints>
     <typePriorities/>

@@ -15,11 +15,11 @@
     <delegateAnalysisEngine key="TermBaseXchanger">
       <import name="eu.project.ttc.all.engines.TermBaseXchanger"/>
     </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="FrenchTermGatherer">
-      <import name="eu.project.ttc.french.engines.indexer.FrenchTermGatherer"/>
-    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="TermCleaner">
       <import name="eu.project.ttc.all.engines.indexer.TermCleaner"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="FrenchTermGatherer">
+      <import name="eu.project.ttc.french.engines.indexer.FrenchTermGatherer"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="TermIndexer">
       <import name="eu.project.ttc.all.engines.indexer.TermIndexer"/>
@@ -115,39 +115,12 @@
         </overrides>
       </configurationParameter>
       <configurationParameter>
-        <name>Threshold</name>
+        <name>OccurrenceThreshold</name>
         <type>Integer</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
         <overrides>
           <parameter>TermCleaner/Threshold</parameter>
-        </overrides>
-      </configurationParameter>
-      <configurationParameter>
-        <name>Verbs</name>
-        <type>Integer</type>
-        <multiValued>false</multiValued>
-        <mandatory>true</mandatory>
-        <overrides>
-          <parameter>TermBaseXchanger/Verbs</parameter>
-        </overrides>
-      </configurationParameter>
-      <configurationParameter>
-        <name>NounsAndAdjectives</name>
-        <type>Integer</type>
-        <multiValued>false</multiValued>
-        <mandatory>true</mandatory>
-        <overrides>
-          <parameter>TermBaseXchanger/NounsAndAdjectives</parameter>
-        </overrides>
-      </configurationParameter>
-      <configurationParameter>
-        <name>tbxThreshold</name>
-        <type>Integer</type>
-        <multiValued>false</multiValued>
-        <mandatory>true</mandatory>
-        <overrides>
-          <parameter>TermBaseXchanger/tbxThreshold</parameter>
         </overrides>
       </configurationParameter>
       <configurationParameter>
@@ -157,6 +130,33 @@
         <mandatory>false</mandatory>
         <overrides>
           <parameter>FrenchTermGatherer/IgnoreDiacriticsInMultiwordTerms</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>FilterRule</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>TermBaseXchanger/FilterRule</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>FilterRuleThreshold</name>
+        <type>Float</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>TermBaseXchanger/FilterRuleThreshold</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>KeepVerbsAndOthers</name>
+        <type>Boolean</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>TermBaseXchanger/KeepVerbsAndOthers</parameter>
         </overrides>
       </configurationParameter>
     </configurationParameters>
@@ -210,13 +210,25 @@
         </value>
       </nameValuePair>
       <nameValuePair>
-        <name>Threshold</name>
+        <name>KeepVerbsAndOthers</name>
         <value>
-          <integer>1</integer>
+          <boolean>false</boolean>
         </value>
       </nameValuePair>
       <nameValuePair>
-        <name>Verbs</name>
+        <name>FilterRuleThreshold</name>
+        <value>
+          <float>0.0</float>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>FilterRule</name>
+        <value>
+          <string>None</string>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>OccurrenceThreshold</name>
         <value>
           <integer>1</integer>
         </value>

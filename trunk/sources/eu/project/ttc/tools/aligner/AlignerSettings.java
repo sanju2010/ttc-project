@@ -21,5 +21,10 @@ public class AlignerSettings extends Parameters implements TermSuiteSettings {
 		this.addParameter(declarations, "BilingualDictionaryFile", ConfigurationParameter.TYPE_STRING, false, false);
 
 	}
+
+	@Override
+	protected String[][] getParameterGroups() {
+		return null;
+	}
 		
 }

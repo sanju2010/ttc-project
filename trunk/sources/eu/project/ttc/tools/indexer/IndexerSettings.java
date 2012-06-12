@@ -17,5 +17,10 @@ public class IndexerSettings extends Parameters implements TermSuiteSettings {
 		this.addParameter(declarations, "InputDirectory", ConfigurationParameter.TYPE_STRING, false, true);
 		this.addParameter(declarations, "OutputDirectory", ConfigurationParameter.TYPE_STRING, false, true);
 	}
+
+	@Override
+	protected String[][] getParameterGroups() {
+		return null;
+	}
 		
 }

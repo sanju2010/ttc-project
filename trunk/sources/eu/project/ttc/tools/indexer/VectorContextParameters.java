@@ -11,12 +11,16 @@ public class VectorContextParameters extends Parameters implements TermSuiteSett
 	
 	public VectorContextParameters(String resource) {
 		super(resource);
-		// TODO Auto-generated constructor stub
 	}
 	protected void setMetaData(ConfigurationParameterDeclarations declarations) {
 		// TODO ADVANCED
 		this.addParameter(declarations, "FrequencyFilteringThreshold", ConfigurationParameter.TYPE_INTEGER, false, true);
 		this.addParameter(declarations, "AssociationMeasure", ConfigurationParameter.TYPE_STRING, false, true, "values:eu.project.ttc.metrics.LogLikelihood|eu.project.ttc.metrics.MutualInformation");
+	}
+	@Override
+	protected String[][] getParameterGroups() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

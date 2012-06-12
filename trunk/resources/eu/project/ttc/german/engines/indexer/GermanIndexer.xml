@@ -12,11 +12,11 @@
     <delegateAnalysisEngine key="TermCleaner">
       <import name="eu.project.ttc.all.engines.indexer.TermCleaner"/>
     </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="GermanCompoundIndexer">
-      <import name="eu.project.ttc.german.engines.indexer.GermanCompoundIndexer"/>
-    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="GermanTermFrequencyComputer">
       <import name="eu.project.ttc.german.engines.indexer.GermanTermFrequencyComputer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="GermanCompoundIndexer">
+      <import name="eu.project.ttc.german.engines.indexer.GermanCompoundIndexer"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="GermanTermGatherer">
       <import name="eu.project.ttc.german.engines.indexer.GermanTermGatherer"/>
@@ -115,7 +115,7 @@
         </overrides>
       </configurationParameter>
       <configurationParameter>
-        <name>Threshold</name>
+        <name>OccurrenceThreshold</name>
         <type>Integer</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
@@ -124,39 +124,39 @@
         </overrides>
       </configurationParameter>
       <configurationParameter>
-        <name>Verbs</name>
-        <type>Integer</type>
-        <multiValued>false</multiValued>
-        <mandatory>true</mandatory>
-        <overrides>
-          <parameter>TermBaseXchanger/Verbs</parameter>
-        </overrides>
-      </configurationParameter>
-      <configurationParameter>
-        <name>NounsAndAdjectives</name>
-        <type>Integer</type>
-        <multiValued>false</multiValued>
-        <mandatory>true</mandatory>
-        <overrides>
-          <parameter>TermBaseXchanger/NounsAndAdjectives</parameter>
-        </overrides>
-      </configurationParameter>
-      <configurationParameter>
-        <name>tbxThreshold</name>
-        <type>Integer</type>
-        <multiValued>false</multiValued>
-        <mandatory>true</mandatory>
-        <overrides>
-          <parameter>TermBaseXchanger/tbxThreshold</parameter>
-        </overrides>
-      </configurationParameter>
-      <configurationParameter>
         <name>IgnoreDiacriticsInMultiwordTerms</name>
         <type>Boolean</type>
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
         <overrides>
-          <parameter>FrenchTermGatherer/IgnoreDiacriticsInMultiwordTerms</parameter>
+          <parameter>GermanTermGatherer/IgnoreDiacriticsInMultiwordTerms</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>FilterRule</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>TermBaseXchanger/FilterRule</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>FilterRuleThreshold</name>
+        <type>Float</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>TermBaseXchanger/FilterRuleThreshold</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>KeepVerbsAndOthers</name>
+        <type>Boolean</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>TermBaseXchanger/KeepVerbsAndOthers</parameter>
         </overrides>
       </configurationParameter>
     </configurationParameters>
@@ -210,7 +210,25 @@
         </value>
       </nameValuePair>
       <nameValuePair>
-        <name>Threshold</name>
+        <name>KeepVerbsAndOthers</name>
+        <value>
+          <boolean>false</boolean>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>FilterRuleThreshold</name>
+        <value>
+          <float>0.0</float>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>FilterRule</name>
+        <value>
+          <string>None</string>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>OccurrenceThreshold</name>
         <value>
           <integer>1</integer>
         </value>
@@ -228,9 +246,13 @@
       </fixedFlow>
     </flowConstraints>
     <typePriorities>
-      <imports>
-        <import name="eu.project.ttc.types.TermSuiteTypePriorities"/>
-      </imports>
+      <priorityList>
+        <type>eu.project.ttc.types.MultiWordTermAnnotation</type>
+        <type>eu.project.ttc.types.SingleWordTermAnnotation</type>
+        <type>eu.project.ttc.types.TermAnnotation</type>
+        <type>eu.project.ttc.types.WordAnnotation</type>
+        <type>eu.project.ttc.types.TermComponentAnnotation</type>
+      </priorityList>
     </typePriorities>
     <fsIndexCollection/>
     <capabilities>

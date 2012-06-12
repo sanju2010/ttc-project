@@ -100,12 +100,29 @@ public class TermCleaner extends JCasAnnotator_ImplBase {
 	}
 
 	private void select(JCas cas) {
+		TermAnnotation annotation;
 		AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TermAnnotation.type);
 		FSIterator<Annotation> iterator = index.iterator();
+		
+		// Collect removable terms
 		while (iterator.hasNext()) {
-			TermAnnotation annotation = (TermAnnotation) iterator.next();
-			if (annotation.getOccurrences() <= this.getThreshold().intValue()) {
-				this.getAnnotations().add(annotation);
+			annotation = (TermAnnotation) iterator.next();
+			if (annotation.getOccurrences() < threshold.intValue()) {
+				annotations.add(annotation);
+			}
+		}
+		
+		// Substract variants of accepted terms
+		iterator = index.iterator();
+		TermAnnotation variant;
+		while (iterator.hasNext()) {
+			annotation = (TermAnnotation) iterator.next();
+			if (annotation.getOccurrences() >= threshold.intValue()) {
+				for(int i = annotation.getVariants().size()-1; i >= 0; i--) {
+					variant = annotation.getVariants(i);
+					if(annotations.contains(variant))
+						annotations.remove(variant);
+				}
 			}
 		}
 	}

@@ -13,5 +13,11 @@ public class SpotterAdvancedSettings extends Parameters implements TermSuiteSett
 
 	protected void setMetaData(ConfigurationParameterDeclarations declarations) {
 	}
+
+	@Override
+	protected String[][] getParameterGroups() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 		
 }

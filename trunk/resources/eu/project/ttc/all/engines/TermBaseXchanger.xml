@@ -16,25 +16,24 @@
         <mandatory>true</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>Verbs</name>
-        <type>Integer</type>
+        <name>KeepVerbsAndOthers</name>
+        <type>Boolean</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>NounsAndAdjectives</name>
-        <type>Integer</type>
+        <name>FilterRule</name>
+        <type>String</type>
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
       <configurationParameter>
-        <name>tbxThreshold</name>
-        <type>Integer</type>
+        <name>FilterRuleThreshold</name>
+        <type>Float</type>
         <multiValued>false</multiValued>
-        <mandatory>true</mandatory>
+        <mandatory>false</mandatory>
       </configurationParameter>
     </configurationParameters>
-    
     <configurationParameterSettings>
       <nameValuePair>
         <name>Directory</name>
@@ -43,15 +42,21 @@
         </value>
       </nameValuePair>
       <nameValuePair>
-        <name>Verbs</name>
+        <name>KeepVerbsAndOthers</name>
         <value>
-          <integer>0</integer>
+          <boolean>false</boolean>
         </value>
       </nameValuePair>
-       <nameValuePair>
-      <name>NounsAndAdjectives</name>
+      <nameValuePair>
+        <name>FilterRule</name>
         <value>
-          <integer>0</integer>
+          <string>None</string>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>FilterRuleThreshold</name>
+        <value>
+          <float>0.0</float>
         </value>
       </nameValuePair>
     </configurationParameterSettings>

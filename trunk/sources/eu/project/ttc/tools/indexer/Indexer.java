@@ -4,8 +4,6 @@ import java.awt.Component;
 import java.io.File;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 
@@ -53,7 +51,7 @@ public class Indexer implements TermSuiteTool {
 		this.TBXSettings.getComponent().setBorder(BorderFactory.createTitledBorder("TBX Settings"));
 	}
 	
-	public TBXSettings getTBSSettings() {
+	public TBXSettings getTBXSettings() {
 		return this.TBXSettings;
 	}
 	private JSplitPane component;
@@ -65,7 +63,7 @@ public class Indexer implements TermSuiteTool {
 		JSplitPane componentAdvanced;
 		componentAdvanced = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 		componentAdvanced.setTopComponent(this.getAdvancedSettings().getComponent());
-		componentAdvanced.setBottomComponent(this.getTBSSettings().getComponent());
+		componentAdvanced.setBottomComponent(this.getTBXSettings().getComponent());
 		componentAdvanced.setResizeWeight(0.7);
 		this.component.setBottomComponent(componentAdvanced);
 		this.component.setContinuousLayout(true);
@@ -78,17 +76,9 @@ public class Indexer implements TermSuiteTool {
 	public Component getComponent() {
 		return this.component;
 	}
-	private VectorContextParameters vectorParameters;
-	private AdvancedParameters param;
-	public VectorContextParameters getVectorParameters()
-	{
-		this.vectorParameters=this.param.getSettings();
-		return this.vectorParameters;
-	}
 
-	public Indexer(File home, AdvancedParameters param1) 
+	public Indexer(File home) 
 	{
-		this.param=param1;
 		this.setSettings(home);
 		this.setAdvancedSettings(home);
 		this.setTBXSettings(home); 

@@ -1,27 +1,20 @@
 package eu.project.ttc.tools;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Desktop;
 import java.awt.Dimension;
-import java.awt.GradientPaint;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
-import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.plaf.ColorUIResource;
 
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.util.Level;
@@ -29,7 +22,6 @@ import org.apache.uima.util.Level;
 import eu.project.ttc.tools.aligner.Aligner;
 import eu.project.ttc.tools.aligner.AlignerEngine;
 import eu.project.ttc.tools.aligner.AlignerViewer;
-import eu.project.ttc.tools.indexer.AdvancedParameters;
 import eu.project.ttc.tools.indexer.Indexer;
 import eu.project.ttc.tools.indexer.IndexerEngine;
 import eu.project.ttc.tools.indexer.IndexerViewer;
@@ -193,7 +185,7 @@ public class TermSuite implements Runnable {
 	private Indexer indexer;
 	
 	private void setIndexer() {
-		this.indexer = new Indexer(this.getHome(), param);
+		this.indexer = new Indexer(this.getHome());
 		this.indexer.setParent(this);
 	}
 	
@@ -211,16 +203,6 @@ public class TermSuite implements Runnable {
 		return this.banker;
 	}
 
-	private AdvancedParameters param;
-	
-	private void setParam() {
-		this.param = new AdvancedParameters(this.getHome());
-		this.param.setParent(this);
-	}
-	
-	public AdvancedParameters getParam() {
-		return this.param;
-	}
 	private Aligner aligner;
 	
 	private void setAligner() {
@@ -248,20 +230,14 @@ public class TermSuite implements Runnable {
 		tabs.addTab(" View ", view);
 		return tabs;
 	}
-	private JTabbedPane embed2(Component edit, Component param, Component view) {
-		JTabbedPane tabs = new JTabbedPane(JTabbedPane.TOP);
-		tabs.addTab(" Edit ", edit);
-		tabs.addTab(" Parameters ", param);
-		tabs.addTab(" View ", view);
-		return tabs;
-	}
+	
 	private JTabbedPane content;
 	
 	private void setContent() {
 		this.content = new JTabbedPane();	
 		this.content.setTabPlacement(JTabbedPane.LEFT);
 		this.content.addTab(" Spotter ",this.embed(this.getSpotter().getComponent(), this.getViewer().getComponent()));
-		this.content.addTab(" Indexer ",this.embed2(this.getIndexer().getComponent(), this.getParam().getComponent(),this.getBanker().getComponent()));
+		this.content.addTab(" Indexer ",this.embed(this.getIndexer().getComponent(), this.getBanker().getComponent()));
 		this.content.addTab(" Aligner ",this.embed(this.getAligner().getComponent(), this.getMixer().getComponent()));
 		Listener listener = new Listener();
 		listener.setTermSuite(this);
@@ -333,7 +309,6 @@ public class TermSuite implements Runnable {
 		this.setToolBar();
 		this.setTagger();
 		this.setViewer();
-		this.setParam();
 		this.setIndexer();
 		this.setBanker();
 		
@@ -367,8 +342,7 @@ public class TermSuite implements Runnable {
 			this.getSpotter().getAdvancedSettings().doSave();
 			this.getIndexer().getAdvancedSettings().doSave();
 			this.getAligner().getAdvancedSettings().doSave();
-			this.getIndexer().getTBSSettings().doSave();
-			this.getIndexer().getVectorParameters().doSave();
+			this.getIndexer().getTBXSettings().doSave();
 		} catch (Exception e) {
 			this.error(e);
 		}

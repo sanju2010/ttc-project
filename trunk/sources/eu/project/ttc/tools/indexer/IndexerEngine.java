@@ -12,9 +12,6 @@ import eu.project.ttc.tools.TermSuiteTool;
 
 public class IndexerEngine implements TermSuiteEngine {
 
-	/** Name of the parameter that must be set to ignore diacritics in multiword term conflating */
-	public static final String P_IGNORE_DIACRITICS = "IgnoreDiacriticsInMultiwordTerms";
-	
 	private TermSuiteTool tool;
 	
 	public void setTool(TermSuiteTool tool) {
@@ -32,9 +29,11 @@ public class IndexerEngine implements TermSuiteEngine {
 		return "eu/project/ttc/" + language.toLowerCase() + "/engines/indexer/" + language + "Indexer.xml";
 	}
 
-	public ConfigurationParameterSettings settings() { 
-		ConfigurationParameterSettings parameters = this.getTool().getSettings().getMetaData().getConfigurationParameterSettings();
-		ConfigurationParameterSettings advancedParameters = this.getTool().getAdvancedSettings().getMetaData().getConfigurationParameterSettings();
+	public ConfigurationParameterSettings settings() {
+		Indexer indexer=(Indexer)this.getTool();
+		
+		ConfigurationParameterSettings parameters = indexer.getSettings().getMetaData().getConfigurationParameterSettings();
+		ConfigurationParameterSettings advancedParameters = indexer.getAdvancedSettings().getMetaData().getConfigurationParameterSettings();
 		String code = (String) parameters.getParameterValue("Language");
 
 
@@ -43,49 +42,33 @@ public class IndexerEngine implements TermSuiteEngine {
         settings.setParameterValue("Directory", parameters.getParameterValue("OutputDirectory"));
 		settings.setParameterValue("Action", "drop");
 
-		if (this.getTool().toString().contains("Indexer"))
-		{	      
-		Indexer indexer=(Indexer)this.getTool();
 		
-		ConfigurationParameterSettings vectorparameters = indexer.getVectorParameters().getMetaData().getConfigurationParameterSettings();
-		settings.setParameterValue("Threshold", vectorparameters.getParameterValue("FrequencyFilteringThreshold"));
-	    settings.setParameterValue("AssociationRateClassName", vectorparameters.getParameterValue("AssociationMeasure"));
-		ConfigurationParameterSettings tbxParameters = indexer.getTBSSettings().getMetaData().getConfigurationParameterSettings();
-		if (tbxParameters.getParameterValue("VerbsAndOthers")==null || tbxParameters.getParameterValue("VerbsAndOthers").equals(false))
-		settings.setParameterValue("Verbs", 0);
-		else
-		settings.setParameterValue("Verbs", 1);
+		// TBX settings
+		ConfigurationParameterSettings tbxParameters = indexer.getTBXSettings().getMetaData().getConfigurationParameterSettings();
+		settings.setParameterValue(TBXSettings.P_KEEP_VERBS, Boolean.TRUE.equals(tbxParameters.getParameterValue(TBXSettings.P_KEEP_VERBS)));
+		settings.setParameterValue(TBXSettings.P_FILTER_RULE, tbxParameters.getParameterValue(TBXSettings.P_FILTER_RULE));
+		Object threshold = tbxParameters.getParameterValue(TBXSettings.P_FILTERING_THRESHOLD);
+		settings.setParameterValue(TBXSettings.P_FILTERING_THRESHOLD, threshold == null ? 0 : threshold);
 
-		if (tbxParameters.getParameterValue("AdjectivesAndNouns")==null || tbxParameters.getParameterValue("AdjectivesAndNouns").equals(false))
-			settings.setParameterValue("NounsAndAdjectives", 0);
-			else
-			settings.setParameterValue("NounsAndAdjectives", 1);
-		
-		if (tbxParameters.getParameterValue("FrequencyFilteringThreshold")==null || tbxParameters.getParameterValue("FrequencyFilteringThreshold").equals(0))
-			settings.setParameterValue("tbxThreshold", 0);
-			else
-			settings.setParameterValue("tbxThreshold", tbxParameters.getParameterValue("FrequencyFilteringThreshold"));
-		}
-
-		
         // settings.setParameterValue("File", (String) parameters.getParameterValue("TerminologyFile"));
-        /*
-        settings.setParameterValue("MultiWordPatternRuleFile", (String) parameters.getParameterValue("MultiWordPatternRuleFile"));
-        settings.setParameterValue("TermVariationRuleFile", (String) parameters.getParameterValue("TermVariationRuleFile"));
-        settings.setParameterValue("NeoclassicalElementFile", (String) parameters.getParameterValue("NeoclassicalElementFile"));
-        */
-   //     settings.setParameterValue("Threshold", advancedParameters.getParameterValue("HapaxFilteringThreshold"));
-    //    settings.setParameterValue("AssociationRateClassName", advancedParameters.getParameterValue("AssociationRateClassName"));
+        // settings.setParameterValue("MultiWordPatternRuleFile", (String) parameters.getParameterValue("MultiWordPatternRuleFile"));
+        // settings.setParameterValue("TermVariationRuleFile", (String) parameters.getParameterValue("TermVariationRuleFile"));
+        // settings.setParameterValue("NeoclassicalElementFile", (String) parameters.getParameterValue("NeoclassicalElementFile"));
+        
+        
+		// Context vector settings
+		settings.setParameterValue(IndexerAdvancedSettings.P_FREQUENCY_THRESHOLD, advancedParameters.getParameterValue(IndexerAdvancedSettings.P_FREQUENCY_THRESHOLD));
+        settings.setParameterValue("AssociationRateClassName", advancedParameters.getParameterValue(IndexerAdvancedSettings.P_ASSOCIATION_MEASURE));
        
-        // nh 
-        settings.setParameterValue("EnableTermGathering", advancedParameters.getParameterValue("VariantsDetection") == null ? Boolean.FALSE : advancedParameters.getParameterValue("VariantsDetection"));
-        settings.setParameterValue("EditDistanceClassName", advancedParameters.getParameterValue("EditDistanceClassName"));
-        settings.setParameterValue("EditDistanceThreshold", advancedParameters.getParameterValue("EditDistanceThreshold"));
-        settings.setParameterValue("EditDistanceNgrams", advancedParameters.getParameterValue("EditDistanceNgrams"));
+        // Conflation parameters
+        settings.setParameterValue("EnableTermGathering", Boolean.TRUE.equals(advancedParameters.getParameterValue(IndexerAdvancedSettings.P_TERM_VARIANT_DETECTION)));
+        settings.setParameterValue(IndexerAdvancedSettings.P_EDIT_DISTANCE_CLASS, advancedParameters.getParameterValue(IndexerAdvancedSettings.P_EDIT_DISTANCE_CLASS));
+        settings.setParameterValue(IndexerAdvancedSettings.P_EDIT_DISTANCE_THRESHOLD, advancedParameters.getParameterValue(IndexerAdvancedSettings.P_EDIT_DISTANCE_THRESHOLD));
+        settings.setParameterValue(IndexerAdvancedSettings.P_EDIT_DISTANCE_NGRAMS, advancedParameters.getParameterValue(IndexerAdvancedSettings.P_EDIT_DISTANCE_NGRAMS));
 
         // Addendum Sebastian Peña
-        settings.setParameterValue(P_IGNORE_DIACRITICS, 
-        		Boolean.valueOf(Boolean.TRUE.equals(advancedParameters.getParameterValue(P_IGNORE_DIACRITICS))));
+        settings.setParameterValue(IndexerAdvancedSettings.P_IGNORE_DIACRITICS, 
+        		Boolean.valueOf(Boolean.TRUE.equals(advancedParameters.getParameterValue(IndexerAdvancedSettings.P_IGNORE_DIACRITICS))));
         
         return settings;
 	}

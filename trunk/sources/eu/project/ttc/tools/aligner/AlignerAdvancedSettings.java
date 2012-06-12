@@ -17,5 +17,10 @@ public class AlignerAdvancedSettings extends Parameters implements TermSuiteSett
 		this.addParameter(declarations, "SimilarityDistanceClassName", ConfigurationParameter.TYPE_STRING, false, false, "values:eu.project.ttc.metrics.Jaccard|eu.project.ttc.metrics.Cosine");
 		this.addParameter(declarations, "CompositionalMethod", ConfigurationParameter.TYPE_BOOLEAN, false, false);
 	}
+
+	@Override
+	protected String[][] getParameterGroups() {
+		return null;
+	}
 		
 }

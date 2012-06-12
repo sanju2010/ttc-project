@@ -8,8 +8,6 @@ import java.beans.PropertyChangeListener;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
-import eu.project.ttc.tools.indexer.Indexer;
-
 public class TermSuiteListener implements ActionListener, PropertyChangeListener  {
 	
 	private TermSuiteTool termSuiteTool;
@@ -43,21 +41,8 @@ public class TermSuiteListener implements ActionListener, PropertyChangeListener
 	
 	public void doRun() {
 		this.getTermSuiteTool().getSettings().doUpdate();
-		this.getTermSuiteTool().getAdvancedSettings().doUpdate();
-
-		if (this.getTermSuiteTool().toString().contains("Indexer"))
-		{
-			Indexer indexer=(Indexer)this.getTermSuiteTool();
-			indexer.getVectorParameters().doUpdate();
-		}
 		try {
 			this.getTermSuiteTool().getSettings().validate();
-			this.getTermSuiteTool().getAdvancedSettings().validate();
-			if (this.getTermSuiteTool().toString().contains("Indexer"))
-			{
-				Indexer indexer=(Indexer)this.getTermSuiteTool();
-				indexer.getVectorParameters().validate();
-			}
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(this.getTermSuiteTool().getParent().getFrame(),e.getMessage(),e.getClass().getSimpleName(),JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();

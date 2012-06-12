@@ -2,8 +2,8 @@ package eu.project.ttc.engines;
 
 import java.io.File;
 import java.io.IOException;
-
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -11,7 +11,6 @@ import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
@@ -28,42 +27,23 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Level;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import eu.project.ttc.tools.indexer.TBXSettings;
+import eu.project.ttc.tools.indexer.TBXSettings.FilterRules;
+import eu.project.ttc.tools.utils.TermPredicate;
+import eu.project.ttc.tools.utils.TermPredicates;
+import eu.project.ttc.tools.utils.TermPredicates.ListBasedTermPredicate;
 import eu.project.ttc.types.SingleWordTermAnnotation;
 import eu.project.ttc.types.TermAnnotation;
 
 public class TermBaseXchanger extends JCasAnnotator_ImplBase {
+
+	private TermPredicate predicate = TermPredicates.createNounAdjectivePredicate();
 	
+	private TermPredicate filterRule;
 	private File file;
-	private Integer Verbs=0;
-	private void setVerbs(Integer Verbs) {
-		this.Verbs = Verbs;
-	}
-
-	private Integer getVerbs() {
-		return Verbs;
-	}
-	
-	private Integer NounsAndAdjectives=0;
-	private void setNounsAndAdjectives(Integer NounsAndAdjectives) {
-		this.NounsAndAdjectives = NounsAndAdjectives;
-	}
-
-	private Integer getNounsAndAdjectives() {
-		return NounsAndAdjectives;
-	}
-	
-	private Integer tbxThreshold=0;
-	private void settbxThreshold(Integer tbxThreshold) {
-		this.tbxThreshold = tbxThreshold;
-	}
-
-	private Integer gettbxThreshold() {
-		return tbxThreshold;
-	}
 	
 	private void setDirectory(String path) throws IOException {
 		this.file = new File(path);
@@ -77,14 +57,22 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 		super.initialize(context);
 		try {
 			if (this.getDirectory() == null) {
-				String path = (String) context.getConfigParameterValue("Directory");
-				Integer verbs = (Integer) context.getConfigParameterValue("Verbs");
-				Integer NAs = (Integer) context.getConfigParameterValue("NounsAndAdjectives");
-				Integer tbxThreshold = (Integer) context.getConfigParameterValue("tbxThreshold");
-				this.setVerbs(verbs);
-				this.setNounsAndAdjectives(NAs);
-				this.settbxThreshold(tbxThreshold);
+				String path = (String) context
+						.getConfigParameterValue("Directory");
 				this.setDirectory(path);
+
+				if (Boolean.TRUE.equals(context
+						.getConfigParameterValue(TBXSettings.P_KEEP_VERBS)))
+					predicate = TermPredicates.createOrPredicate(predicate,
+							TermPredicates.createVerbAdverbPredicate());
+
+				filterRule = getFilterRulePredicate(
+						(String) context
+								.getConfigParameterValue(TBXSettings.P_FILTER_RULE),
+						(Float) context
+								.getConfigParameterValue(TBXSettings.P_FILTERING_THRESHOLD));
+				
+				predicate = TermPredicates.createAndPredicate(predicate, filterRule);
 			}
 			if (this.variants == null) {
 				this.setVariants();
@@ -94,6 +82,60 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 		}
 	}
 	
+	private TermPredicate getFilterRulePredicate(String filterRule,
+			Float filteringThreshold) throws Exception {
+		try {
+			FilterRules rule = FilterRules.valueOf(filterRule);
+			TermPredicate pred = null;
+			switch (rule) {
+			case None:
+				pred = TermPredicates.TRIVIAL_ACCEPTOR;
+				break;
+
+			case OccurrenceThreshold:
+				pred = TermPredicates
+						.createOccurrencesPredicate(filteringThreshold
+								.intValue());
+				break;
+			case FrequencyThreshold:
+				pred = TermPredicates
+						.createFrequencyPredicate(filteringThreshold);
+				break;
+
+			case SpecificityThreshold:
+				pred = TermPredicates
+						.createSpecificityPredicate(filteringThreshold);
+				break;
+
+			case TopNByOccurrence:
+				pred = TermPredicates
+						.createTopNByOccurrencesPredicate(filteringThreshold
+								.intValue());
+				break;
+
+			case TopNByFrequency:
+				pred = TermPredicates
+						.createTopNByFrequencyPredicate(filteringThreshold
+								.intValue());
+				break;
+
+			case TopNBySpecificity:
+				pred = TermPredicates
+						.createTopNBySpecificityPredicate(filteringThreshold
+								.intValue());
+				break;
+
+			default:
+				throw new Exception(filterRule);
+			}
+
+			return pred;
+
+		} catch (Exception e) {
+			throw new Exception("Invalid filter rule : " + e.getMessage(), null);
+		}
+	}
+
 	@Override
 	public void process(JCas cas) throws AnalysisEngineProcessException {
 		try {
@@ -109,7 +151,7 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 				name = uri.substring(first, last) + ".tbx";
 			}
 			File file = new File(this.getDirectory(), name);
-			this.getContext().getLogger().log(Level.INFO, "Exporting " + file.getAbsolutePath());	
+			this.getContext().getLogger().log(Level.INFO, "Exporting " + file.getAbsolutePath());
 			this.index(cas);
 			this.create(cas, file);
 		} catch (Exception e) {
@@ -120,21 +162,11 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 
 	private void index(JCas cas) {
 		AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TermAnnotation.type);
+		ArrayList<TermAnnotation> termList = new ArrayList<TermAnnotation>();
 		FSIterator<Annotation> iterator = index.iterator();
 		while (iterator.hasNext()) {
 			TermAnnotation annotation = (TermAnnotation) iterator.next();
-			if ((this.getVerbs()==0)&&(annotation.getCategory().equals("verb")))
-			{
-				continue;
-			}
-			if (((annotation.getCategory().equals("noun")||annotation.getCategory().equals("adjective"))) && (this.getNounsAndAdjectives()==0))
-			{
-				continue;
-			}
-			if (annotation.getOccurrences()<this.gettbxThreshold().intValue())
-			{
-				continue;
-			}
+			termList.add(annotation);
 			if (annotation.getVariants() != null) {
 				String id = "langset-" + annotation.getAddress();
 				for (int i = 0; i < annotation.getVariants().size(); i++) {
@@ -155,6 +187,9 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 				}
 			}
 		}
+		
+		if (filterRule instanceof ListBasedTermPredicate)
+			((ListBasedTermPredicate) filterRule).initialize(termList);
 	}
 
 	private void create(JCas cas, File file) throws Exception {
@@ -221,60 +256,49 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 		FSIterator<Annotation> iterator = index.iterator();
 		while (iterator.hasNext()) {
 			TermAnnotation annotation = (TermAnnotation) iterator.next();
-			if ((annotation.getCategory().equals("verb")) && (this.getVerbs()==0))
-			{
-				continue;
-			}
-			if (((annotation.getCategory().equals("noun")||annotation.getCategory().equals("adjective"))) && (this.getNounsAndAdjectives()==0))
-			{
-				continue;
-			}
-			if (annotation.getOccurrences()<this.gettbxThreshold().intValue())
-			{
-				continue;
-			}
-			Element termEntry = document.createElement("termEntry");
-			termEntry.setAttribute("xml:id", "entry-" + annotation.getAddress());
-			body.appendChild(termEntry);
-			Element langSet = document.createElement("langSet");
-			String id = "langset-" + annotation.getAddress();
-			langSet.setAttribute("xml:id", id);
-			langSet.setAttribute("xml:lang", cas.getDocumentLanguage());
-			termEntry.appendChild(langSet);
-			
-			Set<String> bases = this.basesOf.get(annotation);
-			if (bases != null) {
-				for (String base : bases) {
-					this.addTermBase(document, langSet, base, null);
+			if (predicate.accept(annotation)) {
+				Element termEntry = document.createElement("termEntry");
+				termEntry.setAttribute("xml:id", "entry-" + annotation.getAddress());
+				body.appendChild(termEntry);
+				Element langSet = document.createElement("langSet");
+				String id = "langset-" + annotation.getAddress();
+				langSet.setAttribute("xml:id", id);
+				langSet.setAttribute("xml:lang", cas.getDocumentLanguage());
+				termEntry.appendChild(langSet);
+
+				Set<String> bases = this.basesOf.get(annotation);
+				if (bases != null) {
+					for (String base : bases) {
+						this.addTermBase(document, langSet, base, null);
+					}
 				}
-			}
-			
-			Set<TermAnnotation> variants = this.variantsOf.get(id);
-			if (variants != null) {
-				for (TermAnnotation variant : variants) {
-					this.addTermVariant(document, langSet, "langset-" + variant.getAddress(), variant.getCoveredText());
+
+				Set<TermAnnotation> variants = this.variantsOf.get(id);
+				if (variants != null) {
+					for (TermAnnotation variant : variants) {
+						this.addTermVariant(document, langSet, "langset-" + variant.getAddress(), variant.getCoveredText());
+					}
 				}
-			}
-			
-			Element tig = document.createElement("tig");
-			tig.setAttribute("xml:id", "term-" + annotation.getAddress());
-			langSet.appendChild(tig);
-			Element term = document.createElement("term");
-			term.setTextContent(annotation.getCoveredText());
-			tig.appendChild(term);
-			if (this.variants.contains(annotation)) {
-				this.addNote(document, langSet, tig, "termType", "variant");				
-			} else {
-				this.addNote(document, langSet, tig, "termType", "termEntry");
-			}
-			this.addNote(document, langSet, tig, "partOfSpeech", "noun");
-			this.addNote(document, langSet, tig, "termPattern", annotation.getCategory());
-			this.addNote(document, langSet, tig, "termComplexity", this.getComplexity(annotation));
-			this.addNote(document, langSet, tig, "termSpecifity", annotation.getSpecificity());
-			this.addDescrip(document, langSet, tig, "nbOccurrences", annotation.getOccurrences());
-			this.addDescrip(document, langSet, tig, "relativeFrequency", format.format(annotation.getFrequency()));
-			// this.addDescrip(document, langSet, tig, "domainSpecificity", annotation.getSpecificity());
-		}
+
+				Element tig = document.createElement("tig");
+				tig.setAttribute("xml:id", "term-" + annotation.getAddress());
+				langSet.appendChild(tig);
+				Element term = document.createElement("term");
+				term.setTextContent(annotation.getCoveredText());
+				tig.appendChild(term);
+				if (this.variants.contains(annotation)) {
+					this.addNote(document, langSet, tig, "termType", "variant");				
+				} else {
+					this.addNote(document, langSet, tig, "termType", "termEntry");
+				}
+				this.addNote(document, langSet, tig, "partOfSpeech", "noun");
+				this.addNote(document, langSet, tig, "termPattern", annotation.getCategory());
+				this.addNote(document, langSet, tig, "termComplexity", this.getComplexity(annotation));
+				this.addNote(document, langSet, tig, "termSpecifity", annotation.getSpecificity());
+				this.addDescrip(document, langSet, tig, "nbOccurrences", annotation.getOccurrences());
+				this.addDescrip(document, langSet, tig, "relativeFrequency", format.format(annotation.getFrequency()));
+				// this.addDescrip(document, langSet, tig, "domainSpecificity", annotation.getSpecificity());
+			}}
 	}
 	
 	private String getComplexity(TermAnnotation annotation) {

@@ -23,7 +23,7 @@ import org.apache.uima.util.Level;
 
 import uima.sandbox.mapper.resources.Mapping;
 import eu.project.ttc.metrics.EditDistance;
-import eu.project.ttc.tools.indexer.IndexerEngine;
+import eu.project.ttc.tools.indexer.IndexerAdvancedSettings;
 import eu.project.ttc.tools.utils.MultiWordAsSimpleGatherer;
 import eu.project.ttc.types.SingleWordTermAnnotation;
 
@@ -108,7 +108,7 @@ public class SingleWordGatherer extends JCasAnnotator_ImplBase {
 
 				if (Boolean.TRUE
 						.equals(context
-								.getConfigParameterValue(IndexerEngine.P_IGNORE_DIACRITICS)))
+								.getConfigParameterValue(IndexerAdvancedSettings.P_IGNORE_DIACRITICS)))
 					extraGatherer = new MultiWordAsSimpleGatherer();
 
 			}
@@ -276,7 +276,7 @@ public class SingleWordGatherer extends JCasAnnotator_ImplBase {
 			this.sort();
 			this.gather(cas);
 			System.gc();
-			
+
 			if (extraGatherer != null)
 				extraGatherer.gather(cas, mapping, threshold);
 		}

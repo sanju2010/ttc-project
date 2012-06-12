@@ -29,5 +29,11 @@ public class SpotterSettings extends Parameters implements TermSuiteSettings {
 		this.addParameter(declarations, "CaseMappingFile", ConfigurationParameter.TYPE_STRING, false, true);
 		*/
 	}
+
+	@Override
+	protected String[][] getParameterGroups() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 		
 }
