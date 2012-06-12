@@ -1,6 +1,5 @@
 package fr.free.rocheteau.jerome.dunamis.fields;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -155,9 +154,5 @@ public class FileField implements Field {
 	@Override
 	public boolean isModified() {
 		return true;
-	}
-	public void setListener(Field f1, Field f2, Field f3)
-	{
-		
 	}
 }

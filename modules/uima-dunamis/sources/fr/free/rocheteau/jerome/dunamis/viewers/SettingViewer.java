@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -95,7 +96,8 @@ public class SettingViewer {
 				value = override;
 			}
 
-			Field field = FieldFactory.getComponent(type, name, multi, value, description);
+			Field field = FieldFactory.getComponent(type, name, multi, value,
+					description);
 			String fieldGroup = getGroup(name);
 			if (field != null) {
 
@@ -103,8 +105,7 @@ public class SettingViewer {
 
 				// If field is in no group
 				if (fieldGroup == null) {
-					this.getComponent().add(field.getComponent(),
-							this.constraint);
+					this.getComponent().add(field.getComponent(), this.constraint);
 
 				} else {
 
@@ -187,6 +188,27 @@ public class SettingViewer {
 
 		}
 		setListeners();
+	}
+
+	// ////////////////////////////////////////////////////////////////////////
+	// Button group support
+
+	/**
+	 * Adds a logical button group. I.e. buttons in the group can only be
+	 * selected one at time.
+	 * 
+	 * @param buttons
+	 *            The name of the buttons in the group.
+	 */
+	public void addButtonGroup(String... buttons) {
+		Field buttonField;
+		ButtonGroup group = new ButtonGroup();
+		for (String button : buttons) {
+			buttonField = fields.get(button);
+			if (buttonField instanceof BooleanField) {
+				group.add(((BooleanField) buttonField).getComponent());
+			}
+		}
 	}
 
 	// ////////////////////////////////////////////////////////////////////////

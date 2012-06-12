@@ -1,7 +1,5 @@
 package fr.free.rocheteau.jerome.dunamis.fields;
 
-import java.awt.Color;
-
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -85,9 +83,5 @@ public class StringField implements Field {
 	@Override
 	public boolean isModified() {
 		return !this.getValue().equals(this.value);
-	}
-	public void setListener(Field f1, Field f2, Field f3)
-	{
-		
 	}
 }

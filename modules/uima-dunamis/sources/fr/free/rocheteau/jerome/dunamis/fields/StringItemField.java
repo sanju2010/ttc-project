@@ -84,8 +84,4 @@ public class StringItemField implements Field {
 	public boolean isModified() {
 		return !this.getValue().equals(this.value);
 	}
-	public void setListener(Field f1, Field f2, Field f3)
-	{
-		
-	}
 }

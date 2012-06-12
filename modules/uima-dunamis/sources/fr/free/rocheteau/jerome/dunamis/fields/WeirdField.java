@@ -78,8 +78,4 @@ public class WeirdField implements Field {
 	public boolean isModified() {
 		return false;
 	}
-	public void setListener(Field f1, Field f2, Field f3)
-	{
-		
-	}
 }
