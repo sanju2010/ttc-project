@@ -97,7 +97,7 @@ public class FloatField implements Field {
 	private SpinnerNumberModel model;
 	
 	private void setModel() {
-		this.model = new SpinnerNumberModel(0,0,1,0.1);
+		this.model = new SpinnerNumberModel(0,0,1000,0.1);
 	}
 	
 	private SpinnerNumberModel getModel() {
