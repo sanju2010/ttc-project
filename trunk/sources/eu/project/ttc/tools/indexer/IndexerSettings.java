@@ -22,5 +22,10 @@ public class IndexerSettings extends Parameters implements TermSuiteSettings {
 	protected String[][] getParameterGroups() {
 		return null;
 	}
+
+	@Override
+	protected String[][] getButtonGroups() {
+		return null;
+	}
 		
 }

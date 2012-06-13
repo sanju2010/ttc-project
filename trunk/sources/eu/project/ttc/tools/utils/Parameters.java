@@ -54,8 +54,35 @@ public abstract class Parameters {
 	protected abstract void setMetaData(
 			ConfigurationParameterDeclarations declarations);
 
+	/**
+	 * Returns parameter groups definitions if any. Each group is defined by 2
+	 * {@link String} arrays.
+	 * <p>
+	 * The first array should contain the following data :
+	 * <ul>
+	 * <li>group name
+	 * <li>group's first field, i.e. the head field
+	 * <li>The string <code>"true"</code> if group field should be
+	 * enable/disabled w.r.t the head field
+	 * <ul>
+	 * <p>
+	 * The second array should contain the list of fields in the group (minus
+	 * the head), or an empty array if the group contains a single field.
+	 * 
+	 * @return An array of an even number of {@link String} arrays, or <code>
+	 *         null</code> if there are no groups.
+	 */
 	protected abstract String[][] getParameterGroups();
 
+	/**
+	 * Returns logical buttons group definitions for boolean fields. Each button
+	 * group is defined by the list of buttons it contains.
+	 * 
+	 * @return An array of {@link String} arrays, or <code>null</code> if there
+	 *         are no button groups.
+	 */
+	protected abstract String[][] getButtonGroups();
+	
 	public ResourceMetaData getMetaData() {
 		return this.metaData;
 	}
@@ -70,6 +97,18 @@ public abstract class Parameters {
 		this.viewer = new SettingViewer();
 		this.setGroups();
 		this.viewer.update(this.getMetaData());
+		this.setButtonGroups();
+	}
+
+	private void setButtonGroups() {
+		String[][] groups = this.getButtonGroups();
+		if (groups == null)
+			return;
+
+		for (int i = 0; i < groups.length; i++) {
+			viewer.addButtonGroup(groups[i]);
+		}
+
 	}
 
 	private void setGroups() {

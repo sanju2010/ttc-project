@@ -52,6 +52,11 @@ public class TBXSettings extends Parameters implements TermSuiteSettings {
 		};
 	}
 
+	@Override
+	protected String[][] getButtonGroups() {
+		return null;
+	}
+	
 	/** Defines filter rules accepted for TBX output */
 	public static enum FilterRules {
 		None, OccurrenceThreshold ,FrequencyThreshold, SpecificityThreshold, 

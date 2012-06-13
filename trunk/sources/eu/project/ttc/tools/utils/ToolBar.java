@@ -7,23 +7,20 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.UIManager;
-import javax.swing.SwingUtilities;
-import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.ColorUIResource;
-import javax.swing.plaf.ProgressBarUI;
+
 public class ToolBar {
-	
-	private final Dimension dimension = new Dimension(66,33);
-	private final Insets insets = new Insets(0,0,0,0);
-	private final Color color = new Color(0,0,1,1);
+
+	private final Dimension dimension = new Dimension(66, 33);
+	private final Insets insets = new Insets(0, 0, 0, 0);
+	private final Color color = new Color(0, 0, 1, 1);
 
 	private JButton quit;
-	
+
 	private void setQuit() {
 		this.quit = new JButton("Quit");
 		this.quit.setActionCommand("quit");
@@ -33,13 +30,13 @@ public class ToolBar {
 		this.quit.setBackground(color);
 		this.quit.setBorderPainted(false);
 	}
-	
+
 	public JButton getQuit() {
 		return this.quit;
 	}
-	
+
 	private JButton about;
-	
+
 	private void setAbout() {
 		this.about = new JButton("About");
 		this.about.setActionCommand("about");
@@ -49,12 +46,13 @@ public class ToolBar {
 		this.about.setBackground(color);
 		this.about.setBorderPainted(false);
 	}
-	
+
 	public JButton getAbout() {
 		return this.about;
 	}
+
 	private JButton save;
-	
+
 	private void setSave() {
 		this.save = new JButton("Save");
 		this.save.setActionCommand("save");
@@ -64,13 +62,13 @@ public class ToolBar {
 		this.save.setBackground(color);
 		this.save.setBorderPainted(false);
 	}
-	
+
 	public JButton getSave() {
 		return this.save;
 	}
 
 	private JButton run;
-	
+
 	private void setRun() {
 		this.run = new JButton("Run");
 		this.run.setActionCommand("run");
@@ -80,13 +78,13 @@ public class ToolBar {
 		this.run.setBackground(color);
 		this.run.setBorderPainted(false);
 	}
-	
+
 	public JButton getRun() {
 		return this.run;
 	}
-	
+
 	private JButton stop;
-	
+
 	private void setStop() {
 		this.stop = new JButton("Stop");
 		this.stop.setActionCommand("stop");
@@ -96,34 +94,32 @@ public class ToolBar {
 		this.stop.setBackground(color);
 		this.stop.setBorderPainted(false);
 	}
-	
+
 	public JButton getStop() {
 		return this.stop;
 	}
-	
-	private JProgressBar progressBar;
-	
-	private void setProgressBar() 
-	{
 
-	
+	private JProgressBar progressBar;
+
+	private void setProgressBar() {
+
 		JProgressBar tmpProgress = new JProgressBar();
-		
+
 		switchToLnF(UIManager.getCrossPlatformLookAndFeelClassName());
-	 
-	    UIManager.put("ProgressBar.selectionForeground", ColorUIResource.BLACK);
-	    UIManager.put("ProgressBar.selectionBackground", ColorUIResource.BLACK);
+
+		UIManager.put("ProgressBar.selectionForeground", ColorUIResource.BLACK);
+		UIManager.put("ProgressBar.selectionBackground", ColorUIResource.BLACK);
 		progressBar = new JProgressBar();
-		//progressBar.setForeground(new Color(46,139,87));
+		// progressBar.setForeground(new Color(46,139,87));
 		progressBar.setForeground(new Color(163, 204, 184));
-		progressBar.setPreferredSize(new Dimension(333,33));
+		progressBar.setPreferredSize(new Dimension(333, 33));
 		progressBar.setMaximum(0);
-    	progressBar.setMaximum(100);
-    	progressBar.setStringPainted(true);
-    	progressBar.setIndeterminate(false);
+		progressBar.setMaximum(100);
+		progressBar.setStringPainted(true);
+		progressBar.setIndeterminate(false);
 		progressBar.setValue(0);
 		progressBar.setBorder(tmpProgress.getBorder());
-		
+
 		switchToLnF(UIManager.getSystemLookAndFeelClassName());
 	}
 
@@ -138,7 +134,7 @@ public class ToolBar {
 	public JProgressBar getProgressBar() {
 		return progressBar;
 	}
-	
+
 	private JPanel component;
 	
 	private void setComponent() {

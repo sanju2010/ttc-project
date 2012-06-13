@@ -61,6 +61,7 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 						.getConfigParameterValue("Directory");
 				this.setDirectory(path);
 
+				// Set up TBX filtering
 				if (Boolean.TRUE.equals(context
 						.getConfigParameterValue(TBXSettings.P_KEEP_VERBS)))
 					predicate = TermPredicates.createOrPredicate(predicate,
@@ -87,15 +88,14 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 		try {
 			FilterRules rule = FilterRules.valueOf(filterRule);
 			TermPredicate pred = null;
+			int cutoff = (int) Math.floor(filteringThreshold.doubleValue());
 			switch (rule) {
 			case None:
 				pred = TermPredicates.TRIVIAL_ACCEPTOR;
 				break;
 
 			case OccurrenceThreshold:
-				pred = TermPredicates
-						.createOccurrencesPredicate(filteringThreshold
-								.intValue());
+				pred = TermPredicates.createOccurrencesPredicate(cutoff);
 				break;
 			case FrequencyThreshold:
 				pred = TermPredicates
@@ -108,21 +108,15 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 				break;
 
 			case TopNByOccurrence:
-				pred = TermPredicates
-						.createTopNByOccurrencesPredicate(filteringThreshold
-								.intValue());
+				pred = TermPredicates.createTopNByOccurrencesPredicate(cutoff);
 				break;
 
 			case TopNByFrequency:
-				pred = TermPredicates
-						.createTopNByFrequencyPredicate(filteringThreshold
-								.intValue());
+				pred = TermPredicates.createTopNByFrequencyPredicate(cutoff);
 				break;
 
 			case TopNBySpecificity:
-				pred = TermPredicates
-						.createTopNBySpecificityPredicate(filteringThreshold
-								.intValue());
+				pred = TermPredicates.createTopNBySpecificityPredicate(cutoff);
 				break;
 
 			default:
@@ -256,6 +250,8 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 		FSIterator<Annotation> iterator = index.iterator();
 		while (iterator.hasNext()) {
 			TermAnnotation annotation = (TermAnnotation) iterator.next();
+			
+			// If term matches the filtering rules, the we add it to output
 			if (predicate.accept(annotation)) {
 				Element termEntry = document.createElement("termEntry");
 				termEntry.setAttribute("xml:id", "entry-" + annotation.getAddress());

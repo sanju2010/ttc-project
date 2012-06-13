@@ -71,4 +71,9 @@ public class IndexerAdvancedSettings extends Parameters implements
 		};
 	}
 
+	@Override
+	protected String[][] getButtonGroups() {
+		return null;
+	}
+
 }

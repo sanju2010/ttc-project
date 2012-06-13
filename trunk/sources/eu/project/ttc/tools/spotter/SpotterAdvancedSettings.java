@@ -19,5 +19,10 @@ public class SpotterAdvancedSettings extends Parameters implements TermSuiteSett
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	protected String[][] getButtonGroups() {
+		return null;
+	}
 		
 }

@@ -35,5 +35,10 @@ public class SpotterSettings extends Parameters implements TermSuiteSettings {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	protected String[][] getButtonGroups() {
+		return null;
+	}
 		
 }
