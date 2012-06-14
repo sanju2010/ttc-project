@@ -303,7 +303,7 @@ where these translations are separated by tabulations.
 *Warning:* Notice that the target language is implicit 
 and users should pay attention to set the right source and target terminologies according to these input term files.
 
-*Note:* These term files should be UTF-8 encoded!
+*Note:* These term files should be UTF-8 encoded and all entries should be in lower case letters!
 
 ===== Bilingual Dictionaries =====
 
@@ -319,7 +319,7 @@ are in the second row.
 A source entry can have more than one target entries.
 Moreover, A target entry can be related to more than one source entries.
 
-*Note:* These dictionaries should be UTF-8 encoded!
+*Note:* These dictionaries should be UTF-8 encoded and all entries should be in lower case letters!
 
 ==== Settings ====
 
