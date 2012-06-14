@@ -45,6 +45,13 @@
         <multiValued>false</multiValued>
         <mandatory>true</mandatory>
       </configurationParameter>
+      <configurationParameter>
+        <name>AlignerOutputDirectory</name>
+        <description>Path to the directory that will contain the alignment result.</description>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+      </configurationParameter>
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
@@ -63,6 +70,12 @@
         <name>CompositionalMethod</name>
         <value>
           <boolean>true</boolean>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>AlignerOutputDirectory</name>
+        <value>
+          <string>.</string>
         </value>
       </nameValuePair>
     </configurationParameterSettings>

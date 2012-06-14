@@ -48,10 +48,10 @@ public class AlignerAdvancedSettings extends Parameters implements
 
 	@Override
 	protected String[][] getButtonGroups() {
-		return new String[][] {
+		return null;/*new String[][] {
 				// Group different methods
 				new String[] { P_METHOD_COMPOSITIONAL, P_METHOD_DISTRIBUTIONAL } 
-		};
+		};*/
 	}
 
 }

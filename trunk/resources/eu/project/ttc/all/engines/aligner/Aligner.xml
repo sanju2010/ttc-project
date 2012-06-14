@@ -119,6 +119,16 @@
           <parameter>FixedFlowController/ActionAfterCasMultiplier</parameter>
         </overrides>
       </configurationParameter>
+      <configurationParameter>
+        <name>AlignerOutputDirectory</name>
+        <description>Path to the directory that will contain the alignment result.</description>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>TermAligner/AlignerOutputDirectory</parameter>
+        </overrides>
+      </configurationParameter>
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
@@ -149,6 +159,12 @@
         <name>Action</name>
         <value>
           <string>drop</string>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>AlignerOutputDirectory</name>
+        <value>
+          <string>.</string>
         </value>
       </nameValuePair>
     </configurationParameterSettings>

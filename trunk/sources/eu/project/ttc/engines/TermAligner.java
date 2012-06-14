@@ -12,6 +12,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import javax.xml.transform.TransformerException;
+
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
@@ -27,6 +29,10 @@ import eu.project.ttc.metrics.SimilarityDistance;
 import eu.project.ttc.models.Context;
 import eu.project.ttc.resources.Dictionary;
 import eu.project.ttc.resources.Terminology;
+import eu.project.ttc.tools.aligner.AlignerAdvancedSettings;
+import eu.project.ttc.tools.aligner.AlignerSettings;
+import eu.project.ttc.tools.utils.TranslationList;
+import eu.project.ttc.tools.utils.TranslationListTBXWriter;
 import eu.project.ttc.types.MultiWordTermAnnotation;
 import eu.project.ttc.types.SingleWordTermAnnotation;
 import eu.project.ttc.types.TermAnnotation;
@@ -35,12 +41,120 @@ import eu.project.ttc.types.TranslationCandidateAnnotation;
 
 public class TermAligner extends JCasAnnotator_ImplBase {
 	
-	private Dictionary dictionary;
+	/** Stores the alignment result */
+	private TranslationList result;
 	
+	/** Handles bilingual tbx output */
+	private TranslationListTBXWriter tbxWriter;
+	
+	private Dictionary dictionary;
+
+	private SimilarityDistance similarityDistance;
+
+	private Terminology sourceTerminology;
+
+	private Terminology targetTerminology;
+
+	private boolean distributional;
+
+	private boolean compositional;
+
+	private File outputFile;
+	
+	@Override
+	public void initialize(UimaContext context) throws ResourceInitializationException {
+		super.initialize(context);
+		try {
+			
+			String name = (String) context
+					.getConfigParameterValue(AlignerAdvancedSettings.P_SIMILARITY_DISTANCE);
+			this.setSimilarityDistance(name);
+
+			this.setDistributional(Boolean.TRUE.equals(context
+					.getConfigParameterValue(AlignerAdvancedSettings.P_METHOD_DISTRIBUTIONAL)));
+			this.setCompositional(Boolean.TRUE.equals(context
+					.getConfigParameterValue(AlignerAdvancedSettings.P_METHOD_COMPOSITIONAL)));
+
+			if (sourceTerminology == null) {
+				sourceTerminology = (Terminology) context.getResourceObject("SourceTerminology");
+				String path = (String) context
+						.getConfigParameterValue(AlignerSettings.P_SOURCE_TERMINOLOGY);
+				if (path != null) {
+					sourceTerminology.load(path);
+				}
+			}
+
+			if (targetTerminology == null) {
+				targetTerminology = (Terminology) context.getResourceObject("TargetTerminology");
+				String path = (String) context
+						.getConfigParameterValue(AlignerSettings.P_TARGET_TERMINOLOGY);
+				if (path != null) {
+					targetTerminology.load(path);
+				}
+			}
+
+			if (dictionary == null) {
+				Dictionary dictionary = (Dictionary) context.getResourceObject("Dictionary");
+				this.setDictionary(dictionary);
+				String path = (String) context.getConfigParameterValue("DictionaryFile");
+				if (path != null) {
+					File file = new File(path);
+					dictionary.load(file.toURI());
+				}
+			}
+
+			// Addendum S. Peña Saldarriaga
+			result = TranslationList.getList(sourceTerminology.getJCas()
+					.getDocumentLanguage(), // Source language
+					targetTerminology, // Target terminology
+					name.substring(name.lastIndexOf('.') + 1).toLowerCase()); // Score type
+			tbxWriter = new TranslationListTBXWriter();
+			outputFile = createOutputFile(context);
+		} catch (Exception e) {
+			throw new ResourceInitializationException(e);
+		}
+	}
+	
+	@Override
+	public void process(JCas cas) throws AnalysisEngineProcessException {
+		try {
+			JCas terminology = sourceTerminology.getJCas();
+			String term = this.getTerm(cas);
+			this.getContext().getLogger().log(Level.INFO,"Processing '" + term + "'");
+			TermAnnotation annotation = sourceTerminology.get(term);
+			if (annotation == null) {
+				this.getContext().getLogger().log(Level.WARNING, "Skiping '" + term + "' as it doesn't belong to the source terminology");
+			} else {
+				this.align(cas, terminology, annotation, term);
+			} 
+		} catch (Exception e) {
+			throw new AnalysisEngineProcessException(e);
+		} 
+	}
+
+	@Override
+	public void collectionProcessComplete()
+			throws AnalysisEngineProcessException {
+		try {
+			tbxWriter.write(result, outputFile);
+		} catch (TransformerException e) {
+			throw new AnalysisEngineProcessException(e);
+		}
+	}
+	
+	private File createOutputFile(UimaContext context) throws CASException {
+		return new File(
+				(String) context.getConfigParameterValue(AlignerSettings.P_OUTPUT_DIRECTORY),
+				sourceTerminology.getJCas().getDocumentLanguage()
+						+ "-"
+						+ targetTerminology.getJCas().getDocumentLanguage()
+						+ "-alignment.tbx");
+	}
+
 	private void setDictionary(Dictionary dictionary) throws Exception {
 		this.dictionary = dictionary;
-		String src = this.getSourceTerminology().getJCas().getDocumentLanguage();
-		String tgt = this.getTargetTerminology().getJCas().getDocumentLanguage();
+		String src = sourceTerminology.getJCas().getDocumentLanguage();
+		String tgt = targetTerminology.getJCas().getDocumentLanguage();
 		String name = "/eu/project/ttc/all/dictionaries/dictionary-" + src + "-" + tgt + ".txt";
 		InputStream is = this.getClass().getResourceAsStream(name);
 		if (is == null) {
@@ -49,12 +163,6 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 			this.dictionary.load(name, is);
 		}
 	}
-	
-	private Dictionary getDictionary() {
-		return this.dictionary;
-	}
-	
-	private SimilarityDistance similarityDistance;
 	
 	private void setSimilarityDistance(String name) throws Exception {
 		if (this.similarityDistance == null) {
@@ -69,114 +177,24 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 		}
 	}
 	
-	private SimilarityDistance getSimilarityDistance() {
-		return this.similarityDistance;
-	}
-	
-	private Terminology sourceTerminology;
-	
-	private void setSourceTerminology(Terminology terminology) {
-		this.sourceTerminology = terminology;
-	}
-	
-	private Terminology getSourceTerminology() {
-		return this.sourceTerminology;
-	}
-	
-	private Terminology targetTerminology;
-	
-	private void setTargetTerminology(Terminology terminology) { 
-		this.targetTerminology = terminology;
-	}
-	
-	private Terminology getTargetTerminology() {
-		return this.targetTerminology;
-	}
-	
-	private boolean distributional;
-	
-	private void distributional(boolean enabled) {
+	private void setDistributional(boolean enabled) {
 		this.distributional = enabled;
 	}
 	
-	private boolean distributional() {
+	private boolean isDistributional() {
 		return this.distributional;
 	}
 	
-	private boolean compositional;
-	
-	private void compositional(boolean enabled) {
+	private void setCompositional(boolean enabled) {
 		this.compositional = enabled;
 	}
 	
-	private boolean compositional() {
+	private boolean isCompositional() {
 		return this.compositional;
 	}
 	
-	@Override
-	public void initialize(UimaContext context) throws ResourceInitializationException {
-		super.initialize(context);
-		try {
-			String name = (String) context.getConfigParameterValue("SimilarityDistanceClassName");
-			this.setSimilarityDistance(name);
-			
-			Boolean distributional = (Boolean) context.getConfigParameterValue("DistributionalMethod");
-			this.distributional(distributional == null ? false : distributional.booleanValue());
-
-			Boolean compositional = (Boolean) context.getConfigParameterValue("CompositionalMethod");
-			this.compositional(compositional == null ? false : compositional.booleanValue());
-
-			if (this.getSourceTerminology() == null) {
-				Terminology terminology = (Terminology) context.getResourceObject("SourceTerminology");
-				this.setSourceTerminology(terminology);
-				String path = (String) context.getConfigParameterValue("SourceTerminologyFile");
-				if (path != null) {
-					this.getSourceTerminology().load(path);
-				}
-			}
-			
-			if (this.getTargetTerminology() == null) {
-				Terminology terminology = (Terminology) context.getResourceObject("TargetTerminology");
-				this.setTargetTerminology(terminology);
-				String path = (String) context.getConfigParameterValue("TargetTerminologyFile");
-				if (path != null) {
-					this.getTargetTerminology().load(path);
-				}
-			}
-			
-			if (this.getDictionary() == null) {
-				Dictionary dictionary = (Dictionary) context.getResourceObject("Dictionary");
-				this.setDictionary(dictionary);				
-				String path = (String) context.getConfigParameterValue("DictionaryFile");
-				if (path != null) {
-					File file = new File(path);
-					this.getDictionary().load(file.toURI());
-				}
-			}
-		} catch (Exception e) {
-			throw new ResourceInitializationException(e);
-		}
-	}
-	
-	@Override
-	public void process(JCas cas) throws AnalysisEngineProcessException {
-		try {
-			JCas terminology = this.getSourceTerminology().getJCas();
-			String term = this.getTerm(cas);
-			this.getContext().getLogger().log(Level.INFO,"Processing '" + term + "'");
-			TermAnnotation annotation = this.getSourceTerminology().get(term);
-			if (annotation == null) {
-				this.getContext().getLogger().log(Level.WARNING, "Skiping '" + term + "' as it doesn't belong to the source terminology");
-			} else {
-				this.align(cas, terminology, annotation, term);
-			} 
-		} catch (Exception e) {
-			throw new AnalysisEngineProcessException(e);
-		} 
-	}
-
 	private void align(JCas cas, JCas terminology, TermAnnotation annotation, String term) throws Exception {
-		if (this.compositional()) {
+		if (isCompositional()) {
 			if (annotation instanceof SingleWordTermAnnotation) {
 				SingleWordTermAnnotation swt = (SingleWordTermAnnotation) annotation;
 				if (swt.getCompound()) {
@@ -187,7 +205,7 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 				this.alignMultiWord(cas, terminology, mwt, term);
 			}
 		}
-		if (this.distributional()) {
+		if (isDistributional()) {
 			if (annotation instanceof SingleWordTermAnnotation) {
 				SingleWordTermAnnotation swt = (SingleWordTermAnnotation) annotation;
 				this.alignSingleWord(cas, swt, term);
@@ -206,19 +224,19 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 	}
 
 	private void alignSingleWord(JCas cas, SingleWordTermAnnotation annotation, String term) {
-		Context context = this.getSourceTerminology().context(term);
+		Context context = sourceTerminology.context(term);
 		if (context == null) {
 			this.getContext().getLogger().log(Level.WARNING,"Skiping '" + term + "'");
 		} else {
 			this.shrink(context);
 			Context transfer = this.transfer(term, context);
 			Map<String, Double> candidates = this.align(term, transfer);
-			this.annotate(cas, candidates);
+			this.annotate(cas, annotation, candidates);
 		}
 	}
 
 	private void shrink(Context context) {
-		Set<String> filter = this.getDictionary().get().keySet();
+		Set<String> filter = dictionary.get().keySet();
 		for (String term : context.getCoOccurrences().keySet()) {
 			if (!filter.contains(term)) {
 				context.getCoOccurrences().remove(term);
@@ -234,7 +252,7 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 		candidates = this.generate(candidates);
 		components = this.flatten(candidates, " ");
 		components = this.select(components);
-		this.annotate(cas, components);
+		this.annotate(cas, entry, components);
 	}
 
 	private void alignCompound(JCas cas, JCas terminology, SingleWordTermAnnotation entry, String term) throws CASException {
@@ -247,13 +265,13 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 				components = this.flatten(candidates, "");
 				components.addAll(this.flatten(candidates, "-"));
 				components = this.select(components);
-				this.annotate(cas, components);		
+				this.annotate(cas, entry, components);		
 			}
 		}
 	}
 		
 	private void alignComponent(JCas cas, String term, Set<String> set) {
-		Context context = this.getSourceTerminology().context(term);
+		Context context = sourceTerminology.context(term);
 		if (context != null) {
 			Context transfer = this.transfer(term, context);
 			Map<String, Double> scores = this.align(term, transfer);
@@ -278,12 +296,12 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 			Double sourceCoOcc = sourceContext.getCoOccurrences().get(sourceCoTerm);
 			Set<String> resultTerms = null;
 			if (!sourceTerm.equals(sourceCoTerm)) {
-				resultTerms = this.getDictionary().get().get(sourceCoTerm);
+				resultTerms = dictionary.get().get(sourceCoTerm);
 			}
 			if (resultTerms != null) {  
 				int totalOcc = 0;
 				for (String resultTerm : resultTerms) {
-					Integer occ = this.getTargetTerminology().occurrences(resultTerm);
+					Integer occ = targetTerminology.occurrences(resultTerm);
 					if (occ == null) {
 						continue;
 					} else {
@@ -294,7 +312,7 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 					continue;
 				} else {
 					for (String resultTerm : resultTerms) {
-						Integer occ = this.getTargetTerminology().occurrences(resultTerm);
+						Integer occ = targetTerminology.occurrences(resultTerm);
 						if (occ == null) {
 							continue;
 						} else {
@@ -312,12 +330,12 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 	
 	private Map<String, Double> align(String term, Context termContext) {
 		Map<String, Double> candidates = new HashMap<String, Double>();
-		for (String targetTerm : this.getTargetTerminology().terms()) {
-			Context targetContext = this.getTargetTerminology().context(targetTerm);
+		for (String targetTerm : targetTerminology.terms()) {
+			Context targetContext = targetTerminology.context(targetTerm);
 			if (targetContext == null) {
 				continue;
 			} else {
-				double score = this.getSimilarityDistance().getValue(termContext.getCoOccurrences(),targetContext.getCoOccurrences());	
+				double score = similarityDistance.getValue(termContext.getCoOccurrences(),targetContext.getCoOccurrences());	
 				if (!Double.isInfinite(score) && !Double.isNaN(score)) {
 					candidates.put(targetTerm, new Double(score));
 				}
@@ -326,12 +344,15 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 		return candidates;
 	}
 	
-	private void annotate(JCas cas, Map<String, Double> scores) {
+	private void annotate(JCas cas, SingleWordTermAnnotation term, Map<String, Double> scores) {
 		ScoreComparator comparator = new ScoreComparator();
 		comparator.set(scores);
 		Map<String, Double> candidates = new TreeMap<String, Double>(comparator);
 		candidates.putAll(scores);
 		int rank = 0;
+
+		// Add term to translation list
+		result.addTerm(term);
 		for (String translation : candidates.keySet()) {
 			rank++;
 			Double score = candidates.get(translation);
@@ -340,6 +361,9 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 			annotation.setScore(score.doubleValue());
 			annotation.setRank(rank);
 			annotation.addToIndexes();
+			
+			// Add all candidates
+			result.addTranslationCandidate(term, annotation);
 			if (rank >= 100) {
 				break;
 			}
@@ -481,7 +505,7 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 			int length = components.size();
 			for (int index = length - 1; index >= 0; index--) {
 				String component = components.get(index);
-				if (this.getDictionary().get().keySet().contains(component)) {
+				if (dictionary.get().keySet().contains(component)) {
 					continue;
 				} else if (index > 0) {
 					List<String> alt = new ArrayList<String>();
@@ -508,11 +532,11 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 		List<List<String>> candidates = new ArrayList<List<String>>();
 		for (int index = 0; index < components.size(); index++) {
 			String component = components.get(index);
-			Set<String> candidate = this.getDictionary().get().get(component);
+			Set<String> candidate = dictionary.get().get(component);
 			if (candidate == null) {
 				candidate = new HashSet<String>();
 			}
-			if (candidate.isEmpty() && this.distributional()) {
+			if (candidate.isEmpty() && isDistributional()) {
 				this.alignComponent(cas, component, candidate);
 			}
 			candidates.add(new ArrayList<String>(candidate));
@@ -687,7 +711,7 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 	private List<String> select(List<String> candidates) {
 		List<String> selection = new ArrayList<String>();
 		for (String candidate : candidates) {
-			if (this.getTargetTerminology().exists(candidate)) {
+			if (targetTerminology.exists(candidate)) {
 				selection.add(candidate);
 			}
 		}
@@ -700,7 +724,9 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 	 * @param cas
 	 * @param candidates
 	 */
-	private void annotate(JCas cas, List<String> candidates) {
+	private void annotate(JCas cas, TermAnnotation entry, List<String> candidates) {
+		// Add entry to translation list
+		result.addTerm(entry);
 		for (int index = 0; index < candidates.size(); index++) {
 			String candidate = candidates.get(index);
 			TranslationCandidateAnnotation annotation = new TranslationCandidateAnnotation(cas,0,cas.getDocumentText().length());
@@ -708,6 +734,8 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 			annotation.setScore(1.0);
 			annotation.setRank(index + 1);
 			annotation.addToIndexes();
+			// Add candidates for entry
+			result.addTranslationCandidate(entry, annotation);
 		}
 	}
 	

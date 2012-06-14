@@ -30,23 +30,43 @@ public class AlignerEngine implements TermSuiteEngine {
 		ConfigurationParameterSettings parameters = this.getTool().getSettings().getMetaData().getConfigurationParameterSettings();
 		ConfigurationParameterSettings advancedParameters = this.getTool().getAdvancedSettings().getMetaData().getConfigurationParameterSettings();
 		ConfigurationParameterSettings settings = UIMAFramework.getResourceSpecifierFactory().createConfigurationParameterSettings();
-		settings.setParameterValue("SourceLanguage",parameters.getParameterValue("SourceLanguage"));
-		settings.setParameterValue("TargetLanguage",parameters.getParameterValue("TargetLanguage"));
-		settings.setParameterValue("DictionaryFile",parameters.getParameterValue("BilingualDictionaryFile"));
-		settings.setParameterValue("SourceTerminologyFile",parameters.getParameterValue("InputSourceTerminologyFile"));
-		settings.setParameterValue("TargetTerminologyFile",parameters.getParameterValue("OutputTargetTerminologyFile"));
-		settings.setParameterValue("Directory", parameters.getParameterValue("EvaluationInputOutputTranslationDirectory"));
+		
+		settings.setParameterValue(AlignerSettings.P_SOURCE_LANGUAGE,
+				parameters.getParameterValue(AlignerSettings.P_SOURCE_LANGUAGE));
+		settings.setParameterValue(AlignerSettings.P_TARGET_LANGUAGE,
+				parameters.getParameterValue(AlignerSettings.P_TARGET_LANGUAGE));
+		settings.setParameterValue("DictionaryFile", parameters
+				.getParameterValue(AlignerSettings.P_BILINGUAL_DICTIONARY));
+		settings.setParameterValue(AlignerSettings.P_SOURCE_TERMINOLOGY,
+				parameters.getParameterValue(AlignerSettings.P_SOURCE_TERMINOLOGY));
+		settings.setParameterValue(AlignerSettings.P_TARGET_TERMINOLOGY,
+				parameters.getParameterValue(AlignerSettings.P_TARGET_TERMINOLOGY));
+		settings.setParameterValue("Directory", parameters
+				.getParameterValue(AlignerSettings.P_EVALUATION_DIRECTORY));
 		settings.setParameterValue("Action", "drop");
-		settings.setParameterValue("SimilarityDistanceClassName",advancedParameters.getParameterValue("SimilarityDistanceClassName"));
-		settings.setParameterValue("DistributionalMethod",advancedParameters.getParameterValue("DistributionalMethod") == null ? Boolean.TRUE : advancedParameters.getParameterValue("DistributionalMethod"));
-		settings.setParameterValue("CompositionalMethod",advancedParameters.getParameterValue("CompositionalMethod") == null ? Boolean.TRUE : advancedParameters.getParameterValue("CompositionalMethod"));
+		settings.setParameterValue(AlignerSettings.P_OUTPUT_DIRECTORY,
+				parameters.getParameterValue(AlignerSettings.P_OUTPUT_DIRECTORY));
+
+		settings.setParameterValue(
+				AlignerAdvancedSettings.P_SIMILARITY_DISTANCE,
+				advancedParameters
+						.getParameterValue(AlignerAdvancedSettings.P_SIMILARITY_DISTANCE));
+		settings.setParameterValue(
+				AlignerAdvancedSettings.P_METHOD_DISTRIBUTIONAL,
+				Boolean.TRUE.equals(advancedParameters
+						.getParameterValue(AlignerAdvancedSettings.P_METHOD_DISTRIBUTIONAL)));
+		settings.setParameterValue(
+				AlignerAdvancedSettings.P_METHOD_COMPOSITIONAL,
+				Boolean.TRUE.equals(advancedParameters
+						.getParameterValue(AlignerAdvancedSettings.P_METHOD_COMPOSITIONAL)));
+
 		return settings;
 	}
 
 	@Override
 	public String data() {
 		ConfigurationParameterSettings parameters = this.getTool().getSettings().getMetaData().getConfigurationParameterSettings();
-		return (String) parameters.getParameterValue("EvaluationInputOutputTranslationDirectory");
+		return (String) parameters.getParameterValue(AlignerSettings.P_EVALUATION_DIRECTORY);
 	}
 
 	@Override
