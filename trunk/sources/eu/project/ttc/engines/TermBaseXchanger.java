@@ -40,9 +40,22 @@ import eu.project.ttc.types.TermAnnotation;
 
 public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 
-	private TermPredicate predicate = TermPredicates.createNounAdjectivePredicate();
+	/** Prefix used in langset ids */
+	public static final String LANGSET_ID_PREFIX = "langset-";
+
+	/** Prefix used in langset ids */
+	public static final String TERMENTRY_ID_PREFIX = "entry-";
 	
+	/** Prefix used in langset ids */
+	public static final String TIG_ID_PREFIX = "term-";
+	
+	/** Global filter for tbx output */
+	private TermPredicate predicate = TermPredicates
+			.createNounAdjectivePredicate();
+
+	/** TBX filter rule as specified by the parameters */
 	private TermPredicate filterRule;
+	
 	private File file;
 	
 	private void setDirectory(String path) throws IOException {
@@ -160,9 +173,10 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 		FSIterator<Annotation> iterator = index.iterator();
 		while (iterator.hasNext()) {
 			TermAnnotation annotation = (TermAnnotation) iterator.next();
+			String id = LANGSET_ID_PREFIX + annotation.getAddress();
+			annotation.setLangset(id);
 			termList.add(annotation);
 			if (annotation.getVariants() != null) {
-				String id = "langset-" + annotation.getAddress();
 				for (int i = 0; i < annotation.getVariants().size(); i++) {
 					TermAnnotation variant = annotation.getVariants(i);
 					this.variants.add(variant);
@@ -250,14 +264,13 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 		FSIterator<Annotation> iterator = index.iterator();
 		while (iterator.hasNext()) {
 			TermAnnotation annotation = (TermAnnotation) iterator.next();
-			
+			String id = annotation.getLangset();
 			// If term matches the filtering rules, the we add it to output
 			if (predicate.accept(annotation)) {
 				Element termEntry = document.createElement("termEntry");
-				termEntry.setAttribute("xml:id", "entry-" + annotation.getAddress());
+				termEntry.setAttribute("xml:id", TERMENTRY_ID_PREFIX + annotation.getAddress());
 				body.appendChild(termEntry);
 				Element langSet = document.createElement("langSet");
-				String id = "langset-" + annotation.getAddress();
 				langSet.setAttribute("xml:id", id);
 				langSet.setAttribute("xml:lang", cas.getDocumentLanguage());
 				termEntry.appendChild(langSet);
@@ -272,12 +285,12 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 				Set<TermAnnotation> variants = this.variantsOf.get(id);
 				if (variants != null) {
 					for (TermAnnotation variant : variants) {
-						this.addTermVariant(document, langSet, "langset-" + variant.getAddress(), variant.getCoveredText());
+						this.addTermVariant(document, langSet, variant.getLangset(), variant.getCoveredText());
 					}
 				}
 
 				Element tig = document.createElement("tig");
-				tig.setAttribute("xml:id", "term-" + annotation.getAddress());
+				tig.setAttribute("xml:id", TIG_ID_PREFIX + annotation.getAddress());
 				langSet.appendChild(tig);
 				Element term = document.createElement("term");
 				term.setTextContent(annotation.getCoveredText());

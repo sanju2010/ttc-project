@@ -14,7 +14,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /** 
- * Updated by JCasGen Thu Mar 01 23:11:13 CET 2012
+ * Updated by JCasGen Thu Jun 14 13:47:16 CEST 2012
  * @generated */
 public class TermAnnotation_Type extends Annotation_Type {
   /** @generated */
@@ -244,6 +244,24 @@ public class TermAnnotation_Type extends Annotation_Type {
     ll_cas.ll_setStringArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_forms), i, v);
   }
  
+ 
+  /** @generated */
+  final Feature casFeat_langset;
+  /** @generated */
+  final int     casFeatCode_langset;
+  /** @generated */ 
+  public String getLangset(int addr) {
+        if (featOkTst && casFeat_langset == null)
+      jcas.throwFeatMissing("langset", "eu.project.ttc.types.TermAnnotation");
+    return ll_cas.ll_getStringValue(addr, casFeatCode_langset);
+  }
+  /** @generated */    
+  public void setLangset(int addr, String v) {
+        if (featOkTst && casFeat_langset == null)
+      jcas.throwFeatMissing("langset", "eu.project.ttc.types.TermAnnotation");
+    ll_cas.ll_setStringValue(addr, casFeatCode_langset, v);}
+    
+  
 
 
 
@@ -284,6 +302,10 @@ public class TermAnnotation_Type extends Annotation_Type {
  
     casFeat_forms = jcas.getRequiredFeatureDE(casType, "forms", "uima.cas.StringArray", featOkTst);
     casFeatCode_forms  = (null == casFeat_forms) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_forms).getCode();
+
+ 
+    casFeat_langset = jcas.getRequiredFeatureDE(casType, "langset", "uima.cas.String", featOkTst);
+    casFeatCode_langset  = (null == casFeat_langset) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_langset).getCode();
 
   }
 }

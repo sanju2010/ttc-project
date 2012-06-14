@@ -140,7 +140,7 @@ public final class TranslationList implements Iterable<String> {
 		String text = term.getCoveredText();
 		if (!terms.containsKey(text))
 			terms.put(text,
-					new TranslationTerm(text, "langset-" + term.getAddress()));
+					new TranslationTerm(text, term.getLangset()));
 	}
 
 	/**
@@ -217,9 +217,8 @@ public final class TranslationList implements Iterable<String> {
 		 */
 		protected void addCandidate(TranslationCandidateAnnotation candidate,
 				TermAnnotation candidateTerm) {
-			String address = (candidateTerm != null) ? "langset-"
-					+ candidateTerm.getAddress() : "nonexistent-langset-id";
-					
+			String address = (candidateTerm != null) ? candidateTerm
+					.getLangset() : "nonexistent-langset-id";
 			candidates.add(new TranslationCandidate(candidate.getTranslation(),
 					candidate.getRank(), address, candidate.getScore()));
 		}

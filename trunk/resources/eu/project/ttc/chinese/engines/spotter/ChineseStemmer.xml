@@ -2,10 +2,10 @@
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>true</primitive>
-  <annotatorImplementationName>fr.free.rocheteau.jerome.engines.Stemmer</annotatorImplementationName>
+  <annotatorImplementationName>eu.project.ttc.engines.ChineseNormalizer</annotatorImplementationName>
   <analysisEngineMetaData>
     <name>Chinese Stemmer</name>
-    <description/>
+    <description>** DO NOT regenerate with the Makefile **</description>
     <version>1.0</version>
     <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
     <configurationParameters>

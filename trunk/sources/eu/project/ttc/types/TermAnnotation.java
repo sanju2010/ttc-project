@@ -15,8 +15,8 @@ import org.apache.uima.jcas.cas.StringArray;
 
 
 /** 
- * Updated by JCasGen Thu Mar 01 23:11:13 CET 2012
- * XML source: /home/rocheteau-j/Repositories/GoogleCode/ttc-term-suite/trunk/resources/eu/project/ttc/types/TermSuiteTypeSystem.xml
+ * Updated by JCasGen Thu Jun 14 13:47:16 CEST 2012
+ * XML source: /home/pena-s/workspace/ttc-project/resources/eu/project/ttc/types/TermSuiteTypeSystem.xml
  * @generated */
 public class TermAnnotation extends Annotation {
   /** @generated
@@ -35,7 +35,7 @@ public class TermAnnotation extends Annotation {
  
   /** Never called.  Disable default constructor
    * @generated */
-  protected TermAnnotation() {/* intentionally empty block */}
+  protected TermAnnotation() {}
     
   /** Internal - constructor used by generator 
    * @generated */
@@ -256,6 +256,24 @@ public class TermAnnotation extends Annotation {
       jcasType.jcas.throwFeatMissing("forms", "eu.project.ttc.types.TermAnnotation");
     jcasType.jcas.checkArrayBounds(jcasType.ll_cas.ll_getRefValue(addr, ((TermAnnotation_Type)jcasType).casFeatCode_forms), i);
     jcasType.ll_cas.ll_setStringArrayValue(jcasType.ll_cas.ll_getRefValue(addr, ((TermAnnotation_Type)jcasType).casFeatCode_forms), i, v);}
+   
+    
+  //*--------------*
+  //* Feature: langset
+
+  /** getter for langset - gets Langset id after the TermAnnotation has been saved.
+   * @generated */
+  public String getLangset() {
+    if (TermAnnotation_Type.featOkTst && ((TermAnnotation_Type)jcasType).casFeat_langset == null)
+      jcasType.jcas.throwFeatMissing("langset", "eu.project.ttc.types.TermAnnotation");
+    return jcasType.ll_cas.ll_getStringValue(addr, ((TermAnnotation_Type)jcasType).casFeatCode_langset);}
+    
+  /** setter for langset - sets Langset id after the TermAnnotation has been saved. 
+   * @generated */
+  public void setLangset(String v) {
+    if (TermAnnotation_Type.featOkTst && ((TermAnnotation_Type)jcasType).casFeat_langset == null)
+      jcasType.jcas.throwFeatMissing("langset", "eu.project.ttc.types.TermAnnotation");
+    jcasType.ll_cas.ll_setStringValue(addr, ((TermAnnotation_Type)jcasType).casFeatCode_langset, v);}    
   }
 
     
