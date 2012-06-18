@@ -3,12 +3,9 @@ package eu.project.ttc.tools.spotter;
 import java.awt.Component;
 import java.io.File;
 
-import javax.swing.BorderFactory;
 import javax.swing.JPanel;
-import javax.swing.JSplitPane;
 
 import eu.project.ttc.tools.TermSuite;
-import eu.project.ttc.tools.TermSuiteSettings;
 import eu.project.ttc.tools.TermSuiteTool;
 
 public class Spotter implements TermSuiteTool {

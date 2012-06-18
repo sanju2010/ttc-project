@@ -41,9 +41,30 @@
 				</pattern>
 				<pattern>
 					<annotation type="eu.project.ttc.types.WordAnnotation">
+					  <constraint>
+					    <or>
+					      <constraints>
 						<constraint>
 							<eq key="category" value="adjective" />
 						</constraint>
+						<constraint>
+						  <and>
+								<constraints>
+									<constraint>
+										<eq key="category" value="verb" />
+									</constraint>
+									<constraint>
+										<eq key="mood" value="participle" />
+									</constraint>
+									<constraint>
+										<eq key="tense" value="past" />
+									</constraint>
+								</constraints>
+						  </and>
+						</constraint>
+					      </constraints>
+					    </or>					      
+					  </constraint>
 					</annotation>
 				</pattern>
 			</patterns>
@@ -74,38 +95,6 @@
 					<annotation type="eu.project.ttc.types.WordAnnotation">
 						<constraint>
 							<eq key="category" value="adjective" />
-						</constraint>
-					</annotation>
-				</pattern>
-			</patterns>
-		</sequence>
-	</pattern>
-	<pattern id="noun-past-participle">
-		<sequence>
-			<patterns>
-				<pattern>
-					<annotation type="eu.project.ttc.types.WordAnnotation">
-						<constraint>
-							<eq key="category" value="noun" />
-						</constraint>
-					</annotation>
-				</pattern>
-				<pattern>
-					<annotation type="eu.project.ttc.types.WordAnnotation">
-						<constraint>
-							<and>
-								<constraints>
-									<constraint>
-										<eq key="category" value="verb" />
-									</constraint>
-									<constraint>
-										<eq key="mood" value="participle" />
-									</constraint>
-									<constraint>
-										<eq key="tense" value="past" />
-									</constraint>
-								</constraints>
-							</and>
 						</constraint>
 					</annotation>
 				</pattern>
@@ -838,9 +827,30 @@
 				</pattern>
 				<pattern>
 					<annotation type="eu.project.ttc.types.WordAnnotation">
+					  <constraint>
+					    <or>
+					      <constraints>
 						<constraint>
 							<eq key="category" value="adjective" />
 						</constraint>
+						<constraint>
+						  <and>
+								<constraints>
+									<constraint>
+										<eq key="category" value="verb" />
+									</constraint>
+									<constraint>
+										<eq key="mood" value="participle" />
+									</constraint>
+									<constraint>
+										<eq key="tense" value="past" />
+									</constraint>
+								</constraints>
+						  </and>
+						</constraint>
+					      </constraints>
+					    </or>					      
+					  </constraint>
 					</annotation>
 				</pattern>
 				<pattern>
@@ -866,10 +876,30 @@
 						</constraint>
 					</annotation>
 				</pattern>
+				<pattern>
+					<option>
+						<pattern>
+							<annotation type="eu.project.ttc.types.WordAnnotation">
+								<constraint>
+									<or>
+									<constraints>
+									<constraint>
+										<eq key="category" value="adjective" />
+										</constraint>
+										<constraint>
+										<eq key="category" value="noun" />
+										</constraint>
+									</constraints>
+									</or>
+								</constraint>
+							</annotation>
+						</pattern>
+					</option>
+				</pattern>
 			</patterns>
 		</sequence>
 	</pattern>
-	<pattern id="noun-adjective-preposition-noun-adjective">
+	<pattern id="noun-adjective-preposition-adjective-noun">
 		<sequence>
 			<patterns>
 				<pattern>
@@ -905,20 +935,31 @@
 				<pattern>
 					<annotation type="eu.project.ttc.types.WordAnnotation">
 						<constraint>
-							<eq key="category" value="noun" />
+							<or>
+								<constraints>
+									<constraint>
+							                     <eq key="category" value="adjective" />
+									</constraint>
+									<constraint>
+									     <eq key="category" value="numeral" />
+									</constraint>
+								</constraints>
+							</or>
 						</constraint>
 					</annotation>
 				</pattern>
 				<pattern>
 					<annotation type="eu.project.ttc.types.WordAnnotation">
 						<constraint>
-							<eq key="category" value="adjective" />
+							<eq key="category" value="noun" />
 						</constraint>
 					</annotation>
 				</pattern>
+			
 			</patterns>
 		</sequence>
 	</pattern>
+
 	<pattern id="determiner-noun-conjunction-determiner-noun-adjective">
 		<sequence>
 			<patterns>

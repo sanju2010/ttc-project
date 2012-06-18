@@ -5,7 +5,7 @@
   <annotatorImplementationName>fr.univnantes.lina.uima.engines.ChineseSegmenter</annotatorImplementationName>
   <analysisEngineMetaData>
     <name>Chinese Word Tokenizer</name>
-    <description>** DO NOT regenerate with the makefile **</description>
+    <description>** DO NOT regenerate with the Makefile **</description>
     <version>1.0</version>
     <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
     <configurationParameters>
