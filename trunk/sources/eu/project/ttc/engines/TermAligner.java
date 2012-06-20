@@ -47,6 +47,9 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 	/** Handles bilingual tbx output */
 	private TranslationListTBXWriter tbxWriter;
 	
+	/** Maximum number of translation candidates accepted */
+	private int translationCandidateCutOff; 
+	
 	private Dictionary dictionary;
 
 	private SimilarityDistance similarityDistance;
@@ -110,6 +113,10 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 					name.substring(name.lastIndexOf('.') + 1).toLowerCase()); // Score type
 			tbxWriter = new TranslationListTBXWriter();
 			outputFile = createOutputFile(context);
+			
+			translationCandidateCutOff = (Integer) context
+					.getConfigParameterValue(AlignerAdvancedSettings.P_MAX_CANDIDATES);
+			
 		} catch (Exception e) {
 			throw new ResourceInitializationException(e);
 		}
@@ -364,7 +371,7 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 			
 			// Add all candidates
 			result.addTranslationCandidate(term, annotation);
-			if (rank >= 100) {
+			if (rank >= translationCandidateCutOff) {
 				break;
 			}
 		}

@@ -24,12 +24,12 @@ import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.examples.SourceDocumentInformation;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Level;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-
 import eu.project.ttc.tools.indexer.TBXSettings;
 import eu.project.ttc.tools.indexer.TBXSettings.FilterRules;
 import eu.project.ttc.tools.utils.TermPredicate;
@@ -55,6 +55,11 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 
 	/** TBX filter rule as specified by the parameters */
 	private TermPredicate filterRule;
+	
+	/** Predicate to detect variants */
+	private TermPredicate variantPredicate;
+	
+	private static final DecimalFormat NUMBER_FORMATTER = new DecimalFormat("##.######");
 	
 	private File file;
 	
@@ -171,33 +176,45 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 		AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TermAnnotation.type);
 		ArrayList<TermAnnotation> termList = new ArrayList<TermAnnotation>();
 		FSIterator<Annotation> iterator = index.iterator();
+		int variantCount;
 		while (iterator.hasNext()) {
 			TermAnnotation annotation = (TermAnnotation) iterator.next();
 			String id = LANGSET_ID_PREFIX + annotation.getAddress();
 			annotation.setLangset(id);
 			termList.add(annotation);
-			if (annotation.getVariants() != null) {
-				for (int i = 0; i < annotation.getVariants().size(); i++) {
-					TermAnnotation variant = annotation.getVariants(i);
-					this.variants.add(variant);
-					Set<TermAnnotation> variants = this.variantsOf.get(id);
-					if (variants == null) {
-						variants = new HashSet<TermAnnotation>();
-						this.variantsOf.put(id, variants);
-					}
-					variants.add(variant);
-					Set<String> bases = this.basesOf.get(variant);
-					if (bases == null) {
-						bases = new HashSet<String>();
-						this.basesOf.put(variant, bases);
-					}
-					bases.add(id);
+			variantCount = getVariantCount(annotation.getVariants());
+			for (int i = 0; i < variantCount; i++) {
+				TermAnnotation variant = annotation.getVariants(i);
+				this.variants.add(variant);
+				
+				Set<TermAnnotation> variants = this.variantsOf.get(id);
+				if (variants == null) {
+					variants = new HashSet<TermAnnotation>();
+					this.variantsOf.put(id, variants);
 				}
+				variants.add(variant);
+				
+				Set<String> bases = this.basesOf.get(variant);
+				if (bases == null) {
+					bases = new HashSet<String>();
+					this.basesOf.put(variant, bases);
+				}
+				bases.add(id);
 			}
 		}
 		
+		// We remove variants from the termList
+		for(TermAnnotation var : variants)
+			termList.remove(var);
+		
 		if (filterRule instanceof ListBasedTermPredicate)
 			((ListBasedTermPredicate) filterRule).initialize(termList);
+				
+		variantPredicate = TermPredicates.createContainsPredicate(variants);
+	}
+
+	private int getVariantCount(FSArray vars) {
+		return vars == null ? 0 :  vars.size();
 	}
 
 	private void create(JCas cas, File file) throws Exception {
@@ -259,57 +276,71 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 	}
 		
 	private void process(JCas cas, Document document, Element body) {
-		DecimalFormat format = new DecimalFormat("##.######");
 		AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TermAnnotation.type);
 		FSIterator<Annotation> iterator = index.iterator();
+		String lang = cas.getDocumentLanguage();
 		while (iterator.hasNext()) {
 			TermAnnotation annotation = (TermAnnotation) iterator.next();
 			String id = annotation.getLangset();
+			
 			// If term matches the filtering rules, the we add it to output
-			if (predicate.accept(annotation)) {
-				Element termEntry = document.createElement("termEntry");
-				termEntry.setAttribute("xml:id", TERMENTRY_ID_PREFIX + annotation.getAddress());
-				body.appendChild(termEntry);
-				Element langSet = document.createElement("langSet");
-				langSet.setAttribute("xml:id", id);
-				langSet.setAttribute("xml:lang", cas.getDocumentLanguage());
-				termEntry.appendChild(langSet);
-
-				Set<String> bases = this.basesOf.get(annotation);
-				if (bases != null) {
-					for (String base : bases) {
-						this.addTermBase(document, langSet, base, null);
+			if (!variantPredicate.accept(annotation) && predicate.accept(annotation)) {
+				// Add main term entry
+				addTermEntry(document, body, id, annotation, lang, false);
+				
+				// Add term variants
+				Set<TermAnnotation> tVars = variantsOf.get(id);
+				if (tVars != null) {
+					for (TermAnnotation tVariant : tVars) {
+						addTermEntry(document, body, tVariant.getLangset(),
+								tVariant, lang, true);
 					}
 				}
-
-				Set<TermAnnotation> variants = this.variantsOf.get(id);
-				if (variants != null) {
-					for (TermAnnotation variant : variants) {
-						this.addTermVariant(document, langSet, variant.getLangset(), variant.getCoveredText());
-					}
-				}
-
-				Element tig = document.createElement("tig");
-				tig.setAttribute("xml:id", TIG_ID_PREFIX + annotation.getAddress());
-				langSet.appendChild(tig);
-				Element term = document.createElement("term");
-				term.setTextContent(annotation.getCoveredText());
-				tig.appendChild(term);
-				if (this.variants.contains(annotation)) {
-					this.addNote(document, langSet, tig, "termType", "variant");				
-				} else {
-					this.addNote(document, langSet, tig, "termType", "termEntry");
-				}
-				this.addNote(document, langSet, tig, "partOfSpeech", "noun");
-				this.addNote(document, langSet, tig, "termPattern", annotation.getCategory());
-				this.addNote(document, langSet, tig, "termComplexity", this.getComplexity(annotation));
-				this.addNote(document, langSet, tig, "termSpecifity", annotation.getSpecificity());
-				this.addDescrip(document, langSet, tig, "nbOccurrences", annotation.getOccurrences());
-				this.addDescrip(document, langSet, tig, "relativeFrequency", format.format(annotation.getFrequency()));
-				// this.addDescrip(document, langSet, tig, "domainSpecificity", annotation.getSpecificity());
-			}}
+			}
+		}
 	}
 	
+	private void addTermEntry(Document doc, Element body, String langsetId, TermAnnotation term, String language, boolean isVariant) {
+		Element termEntry = doc.createElement("termEntry");
+		termEntry.setAttribute("xml:id", TERMENTRY_ID_PREFIX + term.getAddress());
+		body.appendChild(termEntry);
+		Element langSet = doc.createElement("langSet");
+		langSet.setAttribute("xml:id", langsetId);
+		langSet.setAttribute("xml:lang", language);
+		termEntry.appendChild(langSet);
+
+		Set<String> bases = this.basesOf.get(term);
+		if (bases != null) {
+			for (String base : bases) {
+				this.addTermBase(doc, langSet, base, null);
+			}
+		}
+
+		Set<TermAnnotation> variants = this.variantsOf.get(langsetId);
+		if (variants != null) {
+			for (TermAnnotation variant : variants) {
+				this.addTermVariant(doc, langSet, variant.getLangset(), variant.getCoveredText());
+			}
+		}
+
+		Element tig = doc.createElement("tig");
+		tig.setAttribute("xml:id", TIG_ID_PREFIX + term.getAddress());
+		langSet.appendChild(tig);
+		Element termElmt = doc.createElement("term");
+		termElmt.setTextContent(term.getCoveredText());
+		tig.appendChild(termElmt);
+		
+		
+		this.addNote(doc, langSet, tig, "termType", isVariant ? "variant" : "termEntry");				
+		this.addNote(doc, langSet, tig, "partOfSpeech", "noun");
+		this.addNote(doc, langSet, tig, "termPattern", term.getCategory());
+		this.addNote(doc, langSet, tig, "termComplexity", this.getComplexity(term));
+		this.addNote(doc, langSet, tig, "termSpecifity", term.getSpecificity());
+		this.addDescrip(doc, langSet, tig, "nbOccurrences", term.getOccurrences());
+		this.addDescrip(doc, langSet, tig, "relativeFrequency", NUMBER_FORMATTER.format(term.getFrequency()));
+		// this.addDescrip(document, langSet, tig, "domainSpecificity", annotation.getSpecificity());
+	}
+
 	private String getComplexity(TermAnnotation annotation) {
 		if (annotation instanceof SingleWordTermAnnotation) {
 			SingleWordTermAnnotation swt = (SingleWordTermAnnotation) annotation;

@@ -26,6 +26,9 @@ public class AlignerAdvancedSettings extends Parameters implements
 	 */
 	public static final String P_SIMILARITY_DISTANCE = "SimilarityDistanceClassName";
 
+	/** Name of the parameter that must be set to limit the number of translation candidates */
+	public static final String P_MAX_CANDIDATES = "MaxTranslationCandidates";
+			
 	public AlignerAdvancedSettings(String resource) {
 		super(resource);
 	}
@@ -38,6 +41,8 @@ public class AlignerAdvancedSettings extends Parameters implements
 		this.addParameter(declarations, P_SIMILARITY_DISTANCE,
 				ConfigurationParameter.TYPE_STRING, false, false,
 				"values:eu.project.ttc.metrics.Jaccard|eu.project.ttc.metrics.Cosine");
+		this.addParameter(declarations, P_MAX_CANDIDATES,
+				ConfigurationParameter.TYPE_INTEGER, false, false);
 
 	}
 

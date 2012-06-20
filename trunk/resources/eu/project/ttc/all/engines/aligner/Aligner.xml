@@ -129,6 +129,16 @@
           <parameter>TermAligner/AlignerOutputDirectory</parameter>
         </overrides>
       </configurationParameter>
+      <configurationParameter>
+        <name>MaxTranslationCandidates</name>
+        <description>The maximum number of translation candidates accepted.</description>
+        <type>Integer</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>TermAligner/MaxTranslationCandidates</parameter>
+        </overrides>
+      </configurationParameter>
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>

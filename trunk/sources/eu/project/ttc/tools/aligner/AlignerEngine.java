@@ -10,6 +10,9 @@ import eu.project.ttc.tools.TermSuiteTool;
 
 public class AlignerEngine implements TermSuiteEngine {
 
+	/** Default candidate count */
+	public static final int DEFAULT_MAX_TRANSLATION_CANDIDATES = 100;
+	
 	private TermSuiteTool tool;
 	
 	public void setTool(TermSuiteTool tool) {
@@ -59,6 +62,11 @@ public class AlignerEngine implements TermSuiteEngine {
 				AlignerAdvancedSettings.P_METHOD_COMPOSITIONAL,
 				Boolean.TRUE.equals(advancedParameters
 						.getParameterValue(AlignerAdvancedSettings.P_METHOD_COMPOSITIONAL)));
+		
+		Object candidates = advancedParameters
+				.getParameterValue(AlignerAdvancedSettings.P_MAX_CANDIDATES);
+		settings.setParameterValue(AlignerAdvancedSettings.P_MAX_CANDIDATES,
+				candidates == null ? DEFAULT_MAX_TRANSLATION_CANDIDATES : candidates);
 
 		return settings;
 	}

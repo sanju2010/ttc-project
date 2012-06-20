@@ -19,6 +19,7 @@
 package eu.project.ttc.tools.utils;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.TreeSet;
@@ -58,7 +59,7 @@ public class TermPredicates {
 
 			@Override
 			public boolean accept(TermAnnotation term) {
-				return term.getOccurrences() < threshold;
+				return term.getOccurrences() >= threshold;
 			}
 		};
 	}
@@ -77,7 +78,7 @@ public class TermPredicates {
 
 			@Override
 			public boolean accept(TermAnnotation term) {
-				return term.getSpecificity() < threshold;
+				return term.getSpecificity() >= threshold;
 			}
 		};
 	}
@@ -95,7 +96,7 @@ public class TermPredicates {
 
 			@Override
 			public boolean accept(TermAnnotation term) {
-				return term.getFrequency() < threshold;
+				return term.getFrequency() >= threshold;
 			}
 		};
 	}
@@ -112,7 +113,7 @@ public class TermPredicates {
 			@Override
 			public boolean accept(TermAnnotation term) {
 				String cat = term.getCategory();
-				return "noun".equals(cat) || "adjective".equals(cat);
+				return cat.startsWith("noun") || cat.startsWith("adjective");
 			}
 		};
 	}
@@ -245,6 +246,24 @@ public class TermPredicates {
 		};
 	}
 
+	/**
+	 * Creates a {@link TermPredicate} that accepts only terms contained in the
+	 * specified <code>collection</code>
+	 * 
+	 * @param collection
+	 *            The containment collection
+	 * @return A term predicate instance
+	 */
+	public static TermPredicate createContainsPredicate(
+			final Collection<TermAnnotation> collection) {
+		return new TermPredicate() {
+			@Override
+			public boolean accept(TermAnnotation term) {
+				return collection.contains(term);
+			}
+		};
+	}
+	
 	/**
 	 * A term predicate that can be initialized with a specific term list.
 	 * 
