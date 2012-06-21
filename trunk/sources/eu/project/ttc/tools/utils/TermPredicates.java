@@ -235,13 +235,15 @@ public class TermPredicates {
 				annotations.addAll(termList);				
 				
 				// Copy annotation ids up to the cutoff rank
-				selectedIds = new int[cutoffRank];
+				selectedIds = new String[cutoffRank];
 				int i = 0;
 				for (TermAnnotation term : annotations) {
-					if (i >= cutoffRank)
+					if (i >= cutoffRank) {
 						break;
-					selectedIds[i++] = term.getAddress();
+					}
+					selectedIds[i++] = term.getLangset();
 				}
+				Arrays.sort(selectedIds);
 			}
 		};
 	}
@@ -273,7 +275,7 @@ public class TermPredicates {
 			TermPredicate {
 
 		/** Stores ids that are accepted by the predicate */
-		protected int[] selectedIds;
+		protected String[] selectedIds;
 
 		/**
 		 * Initializes the predicate with the initial term list.
@@ -285,7 +287,7 @@ public class TermPredicates {
 
 		@Override
 		public boolean accept(TermAnnotation term) {
-			return Arrays.binarySearch(selectedIds, term.getAddress()) >= 0;
+			return Arrays.binarySearch(selectedIds, term.getLangset()) >= 0;
 		}
 
 	}
@@ -301,9 +303,10 @@ public class TermPredicates {
 
 		@Override
 		public int compare(TermAnnotation o1, TermAnnotation o2) {
-			int comp = o1.getOccurrences() - o2.getOccurrences();
-			return comp == 0 ? o1.getCoveredText().compareTo(
-					o2.getCoveredText()) : -comp;
+			int comp = o2.getOccurrences() - o1.getOccurrences();
+			if (comp == 0) 
+				comp = o1.getCoveredText().compareTo(o2.getCoveredText());
+			return comp == 0 ? o1.getLangset().compareTo(o2.getLangset()): comp;
 		}
 	};
 
@@ -315,9 +318,10 @@ public class TermPredicates {
 
 		@Override
 		public int compare(TermAnnotation o1, TermAnnotation o2) {
-			int comp = Double.compare(o1.getFrequency(), o2.getFrequency());
-			return comp == 0 ? o1.getCoveredText().compareTo(
-					o2.getCoveredText()) : -comp;
+			int comp = -Double.compare(o1.getFrequency(), o2.getFrequency());
+			if (comp == 0) 
+				comp = o1.getCoveredText().compareTo(o2.getCoveredText());
+			return comp == 0 ? o1.getLangset().compareTo(o2.getLangset()): comp;
 		}
 	};
 
@@ -329,9 +333,10 @@ public class TermPredicates {
 
 		@Override
 		public int compare(TermAnnotation o1, TermAnnotation o2) {
-			int comp = Double.compare(o1.getSpecificity(), o2.getSpecificity());
-			return comp == 0 ? o1.getCoveredText().compareTo(
-					o2.getCoveredText()) : -comp;
+			int comp = -Double.compare(o1.getSpecificity(), o2.getSpecificity());
+			if (comp == 0) 
+				comp = o1.getCoveredText().compareTo(o2.getCoveredText());
+			return comp == 0 ? o1.getLangset().compareTo(o2.getLangset()): comp;
 		}
 	};
 }

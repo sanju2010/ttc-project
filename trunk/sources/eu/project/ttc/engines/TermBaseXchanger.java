@@ -185,8 +185,9 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 			variantCount = getVariantCount(annotation.getVariants());
 			for (int i = 0; i < variantCount; i++) {
 				TermAnnotation variant = annotation.getVariants(i);
+				if (variant.getLangset() == null)
+					variant.setLangset(LANGSET_ID_PREFIX + variant.getAddress());
 				this.variants.add(variant);
-				
 				Set<TermAnnotation> variants = this.variantsOf.get(id);
 				if (variants == null) {
 					variants = new HashSet<TermAnnotation>();
