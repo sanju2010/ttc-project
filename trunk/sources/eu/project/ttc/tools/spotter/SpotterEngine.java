@@ -1,5 +1,7 @@
 package eu.project.ttc.tools.spotter;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Locale;
 
 import org.apache.uima.UIMAFramework;
@@ -9,6 +11,7 @@ import org.apache.uima.resource.metadata.ConfigurationParameterSettings;
 import eu.project.ttc.tools.TermSuiteEngine;
 import eu.project.ttc.tools.TermSuiteRunner;
 import eu.project.ttc.tools.TermSuiteTool;
+import eu.project.ttc.tools.aligner.AlignerSettings;
 import fr.free.rocheteau.jerome.dunamis.models.ProcessingResult;
 
 public class SpotterEngine implements TermSuiteEngine {
@@ -33,7 +36,7 @@ public class SpotterEngine implements TermSuiteEngine {
 	@Override
 	public String get() throws Exception {
 		ConfigurationParameterSettings parameters = this.getTool().getSettings().getMetaData().getConfigurationParameterSettings();
-		String code = (String) parameters.getParameterValue("Language");
+		String code = (String) parameters.getParameterValue(SpotterSettings.P_SOURCE_LANGUAGE);
 		String language = new Locale (code).getDisplayLanguage(Locale.ENGLISH);
 		return "eu/project/ttc/" + language.toLowerCase() + "/engines/spotter/" + language + "Spotter.xml";
 	}
@@ -42,15 +45,23 @@ public class SpotterEngine implements TermSuiteEngine {
 	public ConfigurationParameterSettings settings() throws Exception {
 		ConfigurationParameterSettings parameters = this.getTool().getSettings().getMetaData().getConfigurationParameterSettings();
         ConfigurationParameterSettings settings = UIMAFramework.getResourceSpecifierFactory().createConfigurationParameterSettings();
-		settings.setParameterValue("TreeTaggerHomeDirectory", (String) parameters.getParameterValue("TreeTaggerHomeDirectory"));
-        settings.setParameterValue("Directory", (String) parameters.getParameterValue("OutputDirectory"));
+
+		File treeTaggerHomeDirectory = new File((String)(parameters.getParameterValue(SpotterSettings.P_TREETAGGER_HOME_DIRECTORY)));		        
+        if (treeTaggerHomeDirectory.exists()) {		
+	        settings.setParameterValue(SpotterSettings.P_TREETAGGER_HOME_DIRECTORY, 
+	        	(String) parameters.getParameterValue(SpotterSettings.P_TREETAGGER_HOME_DIRECTORY));
+		} else {
+			throw new FileNotFoundException("unable to find TreeTagger home directory : "+
+					parameters.getParameterValue(SpotterSettings.P_TREETAGGER_HOME_DIRECTORY));
+		}
+        settings.setParameterValue("Directory", (String) parameters.getParameterValue(SpotterSettings.P_OUTPUT_DIRECTORY));
         return settings;
 	}
 
 	@Override
 	public String data() {
 		ConfigurationParameterSettings parameters = this.getTool().getSettings().getMetaData().getConfigurationParameterSettings();
-		return (String) parameters.getParameterValue("InputDirectory");
+		return (String) parameters.getParameterValue(SpotterSettings.P_INPUT_DIRECTORY);
 	}
 
 	@Override
@@ -61,7 +72,7 @@ public class SpotterEngine implements TermSuiteEngine {
 	@Override
 	public String language() {
 		ConfigurationParameterSettings parameters = this.getTool().getSettings().getMetaData().getConfigurationParameterSettings();
-		return (String) parameters.getParameterValue("Language");
+		return (String) parameters.getParameterValue(SpotterSettings.P_SOURCE_LANGUAGE);
 	}
 
 	@Override
