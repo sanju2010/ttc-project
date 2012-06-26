@@ -97,7 +97,7 @@ public class FloatField implements Field {
 	private SpinnerNumberModel model;
 	
 	private void setModel() {
-		this.model = new SpinnerNumberModel(0,0,1000,0.1);
+		this.model = new SpinnerNumberModel(0,0,2000,0.1);
 	}
 	
 	private SpinnerNumberModel getModel() {
@@ -115,6 +115,7 @@ public class FloatField implements Field {
 		format.setMaximumFractionDigits(2);
         format.setMinimumFractionDigits(1);
         format.setMinimumIntegerDigits(1);
+        format.setGroupingUsed(false);
 		this.spinner.setEditor(editor);
 		
 		this.spinner.setPreferredSize(new Dimension(300,25));
