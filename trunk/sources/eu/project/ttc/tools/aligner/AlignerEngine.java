@@ -1,5 +1,8 @@
 package eu.project.ttc.tools.aligner;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.resource.metadata.ConfigurationParameterSettings;
@@ -38,17 +41,47 @@ public class AlignerEngine implements TermSuiteEngine {
 				parameters.getParameterValue(AlignerSettings.P_SOURCE_LANGUAGE));
 		settings.setParameterValue(AlignerSettings.P_TARGET_LANGUAGE,
 				parameters.getParameterValue(AlignerSettings.P_TARGET_LANGUAGE));
-		settings.setParameterValue("DictionaryFile", parameters
+
+		File dictionaryFile = new File((String)(parameters.getParameterValue(AlignerSettings.P_BILINGUAL_DICTIONARY)));
+		if (dictionaryFile.exists()) {		
+			settings.setParameterValue("DictionaryFile", parameters
 				.getParameterValue(AlignerSettings.P_BILINGUAL_DICTIONARY));
+		} else {
+			throw new FileNotFoundException("unable to find dictionary file : "+
+					parameters.getParameterValue(AlignerSettings.P_BILINGUAL_DICTIONARY));
+		}
+
+		File sourceTerminologyFile = new File((String)(parameters.getParameterValue(AlignerSettings.P_SOURCE_TERMINOLOGY)));		
+		if (sourceTerminologyFile.exists()) {		
 		settings.setParameterValue(AlignerSettings.P_SOURCE_TERMINOLOGY,
 				parameters.getParameterValue(AlignerSettings.P_SOURCE_TERMINOLOGY));
+		} else {
+			throw new FileNotFoundException("unable to find source terminology file : "+
+					parameters.getParameterValue(AlignerSettings.P_SOURCE_TERMINOLOGY));
+		}
+		
+		File targetTerminologyFile = new File((String)(parameters.getParameterValue(AlignerSettings.P_TARGET_TERMINOLOGY)));		
+		if (targetTerminologyFile.exists()) {		
 		settings.setParameterValue(AlignerSettings.P_TARGET_TERMINOLOGY,
 				parameters.getParameterValue(AlignerSettings.P_TARGET_TERMINOLOGY));
+		} else {
+			throw new FileNotFoundException("unable to find target terminology file : "+
+					parameters.getParameterValue(AlignerSettings.P_TARGET_TERMINOLOGY));
+		}
+				
+		
 		settings.setParameterValue("Directory", parameters
 				.getParameterValue(AlignerSettings.P_EVALUATION_DIRECTORY));
 		settings.setParameterValue("Action", "drop");
+
+		File outputDirectory = new File((String)(parameters.getParameterValue(AlignerSettings.P_OUTPUT_DIRECTORY)));		
+		if (outputDirectory.exists()) {		
 		settings.setParameterValue(AlignerSettings.P_OUTPUT_DIRECTORY,
 				parameters.getParameterValue(AlignerSettings.P_OUTPUT_DIRECTORY));
+		} else {
+			throw new FileNotFoundException("unable to find outputDirectory : "+
+					parameters.getParameterValue(AlignerSettings.P_OUTPUT_DIRECTORY));
+		}
 
 		settings.setParameterValue(
 				AlignerAdvancedSettings.P_SIMILARITY_DISTANCE,
