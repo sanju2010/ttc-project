@@ -18,6 +18,7 @@
  */
 package eu.project.ttc.tools.utils;
 
+import java.text.Collator;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
@@ -337,6 +338,22 @@ public class TermPredicates {
 			if (comp == 0) 
 				comp = o1.getCoveredText().compareTo(o2.getCoveredText());
 			return comp == 0 ? o1.getLangset().compareTo(o2.getLangset()): comp;
+		}
+	};
+	
+	
+	/**
+	 * A comparator that imposes an ascending covered text order on
+	 * {@link TermAnnotation}s.
+	 */
+	public static final Comparator<TermAnnotation> ASCENDING_TEXT_ORDER = new Comparator<TermAnnotation>() {
+
+		/** Compare names in a locale sensitive manner */
+		private final Collator TextCollator = Collator.getInstance();
+
+		@Override
+		public int compare(TermAnnotation o1, TermAnnotation o2) {
+			return TextCollator.compare(o1.getCoveredText(), o2.getCoveredText());
 		}
 	};
 }

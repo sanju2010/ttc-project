@@ -2,10 +2,15 @@ package eu.project.ttc.engines;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.DecimalFormat;
+import java.math.RoundingMode;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -30,6 +35,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Level;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
 import eu.project.ttc.tools.indexer.TBXSettings;
 import eu.project.ttc.tools.indexer.TBXSettings.FilterRules;
 import eu.project.ttc.tools.utils.TermPredicate;
@@ -40,6 +46,9 @@ import eu.project.ttc.types.TermAnnotation;
 
 public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 
+	/** Prints float out numbers */
+	private static final NumberFormat NUMBER_FORMATTER = NumberFormat.getNumberInstance(Locale.US);
+	
 	/** Prefix used in langset ids */
 	public static final String LANGSET_ID_PREFIX = "langset-";
 
@@ -56,12 +65,10 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 	/** TBX filter rule as specified by the parameters */
 	private TermPredicate filterRule;
 	
-	/** Predicate to detect variants */
-	private TermPredicate variantPredicate;
-	
-	private static final DecimalFormat NUMBER_FORMATTER = new DecimalFormat("##.######");
-	
 	private File file;
+	
+	/** Term sorter in TBX output */
+	private Comparator<TermAnnotation> outputComparator;
 	
 	private void setDirectory(String path) throws IOException {
 		this.file = new File(path);
@@ -96,6 +103,12 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 			if (this.variants == null) {
 				this.setVariants();
 			}
+			
+			NUMBER_FORMATTER.setMaximumFractionDigits(12);
+			NUMBER_FORMATTER.setMinimumFractionDigits(6);
+			NUMBER_FORMATTER.setRoundingMode(RoundingMode.UP);
+			NUMBER_FORMATTER.setGroupingUsed(false);
+			
 		} catch (Exception e) {
 			throw new ResourceInitializationException(e);
 		}
@@ -110,31 +123,38 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 			switch (rule) {
 			case None:
 				pred = TermPredicates.TRIVIAL_ACCEPTOR;
+				outputComparator = TermPredicates.ASCENDING_TEXT_ORDER;
 				break;
 
 			case OccurrenceThreshold:
 				pred = TermPredicates.createOccurrencesPredicate(cutoff);
+				outputComparator = TermPredicates.DESCENDING_OCCURRENCE_ORDER;
 				break;
 			case FrequencyThreshold:
 				pred = TermPredicates
 						.createFrequencyPredicate(filteringThreshold);
+				outputComparator = TermPredicates.DESCENDING_FREQUENCY_ORDER;
 				break;
 
 			case SpecificityThreshold:
 				pred = TermPredicates
 						.createSpecificityPredicate(filteringThreshold);
+				outputComparator = TermPredicates.DESCENDING_SPECIFICITY_ORDER;
 				break;
 
 			case TopNByOccurrence:
 				pred = TermPredicates.createTopNByOccurrencesPredicate(cutoff);
+				outputComparator = TermPredicates.DESCENDING_OCCURRENCE_ORDER;
 				break;
 
 			case TopNByFrequency:
 				pred = TermPredicates.createTopNByFrequencyPredicate(cutoff);
+				outputComparator = TermPredicates.DESCENDING_FREQUENCY_ORDER;
 				break;
 
 			case TopNBySpecificity:
 				pred = TermPredicates.createTopNBySpecificityPredicate(cutoff);
+				outputComparator = TermPredicates.DESCENDING_SPECIFICITY_ORDER;
 				break;
 
 			default:
@@ -164,15 +184,15 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 			}
 			File file = new File(this.getDirectory(), name);
 			this.getContext().getLogger().log(Level.INFO, "Exporting " + file.getAbsolutePath());
-			this.index(cas);
-			this.create(cas, file);
+			List<TermAnnotation> annots = this.index(cas);
+			this.create(cas, annots, file);
 		} catch (Exception e) {
 			throw new AnalysisEngineProcessException(e);
 		}
 		
 	}
 
-	private void index(JCas cas) {
+	private List<TermAnnotation> index(JCas cas) {
 		AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TermAnnotation.type);
 		ArrayList<TermAnnotation> termList = new ArrayList<TermAnnotation>();
 		FSIterator<Annotation> iterator = index.iterator();
@@ -210,15 +230,16 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 		
 		if (filterRule instanceof ListBasedTermPredicate)
 			((ListBasedTermPredicate) filterRule).initialize(termList);
-				
-		variantPredicate = TermPredicates.createContainsPredicate(variants);
+		
+		Collections.sort(termList, outputComparator);
+		return termList;
 	}
 
 	private int getVariantCount(FSArray vars) {
 		return vars == null ? 0 :  vars.size();
 	}
 
-	private void create(JCas cas, File file) throws Exception {
+	private void create(JCas cas, List<TermAnnotation> termList, File file) throws Exception {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder = factory.newDocumentBuilder();
 		Document document = builder.newDocument();
@@ -244,7 +265,7 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 		martif.appendChild(text);
 		Element body = document.createElement("body");
 		text.appendChild(body);
-		this.process(cas, document, body);
+		this.process(cas, termList, document, body);
 		
 		TransformerFactory transformerFactory = TransformerFactory.newInstance();
 		Transformer transformer = transformerFactory.newTransformer();
@@ -276,16 +297,13 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 		this.basesOf = new HashMap<TermAnnotation, Set<String>>();
 	}
 		
-	private void process(JCas cas, Document document, Element body) {
-		AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TermAnnotation.type);
-		FSIterator<Annotation> iterator = index.iterator();
+	private void process(JCas cas, List<TermAnnotation> termList, Document document, Element body) {
 		String lang = cas.getDocumentLanguage();
-		while (iterator.hasNext()) {
-			TermAnnotation annotation = (TermAnnotation) iterator.next();
+		for (TermAnnotation annotation : termList) {
 			String id = annotation.getLangset();
 			
 			// If term matches the filtering rules, the we add it to output
-			if (!variantPredicate.accept(annotation) && predicate.accept(annotation)) {
+			if (predicate.accept(annotation)) {
 				// Add main term entry
 				addTermEntry(document, body, id, annotation, lang, false);
 				
@@ -336,7 +354,7 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 		this.addNote(doc, langSet, tig, "partOfSpeech", "noun");
 		this.addNote(doc, langSet, tig, "termPattern", term.getCategory());
 		this.addNote(doc, langSet, tig, "termComplexity", this.getComplexity(term));
-		this.addNote(doc, langSet, tig, "termSpecifity", term.getSpecificity());
+		this.addNote(doc, langSet, tig, "termSpecifity", NUMBER_FORMATTER.format(term.getSpecificity()));
 		this.addDescrip(doc, langSet, tig, "nbOccurrences", term.getOccurrences());
 		this.addDescrip(doc, langSet, tig, "relativeFrequency", NUMBER_FORMATTER.format(term.getFrequency()));
 		// this.addDescrip(document, langSet, tig, "domainSpecificity", annotation.getSpecificity());
