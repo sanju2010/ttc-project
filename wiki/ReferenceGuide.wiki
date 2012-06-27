@@ -47,6 +47,7 @@ The annotation type _Word Annotation_ extends that of _Term Component Annotation
 The annotation type _Term Annotation_ is used both for term instances in corpus documents and term entries of the corpus terminology. It owns the following features:
  * the _String_ feature _category_ corresponds to the identifier of the syntactic pattern which such term instances or term entries has been 
 detected from 
+ * the _String_ feature _langset_ corresponds to langset identifier after the TermAnnotation has been saved for the first time in TBX format
  * the _Double_ feature _lemma_ corresponds to the lemmatized for of such terms i.e. the lemma for a simple term or the lemma sequence of complex term components
  * the _Integer_ feature _occurrences_ corresponds to the absolute frequency of term entries
  * the _Double_ feature _frequency_ corresponds to the relative frequency of term entries
@@ -370,11 +371,12 @@ The analysis engine _Language Term Gatherer_ is an aggregate one composed of:
 The analysis engine _Single-Word Term Gatherer_ is a primitive analysis engine that is implemented by the Java class 
 _[http://code.google.com/p/ttc-project/source/browse/trunk/sources/eu/project/ttc/engines/SingleWordGatherer.java SingleWordGatherer]_. 
 
-The latter is configured by 4 parameters:
+The latter is configured by 5 parameters:
  * a Boolean parameter _Enable_ that specifies to enable or not term conflation
  * a String parameter _Edit Distance Class Name_ that specifies on which edit distance the similarity is based
  * a Float parameter _Edit Distance Threshold_ that defines over which values term are conflated together (this value should range from 0 to 1)
  * an Integer parameter _Edit Distance Ngrams_ that defines the length of data for the similarity i.e. unigrams, bigrams or trigrams.
+ * a Boolean parameter _Ignore Diacritics In Multiword Terms_ that enables conflation of multiword graphic variants in a diacritic-insensitive manner using the same threshold used for single word terms. If false, no conflation of graphics variants in MWTs is performed at all.
 
 This analysis engine is also configured by a resource that stands for a character equivalence table. 
 In fact, single-word term annotations are indexed by their first letter up to this equivalence table. 
@@ -419,7 +421,7 @@ of the most frequent term annotation by the less frequent one.
 _Term Cleaner_ is a primitive analysis engine that is implemented by the so-called Java class _[http://code.google.com/p/ttc-project/source/browse/trunk/sources/eu/project/ttc/engines/TermCleaner.java TermCleaner]_.
 
 It merely consists in removing term annotations from index which absolute frequency 
-does not exceed a threshold provided by a Integer parameter _Threshold_.
+does not reach a threshold provided by a Integer parameter _Threshold_.
 
 ==== Writer ====
 
@@ -435,7 +437,19 @@ Within the _Language Indexer_ analysis engine, it outputs 1 XMI file for the mon
 The _Term Base eXchanger_ analysis engine stores the previous analysis into XMI files. 
 It is a primitive one implemented by [http://code.google.com/p/ttc-project/source/browse/trunk/sources/eu/project/ttc/engines/TermBaseXchanger.java the so-called Java class].
 
-It require a String parameter _Directory_ to be set that specifies where to write such XMI files.
+It requires by 4 parameters:
+ * a String parameter _Directory_ to be set that specifies where to write the TBX ouput
+ * a Boolean parameter _KeepVerbsAndOthers_ that specifies whether to include verbs in the TBX output. By defaults it only includes nouns and adjectives
+ * a String parameter _FilterRule_ that can be used to select output terms. It can take one of the following values:
+    # None: No filtering
+    # OccurrenceThreshold: Filter by number of occurrence
+    # FrequencyThreshold: Filter by relative frequency
+    # SpecificityThreshold: Filter by specificity
+    # TopNByOccurrence: Filter by cut-off rank in descending occurrence order
+    # TopNByFrequency: Filter by cut-off rank in descending relative frequence order
+    # TopNBySpecificity: Filter by cut-off rank in descending specificity order
+ * a Float parameter _FilterRuleThreshold_ that that is used along with the _FilterRule_ and can be either a threshold or a cut-off rank.
+
 
 Within the _Language Indexer_ analysis engine, it outputs 1 TBX file for the monolingual terminology.
 
@@ -471,11 +485,12 @@ used for setting feature values of translation annotations and document annotati
 The _Term Aligner_ analysis engine is a primitive one. It is implemented by the Java class 
 _[http://code.google.com/p/ttc-project/source/browse/trunk/sources/eu/project/ttc/engines/TermAligner.java TermAligner]_. 
 
-It processes alignment using both the distributional method or the compositional one. 
-This is configured by 2 so-called Boolean parameters _Distributional Method_ and _Compositional Method_. 
+It processes alignment using both the distributional method or the compositional one, then writes the result as a bilingual TBX file.
+
+It is configured by 2 so-called Boolean parameters _Distributional Method_ and _Compositional Method_. 
 
 This analysis engine is also configured by 2 String parameters _Source Terminology File_ 
-and _Target Terminology File_ that should referred to the XMI files that respectively stand for 
+and _Target Terminology File_ that should refer to the XMI files that respectively stand for 
 the terminologies in source and target language.
 
 This also can (and should) be configured by a String parameter _Dictionary File_ that 
@@ -493,6 +508,8 @@ is one of its possible translations.
 Moreover, the similarity distance used within the distributional method can be configured 
 by the String parameter _Similarity Distance Class Name_ which value should range over 
 _Jaccard_ for the weighted Jaccard similarity and _Cosine_ for the Cosine one.
+
+Finally, it requires a String parameter _AlignerOutputDirectory_ that will contain the output TBX file, and an Integer parameter _MaxTranslationCandidates_ that will restrict the number of translation candidates to a fixed number in the bilingual TBX output.
 
 This analysis engine behaves as follows:
 
