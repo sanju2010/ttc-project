@@ -93,7 +93,7 @@ respectively for getting the source code and for packaging it.
 Just launch this command line or follow its target link:
 
 {{{
- wget http://ttc-project.googlecode.com/files/ttc-term-suite-1.2.jar
+ wget http://ttc-project.googlecode.com/files/ttc-term-suite-1.3.jar
 }}}
 
 ==== Compilation from Sources ====
@@ -121,7 +121,7 @@ run this command line as root:
 You merely have to launch the following command line:
 
 {{{
-  java -Xms1g -Xmx4g -jar ttc-term-suite-1.2.jar
+  java -Xms1g -Xmx4g -jar ttc-term-suite-1.3.jar
 }}}
 
 You are strongly suggested to set the JVM options -Xms1g 
@@ -134,7 +134,7 @@ which sizes are around 300.000 tokens.
 
 Having launched the previous command line, you face the Term Suite graphical user interface:
 
-http://ttc-project.googlecode.com/files/spotter.png
+http://ttc-project.googlecode.com/files/TermSuite-Spotter-Edit.png 	
 
 It is basically made of a tool bar and 3 tabbed panels 
 respectively called: Spotter, Indexer and Aligner.
