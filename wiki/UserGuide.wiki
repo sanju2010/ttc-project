@@ -224,6 +224,8 @@ UIMA components, the other for displaying the monolingual terminology extraction
 
 http://ttc-project.googlecode.com/files/TermSuite-Indexer-Edit.png
 
+http://ttc-project.googlecode.com/files/TermSuite-Indexer-Edit2.png
+
 
 ==== Features ====
 
