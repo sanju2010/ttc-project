@@ -222,7 +222,7 @@ one called Edit for settings parameter values of the corresponding
 UIMA components, the other for displaying the monolingual terminology extraction.
 
 
-http://ttc-project.googlecode.com/files/indexer.png
+http://ttc-project.googlecode.com/files/TermSuite-Indexer-Edit.png
 
 
 ==== Features ====
