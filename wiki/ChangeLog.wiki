@@ -6,13 +6,13 @@
 
 == 1. New features ==
 
-* langSet identifier added in the XMI files
+ * langSet identifier added in the XMI files
 
 ===  1.1  Indexer ====
-* Dissociation of XMI files (input of the aligner) and TBX files (output of the monolingual terminology extraction)
-*  Detection of graphic variants for MWTs (Ignore Diacritics in Conflation settings)
-* New diacritics-insensitive edit distance in Conflation settings
-* Specifity score in TBX output
+ * Dissociation of XMI files (input of the aligner) and TBX files (output of the monolingual terminology extraction)
+ *  Detection of graphic variants for MWTs (Ignore Diacritics in Conflation settings)
+ * New diacritics-insensitive edit distance in Conflation settings
+ * Specifity score in TBX output
 * Verbs and other categories removed from TBX output (unless Keep verbs and others is specified)
 * Statistical filtering of monolingual candidates: by cut-off rank (e.g. top-100, top-250, etc.) or threshold. 
 * TBX candidates are ranked according to the filter criteria, or alphabetically if no filtering is done.
