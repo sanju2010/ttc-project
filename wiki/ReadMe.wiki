@@ -38,19 +38,21 @@ All linguistic resources (corpus, dictionary) should be encoded in UTF8 for all 
 == Installation ==
 
 - Download the [http://ttc-project.googlecode.com/files/ttc-term-suite-1.3.jar TTC Term Suite] executable Java archive
+
 - Run it with the command line:
 
 java -Xms1g -Xmx2g -jar ttc-term-suite-1.3.jar
 
-- Have a look to the Wiki/GettingStart and Wiki/userGuide
+- Have a look to the online documentation: Wiki/GettingStart and Wiki/userGuide
 
 == Resources == 
 
 - For Monolingual term extraction, Term Suite requires one corpus encoded in UTF8
-- For bilingual term extraction, Term Suite requires encoded in UTF8 :
-        - 2 corpora: one in source language and in target language;
-        - 1 list of  source terms to translate;
-        - a general bilingual dictionary
+
+- For bilingual term extraction, Term Suite requires encoded in UTF8
+        * 2 corpora: one in source language and in target language;
+        * 1 list of  source terms to translate;
+        * a general bilingual dictionary
 
 === Corpora ===
 
