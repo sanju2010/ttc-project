@@ -15,7 +15,7 @@ Otherwise, please let a comment or add an issue [http://code.google.com/p/ttc-pr
 You only need:
  * to install a Java Runtime Environment (see [http://openjdk.java.net/install/ OpenJDK])
  * to install [http://www.ims.uni-stuttgart.de/projekte/corplex/TreeTagger/ TreeTagger]
- * to download [http://ttc-project.googlecode.com/files/ttc-term-suite-1.2.jar Term Suite] on your computer
+ * to download [http://ttc-project.googlecode.com/files/ttc-term-suite-1.2.jar TermSuite] on your computer
 
 That's all!
 
@@ -25,9 +25,13 @@ Please, have a look to the GettingStarted wiki page.
 
 === Does Term Suite run on Windows? ===
 
-Up to known. some critical troubles have been reported by users on Widnows. It has been successfully tested under Windows XP 2002 SP3.
+It has been successfully tested under Windows XP 2002 SP3.
+For other Window releases, we recommand to use CLI
+Examples CLI for windows: [http://ttc-project.googlecode.com/files/]
 
-Term Suite has been successfully tested under Linux 11.4 and 11.10 with OpenJDK (1.6.0-23). They are free softwares. 
+=== Does Term Suite run on LInux? ===
+
+TermSuite has been successfully tested under Linux 11.4 and 11.10 with OpenJDK (1.6.0-23). 
 
 === Can I launch Term Suite without in CLI only? ===
 
@@ -36,6 +40,8 @@ In fact, Term Suite GUI makes possible to launch different
 UIMA analysis engines from the same control panel. 
 As they are not only 1 analysis engine to process, there is 
 no one CLI usage of Term Suite.
+
+Linux CLI
 
 {{{
   java -cp ttc-term-suite-1.2.jar eu.project.ttc.tools.TermSuiteRunner -txt -analysis-engine eu.project.ttc.french.engines.spotter.EnglishSpotter -directory English/txt -language en -encoding utf-8 --Directory English/xmi --TreeTaggerHomeDirectory /usr/local/share/tree-tagger
@@ -51,6 +57,7 @@ by the help of the inner devoted Java class _TermSuiteRunner_.
 For example, the French Spotter can be launched over UTF-8 text files s follows:
 
 Notice that every UIMA analysis engines can be launched by other launchers like [http://svn.apache.org/viewvc/uima/uimaj/trunk/uimaj-tools/src/main/java/org/apache/uima/tools/RunAE.java?view=markup Apache UIMA RunAE], [http://svn.apache.org/viewvc/uima/uimaj/trunk/uimaj-tools/src/main/java/org/apache/uima/tools/docanalyzer/DocumentAnalyzer.java?view=markup Apache UIMA Document Analyzer], [http://code.google.com/p/uima-sandbox/source/browse/trunk/runner/sources/uima/sandbox/runner/gui/Runner.java UIMA SandBox Runner], etc.
+
 
 === Can I process HTML, PDF or DOC files? ===
 
