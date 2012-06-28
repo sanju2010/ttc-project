@@ -13,26 +13,26 @@
  *  Detection of graphic variants for MWTs (Ignore Diacritics in Conflation settings)
  * New diacritics-insensitive edit distance in Conflation settings
  * Specifity score in TBX output
-* Verbs and other categories removed from TBX output (unless Keep verbs and others is specified)
-* Statistical filtering of monolingual candidates: by cut-off rank (e.g. top-100, top-250, etc.) or threshold. 
-* TBX candidates are ranked according to the filter criteria, or alphabetically if no filtering is done.
+ * Verbs and other categories removed from TBX output (unless Keep verbs and others is specified)
+ * Statistical filtering of monolingual candidates: by cut-off rank (e.g. top-100, top-250, etc.) or threshold. 
+ * TBX candidates are ranked according to the filter criteria, or alphabetically if no filtering is done.
 
 === 1.2  Aligner ===
-* Bilingual TBX output following specifications
-* Cut-off rank for translation candidates in bilingual output
+ * Bilingual TBX output following specifications
+ * Cut-off rank for translation candidates in bilingual output
 
 
 == 2. Bug fixes/enhancements ==
 
-* Progress bar color forced to green
-* Windows shell CLI fixed
+ * Progress bar color forced to green
+ * Windows shell CLI fixed
 
 === 2.1  Indexer ===
-* Parameter group support for indexer settings (Advanced settings/TBX settings)
-* Added the Latvian and Spanish general lexicons required for specificity calculation (the Latvian lexicon needs to be cleaned)
-* Enhanced MWT recognition rules for En/Fr/De
-* Enhanced MWT conflation rules for En/Fr/De
-* Fail-fast edit distances
+ * Parameter group support for indexer settings (Advanced settings/TBX settings)
+ * Added the Latvian and Spanish general lexicons required for specificity calculation (the Latvian lexicon needs to be cleaned)
+ * Enhanced MWT recognition rules for En/Fr/De
+ * Enhanced MWT conflation rules for En/Fr/De
+ * Fail-fast edit distances
 
 
 == Version 1.2 ==
