@@ -7,6 +7,7 @@
 
 TermSuite is an UIMA application for monolingual and bilingual term extraction
 from comparable corpora. 
+
 Languages: English, French, German, Spanish, Latvian, Chinese and Russian.
 
 Fp7 European project [http://www.ttc-project.eu/index.php TTC] _Terminology Extraction, Translation Tools and Comparable Corpora_. 
