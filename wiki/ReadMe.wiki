@@ -33,7 +33,7 @@ Please check that are installed on your computer:
 
 *Warning*: Term Suite expects to find TreeTagger's parameter files in the _lib/_ subdirectory of the TreeTagger home directory i.e. the folder where TreeTagger is installed on your computer. By default, these parameter files belong to the _lib/_ subdirectory. Please check that and create a link from  _models/_ to _lib/_ if necessary.
 
-Comparable corpora: all linguistic resources (corpus, dictionary) should be encoded in UTF8 for all languages.
+All linguistic resources (corpus, dictionary) should be encoded in UTF8 for all languages.
 
 == Installation ==
 
