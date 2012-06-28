@@ -31,7 +31,7 @@ Please check that are installed on your computer:
   * a Java 6 Runtime Environment ([http://www.java.com/fr/download/ Sun] or [http://openjdk.java.net/install/ OpenJDK]),
   * the part-of-speech tagger and lemmatizer [http://www.ims.uni-stuttgart.de/projekte/corplex/TreeTagger/ TreeTagger].
 
-*Warning*: Term Suite expects to find TreeTagger's parameter files in the _lib/_ subdirectory of the TreeTagger home directory i.e. the folder where TreeTagger is installed on your computer. By default, these parameter files belong to the _lib/_ subdirectory. Please check that and create a link from  _models/_ to _lib/_ if necessary.
+*Warning*: TermSuite expects to find TreeTagger's parameter files in the _lib/_ subdirectory of the TreeTagger home directory i.e. the folder where TreeTagger is installed on your computer. By default, these parameter files belong to the _lib/_ subdirectory. Please check that and create a link from  _models/_ to _lib/_ if necessary.
 
 All linguistic resources (corpus, dictionary) should be encoded in UTF8 for all languages.
 
@@ -56,8 +56,11 @@ java -Xms1g -Xmx2g -jar ttc-term-suite-1.3.jar
 
 === Corpora ===
 
-_A corpora is a set of text files that should be in one directory.
-The corpora directory shoud not contains  subdirectories nor any other text files.
+A monolingual corpora is a set of text files that should be in one directory.
+The corpora directory should not contain nay subdirectories nor other text files.
+
+*Warning*: TermSuite is abble to treat corpora from 300,000 to 1 million tokens.
+For corpora of size superior to 1 million, memory problems are encountered (UIMA memory handling).
 
 === List of translations ===
 
