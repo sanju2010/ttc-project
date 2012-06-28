@@ -169,7 +169,9 @@ In fact, UIMA components that can be executed by the Spotter performs:
 
 ==== Inputs & Outputs ====
 
-It merely accepts UTF-8 text files as inputs and generates a XMI file in the output directory per text file in the input directory.
+It needs UTF-8 text files as inputs
+
+It generates a XMI file in the output directory per each text file in the input directory.
 
 ==== Settings ====
 
@@ -285,10 +287,16 @@ The Aligner performs:
 It requires several kind of files as inputs.
   * a directory in where there is text files corresponding to the terms to translate (see subsection below),
   * a XMI file that contains the terminology in the source language,
-  * a XMI file that contains the terminology in the target language,
   * optionally a text file that stands for a bilingual dictionary
 
-It produced a XMI file per text file (or term to translate) in the same directory as that of these text files. this file contains annotations with the translation candidates aligned with the input term to translate.
+==== Outputs ====
+
+TermSuite aligner generates 2 files in the given output directory:
+ * a XMI file that contains the terminology in the target language,
+ * a TBX file _sourceLanguage_(_targetLanguage_-terminology.tbx that contains for each source term, candidate translations ranked
+
+There is one XMI file per text file (or term to be translated) in the same directory.
+
 
 ===== Input Term File =====
 
