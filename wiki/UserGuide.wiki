@@ -293,7 +293,7 @@ It requires several kind of files as inputs.
 
 TermSuite aligner generates 2 files in the given output directory:
  * a XMI file that contains the terminology in the target language,
- * a TBX file _sourceLanguage_(_targetLanguage_-terminology.tbx that contains for each source term, candidate translations ranked
+ * a TBX file _sourceLanguage_-_targetLanguage_-terminology.tbx that contains for each source term, candidate translations ranked
 
 There is one XMI file per text file (or term to be translated) in the same directory.
 
@@ -347,7 +347,7 @@ The Aligner requires the following parameters to be set:
   * the parameter _Source Terminology File_ should refer to the XMI file that stands for the terminology in the source language,  
   * the parameter _Target Language_ specifies the target language,
   * the parameter _Target Terminology File_ should refer to the XMI file that stands for the terminology in the target language, 
-  * the parameter _Similarity Distance Class Name_ defines the implementation that realizes ths similarity distance: it could either be Jaccard or Cosine,
+  * the parameter _Similarity Distance Class Name_ defines the implementation that realizes this similarity distance: it could either be Jaccard or Cosine,
   * the parameter _Dictionary File_ may refer to the bilingual dictionary,
   * the parameter _Distributional Method_ enables the distributional method if checked,
   * the parameter _Compositional Method_ enables the compositional method if checked.
