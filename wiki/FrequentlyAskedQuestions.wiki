@@ -10,7 +10,7 @@ Otherwise, please let a comment or add an issue [http://code.google.com/p/ttc-pr
 
 == User Questions ==
 
-=== What do I need to install Term Suite? ===
+=== What do I need to install TermSuite? ===
 
 You only need:
  * to install a Java Runtime Environment (see [http://openjdk.java.net/install/ OpenJDK])
@@ -19,21 +19,21 @@ You only need:
 
 That's all!
 
-=== How can I test Term Suite? ===
+=== How can I test TermSuite? ===
 
 Please, have a look to the GettingStarted wiki page.
 
-=== Does Term Suite run on Windows? ===
+=== Does TermSuite run on Windows? ===
 
 It has been successfully tested under Windows XP 2002 SP3.
 For other Window releases, we recommand to use CLI
 Examples CLI for windows: [http://ttc-project.googlecode.com/files/TermSuite-CLI-Windows.sh ]
 
-=== Does Term Suite run on Linux? ===
+=== Does TermSuite run on Linux? ===
 
 TermSuite has been successfully tested under Linux 11.4 and 11.10 with OpenJDK (1.6.0-23). 
 
-=== Can I launch Term Suite without in CLI only? ===
+=== Can I launch TermSuite without in CLI only? ===
 
 YES but throught out 5 command lines. 
 In fact, Term Suite GUI makes possible to launch different 
@@ -61,23 +61,24 @@ Notice that every UIMA analysis engines can be launched by other launchers like 
 
 === Can I process HTML, PDF or DOC files? ===
 
-NO. The text extraction should be done before using Term Suite.
+NO. The spotter works on UTF8 text files.
 
 === Can I process ASCII, LATIN-1 encoded files? ===
 
-YES. Whatever the text encoding, Term Suite converts it into UTF-8.
+NO. TermSuite works only on UTF-8.
+To check the encoding use the command:  file -i textfile.txt
 
 == Error Messages ==
 
-For any questions about errors from Term Suite, please check that it has not been previously declared in this [http://code.google.com/p/ttc-project/issues/list bug tracker]. If not, please create a new issue.
+For any questions about errors from TermSuite, please check that it has not been previously declared in this [http://code.google.com/p/ttc-project/issues/list bug tracker]. If not, please create a new issue.
 
 === I've got an error with the Spotter ===
 
 One issue has been reported: the issue 9. 
 It comes from the Apache UIMA 2.3.1 library. 
 
-But the same version of Term Suite over the same corpus 
-doesn"t lead tot the same error on other boxes 
+But the same version of TermSuite over the same corpus 
+doesn"t lead to the same error on other boxes 
 with the same operating system. 
 
 === I've got an error with the Indexer ===
@@ -112,9 +113,9 @@ Once this is achieved, just change the version number and repackage Term Suite a
   mvn clean package
 }}}
 
-=== How to add another language in Term Suite? ===
+=== How to add another language in TermSuite? ===
 
-Suppose that I would like to extend Term Suite to Italian.
+Suppose that I would like to extend TermSuite to Italian.
 
 The main point is that there already exists en [ftp://ftp.ims.uni-stuttgart.de/pub/corpora/italian-par-linux-3.1.bin.gz Italian parameter file] for TreeTagger! And its [ftp://ftp.ims.uni-stuttgart.de/pub/corpora/italian-tagset.txt tag-set] is pretty similar as that of French!
 
