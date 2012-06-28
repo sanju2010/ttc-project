@@ -266,7 +266,7 @@ http://ttc-project.googlecode.com/files/termSuiteImage.jpg
 
 The Aligner tabbed panel has 2 embedded tabbed panels itself: the first called Edit makes possible to configure the UIMA component that performs terminology alignment, the second called View enables translation and evaluation display.
 
-http://ttc-project.googlecode.com/files/aligner.png
+http://ttc-project.googlecode.com/files/TermSuite-Aligner-Edit.png
 
 
 ==== Features ====
