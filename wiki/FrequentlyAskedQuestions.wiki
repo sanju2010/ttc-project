@@ -27,9 +27,9 @@ Please, have a look to the GettingStarted wiki page.
 
 It has been successfully tested under Windows XP 2002 SP3.
 For other Window releases, we recommand to use CLI
-Examples CLI for windows: [http://ttc-project.googlecode.com/files/]
+Examples CLI for windows: [http://ttc-project.googlecode.com/files/TermSuite-CLI-Windows.sh ]
 
-=== Does Term Suite run on LInux? ===
+=== Does Term Suite run on Linux? ===
 
 TermSuite has been successfully tested under Linux 11.4 and 11.10 with OpenJDK (1.6.0-23). 
 
