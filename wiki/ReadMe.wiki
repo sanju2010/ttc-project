@@ -5,7 +5,12 @@
 
 == Description ==
 
-This is the UIMA application of the European project [http://www.ttc-project.eu/index.php TTC] _Terminology Extraction, Translation Tools and Comparable Corpora_. This project aims at leveraging machine translation, computer-assisted translation and multilingual content management tools by automatically generating bilingual terminologies from comparable corpora in five European languages (English, French, German, Spanish and one under-resourced language, Latvian), as well as in Chinese and Russian.
+TermSuite is an UIMA application for monolingual and bilingual term extraction
+from comparable corpora. 
+Languages: English, French, German, Spanish, Latvian, Chinese and Russian.
+
+Fp7 European project [http://www.ttc-project.eu/index.php TTC] _Terminology Extraction, Translation Tools and Comparable Corpora_. 
+
 
 == Dependencies ==
 
@@ -15,35 +20,41 @@ TTC Term Suite is powered by:
   * the part-of-speech tagger and lemmatizer [http://www.ims.uni-stuttgart.de/projekte/corplex/TreeTagger/ TreeTagger],
   * the Java library [http://code.google.com/p/tt4j/ tt4j] for embedding TreeTagger in Java.
 
-However, you just have to install Java and TreeTagger by yourself. 
-The Apache UIMA and tt4j libraries are already embedded into 
-Term Suite as their respective licences make it possible. 
+TermSuite requires that Java and TreeTagger are already installed on your computer.
+
+TermSuite embeds The Apache UIMA and tt4j libraries as their respective licences make it possible. 
 
 == Requirements ==
 
-First, please check that are installed on your computer: 
+Please check that are installed on your computer: 
   * a Java 6 Runtime Environment ([http://www.java.com/fr/download/ Sun] or [http://openjdk.java.net/install/ OpenJDK]),
   * the part-of-speech tagger and lemmatizer [http://www.ims.uni-stuttgart.de/projekte/corplex/TreeTagger/ TreeTagger].
 
 *Warning*: Term Suite expects to find TreeTagger's parameter files in the _lib/_ subdirectory of the TreeTagger home directory i.e. the folder where TreeTagger is installed on your computer. By default, these parameter files belong to the _lib/_ subdirectory. Please check that and create a link from  _models/_ to _lib/_ if necessary.
 
+Comparable corpora: all linguistic resources (corpus, dictionary) should be encoded in UTF8 for all languages.
+
 == Installation ==
 
-You may download the [http://ttc-project.googlecode.com/files/ttc-term-suite-1.2.jar TTC Term Suite] executable Java archive and open it within a Java 6 Runtime Environment or by the help of the following command line:
- java -jar ttc-term-suite-1.2.jar
+- Download the [http://ttc-project.googlecode.com/files/ttc-term-suite-1.3.jar TTC Term Suite] executable Java archive
+- Run it with the command line:
+
+java -Xms1g -Xmx2g -jar ttc-term-suite-1.3.jar
+
+- Have a look to the Wiki/GettingStart and Wiki/userGuide
 
 == Resources == 
 
-Term Suite requires you to provide at least 2 kinds of resources: 
-2 corpora and 1 list of terms to translate. The first kind of resources 
-is required by the first Term Suite's tool whereas the second kind of resources is required by the last one.
+- For Monolingual term extraction, Term Suite requires one corpus encoded in UTF8
+- For bilingual term extraction, Term Suite requires encoded in UTF8 :
+        - 2 corpora: one in source language and in target language;
+        - 1 list of  source terms to translate;
+        - a general bilingual dictionary
 
 === Corpora ===
 
-The first kind of resources consists in _comparable_ corpora 
-that is provided by text files. These files should be 
-in the same directory, not in its subdirectories 
-and without any other text files in it.
+_A corpora is a set of text files that should be in one directory.
+The corpora directory shoud not contains  subdirectories nor any other text files.
 
 === List of translations ===
 
