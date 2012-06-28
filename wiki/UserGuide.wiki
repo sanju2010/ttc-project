@@ -334,7 +334,9 @@ Moreover, A target entry can be related to more than one source entries.
 *Note:* These dictionaries should be UTF-8 encoded and all entries should be in lower case letters!
 
 We provide bilingual dictionaries of general language compiled from the web for some pairs of languages:
+
 http://ttc-project.googlecode.com/files/BilingualDicosForTermSuiteAligner.zip 	
+
 Quality is not guaranteed!
 
 ==== Settings ====
