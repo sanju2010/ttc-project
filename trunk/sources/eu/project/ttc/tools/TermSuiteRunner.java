@@ -2,11 +2,11 @@ package eu.project.ttc.tools;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FilenameFilter;
-import java.io.InputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,12 +14,19 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 import java.util.Properties;
+import java.util.Scanner;
 
-import javax.swing.SwingWorker;
 import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
+import org.apache.commons.cli.PosixParser;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
@@ -38,15 +45,8 @@ import org.apache.uima.util.JCasPool;
 import org.apache.uima.util.Level;
 import org.apache.uima.util.XMLInputSource;
 
-import org.apache.commons.cli.Option;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.PosixParser;
-import org.apache.commons.cli.ParseException;
-import org.apache.commons.cli.OptionBuilder;
-import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.UnrecognizedOptionException;
+import eu.project.ttc.tools.utils.FileComparator;
+import eu.project.ttc.tools.utils.InputSourceFilter;
 
 public class TermSuiteRunner extends SwingWorker<Void, Void> {
 
@@ -64,14 +64,6 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 		UIMAFramework.getLogger().log(Level.INFO, message);
 	}
 	
-	public static final int TXT = 0;
-
-	public static final int URI = 1;
-
-	public static final int XMI = -1;
-
-	public static final String UTF8 = "utf-8";
-
 	/**
 	 * This attribute corresponds to the CAS pool build from the XMI file list
 	 * of the remote resources. 
@@ -100,26 +92,20 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 		this.description = description;
 	}
 
-	private Comparator<File> comparator;
+	private Comparator<File> comparator = new FileComparator();
 
 	private FilenameFilter filter;
 
-	private List<File> data;
+	private List<File> data = new ArrayList<File>();
 
-	private void setData(int mode) {
-		if (this.data == null) {
-			this.data = new ArrayList<File>();
-		}
+	private void setFilter(InputSourceTypes mode) {
 		if (this.filter == null) {
-			this.filter = new Filter(mode);
-		}
-		if (this.comparator == null) {
-			this.comparator = new FileComparator();
+			this.filter = new InputSourceFilter(mode);
 		}
 	}
 
-	private void setData(String path, int mode) throws Exception {
-		this.setData(mode);
+	private void setData(String path, InputSourceTypes mode) throws Exception {
+		this.setFilter(mode);
 		File file = new File(path);
 		if (file.exists()) {
 			if (file.isDirectory()) {
@@ -137,54 +123,7 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 		// System.out.println("Number of documents to process: " + this.data.size());
 	}
 
-	private class FileComparator implements Comparator<File> {
-
-		@Override
-		public int compare(File source, File target) {
-			return source.getName().compareTo(target.getName());
-		}
-
-	}
-
-	private class Filter implements FilenameFilter {
-
-		private int input;
-
-		public Filter(int input) {
-			this.input = input;
-		}
-
-		@Override
-		public boolean accept(File directory, String name) {
-			File file = new File(directory, name);
-			if (file.exists()) {
-				if (file.isFile()) {
-					try {
-						URL url = file.toURI().toURL();
-						if (this.input == TermSuiteRunner.TXT) {
-							String type = url.openConnection().getContentType();
-							return type.equals("text/plain");							
-						} else if (this.input == TermSuiteRunner.XMI) {
-							String type = url.openConnection().getContentType();
-							return type.equals("application/xml") && name.endsWith(".xmi");							
-						} else if (this.input == TermSuiteRunner.URI) {
-							return true;							
-						} else {
-							return false;
-						}
-					} catch (Exception e) {
-						return false;
-					}
-				} else {
-					return false;
-				}
-			} else {
-				return false;
-			}
-		}
-	}
-
-	private int input;
+	private InputSourceTypes input;
 
 	private String language;
 
@@ -253,30 +192,37 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 		info(message);//UIMAFramework.getLogger().log(Level.INFO, message);
 	}
 
-	private void process(File file, String encoding, String language, int mode, boolean last) throws Exception {
+	private void process(File file, String encoding, String language, InputSourceTypes mode, boolean last) throws Exception {
 		JCas cas = this.pool.getJCas();
 		try {
 			String uri = file.toURI().toString();
 			SourceDocumentInformation sdi = new SourceDocumentInformation(cas);
 			sdi.setUri(uri);
-			if (mode == TermSuiteRunner.TXT) {
+			switch (mode) {
+			case TXT:
 				String text = this.extract(file, encoding);
 				cas.setDocumentLanguage(language);
 				cas.setDocumentText(text);
 				sdi.setBegin(0);
 				sdi.setEnd(text.length());
 				sdi.setOffsetInSource(0);
-			} else if (mode == TermSuiteRunner.XMI) {
+				break;
+			case XMI:
 				InputStream inputStream = new FileInputStream(file);
 				try {
-					XmiCasDeserializer.deserialize(inputStream, cas.getCas(), true);
+					XmiCasDeserializer.deserialize(inputStream, cas.getCas(),
+							true);
 				} finally {
 					inputStream.close();
 				}
-			} else {
-				String mime = file.toURI().toURL().openConnection().getContentType();
+				break;
+			case URI:
+				String mime = file.toURI().toURL().openConnection()
+						.getContentType();
 				cas.setSofaDataURI(uri, mime);
+				break;
 			}
+
 			sdi.setLastSegment(last);
 			sdi.addToIndexes();
 			if (this.analysisEngine.getAnalysisEngineMetaData().getOperationalProperties().getOutputsNewCASes()) {
@@ -377,7 +323,7 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 		this.setData(this.engine.data(), this.input);
 	}
 
-	public TermSuiteRunner(AnalysisEngineDescription description, String directory,	int input, String language, String encoding) throws Exception {
+	public TermSuiteRunner(AnalysisEngineDescription description, String directory,	InputSourceTypes input, String language, String encoding) throws Exception {
 		this.input = input;
 		this.language = language;
 		this.encoding = encoding;
@@ -402,7 +348,7 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static void main(String[] arguments) {
 		try {
-			Integer input = null;
+			InputSourceTypes inputType = null;
 //			Map<String, String> parameters = new HashMap<String, String>();
 /*
 			for (int index = 0; index < arguments.length - 1; index++) {
@@ -508,12 +454,11 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 								
 				try {
 					CommandLine line = parser.parse( options, arguments, false);
+					
 					for( Option myOption : line.getOptions() ) {
 						if (!myOption.hasArg()) {
+							inputType = InputSourceTypes.valueOf(myOption.getOpt().toUpperCase());
 							System.out.println(myOption.getOpt());
-							if (myOption.getOpt().equals("txt")) input = new Integer(TermSuiteRunner.TXT);
-							else if (myOption.getOpt().equals("uri")) input = new Integer(TermSuiteRunner.URI);
-							else if (myOption.getOpt().equals("xmi")) input = new Integer(TermSuiteRunner.XMI);
 						} else {
 							System.out.println(myOption.getOpt() + " : " + myOption.getLongOpt() + " : " + myOption.getValue());
 							if (!(myOption.getOpt().isEmpty())) {
@@ -534,7 +479,7 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 			    		ex.printStackTrace();			
 					}
 					
-					TermSuiteRunner.process(engineName, new HashMap<String, String>((Map) myProperties), input, 
+					TermSuiteRunner.process(engineName, new HashMap<String, String>((Map) myProperties), inputType, 
 							myProperties.getProperty("directory"), 
 							myProperties.getProperty("language"), 
 							myProperties.getProperty("encoding"));
@@ -564,14 +509,14 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 		}
 	}
 
-	private static void process(String engine, Map<String, String> parameters, Integer input, String directory, String language, String encoding) 
+	private static void process(String engine, Map<String, String> parameters, InputSourceTypes input, String directory, String language, String encoding) 
 			throws Exception {
-		encoding = encoding == null ? UTF8 : encoding;
+		encoding = encoding == null ? TermSuiteEngine.DEFAULT_ENCODING : encoding;
 		if (input == null) {
 			throw new Exception("No option -txt | -uri | -xmi\n" + usage);
 		} else if (engine == null) {
 			throw new Exception("No option -analysis-engine\n" + usage);
-		} else if (input.intValue() == TermSuiteRunner.TXT && language == null) {
+		} else if (input == InputSourceTypes.TXT && language == null) {
 			throw new Exception("No option -language\n" + usage);
 		} else if (directory == null) {
 			throw new Exception("No option -directory\n" + usage);

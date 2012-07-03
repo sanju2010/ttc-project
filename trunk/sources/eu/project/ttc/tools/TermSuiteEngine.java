@@ -11,12 +11,14 @@ public interface TermSuiteEngine {
 	
 	public String data();
 	
-	public int input();
+	public InputSourceTypes input();
 	
 	public String language();
 	
 	public String encoding();
 	
 	public void callBack(CAS cas) throws Exception;
-	
+
+	/** Default encoding for TermSuite engines */
+	public static final String DEFAULT_ENCODING = "utf-8";
 }

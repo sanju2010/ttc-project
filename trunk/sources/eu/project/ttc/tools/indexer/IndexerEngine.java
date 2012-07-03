@@ -6,8 +6,8 @@ import org.apache.uima.UIMAFramework;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.resource.metadata.ConfigurationParameterSettings;
 
+import eu.project.ttc.tools.InputSourceTypes;
 import eu.project.ttc.tools.TermSuiteEngine;
-import eu.project.ttc.tools.TermSuiteRunner;
 import eu.project.ttc.tools.TermSuiteTool;
 
 public class IndexerEngine implements TermSuiteEngine {
@@ -85,8 +85,8 @@ public class IndexerEngine implements TermSuiteEngine {
 	}
 
 	@Override
-	public int input() {
-		return TermSuiteRunner.XMI;
+	public InputSourceTypes input() {
+		return InputSourceTypes.XMI;
 	}
 
 	@Override
@@ -97,7 +97,7 @@ public class IndexerEngine implements TermSuiteEngine {
 
 	@Override
 	public String encoding() {
-		return TermSuiteRunner.UTF8;
+		return TermSuiteEngine.DEFAULT_ENCODING;
 	}
 	
 }

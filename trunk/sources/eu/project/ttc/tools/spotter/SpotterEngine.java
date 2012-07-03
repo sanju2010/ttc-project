@@ -8,10 +8,9 @@ import org.apache.uima.UIMAFramework;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.resource.metadata.ConfigurationParameterSettings;
 
+import eu.project.ttc.tools.InputSourceTypes;
 import eu.project.ttc.tools.TermSuiteEngine;
-import eu.project.ttc.tools.TermSuiteRunner;
 import eu.project.ttc.tools.TermSuiteTool;
-import eu.project.ttc.tools.aligner.AlignerSettings;
 import fr.free.rocheteau.jerome.dunamis.models.ProcessingResult;
 
 public class SpotterEngine implements TermSuiteEngine {
@@ -65,8 +64,8 @@ public class SpotterEngine implements TermSuiteEngine {
 	}
 
 	@Override
-	public int input() {
-		return TermSuiteRunner.TXT;
+	public InputSourceTypes input() {
+		return InputSourceTypes.TXT;
 	}
 
 	@Override
@@ -77,7 +76,7 @@ public class SpotterEngine implements TermSuiteEngine {
 
 	@Override
 	public String encoding() {
-		return TermSuiteRunner.UTF8;
+		return TermSuiteEngine.DEFAULT_ENCODING;
 	}
 
 }
