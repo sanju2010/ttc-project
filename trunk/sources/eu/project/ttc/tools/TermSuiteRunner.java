@@ -2,9 +2,11 @@ package eu.project.ttc.tools;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
 import java.io.InputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Properties;
 
 import javax.swing.SwingWorker;
 import javax.swing.SwingUtilities;
@@ -34,6 +37,16 @@ import org.apache.uima.resource.metadata.NameValuePair;
 import org.apache.uima.util.JCasPool;
 import org.apache.uima.util.Level;
 import org.apache.uima.util.XMLInputSource;
+
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.PosixParser;
+import org.apache.commons.cli.ParseException;
+import org.apache.commons.cli.OptionBuilder;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.UnrecognizedOptionException;
 
 public class TermSuiteRunner extends SwingWorker<Void, Void> {
 
@@ -386,14 +399,12 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
             usage += " [--<name> <value>]*";
     }
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static void main(String[] arguments) {
 		try {
 			Integer input = null;
-			String encoding = null;
-			String language = null;
-			String analysisEngine = null;
-			String directory = null;
-			Map<String, String> parameters = new HashMap<String, String>();
+//			Map<String, String> parameters = new HashMap<String, String>();
+/*
 			for (int index = 0; index < arguments.length - 1; index++) {
 				if (arguments[index].equals("-txt")) {
 					input = TermSuiteRunner.parse(TermSuiteRunner.TXT, input == null);
@@ -420,7 +431,126 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 					throw new Exception("I don't know what to do with this option: '" + arguments[index] + "'\n" + usage);
 				}
 			}
-			TermSuiteRunner.process(analysisEngine, parameters, input, directory, language, encoding);
+*/
+
+			Properties myProperties = new Properties();
+			
+			// create the command line parser
+			CommandLineParser parser = new PosixParser();
+			
+			// create the Options
+			Options options = new Options();
+			options.addOption( "txt", false, "text" );
+			options.addOption( "url", false, "url" );
+			options.addOption( "xmi", false, "xmi" );
+			options.addOption( "directory", "", true, "input directory" );
+			options.addOption( "analysisEngine", "analysis-engine", true, "analysis engine" );
+			options.addOption( "language", "", true, "language" );
+			options.addOption( "encoding", "", true, "encoding" );
+
+			
+			String engineName = null;
+			int i = 0;
+				// parse the command line arguments
+			while ((i<arguments.length) && (!arguments[i].equalsIgnoreCase("-analysisEngine")) && (!arguments[i].equalsIgnoreCase("--analysis-engine"))) {
+				System.out.println("argument[" + i + "]=" + arguments[i]);
+				i++;
+			}
+			
+			if (i<arguments.length) {		
+				engineName= arguments[i+1];
+				System.out.println(engineName);				
+				if(engineName.contains("Spotter")) {
+					// Spotter engine
+					System.out.println("spotter : " + engineName);
+					options.addOption( "", "Directory", true, "output directory" );
+					options.addOption( "", "TreeTaggerHomeDirectory", true, "TreeTagger home directory" );
+				} else if (engineName.contains("Indexer")) {
+					// Indexer engine
+					System.out.println("indexer : " + engineName);
+					options.addOption( "", "Directory", true, "output directory" );
+					options.addOption( "", "EnableTermGathering", true, "enable term gathering" );
+					options.addOption( "", "EditDistanceClassName", true, "edit distance classname" );
+					options.addOption( "", "EditDistanceThreshold", true, "edit distance threshold" );
+					options.addOption( "", "EditDistanceNgrams", true, "edit distance ngrams" );
+					options.addOption( "", "IgnoreDiacriticsInMultiwordTerms", true, "ignore diacritics in multiword terms" );
+					options.addOption( "", "OccurrenceThreshold", true, "occurence threshold" );
+					options.addOption( "", "AssociationRateClassName", true, "association rate class name" );
+					options.addOption( "", "FilterRuleThreshold", true, "filter rule threshold" ); 
+					options.addOption( "", "FilterRule", true, "filter rule" ); 
+					options.addOption( "", "KeepVerbsAndOthers", true, "keep verbs and other" );								
+				} else if (engineName.contains("Aligner")) {
+					// Aligner engine
+					System.out.println("aligner : " + engineName);
+					options.addOption( "", "Directory", true, "output directory" );
+					options.addOption( "", "SourceLanguage", true, "source language" );
+					options.addOption( "", "TargetLanguage", true, "target language" );
+					options.addOption( "", "SourceTerminologyFile", true, "source terminology file" );
+					options.addOption( "", "TargetTerminologyFile", true, "target terminology file" );
+					options.addOption( "", "DictionaryFile", true, "dictionnary file" );
+					options.addOption( "", "AlignerOutputDirectory", true, "aligner output directory" );
+					options.addOption( "", "CompositionalMethod", true, "compositional method" );
+					options.addOption( "", "DistributionalMethod", true, "distributional method" ); 
+					options.addOption( "", "SimilarityDistanceClassName", true, "similarity distance classname" ); 
+					options.addOption( "", "MaxTranslationCandidates", true, "maximum number of translation candidates" );								
+				}	
+
+				int index = engineName.lastIndexOf(".");
+				String propertiesFileName = engineName.substring(engineName.lastIndexOf(".")+1).concat(".properties");
+
+				try {
+					//save properties to project root folder
+		    		myProperties.load(new FileInputStream(propertiesFileName));
+				} catch (IOException ex) {
+		    		info("unable to find the properties file name" + propertiesFileName);			
+				}
+
+								
+				try {
+					CommandLine line = parser.parse( options, arguments, false);
+					for( Option myOption : line.getOptions() ) {
+						if (!myOption.hasArg()) {
+							System.out.println(myOption.getOpt());
+							if (myOption.getOpt().equals("txt")) input = new Integer(TermSuiteRunner.TXT);
+							else if (myOption.getOpt().equals("uri")) input = new Integer(TermSuiteRunner.URI);
+							else if (myOption.getOpt().equals("xmi")) input = new Integer(TermSuiteRunner.XMI);
+						} else {
+							System.out.println(myOption.getOpt() + " : " + myOption.getLongOpt() + " : " + myOption.getValue());
+							if (!(myOption.getOpt().isEmpty())) {
+								//parameters.put(myOption.getOpt(),myOption.getValue());
+								myProperties.setProperty(myOption.getOpt(),myOption.getValue());
+							}
+							if (!(myOption.getLongOpt().isEmpty())) {
+								//parameters.put(myOption.getLongOpt(),myOption.getValue());
+								myProperties.setProperty(myOption.getLongOpt(),myOption.getValue());
+							}
+						}	
+					}
+										
+					try {
+						//save properties to project root folder
+			    		myProperties.store(new FileOutputStream(propertiesFileName), null);
+					} catch (IOException ex) {
+			    		ex.printStackTrace();			
+					}
+					
+					TermSuiteRunner.process(engineName, new HashMap<String, String>((Map) myProperties), input, 
+							myProperties.getProperty("directory"), 
+							myProperties.getProperty("language"), 
+							myProperties.getProperty("encoding"));
+
+				} catch (ParseException e) {
+					// automatically generate the help statement
+					HelpFormatter formatter = new HelpFormatter();
+					formatter.printHelp( "java -Xms1g  -Xmx2g -cp target/ttc-term-suite-1.3.jar eu.project.ttc.tools.TermSuiteRunner", options );					
+				}
+				
+			} else {
+				// automatically generate the help statement
+				HelpFormatter formatter = new HelpFormatter();
+				formatter.printHelp( "TermSuiteRunner", options );
+			}
+			
 		} catch (Exception e) {
 			TermSuiteRunner.error(e, 1);
 		}
@@ -438,7 +568,7 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 			throws Exception {
 		encoding = encoding == null ? UTF8 : encoding;
 		if (input == null) {
-			throw new Exception("No option -text | -uri | -xmi\n" + usage);
+			throw new Exception("No option -txt | -uri | -xmi\n" + usage);
 		} else if (engine == null) {
 			throw new Exception("No option -analysis-engine\n" + usage);
 		} else if (input.intValue() == TermSuiteRunner.TXT && language == null) {
@@ -448,6 +578,7 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 		} else {
 			AnalysisEngineDescription description = TermSuiteRunner.description(engine, parameters);
 			TermSuiteRunner runner = new TermSuiteRunner(description, directory, input, language, encoding);
+			
 			runner.execute();
 			if (!SwingUtilities.isEventDispatchThread())
 			    runner.get();
@@ -456,10 +587,12 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 
 	private static AnalysisEngineDescription description(String path, Map<String, String> options) throws Exception {
 		URL url = TermSuiteRunner.class.getClassLoader().getResource(path.replaceAll("\\.", "/") + ".xml");
+		System.out.println("resource specifier :" + url.toString());
 		XMLInputSource in = new XMLInputSource(url.toURI().toString());
 		ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);
 		if (specifier instanceof AnalysisEngineDescription) {
 			AnalysisEngineDescription description = (AnalysisEngineDescription) specifier;
+			//System.out.println("description : " + description);
 			TermSuiteRunner.configure(description.getAnalysisEngineMetaData(), options);
 			return description;
 		} else {
@@ -470,11 +603,13 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 	private static void configure(AnalysisEngineMetaData metadata, Map<String, String> options) {
 		ConfigurationParameterDeclarations declarations = metadata.getConfigurationParameterDeclarations();
 		ConfigurationParameterSettings settings = metadata.getConfigurationParameterSettings();
+
 		for (String option : options.keySet()) {
 			String value = options.get(option);
 			ConfigurationParameter declaration = declarations.getConfigurationParameter(null, option);
 			if (declaration != null) { 
 				String type = declaration.getType();
+				info(option + "\t" + type + "\t"+ value);
 				// TODO boolean multiValued = declaration.isMultiValued();
 				if (type.equals(ConfigurationParameter.TYPE_STRING)) {
 					settings.setParameterValue(option, value);
