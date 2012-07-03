@@ -456,24 +456,55 @@
   <map key="Sp-i" value="preposition" />
   <map key="Sp-l" value="preposition" />
   <map key="Sp-n" value="preposition" />
-  <map key="Vm--1s----n" value="verb" />
-  <map key="Vm--------d" value="verb" />
-  <map key="Vm-f1p-a-e" value="verb" />
-  <map key="Vm-f1s-a-e" value="verb" />
-  <map key="Vm-f2p-a-e" value="verb" />
-  <map key="Vm-f2s-a-e" value="verb" />
-  <map key="Vm-f3p-a-e" value="verb" />
-  <map key="Vm-f3s-a-e" value="verb" />
-  <map key="Vm------f" value="verb" />
-  <map key="Vmg----a-e" value="verb" />
-  <map key="Vmg----a-p" value="verb" />
-  <map key="Vmgf---a-e" value="verb" />
-  <map key="Vmg----m-e" value="verb" />
-  <map key="Vmg----m-p" value="verb" />
-  <map key="Vmgp---a-p" value="verb" />
-  <map key="Vmgp---m-p" value="verb" />
-  <map key="Vmgs---a-e" value="verb" />
-  <map key="Vmgs---m-e" value="verb" />
+<map key="Vm------f" value="participle" />
+<map key="Vm------s" value="participle" />
+<map key="Vmg" value="participle" />
+<map key="Vmg----a-e" value="participle" />
+<map key="Vmg----a-p" value="participle" />
+<map key="Vmgf---a-e" value="participle" />
+<map key="Vmg----m-e" value="participle" />
+<map key="Vmg----m-p" value="participle" />
+<map key="Vmgp---a-p" value="participle" />
+<map key="Vmgp---m-p" value="participle" />
+<map key="Vmgs---a-e" value="participle" />
+<map key="Vmgs---m-e" value="participle" />
+<map key="Vmp" value="participle" />
+<map key="Vmpp-sfafpn" value="participle" />
+<map key="Vmpp-sfafpa" value="participle" />
+<map key="Vmpp-sfafpi" value="participle" />
+<map key="Vmpp-sfpfpn" value="participle" />
+<map key="Vmpp-sfpfpi" value="participle" />
+<map key="Vmpp-sfmfpi" value="participle" />
+<map key="Vmpp-snafpl" value="participle" />
+<map key="Vmpp-snpsp" value="participle" />
+<map key="Vmpp-snpfpl" value="participle" />
+<map key="Vmpp-snmfpl" value="participle" />
+<map key="Vmpp-p-afpg" value="participle" />
+<map key="Vmpp-p-pfpg" value="participle" />
+<map key="Vmpp-p-mfpg" value="participle" />
+<map key="Vmps-smpse" value="participle" />
+<map key="Vmps-sfafpi" value="participle" />
+<map key="Vmps-sfafei" value="participle" />
+<map key="Vmps-sfpse" value="participle" />
+<map key="Vmps-sfpfpi" value="participle" />
+<map key="Vmps-sfpfen" value="participle" />
+<map key="Vmps-sfpfea" value="participle" />
+<map key="Vmps-sfpfei" value="participle" />
+<map key="Vmps-sfmfpi" value="participle" />
+<map key="Vmps-sfmfea" value="participle" />
+<map key="Vmps-sfmfei" value="participle" />
+<map key="Vmps-snafpl" value="participle" />
+<map key="Vmps-snafel" value="participle" />
+<map key="Vmps-snpfpl" value="participle" />
+<map key="Vmps-snpfel" value="participle" />
+<map key="Vmps-snmfpl" value="participle" />
+<map key="Vmps-snmfel" value="participle" />
+<map key="Vmps-p-afpg" value="participle" />
+<map key="Vmps-p-afeg" value="participle" />
+<map key="Vmps-p-pfpg" value="participle" />
+<map key="Vmps-p-pfeg" value="participle" />
+<map key="Vmps-p-mfpg" value="participle" />
+<map key="Vmps-p-mfeg" value="participle" />
   <map key="Vmi-1p-a-e" value="verb" />
   <map key="Vmi-1p-a-p" value="verb" />
   <map key="Vmi-1p-m-e" value="verb" />
@@ -572,22 +603,9 @@
   <map key="Vm-p-pnafpi" value="verb" />
   <map key="Vm-p-pnmfpi" value="verb" />
   <map key="Vm-p-pnpfpi" value="verb" />
-  <map key="Vmpp-p-afpg" value="verb" />
   <map key="Vm-p-p-pfpi" value="verb" />
   <map key="Vm-p-p-pfpn" value="verb" />
-  <map key="Vmpp-p-mfpg" value="verb" />
-  <map key="Vmpp-p-pfpg" value="verb" />
-  <map key="Vmpp-p-pfpi" value="verb" />
   <map key="Vm-p-p-psp" value="verb" />
-  <map key="Vmpp-sfafpi" value="verb" />
-  <map key="Vmpp-sfafpn" value="verb" />
-  <map key="Vmpp-sfmfpi" value="verb" />
-  <map key="Vmpp-sfpfpi" value="verb" />
-  <map key="Vmpp-sfpfpn" value="verb" />
-  <map key="Vmpp-snafpl" value="verb" />
-  <map key="Vmpp-snmfpl" value="verb" />
-  <map key="Vmpp-snpfpl" value="verb" />
-  <map key="Vmpp-snpsp" value="verb" />
   <map key="Vm-p-sfafpa" value="verb" />
   <map key="Vm-p-sfafpi" value="verb" />
   <map key="Vm-p-sfafpn" value="verb" />
@@ -609,33 +627,6 @@
   <map key="Vm-p-snpfpg" value="verb" />
   <map key="Vm-p-snpfpn" value="verb" />
   <map key="Vm-p-snpsp" value="verb" />
-  <map key="Vmps-p-afeg" value="verb" />
-  <map key="Vmps-p-afpg" value="verb" />
-  <map key="Vmps-p-mfeg" value="verb" />
-  <map key="Vmps-p-mfpg" value="verb" />
-  <map key="Vmps-p-pfeg" value="verb" />
-  <map key="Vmps-p-pfei" value="verb" />
-  <map key="Vmps-p-pfpg" value="verb" />
-  <map key="Vmps-p-pse" value="verb" />
-  <map key="Vmps-sfafei" value="verb" />
-  <map key="Vmps-sfafpi" value="verb" />
-  <map key="Vmps-sfmfea" value="verb" />
-  <map key="Vmps-sfmfei" value="verb" />
-  <map key="Vmps-sfmfpi" value="verb" />
-  <map key="Vmps-sfpfea" value="verb" />
-  <map key="Vmps-sfpfei" value="verb" />
-  <map key="Vmps-sfpfen" value="verb" />
-  <map key="Vmps-sfpfpi" value="verb" />
-  <map key="Vmps-sfpse" value="verb" />
-  <map key="Vmps-smpse" value="verb" />
-  <map key="Vmps-smpsp" value="verb" />
-  <map key="Vmps-snafel" value="verb" />
-  <map key="Vmps-snafpl" value="verb" />
-  <map key="Vmps-snmfel" value="verb" />
-  <map key="Vmps-snmfpl" value="verb" />
-  <map key="Vmps-snpfel" value="verb" />
-  <map key="Vmps-snpfpl" value="verb" />
-  <map key="Vmps-snpse" value="verb" />
   <map key="Vm---sf---n" value="verb" />
   <map key="Vm---sm-f-g" value="verb" />
   <map key="Vm---sm---g" value="verb" />
