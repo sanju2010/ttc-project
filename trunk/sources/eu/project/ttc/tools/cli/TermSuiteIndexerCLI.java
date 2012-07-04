@@ -23,7 +23,6 @@ import java.util.Properties;
 import javax.swing.SwingUtilities;
 
 import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
@@ -121,14 +120,15 @@ public class TermSuiteIndexerCLI {
 				CommandLine line = parser.parse(options, args, false);
 				for (Option myOption : line.getOptions()) {
 					String optionKey = TermSuiteCLIUtils.getOptionKey(myOption);
-					if (!myOption.hasArg())
-						storedProps.setProperty(optionKey, "true");
 
 					System.out.println(myOption.getOpt() + " : "
 							+ myOption.getLongOpt() + " : "
 							+ myOption.getValue());
 
-					storedProps.setProperty(optionKey, myOption.getValue());
+					if (!myOption.hasArg())
+						storedProps.setProperty(optionKey, "true");
+					else
+						storedProps.setProperty(optionKey, myOption.getValue());
 				}
 
 				// Save props for next run
@@ -151,12 +151,7 @@ public class TermSuiteIndexerCLI {
 					runner.get();
 
 			} catch (ParseException e) {
-				System.err.println(e.getMessage());
-				// automatically generate the help statement
-				HelpFormatter formatter = new HelpFormatter();
-				formatter.setWidth(80);
-				formatter.setOptionComparator(new ShortOptionsFirstComparator());
-				formatter.printHelp(USAGE, options);
+				TermSuiteCLIUtils.printUsage(e, USAGE, options); 
 			}
 
 		} catch (Exception e) {

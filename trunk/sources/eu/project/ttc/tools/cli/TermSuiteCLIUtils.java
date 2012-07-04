@@ -24,12 +24,17 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Locale;
 import java.util.Properties;
 
 import org.apache.commons.cli.Option;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.ParseException;
+
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.metadata.AnalysisEngineMetaData;
@@ -347,4 +352,15 @@ public final class TermSuiteCLIUtils {
 			}
 		}
 	}
+
+	public static void printUsage(ParseException e, String cmdLine,
+            Options options) {
+        System.err.println(e.getMessage());
+        // automatically generate the help statement
+        HelpFormatter formatter = new HelpFormatter();
+        formatter.setOptionComparator(new ShortOptionsFirstComparator());
+        PrintWriter pw = new PrintWriter(System.err);
+        formatter.printUsage(pw, cmdLine.length() + 7, cmdLine, options);
+        pw.flush();
+    } 
 }
