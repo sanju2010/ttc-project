@@ -42,8 +42,12 @@ import org.apache.uima.util.JCasPool;
 import org.apache.uima.util.Level;
 import org.apache.uima.util.XMLInputSource;
 
+
+import org.apache.commons.cli.OptionGroup;
+import org.apache.commons.cli.OptionBuilder;
 import eu.project.ttc.tools.utils.FileComparator;
 import eu.project.ttc.tools.utils.InputSourceFilter;
+
 
 public class TermSuiteRunner extends SwingWorker<Void, Void> {
 
@@ -328,35 +332,6 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 	public static void main(String[] arguments) {
 		try {
 			InputSourceTypes inputType = null;
-//			Map<String, String> parameters = new HashMap<String, String>();
-/*
-			for (int index = 0; index < arguments.length - 1; index++) {
-				if (arguments[index].equals("-txt")) {
-					input = TermSuiteRunner.parse(TermSuiteRunner.TXT, input == null);
-				} else if (arguments[index].equals("-uri")) {
-					input = TermSuiteRunner.parse(TermSuiteRunner.URI, input == null);
-				} else if (arguments[index].equals("-xmi")) {
-					input = TermSuiteRunner.parse(TermSuiteRunner.XMI, input == null);
-				} else if (arguments[index].equals("-analysis-engine")) {
-					analysisEngine = TermSuiteRunner.parse(arguments, index, analysisEngine == null, "-analysis-engine");
-					index++;                                                
-				} else if (arguments[index].equals("-encoding")) {
-					encoding = TermSuiteRunner.parse(arguments, index, encoding == null, "-encoding");
-					index++;                                                
-				} else if (arguments[index].equals("-language")) {
-					language = TermSuiteRunner.parse(arguments, index, language == null, "-language");
-					index++;                                                
-				} else if (arguments[index].equals("-directory")) {
-					directory = TermSuiteRunner.parse(arguments, index, directory == null, "-directory");
-					index++;                                                
-				} else if (arguments[index].startsWith("--") && arguments[index].length() > 2) {
-					TermSuiteRunner.parse(arguments, index, parameters);
-					index++;
-				} else {
-					throw new Exception("I don't know what to do with this option: '" + arguments[index] + "'\n" + usage);
-				}
-			}
-*/
 
 			Properties myProperties = new Properties();
 			
@@ -365,9 +340,15 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 			
 			// create the Options
 			Options options = new Options();
-			options.addOption( "txt", false, "text" );
-			options.addOption( "url", false, "url" );
-			options.addOption( "xmi", false, "xmi" );
+			//Option op = new Option()
+			OptionGroup optionGroup = new OptionGroup( ); 
+			OptionBuilder.hasArg(false);
+			optionGroup.addOption( OptionBuilder.create("txt") );
+			optionGroup.addOption( OptionBuilder.create("xmi") );
+			optionGroup.addOption( OptionBuilder.create("url") );
+			optionGroup.isRequired();
+			options.addOptionGroup( optionGroup );
+			
 			options.addOption( "directory", "", true, "input directory" );
 			options.addOption( "analysisEngine", "analysis-engine", true, "analysis engine" );
 			options.addOption( "language", "", true, "language" );
@@ -420,7 +401,6 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 					options.addOption( "", "MaxTranslationCandidates", true, "maximum number of translation candidates" );								
 				}	
 
-				int index = engineName.lastIndexOf(".");
 				String propertiesFileName = engineName.substring(engineName.lastIndexOf(".")+1).concat(".properties");
 
 				try {
@@ -433,12 +413,13 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 								
 				try {
 					CommandLine line = parser.parse( options, arguments, false);
+					if (line.hasOption("txt")) inputType = InputSourceTypes.TXT;
+					if (line.hasOption("uri")) inputType = InputSourceTypes.URI;
+					if (line.hasOption("xmi")) inputType = InputSourceTypes.XMI;
 					
+
 					for( Option myOption : line.getOptions() ) {
-						if (!myOption.hasArg()) {
-							inputType = InputSourceTypes.valueOf(myOption.getOpt().toUpperCase());
-							System.out.println(myOption.getOpt());
-						} else {
+						if (myOption.hasArg()) {
 							System.out.println(myOption.getOpt() + " : " + myOption.getLongOpt() + " : " + myOption.getValue());
 							if (!(myOption.getOpt().isEmpty())) {
 								//parameters.put(myOption.getOpt(),myOption.getValue());
