@@ -162,12 +162,14 @@ public final class TermSuiteCLIUtils {
 	 *            Specifies whether the Option takes an argument or not
 	 * @param description
 	 *            Describes the function of the option
+	 * @param Specifies
+	 *            whether the Option is mandatory
 	 * @return The option instance
 	 */
-	public static Option createMandatoryOption(String opt, String longOpt,
-			boolean hasArg, String description) {
+	public static Option createOption(String opt, String longOpt,
+			boolean hasArg, String description, boolean isMandatory) {
 		Option option = new Option(opt, longOpt, hasArg, description);
-		option.setRequired(true);
+		option.setRequired(isMandatory);
 		return option;
 	}
 

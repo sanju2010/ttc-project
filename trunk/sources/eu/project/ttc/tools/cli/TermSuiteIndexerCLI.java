@@ -69,16 +69,20 @@ public class TermSuiteIndexerCLI {
 
 			// create the Options
 			Options options = new Options();
-			options.addOption(TermSuiteCLIUtils.createMandatoryOption(
-					"directory", null, true, "input directory"));
-			options.addOption(TermSuiteCLIUtils.createMandatoryOption(
-					"language", null, true, "language of the input files"));
-			options.addOption(TermSuiteCLIUtils.createMandatoryOption(
-					"encoding", "LECON", true, "encoding of the input files"));
+			options.addOption(TermSuiteCLIUtils.createOption("directory", null,
+					true, "input directory",
+					storedProps.getProperty("directory") == null));
+			options.addOption(TermSuiteCLIUtils.createOption("language", null,
+					true, "language of the input files",
+					storedProps.getProperty("language") == null));
+			options.addOption(TermSuiteCLIUtils.createOption("encoding", null,
+					true, "encoding of the input files",
+					storedProps.getProperty("encoding") == null));
 
 			// Indexer specific options
-			options.addOption(TermSuiteCLIUtils.createMandatoryOption(null,
-					"Directory", true, "output directory"));
+			options.addOption(TermSuiteCLIUtils.createOption(null, "Directory",
+					true, "output directory",
+					storedProps.getProperty("Directory") == null));
 			options.addOption(null, "EnableTermGathering", false,
 					"enable term gathering");
 			options.addOption(null,
@@ -147,6 +151,7 @@ public class TermSuiteIndexerCLI {
 					runner.get();
 
 			} catch (ParseException e) {
+				System.err.println(e.getMessage());
 				// automatically generate the help statement
 				HelpFormatter formatter = new HelpFormatter();
 				formatter.setWidth(80);
