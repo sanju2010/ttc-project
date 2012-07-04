@@ -4,15 +4,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Scanner;
@@ -72,6 +69,16 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 
 	private AnalysisEngine analysisEngine;
 
+	private AnalysisEngineDescription description;
+	
+	private ArrayList<File> data = new ArrayList<File>();
+	
+	private InputSourceTypes input;
+
+	private String language;
+
+	private String encoding;
+	
 	private void setAnalysisEngine() throws Exception {
 		// System.out.println("Initializing '" + this.description.getAnalysisEngineMetaData().getName() + "'");
 		Runtime runtime = Runtime.getRuntime();
@@ -79,8 +86,6 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 		this.analysisEngine = UIMAFramework.produceAnalysisEngine(this.description, threads, 0);
 		this.pool = new JCasPool(threads, this.analysisEngine);
 	}
-
-	private AnalysisEngineDescription description;
 
 	private void setDescription(AnalysisEngineDescription description, ConfigurationParameterSettings settings) {
 		description.getAnalysisEngineMetaData().setConfigurationParameterSettings(settings);
@@ -92,42 +97,24 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 		this.description = description;
 	}
 
-	private Comparator<File> comparator = new FileComparator();
-
-	private FilenameFilter filter;
-
-	private List<File> data = new ArrayList<File>();
-
-	private void setFilter(InputSourceTypes mode) {
-		if (this.filter == null) {
-			this.filter = new InputSourceFilter(mode);
-		}
-	}
-
 	private void setData(String path, InputSourceTypes mode) throws Exception {
-		this.setFilter(mode);
+		InputSourceFilter filter = new InputSourceFilter(mode);
 		File file = new File(path);
-		if (file.exists()) {
-			if (file.isDirectory()) {
-				File[] files = file.listFiles(this.filter);
-				for (File f : files) {
-					this.data.add(f);
-				}
-			} else if (file.isFile() && this.filter.accept(file.getParentFile(), file.getName())) {
-				this.data.add(file);
+		if (file.isDirectory()) {
+			File[] files = file.listFiles(filter);
+			for (File f : files) {
+				this.data.add(f);
 			}
+		} else if (file.isFile()
+				&& filter.accept(file.getParentFile(), file.getName())) {
+			this.data.add(file);
 		} else {
-			throw new FileNotFoundException("unable to find : "+path);
+			throw new FileNotFoundException(path
+					+ " is not a directory, or it cannot be found.");
 		}
-		Collections.sort(this.data, this.comparator);
+		Collections.sort(this.data, new FileComparator());
 		// System.out.println("Number of documents to process: " + this.data.size());
 	}
-
-	private InputSourceTypes input;
-
-	private String language;
-
-	private String encoding;
 
 	@Override
 	protected Void doInBackground() throws Exception {
@@ -198,9 +185,10 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 			String uri = file.toURI().toString();
 			SourceDocumentInformation sdi = new SourceDocumentInformation(cas);
 			sdi.setUri(uri);
+			
 			switch (mode) {
 			case TXT:
-				String text = this.extract(file, encoding);
+				String text = this.readAll(file, encoding);
 				cas.setDocumentLanguage(language);
 				cas.setDocumentText(text);
 				sdi.setBegin(0);
@@ -254,22 +242,13 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 		}
 	}
 
-	private String extract(File file, String encoding) throws Exception {
-		StringBuilder builder = new StringBuilder();
-		InputStream inputStream = new FileInputStream(file);
-		Scanner scanner = new Scanner(inputStream, encoding);
+	private String readAll(File file, String encoding) throws Exception {
+		Scanner scanner = new Scanner(file, encoding);
 		try {
-			String delimiter = System.getProperty("line.separator");
-			scanner.useDelimiter(delimiter);
-			while (scanner.hasNext()) {
-				String line = scanner.next();
-				builder.append(line);
-				builder.append(delimiter);
-			}
-			return builder.toString();
+			scanner.useDelimiter("\\Z");
+			return scanner.next();
 		} finally {
 			scanner.close();
-			inputStream.close();
 		}
 	}
 
@@ -501,14 +480,6 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 		}
 	}
 
-	private static Integer parse(int value, boolean allowed) throws Exception {
-		if (allowed) {
-			return new Integer(value);                                              
-		} else {
-			throw new Exception("I've got too much options -txt or -uri or -xmi\n" + usage);
-		}
-	}
-
 	private static void process(String engine, Map<String, String> parameters, InputSourceTypes input, String directory, String language, String encoding) 
 			throws Exception {
 		encoding = encoding == null ? TermSuiteEngine.DEFAULT_ENCODING : encoding;
@@ -568,24 +539,4 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 			}
 		}
 	}
-
-	private static String parse(String[] arguments, int index, boolean allowed, String name) throws Exception {
-		if (allowed) {
-			return arguments[index + 1];
-		} else {
-			throw new Exception("Option " + name + " already set\n" + usage);
-		}
-	}
-
-	private static void parse(String[] arguments, int index, Map<String, String> options) {
-		String key = arguments[index].substring(2);
-		String value = arguments[index + 1];
-		if (value.startsWith("\"") && value.endsWith("\"")) {
-			value = value.substring(1, value.length() - 1);
-		} else if (value.startsWith("'") && value.endsWith("'")) {
-			value = value.substring(1, value.length() - 1);
-		}
-		options.put(key, value);
-	}
-
 }
