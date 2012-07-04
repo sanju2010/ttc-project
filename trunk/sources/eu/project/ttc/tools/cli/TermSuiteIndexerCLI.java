@@ -74,35 +74,35 @@ public class TermSuiteIndexerCLI {
 			options.addOption(TermSuiteCLIUtils.createMandatoryOption(
 					"language", null, true, "language of the input files"));
 			options.addOption(TermSuiteCLIUtils.createMandatoryOption(
-					"encoding", null, true, "encoding of the input files"));
+					"encoding", "LECON", true, "encoding of the input files"));
 
 			// Indexer specific options
-			options.addOption(TermSuiteCLIUtils.createMandatoryOption("",
+			options.addOption(TermSuiteCLIUtils.createMandatoryOption(null,
 					"Directory", true, "output directory"));
-			options.addOption("", "EnableTermGathering", false,
+			options.addOption(null, "EnableTermGathering", false,
 					"enable term gathering");
-			options.addOption("",
+			options.addOption(null,
 					IndexerAdvancedSettings.P_EDIT_DISTANCE_CLASS, true,
 					"edit distance classname");
-			options.addOption("",
+			options.addOption(null,
 					IndexerAdvancedSettings.P_EDIT_DISTANCE_THRESHOLD, true,
 					"edit distance threshold");
-			options.addOption("",
+			options.addOption(null,
 					IndexerAdvancedSettings.P_EDIT_DISTANCE_NGRAMS, true,
 					"edit distance ngrams");
-			options.addOption("", IndexerAdvancedSettings.P_IGNORE_DIACRITICS,
+			options.addOption(null, IndexerAdvancedSettings.P_IGNORE_DIACRITICS,
 					false, "ignore diacritics in multiword terms");
-			options.addOption("",
+			options.addOption(null,
 					IndexerAdvancedSettings.P_FREQUENCY_THRESHOLD, true,
 					"occurence threshold");
-			options.addOption("", "AssociationRateClassName", true,
+			options.addOption(null, "AssociationRateClassName", true,
 					"association rate class name");
-			options.addOption("", TBXSettings.P_FILTER_RULE, true,
+			options.addOption(null, TBXSettings.P_FILTER_RULE, true,
 					"filter rule");
-			options.addOption("", TBXSettings.P_FILTERING_THRESHOLD, true,
+			options.addOption(null, TBXSettings.P_FILTERING_THRESHOLD, true,
 					"threshold used by the filter rule");
-			options.addOption("", TBXSettings.P_KEEP_VERBS, false,
-					"keep verbs and other categories in TBX output");
+			options.addOption(null, TBXSettings.P_KEEP_VERBS, false,
+					"keep verbs and in TBX output");
 
 			// Default values if necessary
 			TermSuiteCLIUtils.setToValueIfNotExists(storedProps,
@@ -149,6 +149,8 @@ public class TermSuiteIndexerCLI {
 			} catch (ParseException e) {
 				// automatically generate the help statement
 				HelpFormatter formatter = new HelpFormatter();
+				formatter.setWidth(80);
+				formatter.setOptionComparator(new ShortOptionsFirstComparator());
 				formatter.printHelp(USAGE, options);
 			}
 

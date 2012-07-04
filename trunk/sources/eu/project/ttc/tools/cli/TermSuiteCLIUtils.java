@@ -180,7 +180,10 @@ public final class TermSuiteCLIUtils {
 	 *         {@link Option#getLongOpt()} otherwise.
 	 */
 	public static String getOptionKey(Option opt) {
-		return opt.getOpt().isEmpty() ? opt.getLongOpt() : opt.getOpt();
+		String key = opt.getOpt();
+		if (key == null || key.isEmpty())
+			key = opt.getLongOpt();
+		return key;
 	}
 
 	/**
