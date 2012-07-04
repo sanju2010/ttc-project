@@ -18,128 +18,140 @@
  */
 package eu.project.ttc.tools.cli;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Properties;
 
+import javax.swing.SwingUtilities;
+
 import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
+import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 
 import eu.project.ttc.tools.InputSourceTypes;
-import eu.project.ttc.tools.TermSuite;
 import eu.project.ttc.tools.TermSuiteRunner;
+import eu.project.ttc.tools.indexer.IndexerAdvancedSettings;
+import eu.project.ttc.tools.indexer.TBXSettings;
 
 /**
  * Command line interface for the Indexer engines.
+ * 
  * @author Sebastián Peña Saldarriaga
  */
 public class TermSuiteIndexerCLI {
 
+	/** Name of the file storing saved preferences */
 	private static final String PREFERENCES_FILE_NAME = "IndexerCLI.properties";
-		
+
+	/** Short usage description of the CLI */
+	private static final String USAGE = "java -Xms1g -Xmx2g -cp ttc-term-suite-1.3.jar eu.project.ttc.tools.cli.TermSuiteIndexerCLI";
+	
 	/**
 	 * Application entry point
-	 * @param args Command line arguments
+	 * 
+	 * @param args
+	 *            Command line arguments
 	 */
 	public static void main(String[] args) {
 		try {
-			
-			Properties storedProps = TermSuiteCLIUtils.readFromUserHome(PREFERENCES_FILE_NAME);
-			
+
+			Properties storedProps = TermSuiteCLIUtils
+					.readFromUserHome(PREFERENCES_FILE_NAME);
+
 			// If this is the first time, create empty properties
 			if (storedProps == null)
 				storedProps = new Properties();
-			
+
 			// create the command line parser
 			PosixParser parser = new PosixParser();
-			
+
 			// create the Options
 			Options options = new Options();
 			options.addOption(TermSuiteCLIUtils.createMandatoryOption(
-					"directory", "", true, "input directory"));
+					"directory", null, true, "input directory"));
 			options.addOption(TermSuiteCLIUtils.createMandatoryOption(
-					"language", "", true, "language of the input files"));
+					"language", null, true, "language of the input files"));
 			options.addOption(TermSuiteCLIUtils.createMandatoryOption(
-					"encoding", "", true, "encoding of the input files"));
-
+					"encoding", null, true, "encoding of the input files"));
 
 			// Indexer specific options
-					options.addOption(TermSuiteCLIUtils.createMandatoryOption( "", "Directory", true, "output directory"));
-					options.addOption( "", "EnableTermGathering", true, "enable term gathering" );
-					options.addOption( "", "EditDistanceClassName", true, "edit distance classname" );
-					options.addOption( "", "EditDistanceThreshold", true, "edit distance threshold" );
-					options.addOption( "", "EditDistanceNgrams", true, "edit distance ngrams" );
-					options.addOption( "", "IgnoreDiacriticsInMultiwordTerms", true, "ignore diacritics in multiword terms" );
-					options.addOption( "", "OccurrenceThreshold", true, "occurence threshold" );
-					options.addOption( "", "AssociationRateClassName", true, "association rate class name" );
-					options.addOption( "", "FilterRule", true, "filter rule" );
-					options.addOption( "", "FilterRuleThreshold", true, "filter rule threshold" ); 
-					options.addOption( "", "KeepVerbsAndOthers", true, "keep verbs and other" );								
+			options.addOption(TermSuiteCLIUtils.createMandatoryOption("",
+					"Directory", true, "output directory"));
+			options.addOption("", "EnableTermGathering", false,
+					"enable term gathering");
+			options.addOption("",
+					IndexerAdvancedSettings.P_EDIT_DISTANCE_CLASS, true,
+					"edit distance classname");
+			options.addOption("",
+					IndexerAdvancedSettings.P_EDIT_DISTANCE_THRESHOLD, true,
+					"edit distance threshold");
+			options.addOption("",
+					IndexerAdvancedSettings.P_EDIT_DISTANCE_NGRAMS, true,
+					"edit distance ngrams");
+			options.addOption("", IndexerAdvancedSettings.P_IGNORE_DIACRITICS,
+					false, "ignore diacritics in multiword terms");
+			options.addOption("",
+					IndexerAdvancedSettings.P_FREQUENCY_THRESHOLD, true,
+					"occurence threshold");
+			options.addOption("", "AssociationRateClassName", true,
+					"association rate class name");
+			options.addOption("", TBXSettings.P_FILTER_RULE, true,
+					"filter rule");
+			options.addOption("", TBXSettings.P_FILTERING_THRESHOLD, true,
+					"threshold used by the filter rule");
+			options.addOption("", TBXSettings.P_KEEP_VERBS, false,
+					"keep verbs and other categories in TBX output");
 
-				int index = engineName.lastIndexOf(".");
-				String propertiesFileName = engineName.substring(engineName.lastIndexOf(".")+1).concat(".properties");
+			// Default values if necessary
+			TermSuiteCLIUtils.setToValueIfNotExists(storedProps,
+					"EnableTermGathering", "false");
+			TermSuiteCLIUtils.setToValueIfNotExists(storedProps,
+					IndexerAdvancedSettings.P_IGNORE_DIACRITICS, "false");
+			TermSuiteCLIUtils.setToValueIfNotExists(storedProps,
+					TBXSettings.P_KEEP_VERBS, "false");
 
-				try {
-					//save properties to project root folder
-		    		myProperties.load(new FileInputStream(propertiesFileName));
-				} catch (IOException ex) {
-		    		info("unable to find the properties file name" + propertiesFileName);			
+			try {
+				// Parse and set CL options
+				CommandLine line = parser.parse(options, args, false);
+				for (Option myOption : line.getOptions()) {
+					String optionKey = TermSuiteCLIUtils.getOptionKey(myOption);
+					if (!myOption.hasArg())
+						storedProps.setProperty(optionKey, "true");
+
+					System.out.println(myOption.getOpt() + " : "
+							+ myOption.getLongOpt() + " : "
+							+ myOption.getValue());
+
+					storedProps.setProperty(optionKey, myOption.getValue());
 				}
 
-								
-				try {
-					CommandLine line = parser.parse( options, arguments, false);
-					
-					for( Option myOption : line.getOptions() ) {
-						if (!myOption.hasArg()) {
-							inputType = InputSourceTypes.valueOf(myOption.getOpt().toUpperCase());
-							System.out.println(myOption.getOpt());
-						} else {
-							System.out.println(myOption.getOpt() + " : " + myOption.getLongOpt() + " : " + myOption.getValue());
-							if (!(myOption.getOpt().isEmpty())) {
-								//parameters.put(myOption.getOpt(),myOption.getValue());
-								myProperties.setProperty(myOption.getOpt(),myOption.getValue());
-							}
-							if (!(myOption.getLongOpt().isEmpty())) {
-								//parameters.put(myOption.getLongOpt(),myOption.getValue());
-								myProperties.setProperty(myOption.getLongOpt(),myOption.getValue());
-							}
-						}	
-					}
-										
-					try {
-						//save properties to project root folder
-			    		myProperties.store(new FileOutputStream(propertiesFileName), null);
-					} catch (IOException ex) {
-			    		ex.printStackTrace();			
-					}
-					
-					TermSuiteRunner.process(engineName, new HashMap<String, String>((Map) myProperties), inputType, 
-							myProperties.getProperty("directory"), 
-							myProperties.getProperty("language"), 
-							myProperties.getProperty("encoding"));
+				// Save props for next run
+				TermSuiteCLIUtils.saveToserHome(PREFERENCES_FILE_NAME, storedProps);
 
-				} catch (ParseException e) {
-					// automatically generate the help statement
-					HelpFormatter formatter = new HelpFormatter();
-					formatter.printHelp( "java -Xms1g  -Xmx2g -cp target/ttc-term-suite-1.3.jar eu.project.ttc.tools.TermSuiteRunner", options );					
-				}
+				// Create AE and configure
+				AnalysisEngineDescription description = TermSuiteCLIUtils
+						.getIndexerAEDescription(storedProps.getProperty("language"));
+				TermSuiteCLIUtils.setConfigurationParameters(description, storedProps);
 				
-			} else {
+				TermSuiteRunner runner = new TermSuiteRunner(description,
+						storedProps.getProperty("directory"),
+						InputSourceTypes.XMI,
+						storedProps.getProperty("language"),
+						storedProps.getProperty("encoding"));
+
+				// Run
+				runner.execute();
+				if (!SwingUtilities.isEventDispatchThread())
+					runner.get();
+
+			} catch (ParseException e) {
 				// automatically generate the help statement
 				HelpFormatter formatter = new HelpFormatter();
-				formatter.printHelp( "TermSuiteRunner", options );
+				formatter.printHelp(USAGE, options);
 			}
-			
+
 		} catch (Exception e) {
 			TermSuiteRunner.error(e, 1);
 		}

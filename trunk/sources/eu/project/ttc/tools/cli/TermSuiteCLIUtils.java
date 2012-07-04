@@ -20,17 +20,34 @@ package eu.project.ttc.tools.cli;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.Reader;
+import java.io.OutputStream;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.Locale;
 import java.util.Properties;
 
 import org.apache.commons.cli.Option;
+import org.apache.uima.UIMAFramework;
+import org.apache.uima.analysis_engine.AnalysisEngineDescription;
+import org.apache.uima.analysis_engine.metadata.AnalysisEngineMetaData;
+import org.apache.uima.resource.ResourceSpecifier;
+import org.apache.uima.resource.metadata.ConfigurationParameter;
+import org.apache.uima.resource.metadata.ConfigurationParameterDeclarations;
+import org.apache.uima.resource.metadata.ConfigurationParameterSettings;
+import org.apache.uima.util.InvalidXMLException;
+import org.apache.uima.util.XMLInputSource;
 
 import eu.project.ttc.tools.TermSuite;
+import eu.project.ttc.tools.TermSuiteRunner;
+import eu.project.ttc.tools.aligner.AlignerEngine;
+import eu.project.ttc.tools.indexer.IndexerEngine;
+import eu.project.ttc.tools.spotter.SpotterEngine;
 
 /**
- * This class consists of static method used by the CLI.
+ * This class consists of static methods used by the CLI.
  * 
  * @author Sebastián Peña Saldarriaga
  */
@@ -41,6 +58,9 @@ public final class TermSuiteCLIUtils {
 			+ File.separator + ".term-suite" + File.separator
 			+ TermSuite.TERMSUITE_VERSION;
 
+	/** Path to the aligner engine */
+	private static final String ALIGNER_ENGINE = "eu/project/ttc/all/engines/aligner/Aligner.xml";
+
 	/**
 	 * Instances should NOT be constructed in standard programming.
 	 */
@@ -48,10 +68,12 @@ public final class TermSuiteCLIUtils {
 
 	/**
 	 * Unconditionally close an <code>InputStream</code>. Equivalent to
-	 * {@link Reader#close()}, except any exceptions will be ignored.
-	 * <p>Code from apache IOUtils.
+	 * {@link InputStream#close()}, except any exceptions will be ignored.
+	 * <p>
+	 * Code from apache IOUtils.
+	 * 
 	 * @param input
-	 *            A (possibly null) Reader
+	 *            A (possibly null) InputStream
 	 */
 	public static void closeQuietly(InputStream input) {
 		if (input == null) {
@@ -63,7 +85,27 @@ public final class TermSuiteCLIUtils {
 		} catch (IOException ioe) {
 		}
 	}
-	
+
+	/**
+	 * Unconditionally close an <code>OutputStream</code>. Equivalent to
+	 * {@link OutputStream#close()}, except any exceptions will be ignored.
+	 * <p>
+	 * Code from apache IOUtils.
+	 * 
+	 * @param output
+	 *            A (possibly null) OutputStream
+	 */
+	public static void closeQuietly(OutputStream output) {
+		if (output == null) {
+			return;
+		}
+
+		try {
+			output.close();
+		} catch (IOException ioe) {
+		}
+	}
+
 	/**
 	 * Reads a list of {@link Properties} from the specified
 	 * <code>fileName</code> in the user preferences folder.
@@ -89,6 +131,27 @@ public final class TermSuiteCLIUtils {
 	}
 
 	/**
+	 * Saves the specified <code>properties</code> to the user preferences
+	 * folder.
+	 * 
+	 * @param fileName
+	 *            The output file name
+	 * @param properties
+	 *            The properties
+	 * @throws IOException
+	 */
+	public static void saveToserHome(String fileName, Properties properties)
+			throws IOException {
+		FileOutputStream out = null;
+		try {
+			out = new FileOutputStream(new File(USER_HOME, fileName));
+			properties.store(out, null);
+		} finally {
+			closeQuietly(out);
+		}
+	}
+
+	/**
 	 * Creates a mandatory {@link Option} using the specified arguments.
 	 * 
 	 * @param opt
@@ -108,4 +171,175 @@ public final class TermSuiteCLIUtils {
 		return option;
 	}
 
+	/**
+	 * Returns the key of the given option
+	 * 
+	 * @param opt
+	 *            The option
+	 * @return {@link Option#getOpt()} if the value returned is not empty, or
+	 *         {@link Option#getLongOpt()} otherwise.
+	 */
+	public static String getOptionKey(Option opt) {
+		return opt.getOpt().isEmpty() ? opt.getLongOpt() : opt.getOpt();
+	}
+
+	/**
+	 * Sets the <code>value</code> of the specified <code>property</code> if no
+	 * value exists for it in the given <code>properties</code>.
+	 * 
+	 * @param properties
+	 *            The property list
+	 * @param property
+	 *            The property name
+	 * @param value
+	 *            The value to set
+	 */
+	public static void setToValueIfNotExists(Properties properties,
+			String property, String value) {
+		if (properties.getProperty(property) == null)
+			properties.setProperty(property, value);
+	}
+
+	/**
+	 * Returns the description of an {@link IndexerEngine} for the specified
+	 * <code>lang</code>
+	 * 
+	 * @param lang
+	 *            The iso language code
+	 * @return The engine descriptor
+	 * @throws IOException
+	 * @throws URISyntaxException
+	 * @throws InvalidXMLException
+	 */
+	public static AnalysisEngineDescription getIndexerAEDescription(String lang)
+			throws IOException, URISyntaxException, InvalidXMLException {
+		String language = new Locale(lang).getDisplayLanguage(Locale.ENGLISH);
+		return getAEDescription(language, "Indexer");
+	}
+
+	/**
+	 * Returns the description of a {@link SpotterEngine} for the specified
+	 * <code>lang</code>
+	 * 
+	 * @param lang
+	 *            The iso language code
+	 * @return The engine descriptor
+	 * @throws IOException
+	 * @throws URISyntaxException
+	 * @throws InvalidXMLException
+	 */
+	public static AnalysisEngineDescription getSpotterAEDescription(String lang)
+			throws IOException, URISyntaxException, InvalidXMLException {
+		String language = new Locale(lang).getDisplayLanguage(Locale.ENGLISH);
+		return getAEDescription(language, "Spotter");
+	}
+
+	/**
+	 * Returns the description of a {@link AlignerEngine} for the specified
+	 * <code>lang</code>
+	 * 
+	 * @param lang
+	 *            The iso language code
+	 * @return The engine descriptor
+	 * @throws IOException
+	 * @throws URISyntaxException
+	 * @throws InvalidXMLException
+	 */
+	public static AnalysisEngineDescription getAlignerAEDescription(String lang)
+			throws IOException, URISyntaxException, InvalidXMLException {
+		ResourceSpecifier specifier = getResourceSpecifier(ALIGNER_ENGINE);
+		if (specifier instanceof AnalysisEngineDescription) {
+			return (AnalysisEngineDescription) specifier;
+		} else {
+			throw new IllegalArgumentException(
+					"Invalid XML Analysis Engine Descriptor: " + ALIGNER_ENGINE);
+		}
+	}
+
+	/**
+	 * Returns the descriptor of a given <code>engine</code> for the specified
+	 * <code>language</code>
+	 * 
+	 * @param language
+	 *            The language display name in english
+	 * @param engine
+	 *            The engine type, i.e. Spotter or Indexer (case sensitive)
+	 * @return The engine descriptor
+	 * @throws IOException
+	 * @throws URISyntaxException
+	 * @throws InvalidXMLException
+	 */
+	private static AnalysisEngineDescription getAEDescription(String language,
+			String engine) throws IOException, URISyntaxException,
+			InvalidXMLException {
+
+		String engineName = "eu/project/ttc/" + language.toLowerCase()
+				+ "/engines/" + engine.toLowerCase() + "/" + language + engine
+				+ ".xml";
+
+		ResourceSpecifier specifier = getResourceSpecifier(engineName);
+		if (specifier instanceof AnalysisEngineDescription) {
+			return (AnalysisEngineDescription) specifier;
+		} else {
+			throw new IllegalArgumentException(
+					"Invalid XML Analysis Engine Descriptor: " + engineName);
+		}
+	}
+
+	/**
+	 * Returns the descriptor specified by the given <code>path</code>.
+	 * 
+	 * @param path
+	 *            The path to the xml descriptor
+	 * @return The engine descriptor
+	 * @throws IOException
+	 * @throws URISyntaxException
+	 * @throws InvalidXMLException
+	 */
+	private static ResourceSpecifier getResourceSpecifier(String path)
+			throws IOException, URISyntaxException, InvalidXMLException {
+		URL url = TermSuiteRunner.class.getClassLoader().getResource(path);
+		XMLInputSource in = new XMLInputSource(url.toURI().toString());
+		return UIMAFramework.getXMLParser().parseResourceSpecifier(in);
+	}
+	
+	/**
+	 * Sets the configuration parameter following the <code>description</code>
+	 * of a given <code>AnalysisEngine</code>.
+	 * 
+	 * @param description
+	 *            The <code>AnalysisEngine</code> description
+	 * @param parameters
+	 *            The parameters of the engine.
+	 */
+	public static void setConfigurationParameters(
+			AnalysisEngineDescription description, Properties parameters) {
+		AnalysisEngineMetaData metadata = description
+				.getAnalysisEngineMetaData();
+		ConfigurationParameterDeclarations declarations = metadata
+				.getConfigurationParameterDeclarations();
+		ConfigurationParameterSettings settings = metadata
+				.getConfigurationParameterSettings();
+
+		for (String option : parameters.stringPropertyNames()) {
+
+			String value = parameters.getProperty(option);
+			ConfigurationParameter declaration = declarations.getConfigurationParameter(null, option);
+
+			if (declaration != null) {
+				String type = declaration.getType();
+				TermSuiteRunner.info(option + "\t" + type + "\t" + value);
+				// TODO boolean multiValued = declaration.isMultiValued();
+				if (type.equals(ConfigurationParameter.TYPE_STRING)) {
+					settings.setParameterValue(option, value);
+				} else if (type.equals(ConfigurationParameter.TYPE_INTEGER)) {
+					settings.setParameterValue(option, Integer.valueOf(value));
+				} else if (type.equals(ConfigurationParameter.TYPE_FLOAT)) {
+					settings.setParameterValue(option, Float.valueOf(value));
+				} else if (type.equals(ConfigurationParameter.TYPE_BOOLEAN)) {
+					settings.setParameterValue(option, Boolean.valueOf(value));
+				}
+			}
+		}
+	}
 }
