@@ -23,7 +23,6 @@ import java.util.Properties;
 import javax.swing.SwingUtilities;
 
 import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.OptionGroup;
@@ -37,9 +36,9 @@ import eu.project.ttc.tools.TermSuiteRunner;
 import eu.project.ttc.tools.spotter.SpotterSettings;
 
 /**
- * Command line interface for the Indexer engines.
+ * Command line interface for the Spotter engines.
  * 
- * @author Sebastián Peña Saldarriaga
+ * @author Damien Vintache
  */
 public class TermSuiteSpotterCLI {
 
@@ -49,6 +48,14 @@ public class TermSuiteSpotterCLI {
 	/** Short usage description of the CLI */
 	private static final String USAGE = "java -Xms1g -Xmx2g -cp ttc-term-suite-1.3.jar eu.project.ttc.tools.cli.TermSuiteSpotterCLI";
 
+	/// Parameter names
+	
+	/** Name of the parameter that must be set to the output directory */
+	public static final String P_OUTPUT_DIR = "Directory";
+	
+	/** Name of the parameter that must be set to the target language */
+	public static final String P_TREETAGGER_HOME_DIRECTORY = SpotterSettings.P_TREETAGGER_HOME_DIRECTORY;
+	
 	/**
 	 * Application entry point
 	 * 
@@ -80,28 +87,23 @@ public class TermSuiteSpotterCLI {
 			optionGroup.isRequired();
 			options.addOptionGroup(optionGroup);
 
-			options.addOption(TermSuiteCLIUtils.createOption("directory", null,
-					true, "input directory",
-					storedProps.getProperty("directory") == null));
-			options.addOption(TermSuiteCLIUtils.createOption("language", null,
-					true, "language of the input files",
-					storedProps.getProperty("language") == null));
-			options.addOption(TermSuiteCLIUtils.createOption("encoding", null,
-					true, "encoding of the input files",
-					storedProps.getProperty("encoding") == null));
-
-			// Indexer specific options
-			// spotter specific options
-			options.addOption(TermSuiteCLIUtils.createOption(null, "Directory",
-					true, "output directory",
-					storedProps.getProperty("Directory") == null));
 			options.addOption(TermSuiteCLIUtils.createOption(
-					null,
-					SpotterSettings.P_TREETAGGER_HOME_DIRECTORY,
-					true,
-					"TreeTagger home directory",
-					storedProps
-							.getProperty(SpotterSettings.P_TREETAGGER_HOME_DIRECTORY) == null));
+					TermSuiteCLIUtils.P_INPUT_DIR, null, true, "input directory", 
+					TermSuiteCLIUtils.isNull(storedProps, TermSuiteCLIUtils.P_INPUT_DIR)));
+			options.addOption(TermSuiteCLIUtils.createOption(
+					TermSuiteCLIUtils.P_LANGUAGE, null, true, "language of the input files", 
+					TermSuiteCLIUtils.isNull(storedProps, TermSuiteCLIUtils.P_LANGUAGE)));
+			options.addOption(TermSuiteCLIUtils.createOption(
+					TermSuiteCLIUtils.P_ENCODING, null, true, "encoding of the input files", 
+					TermSuiteCLIUtils.isNull(storedProps, TermSuiteCLIUtils.P_ENCODING)));
+
+			// spotter specific options
+			options.addOption(TermSuiteCLIUtils.createOption(null,
+					P_OUTPUT_DIR, true, "output directory",
+					TermSuiteCLIUtils.isNull(storedProps, P_OUTPUT_DIR)));
+			options.addOption(TermSuiteCLIUtils.createOption(null,
+					P_TREETAGGER_HOME_DIRECTORY, true, "TreeTagger home directory", 
+					TermSuiteCLIUtils.isNull(storedProps, P_TREETAGGER_HOME_DIRECTORY)));
 
 			try {
 				// Parse and set CL options
@@ -118,33 +120,27 @@ public class TermSuiteSpotterCLI {
 							+ myOption.getLongOpt() + " : "
 							+ myOption.getValue());
 
-					if (myOption.hasArg()) {
-						
-						String optionKey = TermSuiteCLIUtils
-								.getOptionKey(myOption);
+					String optionKey = TermSuiteCLIUtils.getOptionKey(myOption);
 
-						if (!myOption.hasArg())
-							storedProps.setProperty(optionKey, "true");
-						else
-							storedProps.setProperty(optionKey, myOption.getValue());
-					}
+					if (!myOption.hasArg())
+						storedProps.setProperty(optionKey, "true");
+					else
+						storedProps.setProperty(optionKey, myOption.getValue());
 				}
 
 				// Save props for next run
-				TermSuiteCLIUtils.saveToserHome(PREFERENCES_FILE_NAME,
-						storedProps);
+				TermSuiteCLIUtils.saveToserHome(PREFERENCES_FILE_NAME, storedProps);
 
 				// Create AE and configure
 				AnalysisEngineDescription description = TermSuiteCLIUtils
-						.getSpotterAEDescription(storedProps
-								.getProperty("language"));
-				TermSuiteCLIUtils.setConfigurationParameters(description,
-						storedProps);
+						.getIndexerAEDescription(storedProps.getProperty(TermSuiteCLIUtils.P_LANGUAGE));
+				TermSuiteCLIUtils.setConfigurationParameters(description, storedProps);
 
 				TermSuiteRunner runner = new TermSuiteRunner(description,
-						storedProps.getProperty("directory"), inputType,
-						storedProps.getProperty("language"),
-						storedProps.getProperty("encoding"));
+						storedProps.getProperty(TermSuiteCLIUtils.P_INPUT_DIR),
+						inputType,
+						storedProps.getProperty(TermSuiteCLIUtils.P_LANGUAGE),
+						storedProps.getProperty(TermSuiteCLIUtils.P_ENCODING));
 
 				// Run
 				runner.execute();
@@ -152,12 +148,7 @@ public class TermSuiteSpotterCLI {
 					runner.get();
 
 			} catch (ParseException e) {
-				// automatically generate the help statement
-				HelpFormatter formatter = new HelpFormatter();
-				formatter.setWidth(80);
-				formatter
-						.setOptionComparator(new ShortOptionsFirstComparator());
-				formatter.printHelp(USAGE, options);
+				TermSuiteCLIUtils.printUsage(e, USAGE, options); 
 			}
 
 		} catch (Exception e) {

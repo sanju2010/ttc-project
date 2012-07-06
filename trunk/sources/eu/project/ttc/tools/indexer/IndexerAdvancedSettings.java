@@ -30,7 +30,7 @@ public class IndexerAdvancedSettings extends Parameters implements
 	/** Name of the parameter that must be set to filter terms by frequency */
 	public static final String P_FREQUENCY_THRESHOLD = "OccurrenceThreshold";
 
-	/** Name of the parameter that must be set to filter terms by frequency */
+	/** Name of the parameter that must be set to association measure class name */
 	public static final String P_ASSOCIATION_MEASURE = "AssociationMeasure";
 
 	public IndexerAdvancedSettings(String resource) {

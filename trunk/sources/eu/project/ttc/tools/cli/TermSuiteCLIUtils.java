@@ -66,6 +66,15 @@ public final class TermSuiteCLIUtils {
 	/** Path to the aligner engine */
 	private static final String ALIGNER_ENGINE = "eu/project/ttc/all/engines/aligner/Aligner.xml";
 
+	/** Name of the parameter that must be set to the input directory */
+	public static final String P_INPUT_DIR = "directory";
+	
+	/** Name of the parameter that must be set to the input files' encoding */
+	public static final String P_ENCODING = "encoding";
+	
+	/** Name of the parameter that must be set to the input files' language */
+	public static final String P_LANGUAGE = "language";
+	
 	/**
 	 * Instances should NOT be constructed in standard programming.
 	 */
@@ -210,6 +219,21 @@ public final class TermSuiteCLIUtils {
 			properties.setProperty(property, value);
 	}
 
+	/**
+	 * Determines whether the specified <code>property</code> value is
+	 * <code>null</code>.
+	 * 
+	 * @param properties
+	 *            The property list
+	 * @param property
+	 *            The property name
+	 * @return <code>true</code> if the value of <code>property</code> is
+	 *         <code>null</code>, or <code>false</code> otherwise.
+	 */
+	public static boolean isNull(Properties properties, String property) {
+		return properties.getProperty(property) == null;
+	}
+	
 	/**
 	 * Returns the description of an {@link IndexerEngine} for the specified
 	 * <code>lang</code>

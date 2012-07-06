@@ -33,6 +33,7 @@ import eu.project.ttc.tools.InputSourceTypes;
 import eu.project.ttc.tools.TermSuiteRunner;
 import eu.project.ttc.tools.indexer.IndexerAdvancedSettings;
 import eu.project.ttc.tools.indexer.TBXSettings;
+import eu.project.ttc.tools.indexer.TBXSettings.FilterRules;
 
 /**
  * Command line interface for the Indexer engines.
@@ -46,6 +47,44 @@ public class TermSuiteIndexerCLI {
 
 	/** Short usage description of the CLI */
 	private static final String USAGE = "java -Xms1g -Xmx2g -cp ttc-term-suite-1.3.jar eu.project.ttc.tools.cli.TermSuiteIndexerCLI";
+	
+	/// Parameter names
+	
+	/**
+	 * Name of the parameter that must be set to ignore diacritics in multiword
+	 * term conflating
+	 */
+	public static final String P_IGNORE_DIACRITICS = IndexerAdvancedSettings.P_IGNORE_DIACRITICS;
+
+	/** Name of the parameter that must be set to enable variant detection */
+	public static final String P_TERM_VARIANT_DETECTION = "EnableTermGathering";
+
+	/** Name of the parameter that must be set to the edit distance classname */
+	public static final String P_EDIT_DISTANCE_CLASS = IndexerAdvancedSettings.P_EDIT_DISTANCE_CLASS;
+
+	/** Name of the parameter that must be set to the distance threshold */
+	public static final String P_EDIT_DISTANCE_THRESHOLD = IndexerAdvancedSettings.P_EDIT_DISTANCE_THRESHOLD;
+
+	/** Name of the parameter that must be set to the distance ngrams */
+	public static final String P_EDIT_DISTANCE_NGRAMS = IndexerAdvancedSettings.P_EDIT_DISTANCE_NGRAMS;
+
+	/** Name of the parameter that must be set to filter terms by frequency */
+	public static final String P_OCC_THRESHOLD = IndexerAdvancedSettings.P_FREQUENCY_THRESHOLD;
+
+	/** Name of the parameter that must be set to filter terms by frequency */
+	public static final String P_ASSOCIATION_MEASURE = "AssociationRateClassName";
+	
+	/** Name of the parameter that must be set to filter terms by frequency */
+	public static final String P_FILTERING_THRESHOLD = TBXSettings.P_FILTERING_THRESHOLD;
+
+	/** Name of the parameter that must be set to filter terms by a given criteria */
+	public static final String P_FILTER_RULE = TBXSettings.P_FILTER_RULE;
+
+	/** Name of the parameter that must be set to keep verbs and other categories in TBX output */
+	public static final String P_KEEP_VERBS = TBXSettings.P_KEEP_VERBS;
+	
+	/** Name of the parameter that must be set to the output directory */
+	public static final String P_OUTPUT_DIR = "Directory";
 	
 	/**
 	 * Application entry point
@@ -68,52 +107,47 @@ public class TermSuiteIndexerCLI {
 
 			// create the Options
 			Options options = new Options();
-			options.addOption(TermSuiteCLIUtils.createOption("directory", null,
-					true, "input directory",
-					storedProps.getProperty("directory") == null));
-			options.addOption(TermSuiteCLIUtils.createOption("language", null,
-					true, "language of the input files",
-					storedProps.getProperty("language") == null));
-			options.addOption(TermSuiteCLIUtils.createOption("encoding", null,
-					true, "encoding of the input files",
-					storedProps.getProperty("encoding") == null));
+			options.addOption(TermSuiteCLIUtils.createOption(
+					TermSuiteCLIUtils.P_INPUT_DIR, null, true, "input directory", 
+					TermSuiteCLIUtils.isNull(storedProps, TermSuiteCLIUtils.P_INPUT_DIR)));
+			options.addOption(TermSuiteCLIUtils.createOption(
+					TermSuiteCLIUtils.P_LANGUAGE, null, true, "language of the input files",
+					TermSuiteCLIUtils.isNull(storedProps, TermSuiteCLIUtils.P_LANGUAGE)));
+			options.addOption(TermSuiteCLIUtils.createOption(
+					TermSuiteCLIUtils.P_ENCODING, null, true, "encoding of the input files", 
+					TermSuiteCLIUtils.isNull(storedProps, TermSuiteCLIUtils.P_ENCODING)));
 
 			// Indexer specific options
-			options.addOption(TermSuiteCLIUtils.createOption(null, "Directory",
-					true, "output directory",
-					storedProps.getProperty("Directory") == null));
-			options.addOption(null, "EnableTermGathering", false,
+			options.addOption(TermSuiteCLIUtils.createOption(null,
+					P_OUTPUT_DIR, true, "output directory",
+					TermSuiteCLIUtils.isNull(storedProps, P_OUTPUT_DIR)));
+			options.addOption(null, P_TERM_VARIANT_DETECTION, false,
 					"enable term gathering");
-			options.addOption(null,
-					IndexerAdvancedSettings.P_EDIT_DISTANCE_CLASS, true,
+			options.addOption(null, P_EDIT_DISTANCE_CLASS, true,
 					"edit distance classname");
-			options.addOption(null,
-					IndexerAdvancedSettings.P_EDIT_DISTANCE_THRESHOLD, true,
+			options.addOption(null, P_EDIT_DISTANCE_THRESHOLD, true,
 					"edit distance threshold");
-			options.addOption(null,
-					IndexerAdvancedSettings.P_EDIT_DISTANCE_NGRAMS, true,
+			options.addOption(null, P_EDIT_DISTANCE_NGRAMS, true,
 					"edit distance ngrams");
-			options.addOption(null, IndexerAdvancedSettings.P_IGNORE_DIACRITICS,
-					false, "ignore diacritics in multiword terms");
-			options.addOption(null,
-					IndexerAdvancedSettings.P_FREQUENCY_THRESHOLD, true,
+			options.addOption(null, P_IGNORE_DIACRITICS, false,
+					"ignore diacritics in multiword terms");
+			options.addOption(null, P_OCC_THRESHOLD, true,
 					"occurence threshold");
-			options.addOption(null, "AssociationRateClassName", true,
+			options.addOption(null, P_ASSOCIATION_MEASURE, true,
 					"association rate class name");
-			options.addOption(null, TBXSettings.P_FILTER_RULE, true,
-					"filter rule");
-			options.addOption(null, TBXSettings.P_FILTERING_THRESHOLD, true,
+			options.addOption(null, P_FILTER_RULE, true, "filter rule");
+			options.addOption(null, P_FILTERING_THRESHOLD, true,
 					"threshold used by the filter rule");
-			options.addOption(null, TBXSettings.P_KEEP_VERBS, false,
+			options.addOption(null, P_KEEP_VERBS, false,
 					"keep verbs and in TBX output");
 
 			// Default values if necessary
 			TermSuiteCLIUtils.setToValueIfNotExists(storedProps,
-					"EnableTermGathering", "false");
+					P_TERM_VARIANT_DETECTION, "false");
 			TermSuiteCLIUtils.setToValueIfNotExists(storedProps,
-					IndexerAdvancedSettings.P_IGNORE_DIACRITICS, "false");
-			TermSuiteCLIUtils.setToValueIfNotExists(storedProps,
-					TBXSettings.P_KEEP_VERBS, "false");
+					P_IGNORE_DIACRITICS, "false");
+			TermSuiteCLIUtils.setToValueIfNotExists(storedProps, 
+					P_KEEP_VERBS, "false");
 
 			try {
 				// Parse and set CL options
@@ -121,29 +155,53 @@ public class TermSuiteIndexerCLI {
 				for (Option myOption : line.getOptions()) {
 					String optionKey = TermSuiteCLIUtils.getOptionKey(myOption);
 
-					System.out.println(myOption.getOpt() + " : "
-							+ myOption.getLongOpt() + " : "
-							+ myOption.getValue());
-
 					if (!myOption.hasArg())
 						storedProps.setProperty(optionKey, "true");
 					else
 						storedProps.setProperty(optionKey, myOption.getValue());
 				}
 
+				// Check options that are required if other options are present
+				if (!isNoneOrNull(storedProps, P_FILTER_RULE)
+						&& TermSuiteCLIUtils.isNull(storedProps, P_FILTERING_THRESHOLD))
+					throw new ParseException("Missing required parameter "
+							+ P_FILTERING_THRESHOLD
+							+ " for the specified filter '"
+							+ storedProps.getProperty(P_FILTER_RULE) + "'.");
+
+				if ("true".equals(storedProps.getProperty(P_TERM_VARIANT_DETECTION))
+						&& !TermSuiteCLIUtils.isNull(storedProps, P_EDIT_DISTANCE_CLASS)) {
+					
+					if (TermSuiteCLIUtils.isNull(storedProps,
+							IndexerAdvancedSettings.P_EDIT_DISTANCE_THRESHOLD)) {
+						throw new ParseException("Missing required parameter "
+								+ P_EDIT_DISTANCE_THRESHOLD
+								+ " to be used with the "
+								+ P_EDIT_DISTANCE_CLASS);
+					}
+
+					if (TermSuiteCLIUtils.isNull(storedProps,
+							P_EDIT_DISTANCE_NGRAMS)) {
+						throw new ParseException("Missing required parameter "
+								+ P_EDIT_DISTANCE_NGRAMS
+								+ " to be used with the "
+								+ P_EDIT_DISTANCE_CLASS);
+					}
+				}
+					
 				// Save props for next run
 				TermSuiteCLIUtils.saveToserHome(PREFERENCES_FILE_NAME, storedProps);
 
 				// Create AE and configure
 				AnalysisEngineDescription description = TermSuiteCLIUtils
-						.getIndexerAEDescription(storedProps.getProperty("language"));
+						.getIndexerAEDescription(storedProps.getProperty(TermSuiteCLIUtils.P_LANGUAGE));
 				TermSuiteCLIUtils.setConfigurationParameters(description, storedProps);
 				
 				TermSuiteRunner runner = new TermSuiteRunner(description,
-						storedProps.getProperty("directory"),
+						storedProps.getProperty(TermSuiteCLIUtils.P_INPUT_DIR),
 						InputSourceTypes.XMI,
-						storedProps.getProperty("language"),
-						storedProps.getProperty("encoding"));
+						storedProps.getProperty(TermSuiteCLIUtils.P_LANGUAGE),
+						storedProps.getProperty(TermSuiteCLIUtils.P_ENCODING));
 
 				// Run
 				runner.execute();
@@ -159,4 +217,21 @@ public class TermSuiteIndexerCLI {
 		}
 	}
 
+	/**
+	 * Determines whether <code>filter</code> is <code>null</code> or equals to
+	 * {@link FilterRules#None} in the given <code>properties</code> list.
+	 * 
+	 * @param properties
+	 *            The property list
+	 * @param filter
+	 *            The filter name
+	 * @return <code>true</code> if <code>filter</code> is <code>null</code> or
+	 *         its value equals to {@link FilterRules#None}, otherwise
+	 *         <code>false</code>.
+	 */
+	private static boolean isNoneOrNull(Properties properties, String filter) {
+		return TermSuiteCLIUtils.isNull(properties, filter)
+				|| properties.getProperty(filter).equals(
+						TBXSettings.FilterRules.None.name());
+	}
 }
