@@ -24,8 +24,6 @@ import javax.swing.SwingUtilities;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
-import org.apache.commons.cli.OptionBuilder;
-import org.apache.commons.cli.OptionGroup;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
@@ -64,8 +62,6 @@ public class TermSuiteSpotterCLI {
 	 */
 	public static void main(String[] args) {
 		try {
-			InputSourceTypes inputType = null;
-
 			Properties storedProps = TermSuiteCLIUtils
 					.readFromUserHome(PREFERENCES_FILE_NAME);
 
@@ -78,14 +74,6 @@ public class TermSuiteSpotterCLI {
 
 			// create the Options
 			Options options = new Options();
-
-			OptionGroup optionGroup = new OptionGroup();
-			OptionBuilder.hasArg(false);
-			optionGroup.addOption(OptionBuilder.create("txt"));
-			optionGroup.addOption(OptionBuilder.create("xmi"));
-			optionGroup.addOption(OptionBuilder.create("url"));
-			optionGroup.isRequired();
-			options.addOptionGroup(optionGroup);
 
 			options.addOption(TermSuiteCLIUtils.createOption(
 					TermSuiteCLIUtils.P_INPUT_DIR, null, true, "input directory", 
@@ -108,12 +96,6 @@ public class TermSuiteSpotterCLI {
 			try {
 				// Parse and set CL options
 				CommandLine line = parser.parse(options, args, false);
-				if (line.hasOption("txt"))
-					inputType = InputSourceTypes.TXT;
-				else if (line.hasOption("uri"))
-					inputType = InputSourceTypes.URI;
-				else if (line.hasOption("xmi"))
-					inputType = InputSourceTypes.XMI;
 
 				for (Option myOption : line.getOptions()) {
 					System.out.println(myOption.getOpt() + " : "
@@ -133,12 +115,12 @@ public class TermSuiteSpotterCLI {
 
 				// Create AE and configure
 				AnalysisEngineDescription description = TermSuiteCLIUtils
-						.getIndexerAEDescription(storedProps.getProperty(TermSuiteCLIUtils.P_LANGUAGE));
+						.getSpotterAEDescription(storedProps.getProperty(TermSuiteCLIUtils.P_LANGUAGE));
 				TermSuiteCLIUtils.setConfigurationParameters(description, storedProps);
 
 				TermSuiteRunner runner = new TermSuiteRunner(description,
 						storedProps.getProperty(TermSuiteCLIUtils.P_INPUT_DIR),
-						inputType,
+						InputSourceTypes.TXT,
 						storedProps.getProperty(TermSuiteCLIUtils.P_LANGUAGE),
 						storedProps.getProperty(TermSuiteCLIUtils.P_ENCODING));
 
