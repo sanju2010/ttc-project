@@ -5,13 +5,21 @@
 
 == To Do ==
 
-=== Version 1.3 ===
+=== Version 1.4 ===
 
-  * help system enabled
-  * language package plug-in system enabled
-  * multext management improved
+  * aligner: compositional method add for MWT
+  * indexer: TBX output add of pilot term
+  * indexer: TBX output add of list of occurrences
+  * indexer: specificity for Chinese
 
 == Done ==
+
+=== Version 1.3 ===
+
+  * indexer: graphical interface improved
+  * indexer: spanish and latvian specificity implemented
+  * CLI tested for windows
+  * aligner: TBX output added
 
 === Version 1.2 ===
 
