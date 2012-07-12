@@ -94,9 +94,14 @@ public class TermSuiteIndexerCLI {
 	 */
 	public static void main(String[] args) {
 		try {
+			// usage
+			// java -DconfigFile=myPropertiesFileName -Xms1g  -Xmx2g -cp ttc-term-suite-1.3.jar eu.project.ttc.tools.cli.TermSuiteIndexerCLI
+			// if the option -DconfigFile is missing preferencesFileName is set to TermSuiteCLIUtils.USER_HOME+PREFERENCES_FILE_NAME
+			String preferencesFileName = System.getProperty("configFile", TermSuiteCLIUtils.USER_HOME+PREFERENCES_FILE_NAME);
+			TermSuiteRunner.info("preferencesFileName : " + preferencesFileName);
 
 			Properties storedProps = TermSuiteCLIUtils
-					.readFromUserHome(PREFERENCES_FILE_NAME);
+					.readPropertiesFileName(preferencesFileName);
 
 			// If this is the first time, create empty properties
 			if (storedProps == null)
@@ -190,7 +195,7 @@ public class TermSuiteIndexerCLI {
 				}
 					
 				// Save props for next run
-				TermSuiteCLIUtils.saveToserHome(PREFERENCES_FILE_NAME, storedProps);
+				TermSuiteCLIUtils.saveToUserHome(PREFERENCES_FILE_NAME, storedProps);
 
 				// Create AE and configure
 				AnalysisEngineDescription description = TermSuiteCLIUtils

@@ -59,9 +59,9 @@ import eu.project.ttc.tools.spotter.SpotterEngine;
 public final class TermSuiteCLIUtils {
 
 	/** Preferences directory for the current user */
-	private static final String USER_HOME = System.getProperty("user.home")
+	public static final String USER_HOME = System.getProperty("user.home")
 			+ File.separator + ".term-suite" + File.separator
-			+ TermSuite.TERMSUITE_VERSION;
+			+ TermSuite.TERMSUITE_VERSION + File.separator;
 
 	/** Path to the aligner engine */
 	private static final String ALIGNER_ENGINE = "eu/project/ttc/all/engines/aligner/Aligner.xml";
@@ -143,6 +143,30 @@ public final class TermSuiteCLIUtils {
 			closeQuietly(input);
 		}
 	}
+	
+	/**
+	 * Reads a list of {@link Properties} from the specified
+	 * <code>fileName</code> in the user preferences folder.
+	 * 
+	 * @param fileName
+	 *            The name of the file to read
+	 * @return The properties read, or <code>null</code> if the file cannot be
+	 *         read.
+	 */
+	public static Properties readPropertiesFileName(String fileName) {
+		File preFile = new File(fileName);
+		FileInputStream input = null;
+		try {
+			input = new FileInputStream(preFile);
+			Properties props = new Properties();
+			props.load(input);
+			return props;
+		} catch (IOException e) {
+			return null;
+		} finally {
+			closeQuietly(input);
+		}
+	}
 
 	/**
 	 * Saves the specified <code>properties</code> to the user preferences
@@ -154,7 +178,7 @@ public final class TermSuiteCLIUtils {
 	 *            The properties
 	 * @throws IOException
 	 */
-	public static void saveToserHome(String fileName, Properties properties)
+	public static void saveToUserHome(String fileName, Properties properties)
 			throws IOException {
 		FileOutputStream out = null;
 		try {
