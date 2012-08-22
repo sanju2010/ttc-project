@@ -200,7 +200,7 @@ public final class TermSuiteCLIUtils {
 	 *            Specifies whether the Option takes an argument or not
 	 * @param description
 	 *            Describes the function of the option
-	 * @param Specifies
+	 * @param isMandatory
 	 *            whether the Option is mandatory
 	 * @return The option instance
 	 */
