@@ -414,10 +414,10 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 				try {
 					CommandLine line = parser.parse( options, arguments, false);
 					if (line.hasOption("txt")) inputType = InputSourceTypes.TXT;
-					if (line.hasOption("uri")) inputType = InputSourceTypes.URI;
-					if (line.hasOption("xmi")) inputType = InputSourceTypes.XMI;
-					
+					else if (line.hasOption("uri")) inputType = InputSourceTypes.URI;
+					else if (line.hasOption("xmi")) inputType = InputSourceTypes.XMI;
 
+					
 					for( Option myOption : line.getOptions() ) {
 						if (myOption.hasArg()) {
 							System.out.println(myOption.getOpt() + " : " + myOption.getLongOpt() + " : " + myOption.getValue());
