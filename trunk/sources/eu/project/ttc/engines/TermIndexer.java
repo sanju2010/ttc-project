@@ -1,7 +1,13 @@
 package eu.project.ttc.engines;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 
@@ -11,18 +17,17 @@ import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.examples.SourceDocumentInformation;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
-import org.apache.uima.jcas.cas.StringArray;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.util.Level;
 
 import uima.sandbox.indexer.engines.Indexer;
-
 import eu.project.ttc.metrics.AssociationRate;
 import eu.project.ttc.models.Component;
-import eu.project.ttc.models.CrossTable;
 import eu.project.ttc.models.Context;
+import eu.project.ttc.models.CrossTable;
 import eu.project.ttc.resources.ComplexTermFrequency;
 import eu.project.ttc.resources.SimpleTermFrequency;
+import eu.project.ttc.types.FormAnnotation;
 import eu.project.ttc.types.MultiWordTermAnnotation;
 import eu.project.ttc.types.SingleWordTermAnnotation;
 import eu.project.ttc.types.TermAnnotation;
@@ -217,18 +222,12 @@ public class TermIndexer extends Indexer {
 			annotation.setCategory(category);
 			annotation.setLemma(entry);
 			annotation.addToIndexes();
-			if (forms != null) {
-				StringArray array = new StringArray(cas, forms.size());
-				annotation.setForms(array);
-				int i = 0;
-				for (String form : forms) {
-					annotation.setForms(i, form);
-					i++;
-				}
-			}
+			handleForms(entry, begin, forms, frequency, cas, annotation);
 		}
 	}
 	
+	
+
 	private void release(JCas cas, StringBuilder builder, ComplexTermFrequency frequency) {
 		for (String entry : frequency.getFrequencies().keySet()) {
 			int freq = frequency.getFrequencies().get(entry).intValue();
@@ -259,16 +258,70 @@ public class TermIndexer extends Indexer {
 					start = stop + 1; 
 				}						
 			}
-			if (forms != null) {
-				StringArray array = new StringArray(cas, forms.size());
-				annotation.setForms(array);
-				int i = 0;
-				for (String form : forms) {
-					annotation.setForms(i, form);
-					i++;
-				}
-			}
+			handleForms(entry, begin, forms, frequency, cas, annotation);
 		}
 	}
-		
+
+	private void handleForms(String entry, int begin, Set<String> forms,
+			SimpleTermFrequency frequency, JCas cas, TermAnnotation annotation) {
+		if (forms != null && !forms.isEmpty()) {
+			// forms.add(entry);
+			Map<String, Integer> newForms = gatherForms(forms, frequency);
+			newForms = sortByValue(newForms);
+			FSArray array = new FSArray(cas, newForms.size());
+			annotation.setForms(array);
+			int i = 0;
+			//System.out.println("Forms of \\" + entry + "\\");
+			FormAnnotation formAnnot;
+			for (String form : newForms.keySet()) {
+				formAnnot = new FormAnnotation(cas, begin, begin
+						+ form.length());
+				formAnnot.setForm(form);
+				formAnnot.setOccurrences(newForms.get(form));
+				formAnnot.addToIndexes();
+				annotation.setForms(i, formAnnot);
+				i++;
+				//System.out.println("\t" + form + " = " + newForms.get(form));
+			}
+			//System.out.println();
+		}
+	}
+
+	private Map<String, Integer> gatherForms(Set<String> forms,
+			SimpleTermFrequency frequency) {
+		HashMap<String, Integer> newForms = new HashMap<String, Integer>();
+		Integer mainFreq;
+		Integer freq;
+		int curr;
+		for (String k : forms) {
+			String term = k.toLowerCase().replaceAll("\\s+", " ").trim();
+			mainFreq = frequency.getFrequencies().get(k);
+			freq = frequency.getFormFreqs().get(k);
+			curr = freq == null ? (mainFreq == null ? 0 : mainFreq.intValue())
+					: freq.intValue();
+			if (newForms.containsKey(term))
+				newForms.put(term, newForms.get(term) + curr);
+			else
+				newForms.put(term, curr);
+		}
+		return newForms;
+	}
+	
+	public static Map<String, Integer> sortByValue(Map<String, Integer> map) {
+		ArrayList<Entry<String, Integer>> list = new ArrayList<Entry<String, Integer>>();
+		list.addAll(map.entrySet());
+		Collections.sort(list, new Comparator<Entry<String, Integer>>() {
+			public int compare(Map.Entry<String, Integer> o1,
+					Map.Entry<String, Integer> o2) {
+				int comp = o2.getValue().compareTo(o1.getValue());
+				return comp == 0 ? o1.getKey().compareTo(o2.getKey()) : comp;
+			}
+		});
+
+		LinkedHashMap<String, Integer> result = new LinkedHashMap<String, Integer>();
+		for (Entry<String, Integer> entry : list) {
+			result.put(entry.getKey(), entry.getValue());
+		}
+		return result;
+	}
 }

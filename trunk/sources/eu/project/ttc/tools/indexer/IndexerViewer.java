@@ -173,7 +173,7 @@ public class IndexerViewer {
 				node.setUserObject("forms");
 				root.add(node);
 				for (int i = 0; i < annotation.getForms().size(); i++) {
-					this.addNote(node, annotation.getForms(i));
+					this.addNote(node, annotation.getForms(i).getForm());
 				}
 			}
 		} catch (Exception e) {

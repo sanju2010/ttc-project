@@ -14,7 +14,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /** 
- * Updated by JCasGen Thu Jun 14 13:47:16 CEST 2012
+ * Updated by JCasGen Mon Jul 23 14:49:38 CEST 2012
  * @generated */
 public class TermAnnotation_Type extends Annotation_Type {
   /** @generated */
@@ -225,23 +225,23 @@ public class TermAnnotation_Type extends Annotation_Type {
     ll_cas.ll_setRefValue(addr, casFeatCode_forms, v);}
     
    /** @generated */
-  public String getForms(int addr, int i) {
+  public int getForms(int addr, int i) {
         if (featOkTst && casFeat_forms == null)
       jcas.throwFeatMissing("forms", "eu.project.ttc.types.TermAnnotation");
     if (lowLevelTypeChecks)
-      return ll_cas.ll_getStringArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_forms), i, true);
+      return ll_cas.ll_getRefArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_forms), i, true);
     jcas.checkArrayBounds(ll_cas.ll_getRefValue(addr, casFeatCode_forms), i);
-  return ll_cas.ll_getStringArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_forms), i);
+  return ll_cas.ll_getRefArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_forms), i);
   }
    
   /** @generated */ 
-  public void setForms(int addr, int i, String v) {
+  public void setForms(int addr, int i, int v) {
         if (featOkTst && casFeat_forms == null)
       jcas.throwFeatMissing("forms", "eu.project.ttc.types.TermAnnotation");
     if (lowLevelTypeChecks)
-      ll_cas.ll_setStringArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_forms), i, v, true);
+      ll_cas.ll_setRefArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_forms), i, v, true);
     jcas.checkArrayBounds(ll_cas.ll_getRefValue(addr, casFeatCode_forms), i);
-    ll_cas.ll_setStringArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_forms), i, v);
+    ll_cas.ll_setRefArrayValue(ll_cas.ll_getRefValue(addr, casFeatCode_forms), i, v);
   }
  
  
@@ -300,7 +300,7 @@ public class TermAnnotation_Type extends Annotation_Type {
     casFeatCode_context  = (null == casFeat_context) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_context).getCode();
 
  
-    casFeat_forms = jcas.getRequiredFeatureDE(casType, "forms", "uima.cas.StringArray", featOkTst);
+    casFeat_forms = jcas.getRequiredFeatureDE(casType, "forms", "uima.cas.FSArray", featOkTst);
     casFeatCode_forms  = (null == casFeat_forms) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_forms).getCode();
 
  

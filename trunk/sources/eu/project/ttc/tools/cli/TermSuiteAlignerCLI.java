@@ -18,6 +18,7 @@
  */
 package eu.project.ttc.tools.cli;
 
+import java.io.File;
 import java.util.Properties;
 
 import javax.swing.SwingUtilities;
@@ -45,7 +46,7 @@ public class TermSuiteAlignerCLI {
 	private static final String PREFERENCES_FILE_NAME = "AlignerCLI.properties";
 
 	/** Short usage description of the CLI */
-	private static final String USAGE = "java -Xms1g -Xmx2g -cp ttc-term-suite-1.3.jar eu.project.ttc.tools.cli.TermSuiteAlignerCLI";
+	private static final String USAGE = "java [-DconfigFile=<file>] -Xms1g -Xmx2g -cp ttc-term-suite-1.3.jar eu.project.ttc.tools.cli.TermSuiteAlignerCLI";
 
 	/// Parameter names
 	/** Name of the parameter that must be set to the output dir path */
@@ -95,7 +96,9 @@ public class TermSuiteAlignerCLI {
 			// usage
 			// java -DconfigFile=myPropertiesFileName -Xms1g  -Xmx2g -cp ttc-term-suite-1.3.jar eu.project.ttc.tools.cli.TermSuiteAlignerCLI
 			// if the option -DconfigFile is missing preferencesFileName is set to TermSuiteCLIUtils.USER_HOME+PREFERENCES_FILE_NAME
-			String preferencesFileName = System.getProperty("configFile", TermSuiteCLIUtils.USER_HOME+PREFERENCES_FILE_NAME);
+			String preferencesFileName = System.getProperty(
+					TermSuiteCLIUtils.P_PROPERTIES_FILE,
+					TermSuiteCLIUtils.USER_HOME + File.separator + PREFERENCES_FILE_NAME);
 			TermSuiteRunner.info("preferencesFileName : " + preferencesFileName);
 			
 			Properties storedProps = TermSuiteCLIUtils

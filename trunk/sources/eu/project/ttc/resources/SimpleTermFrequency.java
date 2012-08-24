@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import org.apache.uima.resource.DataResource;
 import org.apache.uima.resource.ResourceInitializationException;
@@ -28,6 +29,8 @@ public class SimpleTermFrequency implements SharedResourceObject {
 	private void setFrequencies() {
 		this.frequencies = new HashMap<String, Integer>();
 	}
+	
+	private Map<String, Integer> formFreqs = new TreeMap<String, Integer>();
 	
 	public Map<String, Integer> getFrequencies() {
 		return this.frequencies;
@@ -53,6 +56,9 @@ public class SimpleTermFrequency implements SharedResourceObject {
 		return this.forms;
 	}
 	
+	public Map<String, Integer> getFormFreqs() {
+		return formFreqs;
+	}
 	protected String add(TermAnnotation annotation) {
 		String term = annotation.getLemma().toLowerCase().replaceAll("\\s+", " ").trim();
 		if (term == null) { 
@@ -74,6 +80,7 @@ public class SimpleTermFrequency implements SharedResourceObject {
 				this.getForms().put(term, forms);
 			}
 			forms.add(annotation.getCoveredText());
+			formFreqs.put(annotation.getCoveredText(), freq);
 			return term;
 		} else {
 			return null;

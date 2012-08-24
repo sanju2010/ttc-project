@@ -18,6 +18,7 @@
  */
 package eu.project.ttc.tools.cli;
 
+import java.io.File;
 import java.util.Properties;
 
 import javax.swing.SwingUtilities;
@@ -44,7 +45,7 @@ public class TermSuiteSpotterCLI {
 	private static final String PREFERENCES_FILE_NAME = "SpotterCLI.properties";
 
 	/** Short usage description of the CLI */
-	private static final String USAGE = "java -Xms1g -Xmx2g -cp ttc-term-suite-1.3.jar eu.project.ttc.tools.cli.TermSuiteSpotterCLI";
+	private static final String USAGE = "java [-DconfigFile=<file>] -Xms1g -Xmx2g -cp ttc-term-suite-1.3.jar eu.project.ttc.tools.cli.TermSuiteSpotterCLI";
 
 	/// Parameter names
 	
@@ -65,7 +66,9 @@ public class TermSuiteSpotterCLI {
 			// usage
 			// java -DconfigFile=myPropertiesFileName -Xms1g  -Xmx2g -cp ttc-term-suite-1.3.jar eu.project.ttc.tools.cli.TermSuiteSpotterCLI
 			// if the option -DconfigFile is missing preferencesFileName is set to TermSuiteCLIUtils.USER_HOME+PREFERENCES_FILE_NAME
-			String preferencesFileName = System.getProperty("configFile", TermSuiteCLIUtils.USER_HOME+PREFERENCES_FILE_NAME);
+			String preferencesFileName = System.getProperty(
+					TermSuiteCLIUtils.P_PROPERTIES_FILE,
+					TermSuiteCLIUtils.USER_HOME + File.separator + PREFERENCES_FILE_NAME);
 			TermSuiteRunner.info("preferencesFileName : " + preferencesFileName);
 			
 			// read properties from the preferencesFileName

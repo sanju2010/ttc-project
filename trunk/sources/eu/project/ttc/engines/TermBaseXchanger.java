@@ -41,6 +41,7 @@ import eu.project.ttc.tools.indexer.TBXSettings.FilterRules;
 import eu.project.ttc.tools.utils.TermPredicate;
 import eu.project.ttc.tools.utils.TermPredicates;
 import eu.project.ttc.tools.utils.TermPredicates.ListBasedTermPredicate;
+import eu.project.ttc.types.FormAnnotation;
 import eu.project.ttc.types.SingleWordTermAnnotation;
 import eu.project.ttc.types.TermAnnotation;
 
@@ -349,7 +350,9 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 		termElmt.setTextContent(term.getCoveredText());
 		tig.appendChild(termElmt);
 		
-		
+		FSArray forms = term.getForms();
+		if (forms != null)
+			addNote(doc, langSet, tig, "termPilot", term.getForms(0).getForm());
 		this.addNote(doc, langSet, tig, "termType", isVariant ? "variant" : "termEntry");				
 		this.addNote(doc, langSet, tig, "partOfSpeech", "noun");
 		this.addNote(doc, langSet, tig, "termPattern", term.getCategory());
@@ -357,7 +360,23 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 		this.addNote(doc, langSet, tig, "termSpecifity", NUMBER_FORMATTER.format(term.getSpecificity()));
 		this.addDescrip(doc, langSet, tig, "nbOccurrences", term.getOccurrences());
 		this.addDescrip(doc, langSet, tig, "relativeFrequency", NUMBER_FORMATTER.format(term.getFrequency()));
+		if (forms != null)
+			addDescrip(doc, langSet, tig, "formList", buildFormListJSON(term, forms.size()));
 		// this.addDescrip(document, langSet, tig, "domainSpecificity", annotation.getSpecificity());
+	}
+
+	private String buildFormListJSON(TermAnnotation term, int size) {
+		StringBuilder sb = new StringBuilder("[");
+		FormAnnotation form;
+		for (int i = 0; i < size; i++) {
+			form = term.getForms(i);
+			if (i > 0)
+				sb.append(", ");
+			sb.append("{term=\"").append(form.getForm());
+			sb.append("\", count=").append(form.getOccurrences()).append("}");
+		}
+		sb.append("]");
+		return sb.toString();
 	}
 
 	private String getComplexity(TermAnnotation annotation) {
