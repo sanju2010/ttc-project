@@ -75,6 +75,9 @@ public final class TermSuiteCLIUtils {
 	/** Name of the parameter that must be set to the input files' language */
 	public static final String P_LANGUAGE = "language";
 	
+	/** Name of the parameter that must be set to the configuration file */
+	public static final String P_PROPERTIES_FILE = "configFile";
+	
 	/**
 	 * Instances should NOT be constructed in standard programming.
 	 */
@@ -401,14 +404,24 @@ public final class TermSuiteCLIUtils {
 		}
 	}
 
+	/**
+	 * Prints the command line usage to the std error output
+	 * 
+	 * @param e
+	 *            The error that raised the help message
+	 * @param cmdLine
+	 *            The command line usage
+	 * @param options
+	 *            The options expected
+	 */
 	public static void printUsage(ParseException e, String cmdLine,
-            Options options) {
-        System.err.println(e.getMessage());
-        // automatically generate the help statement
-        HelpFormatter formatter = new HelpFormatter();
-        formatter.setOptionComparator(new ShortOptionsFirstComparator());
-        PrintWriter pw = new PrintWriter(System.err);
-        formatter.printUsage(pw, cmdLine.length() + 7, cmdLine, options);
-        pw.flush();
-    } 
+			Options options) {
+		System.err.println(e.getMessage());
+		// automatically generate the help statement
+		HelpFormatter formatter = new HelpFormatter();
+		formatter.setOptionComparator(new ShortOptionsFirstComparator());
+		PrintWriter pw = new PrintWriter(System.err);
+		formatter.printUsage(pw, cmdLine.length() + 7, cmdLine, options);
+		pw.flush();
+	}
 }
