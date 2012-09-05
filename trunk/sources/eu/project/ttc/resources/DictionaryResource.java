@@ -74,7 +74,9 @@ public class DictionaryResource implements Dictionary {
 	private Set<Entry<String, String>> parse(InputStream inputStream) throws IOException {
 		Set<Entry<String, String>> entries = new HashSet<Entry<String, String>>();
 		Scanner scanner = new Scanner(inputStream);
-		scanner.useDelimiter(System.getProperty("line.separator"));
+//		scanner.useDelimiter(System.getProperty("line.separator"));
+// 		for Linux / Windows compatibility
+		scanner.useDelimiter("\\r?\\n");;
 		while (scanner.hasNext()) {
 			String line = scanner.next();
 			String[] items = line.split("\t");
