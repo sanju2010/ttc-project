@@ -48,7 +48,9 @@ public class IndexerEngine implements TermSuiteEngine {
 		settings.setParameterValue(TBXSettings.P_KEEP_VERBS, Boolean.TRUE.equals(tbxParameters.getParameterValue(TBXSettings.P_KEEP_VERBS)));
 		settings.setParameterValue(TBXSettings.P_FILTER_RULE, tbxParameters.getParameterValue(TBXSettings.P_FILTER_RULE));
 		Object threshold = tbxParameters.getParameterValue(TBXSettings.P_FILTERING_THRESHOLD);
-		settings.setParameterValue(TBXSettings.P_FILTERING_THRESHOLD, threshold == null ? 0 : threshold);
+		settings.setParameterValue(TBXSettings.P_FILTERING_THRESHOLD, threshold == null ? 0.0 : threshold);
+		settings.setParameterValue(TBXSettings.P_ENABLE_TSV, 
+				Boolean.TRUE.equals(tbxParameters.getParameterValue(TBXSettings.P_ENABLE_TSV)));
 
         // settings.setParameterValue("File", (String) parameters.getParameterValue("TerminologyFile"));
         // settings.setParameterValue("MultiWordPatternRuleFile", (String) parameters.getParameterValue("MultiWordPatternRuleFile"));

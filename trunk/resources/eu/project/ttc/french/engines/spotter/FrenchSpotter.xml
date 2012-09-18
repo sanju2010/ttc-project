@@ -3,14 +3,11 @@
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>false</primitive>
   <delegateAnalysisEngineSpecifiers>
-    <delegateAnalysisEngine key="FrenchNormalizer">
-      <import name="eu.project.ttc.french.engines.spotter.FrenchNormalizer"/>
-    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="FrenchStemmer">
       <import name="eu.project.ttc.french.engines.spotter.FrenchStemmer"/>
     </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="FrenchFilter">
-      <import name="eu.project.ttc.french.engines.spotter.FrenchFilter"/>
+    <delegateAnalysisEngine key="FrenchNormalizer">
+      <import name="eu.project.ttc.french.engines.spotter.FrenchNormalizer"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="FrenchWordTokenizer">
       <import name="eu.project.ttc.french.engines.spotter.FrenchWordTokenizer"/>
@@ -21,8 +18,14 @@
     <delegateAnalysisEngine key="Contextualizer">
       <import name="eu.project.ttc.all.engines.spotter.Contextualizer"/>
     </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="FrenchFilter">
+      <import name="eu.project.ttc.french.engines.spotter.FrenchFilter"/>
+    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="FrenchTermSpotter">
       <import name="eu.project.ttc.french.engines.spotter.FrenchTermSpotter"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="SpotterTSVWriter">
+      <import name="eu.project.ttc.all.engines.spotter.SpotterTSVWriter"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="FrenchTreeTagger">
       <import name="eu.project.ttc.french.engines.spotter.FrenchTreeTagger"/>
@@ -50,6 +53,7 @@
         <mandatory>true</mandatory>
         <overrides>
           <parameter>Writer/Directory</parameter>
+          <parameter>SpotterTSVWriter/Directory</parameter>
         </overrides>
       </configurationParameter>
     </configurationParameters>
@@ -77,6 +81,7 @@
         <node>FrenchFilter</node>
         <node>Contextualizer</node>
         <node>Writer</node>
+        <node>SpotterTSVWriter</node>
       </fixedFlow>
     </flowConstraints>
     <typePriorities/>

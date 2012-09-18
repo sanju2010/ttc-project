@@ -23,6 +23,9 @@ public class TBXSettings extends Parameters implements TermSuiteSettings {
 	 */
 	public static final String P_KEEP_VERBS = "KeepVerbsAndOthers";
 
+	/** Name of the parameter that enables TVS output */
+	public static final String P_ENABLE_TSV = "EnableTsvOutput";
+	
 	// FrequencyFilteringThreshold
 
 	public TBXSettings(String resource) {
@@ -36,6 +39,8 @@ public class TBXSettings extends Parameters implements TermSuiteSettings {
 		this.addParameter(declarations, P_FILTERING_THRESHOLD,
 				ConfigurationParameter.TYPE_FLOAT, false, true);
 		this.addParameter(declarations, P_KEEP_VERBS,
+				ConfigurationParameter.TYPE_BOOLEAN, false, true);
+		this.addParameter(declarations, P_ENABLE_TSV,
 				ConfigurationParameter.TYPE_BOOLEAN, false, true);
 
 	}

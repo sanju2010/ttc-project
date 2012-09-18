@@ -41,7 +41,7 @@ public class Writer extends JCasAnnotator_ImplBase {
 		}
 	}
 	
-	private File getDirectory() {
+	protected File getDirectory() {
 		return this.directory;
 	}
 	
@@ -56,7 +56,7 @@ public class Writer extends JCasAnnotator_ImplBase {
 		}
 	}
 	
-	private String retrieve(JCas cas) {
+	protected String retrieve(JCas cas) {
 		AnnotationIndex<Annotation> index = cas.getAnnotationIndex(SourceDocumentInformation.type);
 		FSIterator<Annotation> iterator = index.iterator();
 		if (iterator.hasNext()) {

@@ -3,14 +3,11 @@
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>false</primitive>
   <delegateAnalysisEngineSpecifiers>
-    <delegateAnalysisEngine key="ChineseNormalizer">
-      <import name="eu.project.ttc.chinese.engines.spotter.ChineseNormalizer"/>
+    <delegateAnalysisEngine key="ChineseFilter">
+      <import name="eu.project.ttc.chinese.engines.spotter.ChineseFilter"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="ChineseStemmer">
       <import name="eu.project.ttc.chinese.engines.spotter.ChineseStemmer"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="ChineseFilter">
-      <import name="eu.project.ttc.chinese.engines.spotter.ChineseFilter"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="ChineseWordTokenizer">
       <import name="eu.project.ttc.chinese.engines.spotter.ChineseWordTokenizer"/>
@@ -18,14 +15,20 @@
     <delegateAnalysisEngine key="Writer">
       <import name="eu.project.ttc.all.engines.Writer"/>
     </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="ChineseTreeTagger">
+      <import name="eu.project.ttc.chinese.engines.spotter.ChineseTreeTagger"/>
+    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="Contextualizer">
       <import name="eu.project.ttc.all.engines.spotter.Contextualizer"/>
     </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="ChineseNormalizer">
+      <import name="eu.project.ttc.chinese.engines.spotter.ChineseNormalizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="SpotterTSVWriter">
+      <import name="eu.project.ttc.all.engines.spotter.SpotterTSVWriter"/>
+    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="ChineseTermSpotter">
       <import name="eu.project.ttc.chinese.engines.spotter.ChineseTermSpotter"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="ChineseTreeTagger">
-      <import name="eu.project.ttc.chinese.engines.spotter.ChineseTreeTagger"/>
     </delegateAnalysisEngine>
   </delegateAnalysisEngineSpecifiers>
   <analysisEngineMetaData>
@@ -50,6 +53,7 @@
         <mandatory>true</mandatory>
         <overrides>
           <parameter>Writer/Directory</parameter>
+          <parameter>SpotterTSVWriter/Directory</parameter>
         </overrides>
       </configurationParameter>
     </configurationParameters>
@@ -77,6 +81,7 @@
         <node>ChineseFilter</node>
         <node>Contextualizer</node>
         <node>Writer</node>
+        <node>SpotterTSVWriter</node>
       </fixedFlow>
     </flowConstraints>
     <typePriorities/>

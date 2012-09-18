@@ -3,17 +3,8 @@
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>false</primitive>
   <delegateAnalysisEngineSpecifiers>
-    <delegateAnalysisEngine key="SpanishNormalizer">
-      <import name="eu.project.ttc.spanish.engines.spotter.SpanishNormalizer"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="SpanishStemmer">
-      <import name="eu.project.ttc.spanish.engines.spotter.SpanishStemmer"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="SpanishFilter">
-      <import name="eu.project.ttc.spanish.engines.spotter.SpanishFilter"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="SpanishWordTokenizer">
-      <import name="eu.project.ttc.spanish.engines.spotter.SpanishWordTokenizer"/>
+    <delegateAnalysisEngine key="SpanishTreeTagger">
+      <import name="eu.project.ttc.spanish.engines.spotter.SpanishTreeTagger"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="Writer">
       <import name="eu.project.ttc.all.engines.Writer"/>
@@ -21,11 +12,23 @@
     <delegateAnalysisEngine key="Contextualizer">
       <import name="eu.project.ttc.all.engines.spotter.Contextualizer"/>
     </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="SpanishStemmer">
+      <import name="eu.project.ttc.spanish.engines.spotter.SpanishStemmer"/>
+    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="SpanishTermSpotter">
       <import name="eu.project.ttc.spanish.engines.spotter.SpanishTermSpotter"/>
     </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="SpanishTreeTagger">
-      <import name="eu.project.ttc.spanish.engines.spotter.SpanishTreeTagger"/>
+    <delegateAnalysisEngine key="SpotterTSVWriter">
+      <import name="eu.project.ttc.all.engines.spotter.SpotterTSVWriter"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="SpanishWordTokenizer">
+      <import name="eu.project.ttc.spanish.engines.spotter.SpanishWordTokenizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="SpanishFilter">
+      <import name="eu.project.ttc.spanish.engines.spotter.SpanishFilter"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="SpanishNormalizer">
+      <import name="eu.project.ttc.spanish.engines.spotter.SpanishNormalizer"/>
     </delegateAnalysisEngine>
   </delegateAnalysisEngineSpecifiers>
   <analysisEngineMetaData>
@@ -50,6 +53,7 @@
         <mandatory>true</mandatory>
         <overrides>
           <parameter>Writer/Directory</parameter>
+          <parameter>SpotterTSVWriter/Directory</parameter>
         </overrides>
       </configurationParameter>
     </configurationParameters>
@@ -76,6 +80,7 @@
         <node>SpanishTermSpotter</node>
         <node>SpanishFilter</node>
         <node>Contextualizer</node>
+        <node>SpotterTSVWriter</node>
         <node>Writer</node>
       </fixedFlow>
     </flowConstraints>

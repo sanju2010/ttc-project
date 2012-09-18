@@ -1,6 +1,7 @@
 package eu.project.ttc.engines;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.math.RoundingMode;
 import java.text.NumberFormat;
@@ -38,6 +39,7 @@ import org.w3c.dom.Element;
 
 import eu.project.ttc.tools.indexer.TBXSettings;
 import eu.project.ttc.tools.indexer.TBXSettings.FilterRules;
+import eu.project.ttc.tools.utils.IndexerTSVBuilder;
 import eu.project.ttc.tools.utils.TermPredicate;
 import eu.project.ttc.tools.utils.TermPredicates;
 import eu.project.ttc.tools.utils.TermPredicates.ListBasedTermPredicate;
@@ -48,38 +50,47 @@ import eu.project.ttc.types.TermAnnotation;
 public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 
 	/** Prints float out numbers */
-	private static final NumberFormat NUMBER_FORMATTER = NumberFormat.getNumberInstance(Locale.US);
-	
+	private static final NumberFormat NUMBER_FORMATTER = NumberFormat
+			.getNumberInstance(Locale.US);
+
 	/** Prefix used in langset ids */
 	public static final String LANGSET_ID_PREFIX = "langset-";
 
 	/** Prefix used in langset ids */
 	public static final String TERMENTRY_ID_PREFIX = "entry-";
-	
+
 	/** Prefix used in langset ids */
 	public static final String TIG_ID_PREFIX = "term-";
-	
+
 	/** Global filter for tbx output */
 	private TermPredicate predicate = TermPredicates
 			.createNounAdjectivePredicate();
 
 	/** TBX filter rule as specified by the parameters */
 	private TermPredicate filterRule;
-	
+
 	private File file;
-	
+
 	/** Term sorter in TBX output */
 	private Comparator<TermAnnotation> outputComparator;
-	
+
+	/** TSV output */
+	private IndexerTSVBuilder tsv;
+
+	/** TSV output flag */
+	private boolean tsvEnabled = false;
+
 	private void setDirectory(String path) throws IOException {
 		this.file = new File(path);
 	}
-	
+
 	private File getDirectory() {
 		return this.file;
 	}
+
 	@Override
-	public void initialize(UimaContext context) throws ResourceInitializationException {
+	public void initialize(UimaContext context)
+			throws ResourceInitializationException {
 		super.initialize(context);
 		try {
 			if (this.getDirectory() == null) {
@@ -98,23 +109,27 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 								.getConfigParameterValue(TBXSettings.P_FILTER_RULE),
 						(Float) context
 								.getConfigParameterValue(TBXSettings.P_FILTERING_THRESHOLD));
+
+				predicate = TermPredicates.createAndPredicate(predicate,
+						filterRule);
+				tsvEnabled = Boolean.TRUE.equals(context
+						.getConfigParameterValue(TBXSettings.P_ENABLE_TSV));
 				
-				predicate = TermPredicates.createAndPredicate(predicate, filterRule);
 			}
 			if (this.variants == null) {
 				this.setVariants();
 			}
-			
+
 			NUMBER_FORMATTER.setMaximumFractionDigits(12);
 			NUMBER_FORMATTER.setMinimumFractionDigits(6);
 			NUMBER_FORMATTER.setRoundingMode(RoundingMode.UP);
 			NUMBER_FORMATTER.setGroupingUsed(false);
-			
+
 		} catch (Exception e) {
 			throw new ResourceInitializationException(e);
 		}
 	}
-	
+
 	private TermPredicate getFilterRulePredicate(String filterRule,
 			Float filteringThreshold) throws Exception {
 		try {
@@ -172,29 +187,42 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 	@Override
 	public void process(JCas cas) throws AnalysisEngineProcessException {
 		try {
-			AnnotationIndex<Annotation> index = cas.getAnnotationIndex(SourceDocumentInformation.type);
+			AnnotationIndex<Annotation> index = cas
+					.getAnnotationIndex(SourceDocumentInformation.type);
 			FSIterator<Annotation> iterator = index.iterator();
 			String name = "terminology.tbx";
-			if (iterator.hasNext()) 
-			{
-				SourceDocumentInformation sdi = (SourceDocumentInformation) iterator.next();
+			if (iterator.hasNext()) {
+				SourceDocumentInformation sdi = (SourceDocumentInformation) iterator
+						.next();
 				String uri = sdi.getUri();
 				int first = uri.lastIndexOf('/');
 				int last = uri.lastIndexOf('.');
 				name = uri.substring(first, last) + ".tbx";
 			}
 			File file = new File(this.getDirectory(), name);
-			this.getContext().getLogger().log(Level.INFO, "Exporting " + file.getAbsolutePath());
+			if (tsvEnabled)
+				tsv = new IndexerTSVBuilder(new FileWriter(new File(
+						this.getDirectory(), name.replace(".tbx", ".tsv")),
+						false));
+
+			this.getContext().getLogger()
+					.log(Level.INFO, "Exporting " + file.getAbsolutePath());
 			List<TermAnnotation> annots = this.index(cas);
 			this.create(cas, annots, file);
+
+			if (tsvEnabled) {
+				tsv.close();
+				tsv = null;
+			}
 		} catch (Exception e) {
 			throw new AnalysisEngineProcessException(e);
 		}
-		
+
 	}
 
 	private List<TermAnnotation> index(JCas cas) {
-		AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TermAnnotation.type);
+		AnnotationIndex<Annotation> index = cas
+				.getAnnotationIndex(TermAnnotation.type);
 		ArrayList<TermAnnotation> termList = new ArrayList<TermAnnotation>();
 		FSIterator<Annotation> iterator = index.iterator();
 		int variantCount;
@@ -215,7 +243,7 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 					this.variantsOf.put(id, variants);
 				}
 				variants.add(variant);
-				
+
 				Set<String> bases = this.basesOf.get(variant);
 				if (bases == null) {
 					bases = new HashSet<String>();
@@ -224,23 +252,24 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 				bases.add(id);
 			}
 		}
-		
+
 		// We remove variants from the termList
-		for(TermAnnotation var : variants)
+		for (TermAnnotation var : variants)
 			termList.remove(var);
-		
+
 		if (filterRule instanceof ListBasedTermPredicate)
 			((ListBasedTermPredicate) filterRule).initialize(termList);
-		
+
 		Collections.sort(termList, outputComparator);
 		return termList;
 	}
 
 	private int getVariantCount(FSArray vars) {
-		return vars == null ? 0 :  vars.size();
+		return vars == null ? 0 : vars.size();
 	}
 
-	private void create(JCas cas, List<TermAnnotation> termList, File file) throws Exception {
+	private void create(JCas cas, List<TermAnnotation> termList, File file)
+			throws Exception {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder = factory.newDocumentBuilder();
 		Document document = builder.newDocument();
@@ -253,12 +282,13 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 		header.appendChild(fileDesc);
 		Element encodingDesc = document.createElement("encodingDesc");
 		header.appendChild(encodingDesc);
-		Element  encodingP = document.createElement("p");
+		Element encodingP = document.createElement("p");
 		encodingP.setAttribute("type", "XCSURI");
-		encodingP.setTextContent("http://ttc-project.googlecode.com/files/ttctbx.xcs");
+		encodingP
+				.setTextContent("http://ttc-project.googlecode.com/files/ttctbx.xcs");
 		encodingDesc.appendChild(encodingP);
 		Element sourceDesc = document.createElement("sourceDesc");
-		Element  p = document.createElement("p");
+		Element p = document.createElement("p");
 		p.setTextContent(file.getAbsolutePath());
 		sourceDesc.appendChild(p);
 		fileDesc.appendChild(sourceDesc);
@@ -267,47 +297,50 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 		Element body = document.createElement("body");
 		text.appendChild(body);
 		this.process(cas, termList, document, body);
-		
-		TransformerFactory transformerFactory = TransformerFactory.newInstance();
+
+		TransformerFactory transformerFactory = TransformerFactory
+				.newInstance();
 		Transformer transformer = transformerFactory.newTransformer();
-		transformer.setOutputProperty(OutputKeys.ENCODING,"UTF-8");
-		transformer.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM,"http://ttc-project.googlecode.com/files/tbxcore.dtd");
-		transformer.setOutputProperty(OutputKeys.STANDALONE,"yes");
-		transformer.setOutputProperty(OutputKeys.INDENT,"yes");
+		transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+		transformer.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM,
+				"http://ttc-project.googlecode.com/files/tbxcore.dtd");
+		transformer.setOutputProperty(OutputKeys.STANDALONE, "yes");
+		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 		try {
 			transformer.setOutputProperty(
 					"{http://xml.apache.org/xslt}indent-amount", "2");
 		} catch (IllegalArgumentException e) {
 			// Ignore
 		}
-		
+
 		DOMSource source = new DOMSource(document);
 		StreamResult result = new StreamResult(file);
 		transformer.transform(source, result);
 	}
 
 	private Set<TermAnnotation> variants;
-	
+
 	private Map<String, Set<TermAnnotation>> variantsOf;
-	
+
 	private Map<TermAnnotation, Set<String>> basesOf;
-	
+
 	private void setVariants() {
 		this.variants = new HashSet<TermAnnotation>();
 		this.variantsOf = new HashMap<String, Set<TermAnnotation>>();
 		this.basesOf = new HashMap<TermAnnotation, Set<String>>();
 	}
-		
-	private void process(JCas cas, List<TermAnnotation> termList, Document document, Element body) {
+
+	private void process(JCas cas, List<TermAnnotation> termList,
+			Document document, Element body) throws IOException {
 		String lang = cas.getDocumentLanguage();
 		for (TermAnnotation annotation : termList) {
 			String id = annotation.getLangset();
-			
+
 			// If term matches the filtering rules, the we add it to output
 			if (predicate.accept(annotation)) {
 				// Add main term entry
 				addTermEntry(document, body, id, annotation, lang, false);
-				
+
 				// Add term variants
 				Set<TermAnnotation> tVars = variantsOf.get(id);
 				if (tVars != null) {
@@ -316,13 +349,21 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 								tVariant, lang, true);
 					}
 				}
+
+				// finish TSV entry if needed
+				if (tsvEnabled) {
+					tsv.endTerm();
+				}
 			}
 		}
 	}
-	
-	private void addTermEntry(Document doc, Element body, String langsetId, TermAnnotation term, String language, boolean isVariant) {
+
+	private void addTermEntry(Document doc, Element body, String langsetId,
+			TermAnnotation term, String language, boolean isVariant)
+			throws IOException {
 		Element termEntry = doc.createElement("termEntry");
-		termEntry.setAttribute("xml:id", TERMENTRY_ID_PREFIX + term.getAddress());
+		termEntry.setAttribute("xml:id",
+				TERMENTRY_ID_PREFIX + term.getAddress());
 		body.appendChild(termEntry);
 		Element langSet = doc.createElement("langSet");
 		langSet.setAttribute("xml:id", langsetId);
@@ -339,7 +380,8 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 		Set<TermAnnotation> variants = this.variantsOf.get(langsetId);
 		if (variants != null) {
 			for (TermAnnotation variant : variants) {
-				this.addTermVariant(doc, langSet, variant.getLangset(), variant.getCoveredText());
+				this.addTermVariant(doc, langSet, variant.getLangset(),
+						variant.getCoveredText());
 			}
 		}
 
@@ -349,20 +391,37 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 		Element termElmt = doc.createElement("term");
 		termElmt.setTextContent(term.getCoveredText());
 		tig.appendChild(termElmt);
-		
+
 		FSArray forms = term.getForms();
-		if (forms != null)
-			addNote(doc, langSet, tig, "termPilot", term.getForms(0).getForm());
-		this.addNote(doc, langSet, tig, "termType", isVariant ? "variant" : "termEntry");				
+		String pilot = term.getCoveredText();
+		if (forms != null) {
+			pilot = term.getForms(0).getForm();
+			addNote(doc, langSet, tig, "termPilot", pilot);
+		}
+		this.addNote(doc, langSet, tig, "termType", isVariant ? "variant"
+				: "termEntry");
 		this.addNote(doc, langSet, tig, "partOfSpeech", "noun");
 		this.addNote(doc, langSet, tig, "termPattern", term.getCategory());
-		this.addNote(doc, langSet, tig, "termComplexity", this.getComplexity(term));
-		this.addNote(doc, langSet, tig, "termSpecifity", NUMBER_FORMATTER.format(term.getSpecificity()));
-		this.addDescrip(doc, langSet, tig, "nbOccurrences", term.getOccurrences());
-		this.addDescrip(doc, langSet, tig, "relativeFrequency", NUMBER_FORMATTER.format(term.getFrequency()));
+		this.addNote(doc, langSet, tig, "termComplexity",
+				this.getComplexity(term));
+		this.addNote(doc, langSet, tig, "termSpecifity",
+				NUMBER_FORMATTER.format(term.getSpecificity()));
+		this.addDescrip(doc, langSet, tig, "nbOccurrences",
+				term.getOccurrences());
+		this.addDescrip(doc, langSet, tig, "relativeFrequency",
+				NUMBER_FORMATTER.format(term.getFrequency()));
 		if (forms != null)
-			addDescrip(doc, langSet, tig, "formList", buildFormListJSON(term, forms.size()));
-		// this.addDescrip(document, langSet, tig, "domainSpecificity", annotation.getSpecificity());
+			addDescrip(doc, langSet, tig, "formList",
+					buildFormListJSON(term, forms.size()));
+		// this.addDescrip(document, langSet, tig, "domainSpecificity",
+		// annotation.getSpecificity());
+
+		if (tsvEnabled) {
+			if (!isVariant)
+				tsv.startTerm(pilot);
+			else
+				tsv.addVariant(pilot);
+		}
 	}
 
 	private String buildFormListJSON(TermAnnotation term, int size) {
@@ -396,14 +455,16 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 		}
 	}
 
-	private void addDescrip(Document document, Element lang, Element element, String type, Object value) {
+	private void addDescrip(Document document, Element lang, Element element,
+			String type, Object value) {
 		Element descrip = document.createElement("descrip");
 		element.appendChild(descrip);
 		descrip.setAttribute("type", type);
 		descrip.setTextContent(value.toString());
 	}
-	
-	private void addTermBase(Document document, Element lang, String target, Object value) {
+
+	private void addTermBase(Document document, Element lang, String target,
+			Object value) {
 		Element descrip = document.createElement("descrip");
 		lang.appendChild(descrip);
 		descrip.setAttribute("type", "termBase");
@@ -413,7 +474,8 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 		}
 	}
 
-	private void addTermVariant(Document document, Element lang, String target, Object value) {
+	private void addTermVariant(Document document, Element lang, String target,
+			Object value) {
 		Element descrip = document.createElement("descrip");
 		lang.appendChild(descrip);
 		descrip.setAttribute("type", "termVariant");
@@ -422,12 +484,13 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 			descrip.setTextContent(value.toString());
 		}
 	}
-	
-	private void addNote(Document document, Element lang, Element element, String type, Object value) {
+
+	private void addNote(Document document, Element lang, Element element,
+			String type, Object value) {
 		Element termNote = document.createElement("termNote");
 		element.appendChild(termNote);
 		termNote.setAttribute("type", type);
 		termNote.setTextContent(value.toString());
 	}
-	
+
 }

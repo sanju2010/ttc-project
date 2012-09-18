@@ -3,14 +3,11 @@
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>false</primitive>
   <delegateAnalysisEngineSpecifiers>
-    <delegateAnalysisEngine key="GermanNormalizer">
-      <import name="eu.project.ttc.german.engines.spotter.GermanNormalizer"/>
+    <delegateAnalysisEngine key="GermanTreeTagger">
+      <import name="eu.project.ttc.german.engines.spotter.GermanTreeTagger"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="GermanStemmer">
       <import name="eu.project.ttc.german.engines.spotter.GermanStemmer"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="GermanFilter">
-      <import name="eu.project.ttc.german.engines.spotter.GermanFilter"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="GermanWordTokenizer">
       <import name="eu.project.ttc.german.engines.spotter.GermanWordTokenizer"/>
@@ -21,11 +18,17 @@
     <delegateAnalysisEngine key="Contextualizer">
       <import name="eu.project.ttc.all.engines.spotter.Contextualizer"/>
     </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="SpotterTSVWriter">
+      <import name="eu.project.ttc.all.engines.spotter.SpotterTSVWriter"/>
+    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="GermanTermSpotter">
       <import name="eu.project.ttc.german.engines.spotter.GermanTermSpotter"/>
     </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="GermanTreeTagger">
-      <import name="eu.project.ttc.german.engines.spotter.GermanTreeTagger"/>
+    <delegateAnalysisEngine key="GermanNormalizer">
+      <import name="eu.project.ttc.german.engines.spotter.GermanNormalizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="GermanFilter">
+      <import name="eu.project.ttc.german.engines.spotter.GermanFilter"/>
     </delegateAnalysisEngine>
   </delegateAnalysisEngineSpecifiers>
   <analysisEngineMetaData>
@@ -50,6 +53,7 @@
         <mandatory>true</mandatory>
         <overrides>
           <parameter>Writer/Directory</parameter>
+          <parameter>SpotterTSVWriter/Directory</parameter>
         </overrides>
       </configurationParameter>
     </configurationParameters>
@@ -77,6 +81,7 @@
         <node>GermanFilter</node>
         <node>Contextualizer</node>
         <node>Writer</node>
+        <node>SpotterTSVWriter</node>
       </fixedFlow>
     </flowConstraints>
     <typePriorities/>

@@ -15,11 +15,11 @@
     <delegateAnalysisEngine key="TermBaseXchanger">
       <import name="eu.project.ttc.all.engines.TermBaseXchanger"/>
     </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="TermCleaner">
-      <import name="eu.project.ttc.all.engines.indexer.TermCleaner"/>
-    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="FrenchTermGatherer">
       <import name="eu.project.ttc.french.engines.indexer.FrenchTermGatherer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="TermCleaner">
+      <import name="eu.project.ttc.all.engines.indexer.TermCleaner"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="TermIndexer">
       <import name="eu.project.ttc.all.engines.indexer.TermIndexer"/>
@@ -159,6 +159,16 @@
           <parameter>TermBaseXchanger/KeepVerbsAndOthers</parameter>
         </overrides>
       </configurationParameter>
+      <configurationParameter>
+        <name>EnableTsvOutput</name>
+        <description>Enable TSV output along with the TBX writer.</description>
+        <type>Boolean</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>TermBaseXchanger/EnableTsvOutput</parameter>
+        </overrides>
+      </configurationParameter>
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
@@ -231,6 +241,12 @@
         <name>OccurrenceThreshold</name>
         <value>
           <integer>1</integer>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>EnableTsvOutput</name>
+        <value>
+          <boolean>true</boolean>
         </value>
       </nameValuePair>
     </configurationParameterSettings>

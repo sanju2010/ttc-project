@@ -3,9 +3,6 @@
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>false</primitive>
   <delegateAnalysisEngineSpecifiers>
-    <delegateAnalysisEngine key="DanishNormalizer">
-      <import name="eu.project.ttc.danish.engines.spotter.DanishNormalizer"/>
-    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="DanishStemmer">
       <import name="eu.project.ttc.danish.engines.spotter.DanishStemmer"/>
     </delegateAnalysisEngine>
@@ -18,14 +15,20 @@
     <delegateAnalysisEngine key="Writer">
       <import name="eu.project.ttc.all.engines.Writer"/>
     </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="DanishTreeTagger">
+      <import name="eu.project.ttc.danish.engines.spotter.DanishTreeTagger"/>
+    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="Contextualizer">
       <import name="eu.project.ttc.all.engines.spotter.Contextualizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="DanishNormalizer">
+      <import name="eu.project.ttc.danish.engines.spotter.DanishNormalizer"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="DanishTermSpotter">
       <import name="eu.project.ttc.danish.engines.spotter.DanishTermSpotter"/>
     </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="DanishTreeTagger">
-      <import name="eu.project.ttc.danish.engines.spotter.DanishTreeTagger"/>
+    <delegateAnalysisEngine key="SpotterTSVWriter">
+      <import name="eu.project.ttc.all.engines.spotter.SpotterTSVWriter"/>
     </delegateAnalysisEngine>
   </delegateAnalysisEngineSpecifiers>
   <analysisEngineMetaData>
@@ -50,6 +53,7 @@
         <mandatory>true</mandatory>
         <overrides>
           <parameter>Writer/Directory</parameter>
+          <parameter>SpotterTSVWriter/Directory</parameter>
         </overrides>
       </configurationParameter>
     </configurationParameters>
@@ -77,6 +81,7 @@
         <node>DanishFilter</node>
         <node>Contextualizer</node>
         <node>Writer</node>
+        <node>SpotterTSVWriter</node>
       </fixedFlow>
     </flowConstraints>
     <typePriorities/>

@@ -3,29 +3,35 @@
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <primitive>false</primitive>
   <delegateAnalysisEngineSpecifiers>
+    <delegateAnalysisEngine key="EnglishTreeTagger">
+      <import name="eu.project.ttc.english.engines.spotter.EnglishTreeTagger"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="EnglishWordTokenizer">
+      <import name="eu.project.ttc.english.engines.spotter.EnglishWordTokenizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="EnglishTermSpotter">
+      <import name="eu.project.ttc.english.engines.spotter.EnglishTermSpotter"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="EnglishFilter">
+      <import name="eu.project.ttc.english.engines.spotter.EnglishFilter"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="Writer">
+      <import name="eu.project.ttc.all.engines.Writer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="SingleWordTermSpotter">
+      <import name="eu.project.ttc.all.engines.spotter.SingleWordTermSpotter"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="Contextualizer">
+      <import name="eu.project.ttc.all.engines.spotter.Contextualizer"/>
+    </delegateAnalysisEngine>
     <delegateAnalysisEngine key="EnglishNormalizer">
       <import name="eu.project.ttc.english.engines.spotter.EnglishNormalizer"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="EnglishStemmer">
       <import name="eu.project.ttc.english.engines.spotter.EnglishStemmer"/>
     </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="EnglishFilter">
-      <import name="eu.project.ttc.english.engines.spotter.EnglishFilter"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="EnglishWordTokenizer">
-      <import name="eu.project.ttc.english.engines.spotter.EnglishWordTokenizer"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="Writer">
-      <import name="eu.project.ttc.all.engines.Writer"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="Contextualizer">
-      <import name="eu.project.ttc.all.engines.spotter.Contextualizer"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="EnglishTermSpotter">
-      <import name="eu.project.ttc.english.engines.spotter.EnglishTermSpotter"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="EnglishTreeTagger">
-      <import name="eu.project.ttc.english.engines.spotter.EnglishTreeTagger"/>
+    <delegateAnalysisEngine key="SpotterTSVWriter">
+      <import name="eu.project.ttc.all.engines.spotter.SpotterTSVWriter"/>
     </delegateAnalysisEngine>
   </delegateAnalysisEngineSpecifiers>
   <analysisEngineMetaData>
@@ -50,6 +56,7 @@
         <mandatory>true</mandatory>
         <overrides>
           <parameter>Writer/Directory</parameter>
+          <parameter>SpotterTSVWriter/Directory</parameter>
         </overrides>
       </configurationParameter>
     </configurationParameters>
@@ -77,6 +84,8 @@
         <node>EnglishFilter</node>
         <node>Contextualizer</node>
         <node>Writer</node>
+        <node>SingleWordTermSpotter</node>
+        <node>SpotterTSVWriter</node>
       </fixedFlow>
     </flowConstraints>
     <typePriorities/>

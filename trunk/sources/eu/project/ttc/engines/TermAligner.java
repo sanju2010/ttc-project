@@ -12,8 +12,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import javax.xml.transform.TransformerException;
-
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
@@ -33,6 +31,7 @@ import eu.project.ttc.tools.aligner.AlignerAdvancedSettings;
 import eu.project.ttc.tools.aligner.AlignerSettings;
 import eu.project.ttc.tools.utils.TranslationList;
 import eu.project.ttc.tools.utils.TranslationListTBXWriter;
+import eu.project.ttc.tools.utils.TranslationListTSVWriter;
 import eu.project.ttc.types.MultiWordTermAnnotation;
 import eu.project.ttc.types.SingleWordTermAnnotation;
 import eu.project.ttc.types.TermAnnotation;
@@ -46,6 +45,9 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 	
 	/** Handles bilingual tbx output */
 	private TranslationListTBXWriter tbxWriter;
+	
+	/** Handles TSV output */
+	private TranslationListTSVWriter tsvWriter;
 	
 	/** Maximum number of translation candidates accepted */
 	private int translationCandidateCutOff; 
@@ -112,6 +114,7 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 					targetTerminology, // Target terminology
 					name.substring(name.lastIndexOf('.') + 1).toLowerCase()); // Score type
 			tbxWriter = new TranslationListTBXWriter();
+			tsvWriter = new TranslationListTSVWriter();
 			outputFile = createOutputFile(context);
 			
 			translationCandidateCutOff = (Integer) context
@@ -144,7 +147,8 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 			throws AnalysisEngineProcessException {
 		try {
 			tbxWriter.write(result, outputFile);
-		} catch (TransformerException e) {
+			tsvWriter.write(result, new File(outputFile.getAbsolutePath().replace(".tbx", ".tsv")));
+		} catch (Exception e) {
 			throw new AnalysisEngineProcessException(e);
 		}
 	}
@@ -201,22 +205,17 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 	}
 	
 	private void align(JCas cas, JCas terminology, TermAnnotation annotation, String term) throws Exception {
-		if (isCompositional()) {
-			if (annotation instanceof SingleWordTermAnnotation) {
-				SingleWordTermAnnotation swt = (SingleWordTermAnnotation) annotation;
-				if (swt.getCompound()) {
-					this.alignCompound(cas, terminology, swt, term);
-				}
-			} else if (annotation instanceof MultiWordTermAnnotation) {
-				MultiWordTermAnnotation mwt = (MultiWordTermAnnotation) annotation;
-				this.alignMultiWord(cas, terminology, mwt, term);
+		// Single word terms
+		if (annotation instanceof SingleWordTermAnnotation) {
+			// is neo classical compound ?
+			SingleWordTermAnnotation swt = (SingleWordTermAnnotation) annotation;
+			if (swt.getCompound()) {
+				this.alignCompound(cas, terminology, swt, term);
 			}
-		}
-		if (isDistributional()) {
-			if (annotation instanceof SingleWordTermAnnotation) {
-				SingleWordTermAnnotation swt = (SingleWordTermAnnotation) annotation;
-				this.alignSingleWord(cas, swt, term);
-			}
+			this.alignSingleWord(cas, swt, term);
+		} else if (annotation instanceof MultiWordTermAnnotation) { // Multi word terms
+			MultiWordTermAnnotation mwt = (MultiWordTermAnnotation) annotation;
+			this.alignMultiWord(cas, terminology, mwt, term);
 		}
 	}
 
@@ -252,14 +251,14 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 	}
 
 	private void alignMultiWord(JCas cas, JCas terminology, MultiWordTermAnnotation entry, String term) throws CASException {
-		boolean flag = term.equals("énergie éolien");
-		List<String> components = this.extract(terminology, entry, flag);
+		ArrayList<TermComponentAnnotation> components = this.extract(terminology, entry, null);
 		List<List<String>> candidates = this.transfer(cas, components);
+		List<String> transferred;
 		candidates = this.combine(candidates);
 		candidates = this.generate(candidates);
-		components = this.flatten(candidates, " ");
-		components = this.select(components);
-		this.annotate(cas, entry, components);
+		transferred = this.flatten(candidates, " ");
+		transferred = this.select(transferred);
+		this.annotate(cas, entry, transferred);
 	}
 
 	private void alignCompound(JCas cas, JCas terminology, SingleWordTermAnnotation entry, String term) throws CASException {
@@ -358,17 +357,22 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 		candidates.putAll(scores);
 		int rank = 0;
 
+		double norm = 0.0;
+		for (String translation : candidates.keySet()) {
+			norm += candidates.get(translation);
+		}
 		// Add term to translation list
 		result.addTerm(term);
 		for (String translation : candidates.keySet()) {
 			rank++;
 			Double score = candidates.get(translation);
-			TranslationCandidateAnnotation annotation = new TranslationCandidateAnnotation(cas, 0, cas.getDocumentText().length());
+			TranslationCandidateAnnotation annotation = new TranslationCandidateAnnotation(
+					cas, 0, cas.getDocumentText().length());
 			annotation.setTranslation(translation);
-			annotation.setScore(score.doubleValue());
+			annotation.setScore(score.doubleValue() / norm);
 			annotation.setRank(rank);
 			annotation.addToIndexes();
-			
+
 			// Add all candidates
 			result.addTranslationCandidate(term, annotation);
 			if (rank >= translationCandidateCutOff) {
@@ -386,27 +390,15 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 	 * @return
 	 * @throws Exception
 	 */
-	private List<String> extract(JCas cas, TermAnnotation annotation, boolean check) {
-		List<String> components = new ArrayList<String>();
-		List<TermComponentAnnotation> subAnnotations = new ArrayList<TermComponentAnnotation>();
+	private ArrayList<TermComponentAnnotation> extract(JCas cas, TermAnnotation annotation, Object dummy) {
+		ArrayList<TermComponentAnnotation> subAnnotations = new ArrayList<TermComponentAnnotation>();
 		AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TermComponentAnnotation.type);
 		FSIterator<Annotation> iterator = index.subiterator(annotation);
-		int offset = annotation.getBegin();
 		while (iterator.hasNext()) {
 			TermComponentAnnotation subAnnotation = (TermComponentAnnotation) iterator.next();
-			if (check && subAnnotation.getBegin() != offset) {
-				// throw new Exception(annotation.getCoveredText());
-			}
-			offset = subAnnotation.getEnd();
 			subAnnotations.add(subAnnotation);
 		}
-		if (check && offset != annotation.getEnd()) {
-			// throw new Exception(annotation.getCoveredText() + " " + annotation.getEnd() + " != " + offset);
-		}
-		for (TermComponentAnnotation a : subAnnotations) {
-			components.add(a.getCoveredText());
-		}
-		return components;
+		return subAnnotations;
 	}
 	
 	private class Tree<T extends Annotation> {
@@ -551,6 +543,34 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 		return candidates;
 	}
 		
+	private List<List<String>> transfer(JCas cas, ArrayList<TermComponentAnnotation> components) {
+		List<List<String>> candidates = new ArrayList<List<String>>();
+		TermComponentAnnotation component;
+		for (int index = 0; index < components.size(); index++) {
+			component = components.get(index);
+			String compoTerm = component.getCoveredText();
+			Set<String> candidate = dictionary.get().get(compoTerm);
+			if (candidate == null) {
+				candidate = dictionary.get().get(component.getLemma());
+			}
+			
+			// TODO vérifier avec béatrice
+			boolean alignComponent = false;
+			if (candidate == null) {
+				candidate = new HashSet<String>();
+				if ("noun".equals(component.getCategory()))
+					candidate.add(compoTerm);
+				alignComponent = true;
+			}
+			
+			if (alignComponent && isDistributional()) {
+				this.alignComponent(cas, compoTerm, candidate);
+			}
+			candidates.add(new ArrayList<String>(candidate));
+		}
+		return candidates;
+	}
+	
 	/**
 	 * provides the permutation list 
 	 * 
@@ -721,6 +741,12 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 			if (targetTerminology.exists(candidate)) {
 				selection.add(candidate);
 			}
+		}
+		if (candidates.isEmpty()) {
+			this.getContext().getLogger().log(Level.WARNING,"No suitable candidates were found.");
+		}
+		if (!candidates.isEmpty() && selection.isEmpty()) {
+			this.getContext().getLogger().log(Level.WARNING,"Candidates do not exist in target terminology.");
 		}
 		return selection;
 	}
