@@ -289,9 +289,9 @@ The Aligner performs:
 ==== Inputs ====
 
 It requires several kind of files as inputs.
-  * a soure-target directory that contains the text files with the terms to be translated (see subsection below),
-  * a XMI file that contains the terminology in the source language,
-  * optionally a text file that stands for a bilingual dictionary
+  * a source-target directory that contains the text files with the terms to be translated (see subsection below),
+  * two XMI files that contain the terminology in the source and the target language computed by the indexer
+  * a bilingual dictionary (source-target)
 
 ==== Outputs ====
 
@@ -302,8 +302,8 @@ TermSuite aligner generates 2 files in the given output directory:
 There is one XMI file per text file (or term to be translated) in the same directory.
 
 
-===== Input Term File =====
-the source-target directory contains as files as terms to translate.
+===== Source-target directory =====
+The source-target directory contains as files as terms to translate.
 Such files merely contains one term that is the lemma of a cnaidate term proposed by the indexer. As an example, the English multi-word term:
 {{{
   renewable energy
@@ -328,11 +328,11 @@ and users should pay attention to set the right source and target terminologies 
 
 
 
-===== Bilingual Dictionaries =====
+===== Bilingual Dictionary =====
 
-Bilingual dictionaries are tabulation-separated value files where 
-the source entries stand in the first row and where their target entries 
-are in the second row. 
+A Bilingual dictionary is a tabulation-separated value file where 
+the source entry stands in first and its translation in second. 
+Here is an chunk of the English-French bilingual dictionary.
 {{{
   energy	énergie
   energy	tonus
@@ -340,14 +340,11 @@ are in the second row.
   power	énergie
 }}}
 A source entry can have more than one target entries.
-Moreover, A target entry can be related to more than one source entries.
 
 *Note:* These dictionaries should be UTF-8 encoded and all entries should be in lower case letters!
 
 We provide bilingual dictionaries of general language compiled from the web for some pairs of languages:
-
 http://ttc-project.googlecode.com/files/BilingualDicosForTermSuiteAligner.zip 	
-
 Quality is not guaranteed!
 
 ==== Settings ====
