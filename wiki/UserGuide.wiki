@@ -304,7 +304,7 @@ There is one XMI file per text file (or term to be translated) in the same direc
 
 ===== Source-target directory =====
 The source-target directory contains as files as terms to translate.
-Such files merely contains one term that is the lemma of a cnaidate term proposed by the indexer. As an example, the English multi-word term:
+Such files merely contains one term that is the lemma of a candidate term proposed by the indexer. As an example, the English multi-word term:
 {{{
   renewable energy
 }}}
