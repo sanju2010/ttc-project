@@ -290,7 +290,7 @@ The Aligner performs:
 
 It requires several kind of files as inputs.
   * a source-target directory that contains the text files with the terms to be translated (see subsection below),
-  * two XMI files that contain the terminology in the source and the target language computed by the indexer
+  * two XMI files that contain the terminology in the source and the target languages computed by the indexer
   * a bilingual dictionary (source-target)
 
 ==== Outputs ====
