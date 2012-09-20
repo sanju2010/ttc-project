@@ -20,7 +20,10 @@ package eu.project.ttc.engines;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.text.AnnotationIndex;
@@ -28,6 +31,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.util.Level;
 
+import eu.project.ttc.types.SingleWordTermAnnotation;
 import eu.project.ttc.types.TermAnnotation;
 
 /**
@@ -36,6 +40,9 @@ import eu.project.ttc.types.TermAnnotation;
  * @author Sebastián Peña Saldarriaga
  */
 public class SpotterTSVWriter extends Writer {
+
+	private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat(
+			"yyyyMMdd-HHmmss");
 
 	@Override
 	public void process(JCas cas) throws AnalysisEngineProcessException {
@@ -57,9 +64,11 @@ public class SpotterTSVWriter extends Writer {
 				TermAnnotation term;
 				for (Annotation annot : index) {
 					term = (TermAnnotation) annot;
-					out.append(term.getCoveredText()).append('\t');
-					out.append(term.getCategory()).append('\t');
-					out.append(term.getLemma()).append('\n');
+					if (term instanceof SingleWordTermAnnotation) {
+						out.append(term.getCoveredText()).append('\t');
+						out.append(term.getCategory()).append('\t');
+						out.append(term.getLemma()).append('\n');
+					}
 				}
 			} finally {
 				out.close();
@@ -67,6 +76,17 @@ public class SpotterTSVWriter extends Writer {
 		} catch (Exception e) {
 			throw new AnalysisEngineProcessException(e);
 		}
+	}
+
+	@Override
+	protected void setDirectory(String path) throws IOException {
+		String dir = "tsv_" + DATE_FORMATTER.format(new Date());
+		if (path.contains("xmi")) {
+			path = path.replace("xmi", dir);
+		} else {
+			path = path + File.pathSeparator + dir;
+		}
+		super.setDirectory(path);
 	}
 
 	@Override

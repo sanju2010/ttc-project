@@ -16,7 +16,7 @@ public class IndexerAdvancedSettings extends Parameters implements
 	public static final String P_IGNORE_DIACRITICS = "IgnoreDiacriticsInMultiwordTerms";
 
 	/** Name of the parameter that must be set to enable variant detection */
-	public static final String P_TERM_VARIANT_DETECTION = "VariantsDetection";
+	public static final String P_TERM_VARIANT_DETECTION = "VariantDetection";
 
 	/** Name of the parameter that must be set to the edit distance classname */
 	public static final String P_EDIT_DISTANCE_CLASS = "EditDistanceClassName";

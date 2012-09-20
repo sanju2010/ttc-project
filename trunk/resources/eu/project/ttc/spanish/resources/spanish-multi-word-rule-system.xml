@@ -230,10 +230,7 @@
 							<and>
 								<constraints>
 									<constraint>
-										<eq key="category" value="adposition" />
-									</constraint>
-									<constraint>
-										<eq key="subCategory" value="preposition" />
+										<eq key="category" value="preposition" />
 									</constraint>
 									<constraint>
 										<or>
@@ -289,16 +286,7 @@
 				<pattern>
 					<annotation type="eu.project.ttc.types.WordAnnotation">
 						<constraint>
-							<and>
-								<constraints>
-									<constraint>
-										<eq key="category" value="adposition" />
-									</constraint>
-									<constraint>
-										<eq key="subCategory" value="preposition" />
-									</constraint>
-								</constraints>
-							</and>
+							<eq key="category" value="preposition" />
 						</constraint>
 					</annotation>
 				</pattern>
@@ -333,15 +321,12 @@
 					<annotation type="eu.project.ttc.types.WordAnnotation">
 						<constraint>
 							<and>
-								<constraints>
-									<constraint>
-										<eq key="category" value="adposition" />
-									</constraint>
-									<constraint>
-										<eq key="subCategory" value="preposition" />
-									</constraint>
-									<constraint>
-										<or>
+							  <constraints>
+							    <constraint>
+							      <eq key="category" value="preposition" />
+							    </constraint>
+							    <constraint>
+								<or>
 											<constraints>
 												<constraint>
 													<eq key="lemma" value="de" />			
@@ -353,7 +338,7 @@
 													<eq key="lemma" value="en" />			
 												</constraint>
 											</constraints>
-										</or>
+								</or>
 									</constraint>
 								</constraints>
 							</and>
@@ -385,13 +370,10 @@
 						<constraint>
 							<and>
 								<constraints>
-									<constraint>
-										<eq key="category" value="adposition" />
-									</constraint>
-									<constraint>
-										<eq key="subCategory" value="preposition" />
-									</constraint>
-									<constraint>
+								  <constraint>
+								    <eq key="category" value="preposition" />
+								  </constraint>
+								  <constraint>
 										<or>
 											<constraints>
 												<constraint>
@@ -450,16 +432,7 @@
 				<pattern>
 					<annotation type="eu.project.ttc.types.WordAnnotation">
 						<constraint>
-							<and>
-								<constraints>
-									<constraint>
-										<eq key="category" value="adposition" />
-									</constraint>
-									<constraint>
-										<eq key="subCategory" value="preposition" />
-									</constraint>
-								</constraints>
-							</and>
+							<eq key="category" value="preposition" />
 						</constraint>
 					</annotation>
 				</pattern>
@@ -493,16 +466,7 @@
 				<pattern>
 					<annotation type="eu.project.ttc.types.WordAnnotation">
 						<constraint>
-							<and>
-								<constraints>
-									<constraint>
-										<eq key="category" value="adposition" />
-									</constraint>
-									<constraint>
-										<eq key="subCategory" value="preposition" />
-									</constraint>
-								</constraints>
-							</and>
+							<eq key="category" value="preposition" />
 						</constraint>
 					</annotation>
 				</pattern>
@@ -536,16 +500,7 @@
 				<pattern>
 					<annotation type="eu.project.ttc.types.WordAnnotation">
 						<constraint>
-							<and>
-								<constraints>
-									<constraint>
-										<eq key="category" value="adposition" />
-									</constraint>
-									<constraint>
-										<eq key="subCategory" value="preposition" />
-									</constraint>
-								</constraints>
-							</and>
+							<eq key="category" value="preposition" />
 						</constraint>
 					</annotation>
 				</pattern>
@@ -586,16 +541,7 @@
 				<pattern>
 					<annotation type="eu.project.ttc.types.WordAnnotation">
 						<constraint>
-							<and>
-								<constraints>
-									<constraint>
-										<eq key="category" value="adposition" />
-									</constraint>
-									<constraint>
-										<eq key="subCategory" value="preposition" />
-									</constraint>
-								</constraints>
-							</and>
+							<eq key="category" value="preposition" />
 						</constraint>
 					</annotation>
 				</pattern>
@@ -609,16 +555,7 @@
 				<pattern>
 					<annotation type="eu.project.ttc.types.WordAnnotation">
 						<constraint>
-							<and>
-								<constraints>
-									<constraint>
-										<eq key="category" value="adposition" />
-									</constraint>
-									<constraint>
-										<eq key="subCategory" value="preposition" />
-									</constraint>
-								</constraints>
-							</and>
+							<eq key="category" value="preposition" />
 						</constraint>
 					</annotation>
 				</pattern>

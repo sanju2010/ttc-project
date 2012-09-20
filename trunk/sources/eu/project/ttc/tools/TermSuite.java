@@ -36,7 +36,7 @@ import fr.free.rocheteau.jerome.dunamis.viewers.ProcessingResultViewer;
 public class TermSuite implements Runnable {
 
 	/** Current version of the program */
-	public static final double TERMSUITE_VERSION = 1.3;
+	public static final String TERMSUITE_VERSION = "1.4";
 
 	public void error(Exception e) {
 		UIMAFramework.getLogger().log(Level.SEVERE,e.getMessage());

@@ -120,8 +120,8 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 				this.setVariants();
 			}
 
-			NUMBER_FORMATTER.setMaximumFractionDigits(12);
-			NUMBER_FORMATTER.setMinimumFractionDigits(6);
+			NUMBER_FORMATTER.setMaximumFractionDigits(4);
+			NUMBER_FORMATTER.setMinimumFractionDigits(4);
 			NUMBER_FORMATTER.setRoundingMode(RoundingMode.UP);
 			NUMBER_FORMATTER.setGroupingUsed(false);
 
@@ -378,12 +378,16 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 		}
 
 		Set<TermAnnotation> variants = this.variantsOf.get(langsetId);
+		int globalOcc = term.getOccurrences();
 		if (variants != null) {
 			for (TermAnnotation variant : variants) {
 				this.addTermVariant(doc, langSet, variant.getLangset(),
 						variant.getCoveredText());
+				if (!variant.getCoveredText().contains(term.getCoveredText()))
+					globalOcc += variant.getOccurrences();
 			}
 		}
+		this.addDescrip(doc, langSet, langSet, "nbOccurrences", globalOcc);
 
 		Element tig = doc.createElement("tig");
 		tig.setAttribute("xml:id", TIG_ID_PREFIX + term.getAddress());
@@ -404,7 +408,7 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 		this.addNote(doc, langSet, tig, "termPattern", term.getCategory());
 		this.addNote(doc, langSet, tig, "termComplexity",
 				this.getComplexity(term));
-		this.addNote(doc, langSet, tig, "termSpecifity",
+		this.addDescrip(doc, langSet, tig, "termSpecificity",
 				NUMBER_FORMATTER.format(term.getSpecificity()));
 		this.addDescrip(doc, langSet, tig, "nbOccurrences",
 				term.getOccurrences());

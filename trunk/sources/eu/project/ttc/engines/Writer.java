@@ -24,7 +24,7 @@ public class Writer extends JCasAnnotator_ImplBase {
 		
 	private File directory;
 	
-	private void setDirectory(String path) throws IOException {
+	protected void setDirectory(String path) throws IOException {
 		File directory = new File(path);
 		if (directory.exists()) {
 			if (directory.isDirectory()) {

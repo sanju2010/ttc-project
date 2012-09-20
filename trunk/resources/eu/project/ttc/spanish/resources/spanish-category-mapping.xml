@@ -32,8 +32,8 @@
   <map key="NMON" value="name" />
   <map key="NP" value="name" />
   <map key="ORD" value="numeral" />
-  <map key="PAL" value="noun" />
-  <map key="PDEL" value="noun" />
+  <map key="PAL" value="preposition" />
+  <map key="PDEL" value="preposition" />
   <map key="PE" value="noun" />
   <map key="PERCT" value="punctuation" />
   <map key="PNC" value="pronoun" />
@@ -41,7 +41,6 @@
   <map key="PPO" value="pronoun" />
   <map key="PPX" value="pronoun" />
   <map key="PREP" value="preposition" />
-  <map key="PREP/DEL" value="preposition" />
   <map key="QT" value="punctuation" />
   <map key="QU" value="noun" />
   <map key="REL" value="pronoun" />
