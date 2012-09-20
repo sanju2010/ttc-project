@@ -289,7 +289,7 @@ The Aligner performs:
 ==== Inputs ====
 
 It requires several kind of files as inputs.
-  * a directory in where there is text files corresponding to the terms to translate (see subsection below),
+  * a soure-target directory that contains the text files with the terms to be translated (see subsection below),
   * a XMI file that contains the terminology in the source language,
   * optionally a text file that stands for a bilingual dictionary
 
@@ -303,23 +303,30 @@ There is one XMI file per text file (or term to be translated) in the same direc
 
 
 ===== Input Term File =====
-
-Such files merely contains 1 term and, for instance, one looks like that:
+the source-target directory contains as files as terms to translate.
+Such files merely contains one term that is the lemma of a cnaidate term proposed by the indexer. As an example, the English multi-word term:
 {{{
   renewable energy
 }}}
-This will enable the alignment of the English term "renewable energy".
 
-But also may define translations of this term (for evaluation purpose):
+You can use the Java program
+
+http://ttc-project.googlecode.com/files/Aligner-source-target-directory-builder.zip
+
+that is designed to build from one text file listing all the terms to be translated a the source-target directory with one file by term.
+
+*Note:* These term files should be UTF-8 encoded and all entries should be in lower case letters!	
+
+The aligner can also be used in an evaluation mode. If you want to know at which rank the good translation appears in the list of ranked candidate translations for a given source term, you can add in the text file with the  source term its translations. The translation should be in a the lemma form and should be proposed as a candidate term by the indexer in the target language.  The source term and the translations should be separated by tabulations. As an example, for an English translation in French of the term renewable energy, two valid translations are given:
 {{{
   renewable energy	énergie renouvelable	énergie de origine renouvelable
 }}}
-where these translations are separated by tabulations.
+
 
 *Warning:* Notice that the target language is implicit 
 and users should pay attention to set the right source and target terminologies according to these input term files.
 
-*Note:* These term files should be UTF-8 encoded and all entries should be in lower case letters!
+
 
 ===== Bilingual Dictionaries =====
 
