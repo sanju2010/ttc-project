@@ -299,7 +299,7 @@ TermSuite aligner generates 2 files in the given output directory:
  * a XMI file that contains the terminology in the target language,
  * a TBX file _sourceLanguage_-_targetLanguage_-terminology.tbx that contains for each source term, candidate translations ranked
 
-There is one XMI file per text file (or term to be translated) in the same directory.
+There is one XMI file per text file (or term to be translated) in the source-target directory.
 
 
 ===== Source-target directory =====
