@@ -134,6 +134,8 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 
 			translationCandidateCutOff = (Integer) context
 					.getConfigParameterValue(AlignerAdvancedSettings.P_MAX_CANDIDATES);
+			if (translationCandidateCutOff > 100)
+				translationCandidateCutOff = 100;
 
 		} catch (Exception e) {
 			throw new ResourceInitializationException(e);
@@ -147,20 +149,41 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 			String term = this.getTerm(cas);
 			this.getContext().getLogger()
 					.log(Level.INFO, "Processing '" + term + "'");
-			TermAnnotation annotation = sourceTerminology.get(term);
+			TermAnnotation annotation = searchTermInSourceTerminology(term);
 			if (annotation == null) {
 				this.getContext()
 						.getLogger()
 						.log(Level.WARNING,
-								"Skiping '"
+								"Skipping '"
 										+ term
 										+ "' as it doesn't belong to the source terminology");
 			} else {
+				// Lazy index initialization
+				if (sourceIndex.size() == 0) {
+					initIndex(sourceIndex, sourceTerminology);
+					initIndex(targetIndex, targetTerminology);
+				}
 				this.align(cas, terminology, annotation, term);
 			}
 		} catch (Exception e) {
 			throw new AnalysisEngineProcessException(e);
 		}
+	}
+
+	private TermAnnotation searchTermInSourceTerminology(String term) {
+		boolean isMWT = term.contains(" ");
+		TermAnnotation t = sourceTerminology.get(term);
+
+		// Handle multiword terms that could not be found specifically
+		if (t == null && isMWT) {
+			String[] components = term.split(" ");
+			Set<MultiWordTermAnnotation> candidates = sourceIndex
+					.getByLemma(components);
+			if (candidates.size() > 0)
+				t = candidates.iterator().next();
+		}
+
+		return t;
 	}
 
 	@Override
@@ -245,12 +268,6 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 		} else if (annotation instanceof MultiWordTermAnnotation) {
 
 			if (isCompositional) {
-				// Lazy index initialization
-				if (sourceIndex.size() == 0) {
-					initIndex(sourceIndex, sourceTerminology);
-					initIndex(targetIndex, targetTerminology);
-				}
-
 				// Multi word terms
 				MultiWordTermAnnotation mwt = (MultiWordTermAnnotation) annotation;
 				this.alignMultiWord(cas, terminology, mwt, term);
@@ -406,11 +423,13 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 			if (targetContext == null) {
 				continue;
 			} else {
+				TermAnnotation annot = targetTerminology.get(targetTerm);
 				double score = similarityDistance.getValue(
 						termContext.getCoOccurrences(),
 						targetContext.getCoOccurrences());
 				if (!Double.isInfinite(score) && !Double.isNaN(score)) {
-					candidates.put(targetTerm, new Double(score));
+					if (InMemoryMWTIndex.isAcceptedCategory(annot.getCategory()))
+						candidates.put(targetTerm, new Double(score));
 				}
 			}
 		}
@@ -795,7 +814,8 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 			String[] componentLemmas = candidate.split(" ");
 			matchs = targetIndex.getByLemma(componentLemmas);
 			for (MultiWordTermAnnotation match : matchs) {
-				prelim.add(match);
+				if (!startsWithDet(match) && !endsWithPrepOrConj(match))
+					prelim.add(match);
 			}
 		}
 
@@ -806,6 +826,17 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 							"Proposed candidates do not exist in target terminology.");
 		}
 		return new ArrayList<MultiWordTermAnnotation>(prelim);
+	}
+
+	private boolean endsWithPrepOrConj(MultiWordTermAnnotation match) {
+		String lastCat = match.getComponents(match.getComponents().size() - 1)
+				.getCategory();
+		return "adposition".equals(lastCat) || "conjunction".equals(lastCat);
+	}
+
+	private boolean startsWithDet(MultiWordTermAnnotation match) {
+		String firstCat = match.getComponents(0).getCategory();
+		return "article".equals(firstCat) || "determiner".equals(firstCat);
 	}
 
 	/**
@@ -896,6 +927,8 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 			// Add candidates for entry
 			result.addTranslationCandidate(entry, annotation);
 			index++;
+			if (index > translationCandidateCutOff)
+				break;
 		}
 	}
 
