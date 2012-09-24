@@ -5,15 +5,24 @@
 
 == To Do ==
 
+* morphological splitting of compounds (De/Ru)
+* graphical variants to be solved at the Spotter phase
+
+
+== Done ==
+
 === Version 1.4 ===
 
   * aligner: compositional method add for MWT
   * indexer: TBX output add of pilot term
   * indexer: TBX output add of list of occurrences
-  * indexer: specificity for Chinese
-
-== Done ==
-
+  * indexer: specificity computation for Chinese
+  * spotter: TSV output
+  * indexer: TSV output
+  * aligner: TSV output
+  * CLI:  argument of spotter/indexer/aligner could be a file with all the 
+          settings of parameters
+  
 === Version 1.3 ===
 
   * indexer: graphical interface improved
