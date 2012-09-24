@@ -9,12 +9,15 @@
 == 1. New features ==
 
 * TSV output for spotter, indexer, aligner
+
 * File parameters for input of CLI
+
 * User manual (pdf format) to be downloaded
 
 ===  1.1  Indexer ====
 
 * Pilot form in TBX output
+
 * List of occurrences with frequencies in TBX output
 
 ===  1.2  Aligner ====
@@ -27,7 +30,9 @@
 ===  2.1  Indexer ====
 
 * Added the Chinese general lexicon required for specificity calculation 
+
 * Enhanced MWT recognition rules for Ru/Lv/Es
+
 * Enhanced MWT conflation rules for Ru/Lv/Es
 
 
