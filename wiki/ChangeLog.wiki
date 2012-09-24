@@ -9,6 +9,7 @@
  * TSV output for spotter, indexer, aligner
  * File parameters for input of CLI
  * User manual (pdf format) to be downloaded
+ * Java program to prepare the directory of terms to be translated as input of the Aligner
 
 ===  1.1  Indexer ====
 
