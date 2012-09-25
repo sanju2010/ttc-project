@@ -42,7 +42,7 @@ import eu.project.ttc.types.TermAnnotation;
 public class SpotterTSVWriter extends Writer {
 
 	private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat(
-			"yyyyMMdd-HHmmss");
+			"yyyyMMdd-HHmm");
 
 	@Override
 	public void process(JCas cas) throws AnalysisEngineProcessException {
