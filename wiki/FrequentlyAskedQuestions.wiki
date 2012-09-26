@@ -26,31 +26,19 @@ Please, have a look to the GettingStarted wiki page.
 === Does TermSuite run on Windows? ===
 
 It has been successfully tested under Windows XP 2002 SP3.
-For other Window releases, we recommand to use CLI
-Examples CLI for windows: [http://ttc-project.googlecode.com/files/TermSuite-CLI-Windows.sh ]
+For other Window releases, we recommand to use CLI.
+An example of a CLI for windows: [http://ttc-project.googlecode.com/files/TermSuite1.4CLI-Fr-en.sh]
 
 === Does TermSuite run on Linux? ===
 
-TermSuite has been successfully tested under Linux 11.4 and 11.10 with OpenJDK (1.6.0-23). 
+TermSuite has been successfully tested under Linux 11.4 and 11.10 with OpenJDK (1.6.0-23) etiher with the GUI or the CLI interface.
 
 === Can I launch TermSuite without in CLI only? ===
 
-YES but throught out 5 command lines. 
+YES but you need one command line for the spotter, one for the indexer and one for the aligner. 
 In fact, Term Suite GUI makes possible to launch different 
 UIMA analysis engines from the same control panel. 
-As they are not only 1 analysis engine to process, there is 
-no one CLI usage of Term Suite.
-
-Linux CLI
-
-{{{
-  java -cp ttc-term-suite-1.2.jar eu.project.ttc.tools.TermSuiteRunner -txt -analysis-engine eu.project.ttc.french.engines.spotter.EnglishSpotter -directory English/txt -language en -encoding utf-8 --Directory English/xmi --TreeTaggerHomeDirectory /usr/local/share/tree-tagger
-  java -cp ttc-term-suite-1.2.jar eu.project.ttc.tools.TermSuiteRunner -xmi -analysis-engine eu.project.ttc.english.engines.indexer.EnglishIndexer -directory English/xmi -language en -encoding utf-8 --Directory English/
-  java -cp ttc-term-suite-1.2.jar eu.project.ttc.tools.TermSuiteRunner -txt -analysis-engine eu.project.ttc.french.engines.spotter.FrenchSpotter -directory French/txt -language fr -encoding utf-8 --Directory French/xmi --TreeTaggerHomeDirectory /usr/local/share/tree-tagger
-  java -cp ttc-term-suite-1.2.jar eu.project.ttc.tools.TermSuiteRunner -xmi -analysis-engine eu.project.ttc.french.engines.indexer.FrenchIndexer -directory French/xmi -language fr -encoding utf-8 --Directory French/
-  java -cp ttc-term-suite-1.2.jar eu.project.ttc.tools.TermSuiteRunner -txt -analysis-engine eu.project.ttc.all.engines.aligner.Aligner -directory en-fr/ -language en -encoding utf-8 --Directory en-fr/ --SourceLanguage en --TargetLanguage fr --SourceTerminologyFile English/en-terminology.xml --TargetTerminology French/fr-terminology.xml
-}}}
-
+An example of a CLI bash file to execute French to English bilingula terminology: [http://ttc-project.googlecode.com/files/TermSuite1.4CLI-Fr-en.sh]
 
 However, *every UIMA analysis engines can be launched in CLI* 
 by the help of the inner devoted Java class _TermSuiteRunner_. 
@@ -70,7 +58,11 @@ To check the encoding use the command:  file -i textfile.txt
 
 == Error Messages ==
 
+The error messages appear in the terminal from which you launch TermSuite.
+
 For any questions about errors from TermSuite, please check that it has not been previously declared in this [http://code.google.com/p/ttc-project/issues/list bug tracker]. If not, please create a new issue.
+
+
 
 === I've got an error with the Spotter ===
 
@@ -78,7 +70,7 @@ One issue has been reported: the issue 9.
 It comes from the Apache UIMA 2.3.1 library. 
 
 But the same version of TermSuite over the same corpus 
-doesn"t lead to the same error on other boxes 
+doesn't lead to the same error on other boxes 
 with the same operating system. 
 
 === I've got an error with the Indexer ===
