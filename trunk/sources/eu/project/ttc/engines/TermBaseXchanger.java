@@ -398,10 +398,17 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 
 		FSArray forms = term.getForms();
 		String pilot = term.getCoveredText();
+		int occurrencesWithForms = 0;
 		if (forms != null) {
 			pilot = term.getForms(0).getForm();
 			addNote(doc, langSet, tig, "termPilot", pilot);
+			for (int i = 0; i < forms.size(); i++) {
+				occurrencesWithForms += term.getForms(i).getOccurrences();
+			}
+		} else {
+			occurrencesWithForms = term.getOccurrences();
 		}
+		
 		this.addNote(doc, langSet, tig, "termType", isVariant ? "variant"
 				: "termEntry");
 		this.addNote(doc, langSet, tig, "partOfSpeech", "noun");

@@ -32,7 +32,7 @@ public class GeneralLanguageResource implements GeneralLanguage {
 				if (items.length == 3) {
 					String key = items[0].trim();
 					Integer value = Integer.valueOf(items[2].trim());
-					this.set(key, value.intValue());
+					this.set(key.toLowerCase(), value.intValue());
 				} else {
 					throw new IOException("Wrong general language format at line " + index + ": " + line);
 				}
@@ -50,7 +50,7 @@ public class GeneralLanguageResource implements GeneralLanguage {
 
 	@Override
 	public double get(String entry) {
-		Integer frequency = this.frequencies.get(entry);
+		Integer frequency = this.frequencies.get(entry.toLowerCase());
 		double quotient = new Double(this.frequency).doubleValue();
 		if (frequency == null) {
 			return 1.0 / quotient;

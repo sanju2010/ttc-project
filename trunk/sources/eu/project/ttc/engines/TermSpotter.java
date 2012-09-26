@@ -25,7 +25,7 @@ public class TermSpotter extends Matcher {
 				} else if (word.getLemma().equals("@card@")) {
 					word.setLemma(word.getCoveredText().toLowerCase());
 				}
-				term.setLemma(word.getLemma());
+				term.setLemma(word.getLemma().toLowerCase());
 				term.addToIndexes();
 			} else {
 				MultiWordTermAnnotation term = new MultiWordTermAnnotation(cas, begin, end);
@@ -56,7 +56,7 @@ public class TermSpotter extends Matcher {
 						term.setComponents(index, word);						
 					}
 				}
-				term.setLemma(lemma.toString());
+				term.setLemma(lemma.toString().toLowerCase());
 				term.setCategory(id);
 				term.addToIndexes();
 			}

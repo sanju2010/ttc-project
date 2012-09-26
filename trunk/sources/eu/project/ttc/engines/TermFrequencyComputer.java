@@ -6,6 +6,7 @@ import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.examples.SourceDocumentInformation;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceAccessException;
 import org.apache.uima.resource.ResourceInitializationException;
@@ -57,11 +58,24 @@ public class TermFrequencyComputer extends JCasAnnotator_ImplBase {
 		FSIterator<Annotation> iterator = index.iterator();
 		while (iterator.hasNext()) {
 			TermAnnotation annotation = (TermAnnotation) iterator.next();
-			double frequency = annotation.getFrequency();
-			this.specializedFrequency += frequency;
+			fixOccurrences(annotation);
+			this.specializedFrequency += annotation.getFrequency();
 		}
 	}
 	
+	private void fixOccurrences(TermAnnotation annotation) {
+		FSArray forms = annotation.getForms();
+		int count = 0;
+		if (forms != null) {
+			for (int i = 0; i < forms.size(); i++) {
+				count += annotation.getForms(i).getOccurrences();
+			}
+			annotation.setOccurrences(count);
+			annotation.setFrequency(count);
+		}
+		
+	}
+
 	private void get(JCas cas) {
 		AnnotationIndex<Annotation> index = cas.getAnnotationIndex(TermAnnotation.type);
 		FSIterator<Annotation> iterator = index.iterator();

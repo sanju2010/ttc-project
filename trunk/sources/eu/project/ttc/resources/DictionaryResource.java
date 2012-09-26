@@ -63,10 +63,11 @@ public class DictionaryResource implements Dictionary {
 
 	@Override
 	public void add(String source,String target) {
-		Set<String> targetEntries = this.entries.get(source);
+		String key = source.toLowerCase();
+		Set<String> targetEntries = this.entries.get(key);
 		if (targetEntries == null) {
 			targetEntries = new HashSet<String>();
-			this.entries.put(source, targetEntries);
+			this.entries.put(key, targetEntries);
 		}
 		targetEntries.add(target);
 	}
