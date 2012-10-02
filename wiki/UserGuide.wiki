@@ -7,6 +7,9 @@ TTC TermSuite is the name of the tool provided [http://ttc-project.googlecode.co
 UIMA analysis engines runnable by the help of an appropriate tool. 
 This user guide page explains how to install and use it.
 
+*NEW* : Download TermSuite User Manual
+[http://ttc-project.googlecode.com/files/TermSuite-userguide.pdf pdf version]
+
 == Contents == 
 
 <wiki:toc max_depth="3" />
