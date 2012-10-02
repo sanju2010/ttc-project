@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -298,15 +299,57 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 	private void alignSingleWord(JCas cas, SingleWordTermAnnotation annotation,
 			String term) {
 		Context context = sourceTerminology.context(term);
+		HashMap<String, Double> dictionaryCandidates = new HashMap<String, Double>();
+		Set<String> directTranslations = dictionary.get().get(term);
+		if (directTranslations != null && !directTranslations.isEmpty()) {
+			for (String trans : directTranslations) {
+				dictionaryCandidates
+						.put(trans, 1.0 / directTranslations.size());
+			}
+		}
 		if (context == null) {
-			this.getContext().getLogger()
-					.log(Level.WARNING, "Skiping '" + term + "'");
+			if (dictionaryCandidates.isEmpty()) {
+				this.getContext()
+						.getLogger()
+						.log(Level.WARNING,
+								"Skiping '"
+										+ term
+										+ "' because no context vector could be found for it.");
+			} else {
+				this.annotate(cas, annotation, dictionaryCandidates);
+			}
 		} else {
 			this.shrink(context);
 			Context transfer = this.transfer(term, context);
 			Map<String, Double> candidates = this.align(term, transfer);
+			normalize(candidates);
+			candidates = merge(dictionaryCandidates, candidates);
 			this.annotate(cas, annotation, candidates);
 		}
+	}
+
+	private Map<String, Double> merge(Map<String, Double> distrib1,
+			Map<String, Double> distrib2) {
+		HashMap<String, Double> first = new HashMap<String, Double>(distrib1);
+		HashMap<String, Double> second = new HashMap<String, Double>(distrib2);
+		
+		for (String sample : first.keySet()) {
+			Double v = second.get(sample);
+			if (v != null) {
+				first.put(sample, v + first.get(sample));
+				second.remove(v);
+			}
+		}
+		first.putAll(second);
+		return first;
+	}
+
+	private void normalize(Map<String, Double> distrib) {
+		double norm = 0.0;
+		for (Double v : distrib.values())
+			norm += v.doubleValue();
+		for (Entry<String, Double> sample : distrib.entrySet())
+			distrib.put(sample.getKey(), sample.getValue() / norm);
 	}
 
 	private void shrink(Context context) {
@@ -428,7 +471,8 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 						termContext.getCoOccurrences(),
 						targetContext.getCoOccurrences());
 				if (!Double.isInfinite(score) && !Double.isNaN(score)) {
-					if (InMemoryMWTIndex.isAcceptedCategory(annot.getCategory()))
+					if (InMemoryMWTIndex
+							.isAcceptedCategory(annot.getCategory()))
 						candidates.put(targetTerm, new Double(score));
 				}
 			}

@@ -31,8 +31,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.util.Level;
 
-import eu.project.ttc.types.SingleWordTermAnnotation;
-import eu.project.ttc.types.TermAnnotation;
+import eu.project.ttc.types.WordAnnotation;
 
 /**
  * Writes spotter cases as TSV.
@@ -60,15 +59,13 @@ public class SpotterTSVWriter extends Writer {
 				this.getContext().getLogger()
 						.log(Level.INFO, "Writing " + file.getAbsolutePath());
 				AnnotationIndex<Annotation> index = cas
-						.getAnnotationIndex(TermAnnotation.type);
-				TermAnnotation term;
+						.getAnnotationIndex(WordAnnotation.type);
+				WordAnnotation word;
 				for (Annotation annot : index) {
-					term = (TermAnnotation) annot;
-					if (term instanceof SingleWordTermAnnotation) {
-						out.append(term.getCoveredText()).append('\t');
-						out.append(term.getCategory()).append('\t');
-						out.append(term.getLemma()).append('\n');
-					}
+					word = (WordAnnotation) annot;
+					out.append(word.getCoveredText()).append('\t');
+					out.append(word.getCategory()).append('\t');
+					out.append(word.getLemma()).append('\n');
 				}
 			} finally {
 				out.close();
