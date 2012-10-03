@@ -1,7 +1,8 @@
 #summary getting started.
 #labels Featured,Phase-Support
 
-*NEW*: Download TermSuite Getting Start [http://ttc-project.googlecode.com/files/ pdf version] 
+*NEW*: Download TermSuite Getting Start 
+[http://ttc-project.googlecode.com/files/TermSuite-gettingstart.pdf  pdf version] 
 
 = Getting Started =
 
