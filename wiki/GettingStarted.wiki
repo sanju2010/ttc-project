@@ -1,7 +1,7 @@
 #summary getting started.
 #labels Featured,Phase-Support
 
-
+*NEW* : Download TermSuite Getting Start [pdf version] 
 
 = Getting Started =
 
