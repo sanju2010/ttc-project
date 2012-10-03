@@ -50,7 +50,7 @@ The translation will be from English to French.
 
 ==== Building term-to-be-translated files ====
 
-Create a subdirectory *En2Fr* of the  *English* directory.
+Create a subdirectory  *En2Fr*  of the  *English* directory.
 I suggest you to create 3 text files in the directory *En2Fr*: 
 
 The first one called _blade.txt_ will merely contain this line (source-term tabulation target-term):
