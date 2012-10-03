@@ -10,7 +10,8 @@ It's not so complicated: you have to download text data before running Term Suit
 I suggest you to download 2 comparable corpora about wind energy; for exemple the first in [http://www.lina.univ-nantes.fr/taln/maven/en-wind-energy.tgz English] and the second in [http://www.lina.univ-nantes.fr/taln/maven/fr-wind-energy.tgz French]. Uncompress these archives wherever you want.
 
 Launch TermSuite in a terminal window:
-java -Xms1g -Xmx2g -jar ttc-term-suite-1.4.jar
+
+                java -Xms1g -Xmx2g -jar ttc-term-suite-1.4.jar
 
 === Spotting terms ===
 
