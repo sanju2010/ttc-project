@@ -1,6 +1,8 @@
 #summary getting started.
 #labels Featured,Phase-Support
 
+
+
 = Getting Started =
 
 It's not so complicated: you have to download text data before running Term Suite according its the 3 step design spotting terms, indexing terms and aligning terms.
@@ -119,6 +121,6 @@ Wait until the progression toolbar indicates 100% completed.
 Choose the *View* panel.
 Have a look of the right side of the window and you will see the 3 English terms you wanted to translate. Click on the directory button to view the translation candidates.
 
-You will see that the translation of _aerodynamic_ is the first translation proposed, that there is no translation found for _blade_, and for the _wind energy_, the translation guessed is at the 49th position, but the first one is acceptable.
+You will see that the translation of _aerodynamic_ is the first translation proposed, that there is no translation found for _blade_, and for _wind energy_, the expected translation is at the 49th position, but the first one is acceptable.
 
 Enjoy! Go back to the TermSuite user guide and try to extract term variants with the indexer.
