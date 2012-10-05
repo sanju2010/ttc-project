@@ -299,16 +299,19 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 	private void alignSingleWord(JCas cas, SingleWordTermAnnotation annotation,
 			String term) {
 		Context context = sourceTerminology.context(term);
-		HashMap<String, Double> dictionaryCandidates = new HashMap<String, Double>();
+		Map<String, Double> dictionaryCandidates = new HashMap<String, Double>();
+		HashMap<String, Double> ones = new HashMap<String, Double>();
 		Set<String> directTranslations = dictionary.get().get(term);
 		if (directTranslations != null && !directTranslations.isEmpty()) {
 			for (String trans : directTranslations) {
 				TermAnnotation annot = targetTerminology.get(trans);
 				if (annot != null) {
-					dictionaryCandidates.put(trans,
-							1.0 / annot.getOccurrences());
+					dictionaryCandidates.put(trans, annot.getSpecificity());
+					ones.put(trans, 1.0);
 				}
 			}
+			normalize(dictionaryCandidates);
+			dictionaryCandidates = merge(dictionaryCandidates, ones);
 		}
 		if (context == null) {
 			if (dictionaryCandidates.isEmpty()) {
@@ -319,6 +322,7 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 										+ term
 										+ "' because no context vector could be found for it.");
 			} else {
+
 				this.annotate(cas, annotation, dictionaryCandidates);
 			}
 		} else {
@@ -326,7 +330,6 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 			Context transfer = this.transfer(term, context);
 			Map<String, Double> candidates = this.align(term, transfer);
 			normalize(candidates);
-			normalize(dictionaryCandidates);
 			candidates = merge(dictionaryCandidates, candidates);
 			this.annotate(cas, annotation, candidates);
 		}
@@ -923,13 +926,27 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 			List<String> candidates) {
 		// Add entry to translation list
 		result.addTerm(entry);
-		for (int index = 0; index < candidates.size(); index++) {
-			String candidate = candidates.get(index);
+		HashMap<String, Double> scoredCandidates = new HashMap<String, Double>();
+		for (String candidate : candidates) {
+			TermAnnotation annot = targetTerminology.get(candidate);
+			if (annot != null) {
+				scoredCandidates.put(candidate, annot.getSpecificity());
+			}
+		}
+		normalize(scoredCandidates);
+
+		ScoreComparator comparator = new ScoreComparator();
+		comparator.set(scoredCandidates);
+		TreeMap<String, Double> sortedCandidates = new TreeMap<String, Double>(
+				comparator);
+		sortedCandidates.putAll(scoredCandidates);
+		int index = 1;
+		for (Entry<String, Double> candEntry : sortedCandidates.entrySet()) {
 			TranslationCandidateAnnotation annotation = new TranslationCandidateAnnotation(
 					cas, 0, cas.getDocumentText().length());
-			annotation.setTranslation(candidate);
-			annotation.setScore(1.0);
-			annotation.setRank(index + 1);
+			annotation.setTranslation(candEntry.getKey());
+			annotation.setScore(1.0 + candEntry.getValue());
+			annotation.setRank(index++);
 			annotation.addToIndexes();
 			// Add candidates for entry
 			result.addTranslationCandidate(entry, annotation);
@@ -1037,7 +1054,7 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 		public int compare(String sourceKey, String targetKey) {
 			Double sourceValue = this.map.get(sourceKey);
 			Double targetValue = this.map.get(targetKey);
-						
+
 			if (sourceValue == null && targetValue == null) {
 				return sourceKey.compareTo(targetKey);
 			} else if (sourceValue == null) {

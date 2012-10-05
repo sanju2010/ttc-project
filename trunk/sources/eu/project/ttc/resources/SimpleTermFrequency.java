@@ -2,9 +2,7 @@ package eu.project.ttc.resources;
 
 import java.lang.Character.UnicodeBlock;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
 
 import org.apache.uima.resource.DataResource;
@@ -23,45 +21,46 @@ public class SimpleTermFrequency implements SharedResourceObject {
 		this.setContexts();
 		this.setForms();
 	}
-	
+
 	private Map<String, Integer> frequencies;
-	
+
 	private void setFrequencies() {
 		this.frequencies = new HashMap<String, Integer>();
 	}
-	
-	private Map<String, Integer> formFreqs = new TreeMap<String, Integer>();
-	
+
 	public Map<String, Integer> getFrequencies() {
 		return this.frequencies;
 	}
 
 	private Map<String, String> categories;
-	
+
 	private void setCategories() {
 		this.categories = new HashMap<String, String>();
 	}
-	
+
 	public Map<String, String> getCategories() {
 		return this.categories;
 	}
 
-	private Map<String, Set<String>> forms;
-	
+	private Map<String, Map<String, Integer>> forms;
+
 	private void setForms() {
-		this.forms = new HashMap<String, Set<String>>();
+		this.forms = new HashMap<String, Map<String, Integer>>();
 	}
-	
-	public Map<String, Set<String>> getForms() {
+
+	public Map<String, Map<String, Integer>> getForms() {
 		return this.forms;
 	}
-	
-	public Map<String, Integer> getFormFreqs() {
-		return formFreqs;
+
+	public Map<String, Integer> getFormFreqs(String term) {
+		return forms.get(term);
 	}
+
 	protected String add(TermAnnotation annotation) {
-		String term = annotation.getLemma().toLowerCase().replaceAll("\\s+", " ").trim();
-		if (term == null) { 
+		String term = annotation.getLemma().toLowerCase()
+				.replaceAll("\\s+", " ").trim();
+		String form = annotation.getCoveredText().trim();
+		if (term == null) {
 			return null;
 		} else if (term.length() <= 2) {
 			return null;
@@ -70,17 +69,23 @@ public class SimpleTermFrequency implements SharedResourceObject {
 		} else if (term.startsWith("http:") || term.startsWith("www")) {
 			return null;
 		} else if (this.allow(term)) {
-			Integer frequency = this.getFrequencies().get(term);
-			int freq = frequency == null ? 1 : frequency.intValue() + 1;
-			this.getFrequencies().put(term, new Integer(freq));
-			this.getCategories().put(term, annotation.getCategory());
-			Set<String> forms = this.getForms().get(term);
-			if (forms == null) {
-				forms = new HashSet<String>();
-				this.getForms().put(term, forms);
+
+			// Increase term frequency
+			Integer frequency = frequencies.get(term);
+			frequencies.put(term, frequency == null ? 1
+					: frequency.intValue() + 1);
+			categories.put(term, annotation.getCategory());
+
+			// Handle forms
+			Map<String, Integer> termForms = forms.get(term);
+			if (termForms == null) {
+				termForms = new TreeMap<String, Integer>();
+				forms.put(term, termForms);
 			}
-			forms.add(annotation.getCoveredText());
-			formFreqs.put(annotation.getCoveredText(), freq);
+
+			// Increse term forms frequencies
+			Integer formFreq = termForms.get(form);
+			termForms.put(form, formFreq == null ? 1 : formFreq.intValue() + 1);
 			return term;
 		} else {
 			return null;
@@ -89,7 +94,7 @@ public class SimpleTermFrequency implements SharedResourceObject {
 
 	private boolean allow(String term) {
 		char ch = term.charAt(0);
-		int type = Character.getType(ch); 
+		int type = Character.getType(ch);
 		UnicodeBlock unicode = Character.UnicodeBlock.of(ch);
 		if (type == Character.LOWERCASE_LETTER) {
 			return true;
@@ -107,25 +112,26 @@ public class SimpleTermFrequency implements SharedResourceObject {
 	}
 
 	private Map<String, Context> contexts;
-	
+
 	private void setContexts() {
 		this.contexts = new HashMap<String, Context>();
 	}
-	
-	public Map<String,Context> getContexts() {
+
+	public Map<String, Context> getContexts() {
 		return this.contexts;
 	}
-	
-	public void setCoOccurrences(String term,String context,Double coOccurrences,int mode) {
+
+	public void setCoOccurrences(String term, String context,
+			Double coOccurrences, int mode) {
 		Context termContext = this.getContexts().get(term);
 		if (termContext == null) {
 			termContext = new Context();
-			this.getContexts().put(term,termContext);
+			this.getContexts().put(term, termContext);
 		}
 		termContext.setCoOccurrences(context, coOccurrences, mode);
 	}
-	
-	public void addCoOccurrences(String term,String context) {
+
+	public void addCoOccurrences(String term, String context) {
 		Context termContext = this.getContexts().get(term);
 		if (termContext == null) {
 			termContext = new Context();
@@ -135,6 +141,7 @@ public class SimpleTermFrequency implements SharedResourceObject {
 	}
 
 	@Override
-	public void load(DataResource aData) throws ResourceInitializationException { }
+	public void load(DataResource aData) throws ResourceInitializationException {
+	}
 
 }

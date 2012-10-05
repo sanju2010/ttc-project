@@ -2,10 +2,8 @@ package eu.project.ttc.resources;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.cas.CASException;
@@ -26,13 +24,13 @@ public class ComplexTermFrequency extends SimpleTermFrequency {
 		super();
 		this.setComponents();
 	}
-	
+
 	private Map<String, List<Component>> components;
-	
+
 	private void setComponents() {
 		this.components = new HashMap<String, List<Component>>();
 	}
-	
+
 	public Map<String, List<Component>> getComponents() {
 		return this.components;
 	}
@@ -49,14 +47,17 @@ public class ComplexTermFrequency extends SimpleTermFrequency {
 			}
 		}
 	}
-	
-	private void addForm(MultiWordTermAnnotation annotation, Set<String> forms) {
-		String coveredText = annotation.getCoveredText().toLowerCase().replaceAll("\\s+", " ");
+
+	private void addForm(MultiWordTermAnnotation annotation,
+			Map<String, Integer> forms) {
+		String coveredText = annotation.getCoveredText().toLowerCase()
+				.replaceAll("\\s+", " ");
 		int size = annotation.getComponents().size();
 		StringBuilder form = new StringBuilder();
 		for (int index = 0; index < size; index++) {
 			TermComponentAnnotation component = annotation.getComponents(index);
-			if (component.getBegin() == annotation.getBegin() && component.getEnd() == annotation.getEnd()) {
+			if (component.getBegin() == annotation.getBegin()
+					&& component.getEnd() == annotation.getEnd()) {
 				continue;
 			} else {
 				form.append(component.getCoveredText());
@@ -65,11 +66,11 @@ public class ComplexTermFrequency extends SimpleTermFrequency {
 				}
 			}
 		}
-		if (coveredText.length() < form.length()) {
-			forms.add(coveredText);
-		} else {
-			forms.add(form.toString());
-		}
+
+		String formText = (coveredText.length() < form.length()) ? coveredText
+				: form.toString();
+		Integer formFreq = forms.get(formText);
+		forms.put(formText, formFreq == null ? 1 : formFreq + 1);
 	}
 
 	private void add(MultiWordTermAnnotation annotation, String term) {
@@ -77,14 +78,14 @@ public class ComplexTermFrequency extends SimpleTermFrequency {
 		int freq = frequency == null ? 1 : frequency.intValue() + 1;
 		this.getFrequencies().put(term, new Integer(freq));
 		this.getCategories().put(term, annotation.getCategory());
-		Set<String> forms = this.getForms().get(term);
+		Map<String, Integer> forms = this.getForms().get(term);
 		if (forms == null) {
-			forms = new HashSet<String>();
+			forms = new HashMap<String, Integer>();
 			this.getForms().put(term, forms);
 		}
 		this.addForm(annotation, forms);
 	}
-	
+
 	private String add(MultiWordTermAnnotation annotation) {
 		if (annotation.getComponents() == null) {
 			return super.add(annotation);
@@ -92,7 +93,8 @@ public class ComplexTermFrequency extends SimpleTermFrequency {
 			int size = annotation.getComponents().size();
 			StringBuilder builder = new StringBuilder();
 			for (int index = 0; index < size; index++) {
-				TermComponentAnnotation component = annotation.getComponents(index);
+				TermComponentAnnotation component = annotation
+						.getComponents(index);
 				builder.append(component.getLemma());
 				if (index < size - 1) {
 					builder.append(' ');
@@ -103,13 +105,14 @@ public class ComplexTermFrequency extends SimpleTermFrequency {
 			return term;
 		}
 	}
-	
+
 	private void addComponents(MultiWordTermAnnotation annotation, String term) {
 		int size = annotation.getComponents().size();
 		List<Component> components = new ArrayList<Component>();
 		for (int index = 0; index < size; index++) {
 			TermComponentAnnotation component = annotation.getComponents(index);
-			if (component.getBegin() == annotation.getBegin() && component.getEnd() == annotation.getEnd()) {
+			if (component.getBegin() == annotation.getBegin()
+					&& component.getEnd() == annotation.getEnd()) {
 				continue;
 			} else {
 				Component c = new Component();
@@ -119,16 +122,19 @@ public class ComplexTermFrequency extends SimpleTermFrequency {
 		}
 		this.getComponents().put(term, components);
 	}
-	
-	private void addSubComponents(MultiWordTermAnnotation annotation, String term) {
+
+	private void addSubComponents(MultiWordTermAnnotation annotation,
+			String term) {
 		try {
 			JCas cas = annotation.getCAS().getJCas();
-			AnnotationIndex<Annotation> index = cas.getAnnotationIndex(WordAnnotation.type);
+			AnnotationIndex<Annotation> index = cas
+					.getAnnotationIndex(WordAnnotation.type);
 			FSIterator<Annotation> iterator = index.subiterator(annotation);
 			List<Component> components = new ArrayList<Component>();
 			while (iterator.hasNext()) {
 				WordAnnotation component = (WordAnnotation) iterator.next();
-				if (component.getBegin() == annotation.getBegin() && component.getEnd() == annotation.getEnd()) {
+				if (component.getBegin() == annotation.getBegin()
+						&& component.getEnd() == annotation.getEnd()) {
 					continue;
 				} else {
 					Component c = new Component();
@@ -142,8 +148,8 @@ public class ComplexTermFrequency extends SimpleTermFrequency {
 			UIMAFramework.getLogger().log(Level.SEVERE, annotation.toString());
 			// ignore throw e;
 		} catch (CASException e) {
-			UIMAFramework.getLogger().log(Level.WARNING,e.getMessage());
+			UIMAFramework.getLogger().log(Level.WARNING, e.getMessage());
 		}
 	}
-	
+
 }
