@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
+  <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
+  <primitive>false</primitive>
+  <delegateAnalysisEngineSpecifiers>
+    <delegateAnalysisEngine key="ChineseTreeTaggerNumberNormalizer">
+      <import name="eu.project.ttc.chinese.engines.spotter.ChineseNumberNormalizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="ChineseTreeTaggerGenderNormalizer">
+      <import name="eu.project.ttc.chinese.engines.spotter.ChineseGenderNormalizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="ChineseTreeTaggerSubcategoryNormalizer">
+      <import name="eu.project.ttc.chinese.engines.spotter.ChineseSubcategoryNormalizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="ChineseTreeTaggerCategoryNormalizer">
+      <import name="eu.project.ttc.chinese.engines.spotter.ChineseCategoryNormalizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="ChineseTreeTaggerMoodNormalizer">
+      <import name="eu.project.ttc.chinese.engines.spotter.ChineseMoodNormalizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="ChineseTreeTaggerTenseNormalizer">
+      <import name="eu.project.ttc.chinese.engines.spotter.ChineseTenseNormalizer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="ChineseTreeTaggerCaseNormalizer">
+      <import name="eu.project.ttc.chinese.engines.spotter.ChineseCaseNormalizer"/>
+    </delegateAnalysisEngine>
+  </delegateAnalysisEngineSpecifiers>
+  <analysisEngineMetaData>
+    <name>Chinese Normalizer</name>
+    <description>** DO NOT regenerate with the Makefile **</description>
+    <version>1.0</version>
+    <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
+    <configurationParameters searchStrategy="language_fallback"/>
+    <configurationParameterSettings/>
+    <flowConstraints>
+      <fixedFlow>
+        <node>ChineseTreeTaggerCategoryNormalizer</node>
+        <node>ChineseTreeTaggerSubcategoryNormalizer</node>
+        <node>ChineseTreeTaggerMoodNormalizer</node>
+        <node>ChineseTreeTaggerTenseNormalizer</node>
+        <node>ChineseTreeTaggerGenderNormalizer</node>
+        <node>ChineseTreeTaggerNumberNormalizer</node>
+        <node>ChineseTreeTaggerCaseNormalizer</node>
+      </fixedFlow>
+    </flowConstraints>
+    <typePriorities/>
+    <fsIndexCollection/>
+    <capabilities>
+      <capability>
+        <inputs/>
+        <outputs>
+          <type allAnnotatorFeatures="true">eu.project.ttc.types.WordAnnotation</type>
+        </outputs>
+        <languagesSupported>
+          <language>zh</language>
+        </languagesSupported>
+      </capability>
+    </capabilities>
+    <operationalProperties>
+      <modifiesCas>true</modifiesCas>
+      <multipleDeploymentAllowed>true</multipleDeploymentAllowed>
+      <outputsNewCASes>false</outputsNewCASes>
+    </operationalProperties>
+  </analysisEngineMetaData>
+  <resourceManagerConfiguration/>
+</analysisEngineDescription>

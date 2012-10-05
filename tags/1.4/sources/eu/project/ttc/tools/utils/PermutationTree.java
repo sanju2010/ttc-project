@@ -1,0 +1,71 @@
+package eu.project.ttc.tools.utils;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import org.apache.uima.jcas.tcas.Annotation;
+
+import eu.project.ttc.engines.TermAligner;
+
+/**
+ * This class is intended to be used by the {@link TermAligner} class to
+ * generate permutations.
+ * 
+ * @author Sebastián Peña Saldarriaga
+ * 
+ * @param <T>
+ *            The annotation type.
+ */
+public class PermutationTree<T extends Annotation> {
+
+	private T node;
+
+	public T node() {
+		return this.node;
+	}
+
+	private Set<PermutationTree<T>> children;
+
+	public PermutationTree(T node) {
+		this.children = new HashSet<PermutationTree<T>>();
+		this.node = node;
+	}
+
+	public Set<PermutationTree<T>> children() {
+		return this.children;
+	}
+
+	public void addChild(PermutationTree<T> child) {
+		children.add(child);
+	}
+
+	public List<List<String>> strings() {
+		List<List<String>> results = new ArrayList<List<String>>();
+		for (PermutationTree<T> t : this.children()) {
+			List<String> list = new ArrayList<String>();
+			String string = t.node().getCoveredText();
+			list.add(string);
+			results.addAll(t.strings(list));
+		}
+		return results;
+	}
+
+	public List<List<String>> strings(List<String> lists) {
+		if (this.children().isEmpty()) {
+			List<List<String>> results = new ArrayList<List<String>>();
+			results.add(lists);
+			return results;
+		} else {
+			List<List<String>> results = new ArrayList<List<String>>();
+			for (PermutationTree<T> t : this.children()) {
+				List<String> list = new ArrayList<String>(lists);
+				String string = t.node().getCoveredText();
+				list.add(string);
+				results.addAll(t.strings(list));
+			}
+			return results;
+		}
+	}
+}

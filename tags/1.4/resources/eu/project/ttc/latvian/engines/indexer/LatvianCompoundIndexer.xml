@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
+  <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
+  <primitive>false</primitive>
+  <delegateAnalysisEngineSpecifiers>
+    <delegateAnalysisEngine key="LatvianNeoclassicalSplitter">
+      <import name="eu.project.ttc.latvian.engines.indexer.LatvianNeoclassicalSplitter"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="LatvianPrefixSplitter">
+      <import name="eu.project.ttc.latvian.engines.indexer.LatvianPrefixSplitter"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="LatvianCompoundSplitter">
+      <import name="eu.project.ttc.latvian.engines.indexer.LatvianCompoundSplitter"/>
+    </delegateAnalysisEngine>
+  </delegateAnalysisEngineSpecifiers>
+  <analysisEngineMetaData>
+    <name>Latvian Compound Indexer</name>
+    <description/>
+    <version>1.0</version>
+    <vendor/>
+    <configurationParameters/>
+    <configurationParameterSettings/>
+    <flowConstraints>
+      <fixedFlow>
+        <node>LatvianCompoundSplitter</node>
+        <node>LatvianPrefixSplitter</node>
+        <node>LatvianNeoclassicalSplitter</node>
+      </fixedFlow>
+    </flowConstraints>
+    <fsIndexCollection/>
+    <capabilities>
+      <capability>
+        <inputs/>
+        <outputs/>
+        <languagesSupported/>
+      </capability>
+    </capabilities>
+    <operationalProperties>
+      <modifiesCas>true</modifiesCas>
+      <multipleDeploymentAllowed>true</multipleDeploymentAllowed>
+      <outputsNewCASes>false</outputsNewCASes>
+    </operationalProperties>
+  </analysisEngineMetaData>
+  <resourceManagerConfiguration/>
+</analysisEngineDescription>

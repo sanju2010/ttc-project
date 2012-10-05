@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
+  <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
+  <primitive>false</primitive>
+  <delegateAnalysisEngineSpecifiers>
+    <delegateAnalysisEngine key="GermanNeoclassicalSplitter">
+      <import name="eu.project.ttc.german.engines.indexer.GermanNeoclassicalSplitter"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="GermanPrefixSplitter">
+      <import name="eu.project.ttc.german.engines.indexer.GermanPrefixSplitter"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="GermanCompoundSplitter">
+      <import name="eu.project.ttc.german.engines.indexer.GermanCompoundSplitter"/>
+    </delegateAnalysisEngine>
+  </delegateAnalysisEngineSpecifiers>
+  <analysisEngineMetaData>
+    <name>German Compound Indexer</name>
+    <description/>
+    <version>1.0</version>
+    <vendor/>
+    <configurationParameters/>
+    <configurationParameterSettings/>
+    <flowConstraints>
+      <fixedFlow>
+        <node>GermanCompoundSplitter</node>
+        <node>GermanPrefixSplitter</node>
+        <node>GermanNeoclassicalSplitter</node>
+      </fixedFlow>
+    </flowConstraints>
+    <fsIndexCollection/>
+    <capabilities>
+      <capability>
+        <inputs/>
+        <outputs/>
+        <languagesSupported/>
+      </capability>
+    </capabilities>
+    <operationalProperties>
+      <modifiesCas>true</modifiesCas>
+      <multipleDeploymentAllowed>true</multipleDeploymentAllowed>
+      <outputsNewCASes>false</outputsNewCASes>
+    </operationalProperties>
+  </analysisEngineMetaData>
+  <resourceManagerConfiguration/>
+</analysisEngineDescription>

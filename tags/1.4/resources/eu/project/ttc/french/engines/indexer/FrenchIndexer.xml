@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
+  <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
+  <primitive>false</primitive>
+  <delegateAnalysisEngineSpecifiers>
+    <delegateAnalysisEngine key="FrenchTermFrequencyComputer">
+      <import name="eu.project.ttc.french.engines.indexer.FrenchTermFrequencyComputer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="FrenchCompoundIndexer">
+      <import name="eu.project.ttc.french.engines.indexer.FrenchCompoundIndexer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="Writer">
+      <import name="eu.project.ttc.all.engines.Writer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="TermBaseXchanger">
+      <import name="eu.project.ttc.all.engines.TermBaseXchanger"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="FrenchTermGatherer">
+      <import name="eu.project.ttc.french.engines.indexer.FrenchTermGatherer"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="TermCleaner">
+      <import name="eu.project.ttc.all.engines.indexer.TermCleaner"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="TermIndexer">
+      <import name="eu.project.ttc.all.engines.indexer.TermIndexer"/>
+    </delegateAnalysisEngine>
+  </delegateAnalysisEngineSpecifiers>
+  <flowController key="FixedFlowController">
+    <import name="org.apache.uima.flow.FixedFlowController"/>
+  </flowController>
+  <analysisEngineMetaData>
+    <name>French Indexer</name>
+    <description/>
+    <version>1.0</version>
+    <vendor>University of Nantes (LINA, UMR CNRS 6241)</vendor>
+    <configurationParameters searchStrategy="language_fallback">
+      <configurationParameter>
+        <name>Directory</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>Writer/Directory</parameter>
+          <parameter>TermBaseXchanger/Directory</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>EditDistanceClassName</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>FrenchTermGatherer/EditDistanceClassName</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>EnableTermGathering</name>
+        <type>Boolean</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>FrenchTermGatherer/Enable</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>EditDistanceThreshold</name>
+        <type>Float</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>FrenchTermGatherer/Threshold</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>EditDistanceNgrams</name>
+        <type>Integer</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>FrenchTermGatherer/Ngrams</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>Action</name>
+        <description>The action to be taken after a CAS has been input to a CAS Multiplier and the CAS Multiplier has finished processing it.
+		 Valid values are:
+			continue - the CAS continues on to the next element in the flow
+			stop - the CAS will no longer continue in the flow, and will be returned from the aggregate if possible.
+			drop - the CAS will no longer continue in the flow, and will be dropped (not returned from the aggregate) if possible.	 
+			dropIfNewCasProduced (the default) - if the CAS multiplier produced a new CAS as a result of processing this CAS, then this
+				CAS will be dropped.  If not, then this CAS will continue.</description>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>FixedFlowController/ActionAfterCasMultiplier</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>Language</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>TermIndexer/Language</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>AssociationRateClassName</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>TermIndexer/AssociationRateClassName</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>OccurrenceThreshold</name>
+        <type>Integer</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>TermCleaner/Threshold</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>IgnoreDiacriticsInMultiwordTerms</name>
+        <type>Boolean</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>FrenchTermGatherer/IgnoreDiacriticsInMultiwordTerms</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>FilterRule</name>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>TermBaseXchanger/FilterRule</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>FilterRuleThreshold</name>
+        <type>Float</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>TermBaseXchanger/FilterRuleThreshold</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>KeepVerbsAndOthers</name>
+        <type>Boolean</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>TermBaseXchanger/KeepVerbsAndOthers</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>EnableTsvOutput</name>
+        <description>Enable TSV output along with the TBX writer.</description>
+        <type>Boolean</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>TermBaseXchanger/EnableTsvOutput</parameter>
+        </overrides>
+      </configurationParameter>
+    </configurationParameters>
+    <configurationParameterSettings>
+      <nameValuePair>
+        <name>Directory</name>
+        <value>
+          <string>/tmp</string>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>EditDistanceClassName</name>
+        <value>
+          <string>eu.project.ttc.metrics.LevenshteinDistance</string>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>EnableTermGathering</name>
+        <value>
+          <boolean>false</boolean>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>EditDistanceThreshold</name>
+        <value>
+          <float>0.9</float>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>EditDistanceNgrams</name>
+        <value>
+          <integer>1</integer>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>Language</name>
+        <value>
+          <string>fr</string>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>Action</name>
+        <value>
+          <string>drop</string>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>AssociationRateClassName</name>
+        <value>
+          <string>eu.project.ttc.metrics.LogLikelihood</string>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>KeepVerbsAndOthers</name>
+        <value>
+          <boolean>false</boolean>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>FilterRuleThreshold</name>
+        <value>
+          <float>0.0</float>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>FilterRule</name>
+        <value>
+          <string>None</string>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>OccurrenceThreshold</name>
+        <value>
+          <integer>1</integer>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>EnableTsvOutput</name>
+        <value>
+          <boolean>true</boolean>
+        </value>
+      </nameValuePair>
+    </configurationParameterSettings>
+    <flowConstraints>
+      <fixedFlow>
+        <node>TermIndexer</node>
+        <node>FrenchTermFrequencyComputer</node>
+        <node>FrenchCompoundIndexer</node>
+        <node>FrenchTermGatherer</node>
+        <node>TermBaseXchanger</node>
+        <node>TermCleaner</node>
+        <node>Writer</node>
+      </fixedFlow>
+    </flowConstraints>
+    <typePriorities/>
+    <fsIndexCollection/>
+    <capabilities>
+      <capability>
+        <inputs>
+          <type allAnnotatorFeatures="true">org.apache.uima.examples.SourceDocumentInformation</type>
+          <type allAnnotatorFeatures="true">eu.project.ttc.types.WordAnnotation</type>
+        </inputs>
+        <outputs/>
+        <languagesSupported>
+          <language>fr</language>
+        </languagesSupported>
+      </capability>
+    </capabilities>
+    <operationalProperties>
+      <modifiesCas>true</modifiesCas>
+      <multipleDeploymentAllowed>true</multipleDeploymentAllowed>
+      <outputsNewCASes>true</outputsNewCASes>
+    </operationalProperties>
+  </analysisEngineMetaData>
+  <resourceManagerConfiguration/>
+</analysisEngineDescription>
