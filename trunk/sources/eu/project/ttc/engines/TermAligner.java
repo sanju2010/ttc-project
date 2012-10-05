@@ -303,8 +303,11 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 		Set<String> directTranslations = dictionary.get().get(term);
 		if (directTranslations != null && !directTranslations.isEmpty()) {
 			for (String trans : directTranslations) {
-				dictionaryCandidates
-						.put(trans, 1.0 / directTranslations.size());
+				TermAnnotation annot = targetTerminology.get(trans);
+				if (annot != null) {
+					dictionaryCandidates.put(trans,
+							1.0 / annot.getOccurrences());
+				}
 			}
 		}
 		if (context == null) {
@@ -323,6 +326,7 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 			Context transfer = this.transfer(term, context);
 			Map<String, Double> candidates = this.align(term, transfer);
 			normalize(candidates);
+			normalize(dictionaryCandidates);
 			candidates = merge(dictionaryCandidates, candidates);
 			this.annotate(cas, annotation, candidates);
 		}
@@ -332,12 +336,12 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 			Map<String, Double> distrib2) {
 		HashMap<String, Double> first = new HashMap<String, Double>(distrib1);
 		HashMap<String, Double> second = new HashMap<String, Double>(distrib2);
-		
+
 		for (String sample : first.keySet()) {
 			Double v = second.get(sample);
 			if (v != null) {
 				first.put(sample, v + first.get(sample));
-				second.remove(v);
+				second.remove(sample);
 			}
 		}
 		first.putAll(second);
@@ -1033,6 +1037,7 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 		public int compare(String sourceKey, String targetKey) {
 			Double sourceValue = this.map.get(sourceKey);
 			Double targetValue = this.map.get(targetKey);
+						
 			if (sourceValue == null && targetValue == null) {
 				return sourceKey.compareTo(targetKey);
 			} else if (sourceValue == null) {
@@ -1040,7 +1045,8 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 			} else if (targetValue == null) {
 				return 1;
 			} else {
-				return targetValue.compareTo(sourceValue);
+				int r = targetValue.compareTo(sourceValue);
+				return r == 0 ? sourceKey.compareTo(targetKey) : r;
 			}
 		}
 

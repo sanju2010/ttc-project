@@ -44,6 +44,7 @@ import eu.project.ttc.tools.utils.TermPredicate;
 import eu.project.ttc.tools.utils.TermPredicates;
 import eu.project.ttc.tools.utils.TermPredicates.ListBasedTermPredicate;
 import eu.project.ttc.types.FormAnnotation;
+import eu.project.ttc.types.MultiWordTermAnnotation;
 import eu.project.ttc.types.SingleWordTermAnnotation;
 import eu.project.ttc.types.TermAnnotation;
 
@@ -411,7 +412,7 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 		
 		this.addNote(doc, langSet, tig, "termType", isVariant ? "variant"
 				: "termEntry");
-		this.addNote(doc, langSet, tig, "partOfSpeech", "noun");
+		this.addNote(doc, langSet, tig, "partOfSpeech", (term instanceof MultiWordTermAnnotation) ? "noun" : term.getCategory());
 		this.addNote(doc, langSet, tig, "termPattern", term.getCategory());
 		this.addNote(doc, langSet, tig, "termComplexity",
 				this.getComplexity(term));
