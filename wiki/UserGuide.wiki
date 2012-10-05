@@ -199,7 +199,6 @@ Moreover, make sure that these parameter file have the following encoding althou
 || Latvian ||  ||  ||
 || Chinese || zh.par || utf-8 ||
 
-The Latvian language isn't yet supported by this version of Term Suite.
 
 ==== Latvian ====
 
