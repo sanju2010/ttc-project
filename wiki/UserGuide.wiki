@@ -73,11 +73,10 @@ Moreover, make sure that these parameter file have the following encoding althou
 || Latvian ||  ||  ||
 || Chinese || zh.par || utf-8 ||
 
-The Latvian language isn't yet supported by this version of Term Suite.
 
-  *Notice* that you have to rename some of these parameter files!
-  For example, the French parameter file original name is 
-  'french-par-linux-3.2.bin'.
+*Notice* that you have to rename some of these parameter files!
+For example, the French parameter file original name is 
+  'french-par-linux-3.2.bin' need to be rename as 'french.par'
 
 === Term Suite ===
 
