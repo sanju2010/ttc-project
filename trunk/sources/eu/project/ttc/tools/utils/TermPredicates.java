@@ -233,7 +233,10 @@ public class TermPredicates {
 				
 				// Sort annotations
 				TreeSet<TermAnnotation> annotations = new TreeSet<TermAnnotation>(comparator);
-				annotations.addAll(termList);				
+				annotations.addAll(termList);			
+				System.out.println("Terms in original list : " + termList.size());
+				System.out.println("Terms in tree set list : " + annotations.size());
+				System.out.println("Cutoff rank : " + cutoffRank);
 				
 				// Copy annotation ids up to the cutoff rank
 				selectedIds = new String[cutoffRank];
@@ -244,6 +247,7 @@ public class TermPredicates {
 					}
 					selectedIds[i++] = term.getLangset();
 				}
+				System.out.println("Terms in final list : " + selectedIds.length);
 				Arrays.sort(selectedIds);
 			}
 		};

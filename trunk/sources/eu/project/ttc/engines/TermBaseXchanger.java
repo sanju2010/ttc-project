@@ -67,6 +67,9 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 	private TermPredicate predicate = TermPredicates
 			.createNounAdjectivePredicate();
 
+	/** Initial predicate */
+	private TermPredicate initial;
+
 	/** TBX filter rule as specified by the parameters */
 	private TermPredicate filterRule;
 
@@ -105,6 +108,8 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 					predicate = TermPredicates.createOrPredicate(predicate,
 							TermPredicates.createVerbAdverbPredicate());
 
+				initial = predicate;
+
 				filterRule = getFilterRulePredicate(
 						(String) context
 								.getConfigParameterValue(TBXSettings.P_FILTER_RULE),
@@ -115,7 +120,7 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 						filterRule);
 				tsvEnabled = Boolean.TRUE.equals(context
 						.getConfigParameterValue(TBXSettings.P_ENABLE_TSV));
-				
+
 			}
 			if (this.variants == null) {
 				this.setVariants();
@@ -258,10 +263,17 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 		for (TermAnnotation var : variants)
 			termList.remove(var);
 
+		ArrayList<TermAnnotation> accepted = new ArrayList<TermAnnotation>();
+		for (TermAnnotation annotation : termList)
+			if (initial.accept(annotation)) {
+				accepted.add(annotation);
+			}
+
 		if (filterRule instanceof ListBasedTermPredicate)
-			((ListBasedTermPredicate) filterRule).initialize(termList);
+			((ListBasedTermPredicate) filterRule).initialize(accepted);
 
 		Collections.sort(termList, outputComparator);
+		System.out.println("Terms in sorted term list : " + termList.size());
 		return termList;
 	}
 
@@ -334,6 +346,7 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 	private void process(JCas cas, List<TermAnnotation> termList,
 			Document document, Element body) throws IOException {
 		String lang = cas.getDocumentLanguage();
+		int count = 0;
 		for (TermAnnotation annotation : termList) {
 			String id = annotation.getLangset();
 
@@ -351,12 +364,14 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 					}
 				}
 
+				count++;
 				// finish TSV entry if needed
 				if (tsvEnabled) {
 					tsv.endTerm();
 				}
 			}
 		}
+		System.out.println("Terms saved : " + count);
 	}
 
 	private void addTermEntry(Document doc, Element body, String langsetId,
@@ -399,20 +414,20 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 
 		FSArray forms = term.getForms();
 		String pilot = term.getCoveredText();
-		int occurrencesWithForms = 0;
 		if (forms != null) {
 			pilot = term.getForms(0).getForm();
 			addNote(doc, langSet, tig, "termPilot", pilot);
-			for (int i = 0; i < forms.size(); i++) {
-				occurrencesWithForms += term.getForms(i).getOccurrences();
-			}
-		} else {
-			occurrencesWithForms = term.getOccurrences();
 		}
-		
+
 		this.addNote(doc, langSet, tig, "termType", isVariant ? "variant"
 				: "termEntry");
-		this.addNote(doc, langSet, tig, "partOfSpeech", (term instanceof MultiWordTermAnnotation) ? "noun" : term.getCategory());
+		this.addNote(
+				doc,
+				langSet,
+				tig,
+				"partOfSpeech",
+				(term instanceof MultiWordTermAnnotation) ? "noun" : term
+						.getCategory());
 		this.addNote(doc, langSet, tig, "termPattern", term.getCategory());
 		this.addNote(doc, langSet, tig, "termComplexity",
 				this.getComplexity(term));

@@ -1,11 +1,13 @@
 package eu.project.ttc.tools.aligner;
 
 import java.awt.Dimension;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import javax.swing.JScrollPane;
@@ -27,6 +29,13 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 public class AlignerViewer {
 
+	private static final NumberFormat FORMATTER = NumberFormat.getNumberInstance(Locale.US);
+	
+	static {
+		FORMATTER.setMinimumFractionDigits(4);
+		FORMATTER.setMaximumFractionDigits(4);
+	}
+	
 	private Dimension getDimension() {
 		return new Dimension(600,400);
 	}
@@ -207,7 +216,7 @@ public class AlignerViewer {
 	private void addNote(DefaultMutableTreeNode root,String key,Integer rank, Double score) {
 		DefaultMutableTreeNode node = new DefaultMutableTreeNode();
 		if (score != null) {
-			String string = rank.toString() + ") " + key +  " [" + score.toString() + "]";
+			String string = rank.toString() + ") " + key +  " [" + FORMATTER.format(score) + "]";
 			node.setUserObject(string);
 			root.add(node);
 		}	

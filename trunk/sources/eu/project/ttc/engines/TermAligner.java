@@ -391,6 +391,7 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 	private void alignCompound(JCas cas, JCas terminology,
 			SingleWordTermAnnotation entry, String term) throws CASException {
 		List<List<String>> componentLists = this.extract(terminology, entry);
+		Set<String> componentCandidates = new HashSet<String>();
 		for (List<String> components : componentLists) {
 			components = this.reshape(components);
 			if (components.size() >= 2) {
@@ -399,9 +400,11 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 				components = this.flatten(candidates, "");
 				components.addAll(this.flatten(candidates, "-"));
 				components = this.select(components);
-				this.annotate(cas, entry, components);
+				componentCandidates.addAll(components);
 			}
 		}
+
+		this.annotate(cas, entry, new ArrayList<String>(componentCandidates));
 	}
 
 	private void alignComponent(JCas cas, String term, Set<String> set) {
@@ -986,9 +989,17 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 				});
 
 		int index = 1;
+		double norm = 0.0;
+		for (TranslationCandidateAnnotation annotation : annotCand) {
+			norm += annotation.getScore();
+			if (index > translationCandidateCutOff)
+				break;
+		}
+
 		for (TranslationCandidateAnnotation annotation : annotCand) {
 			annotation.setRank(index);
 			annotation.addToIndexes();
+			annotation.setScore(annotation.getScore() / norm);
 			// Add candidates for entry
 			result.addTranslationCandidate(entry, annotation);
 			index++;
