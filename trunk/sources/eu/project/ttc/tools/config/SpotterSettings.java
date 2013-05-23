@@ -1,4 +1,4 @@
-package eu.project.ttc.tools.spotter;
+package eu.project.ttc.tools.config;
 
 import org.apache.uima.resource.metadata.ConfigurationParameter;
 import org.apache.uima.resource.metadata.ConfigurationParameterDeclarations;

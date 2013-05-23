@@ -1,17 +1,30 @@
 package eu.project.ttc.tools.spotter;
 
 import java.awt.Component;
-import java.io.File;
 
 import javax.swing.JPanel;
 
 import eu.project.ttc.tools.TermSuite;
 import eu.project.ttc.tools.TermSuiteTool;
+import eu.project.ttc.tools.config.SpotterSettings;
+import eu.project.ttc.tools.config.TermSuiteSettings;
 
+/**
+ * GUI to configure the Spotter tool.
+ *
+ * The spotter is responsible for processing documents and extract term candidates from it.
+ */
 public class Spotter implements TermSuiteTool {
 
 	private TermSuite parent;
-	
+    private SpotterSettings settings;
+
+    public Spotter(TermSuiteSettings tsConfig) {
+        // Save the references to the settings
+        this.settings = tsConfig.getSpotterSettings();
+        this.setComponent();
+    }
+
 	public void setParent(TermSuite parent) {
 		this.parent = parent;
 	}
@@ -19,32 +32,12 @@ public class Spotter implements TermSuiteTool {
 	public TermSuite getParent() {
 		return this.parent;
 	}
+
+    public SpotterSettings getSettings() {
+        return this.settings;
+    }
 	
-	private SpotterSettings settings;
-	
-	private void setSettings(File home) {
-		this.settings = new SpotterSettings(home.getAbsolutePath() + File.separator + "spotter.settings");
-	}
-	
-	public SpotterSettings getSettings() {
-		return this.settings;
-	}
-	
-	private SpotterAdvancedSettings advancedSettings;
-	
-	private void setAdvancedSettings(File home) {
-		this.advancedSettings = new SpotterAdvancedSettings(home.getAbsolutePath() + File.separator + "spotter.advanced-settings");
-	}
-	
-	public SpotterAdvancedSettings getAdvancedSettings() {
-		return this.advancedSettings;
-	}
-	
-	public Spotter(File home) {
-		this.setSettings(home);
-		this.setAdvancedSettings(home);
-		this.setComponent();
-	}
+    ////////////////////////////////////////////////////////////////////////////////////////////////////// GUI SET UP
 
 	private JPanel component;
 	
@@ -55,8 +48,7 @@ public class Spotter implements TermSuiteTool {
 			this.component.add(this.getSettings().getComponent());
 
 	}
-	
-	@Override
+
 	public Component getComponent() {
 		return this.component;
 	}

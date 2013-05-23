@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Locale;
 
+import eu.project.ttc.tools.config.SpotterSettings;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.resource.metadata.ConfigurationParameterSettings;
@@ -25,14 +26,12 @@ public class SpotterEngine implements TermSuiteEngine {
 		return this.tool;
 	}
 		
-	@Override
 	public void callBack(CAS cas) throws Exception {
 		ProcessingResult result = new ProcessingResult();
 		result.setCas(cas);
 		this.getTool().getParent().getViewer().getResultModel().addElement(result);
 	}
 
-	@Override
 	public String get() throws Exception {
 		ConfigurationParameterSettings parameters = this.getTool().getSettings().getMetaData().getConfigurationParameterSettings();
 		String code = (String) parameters.getParameterValue(SpotterSettings.P_SOURCE_LANGUAGE);
@@ -40,7 +39,6 @@ public class SpotterEngine implements TermSuiteEngine {
 		return "eu/project/ttc/" + language.toLowerCase() + "/engines/spotter/" + language + "Spotter.xml";
 	}
 
-	@Override
 	public ConfigurationParameterSettings settings() throws Exception {
 		ConfigurationParameterSettings parameters = this.getTool().getSettings().getMetaData().getConfigurationParameterSettings();
         ConfigurationParameterSettings settings = UIMAFramework.getResourceSpecifierFactory().createConfigurationParameterSettings();
@@ -57,24 +55,20 @@ public class SpotterEngine implements TermSuiteEngine {
         return settings;
 	}
 
-	@Override
 	public String data() {
 		ConfigurationParameterSettings parameters = this.getTool().getSettings().getMetaData().getConfigurationParameterSettings();
 		return (String) parameters.getParameterValue(SpotterSettings.P_INPUT_DIRECTORY);
 	}
 
-	@Override
 	public InputSourceTypes input() {
 		return InputSourceTypes.TXT;
 	}
 
-	@Override
 	public String language() {
 		ConfigurationParameterSettings parameters = this.getTool().getSettings().getMetaData().getConfigurationParameterSettings();
 		return (String) parameters.getParameterValue(SpotterSettings.P_SOURCE_LANGUAGE);
 	}
 
-	@Override
 	public String encoding() {
 		return TermSuiteEngine.DEFAULT_ENCODING;
 	}

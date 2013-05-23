@@ -32,7 +32,7 @@ import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 
 import eu.project.ttc.tools.InputSourceTypes;
 import eu.project.ttc.tools.TermSuiteRunner;
-import eu.project.ttc.tools.spotter.SpotterSettings;
+import eu.project.ttc.tools.config.SpotterSettings;
 
 /**
  * Command line interface for the Spotter engines.

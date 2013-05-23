@@ -23,6 +23,8 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import eu.project.ttc.tools.config.IndexerSettings;
+import eu.project.ttc.tools.config.IndexerSettings.FilterRules;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
@@ -37,8 +39,6 @@ import org.apache.uima.util.Level;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import eu.project.ttc.tools.indexer.TBXSettings;
-import eu.project.ttc.tools.indexer.TBXSettings.FilterRules;
 import eu.project.ttc.tools.utils.IndexerTSVBuilder;
 import eu.project.ttc.tools.utils.TermPredicate;
 import eu.project.ttc.tools.utils.TermPredicates;
@@ -104,7 +104,7 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 
 				// Set up TBX filtering
 				if (Boolean.TRUE.equals(context
-						.getConfigParameterValue(TBXSettings.P_KEEP_VERBS)))
+						.getConfigParameterValue(IndexerSettings.P_KEEP_VERBS)))
 					predicate = TermPredicates.createOrPredicate(predicate,
 							TermPredicates.createVerbAdverbPredicate());
 
@@ -112,14 +112,14 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 
 				filterRule = getFilterRulePredicate(
 						(String) context
-								.getConfigParameterValue(TBXSettings.P_FILTER_RULE),
+								.getConfigParameterValue(IndexerSettings.P_FILTER_RULE),
 						(Float) context
-								.getConfigParameterValue(TBXSettings.P_FILTERING_THRESHOLD));
+								.getConfigParameterValue(IndexerSettings.P_FILTERING_THRESHOLD));
 
 				predicate = TermPredicates.createAndPredicate(predicate,
 						filterRule);
 				tsvEnabled = Boolean.TRUE.equals(context
-						.getConfigParameterValue(TBXSettings.P_ENABLE_TSV));
+						.getConfigParameterValue(IndexerSettings.P_ENABLE_TSV));
 
 			}
 			if (this.variants == null) {

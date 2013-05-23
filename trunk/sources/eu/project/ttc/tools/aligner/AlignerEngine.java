@@ -3,6 +3,7 @@ package eu.project.ttc.tools.aligner;
 import java.io.File;
 import java.io.FileNotFoundException;
 
+import eu.project.ttc.tools.config.AlignerSettings;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.resource.metadata.ConfigurationParameterSettings;
@@ -26,15 +27,12 @@ public class AlignerEngine implements TermSuiteEngine {
 		return this.tool;
 	}
 
-	@Override
 	public String get() throws Exception {
 		return "eu/project/ttc/all/engines/aligner/Aligner.xml";
 	}
 
-	@Override
 	public ConfigurationParameterSettings settings() throws Exception {
 		ConfigurationParameterSettings parameters = this.getTool().getSettings().getMetaData().getConfigurationParameterSettings();
-		ConfigurationParameterSettings advancedParameters = this.getTool().getAdvancedSettings().getMetaData().getConfigurationParameterSettings();
 		ConfigurationParameterSettings settings = UIMAFramework.getResourceSpecifierFactory().createConfigurationParameterSettings();
 		
 		settings.setParameterValue(AlignerSettings.P_SOURCE_LANGUAGE,
@@ -84,48 +82,39 @@ public class AlignerEngine implements TermSuiteEngine {
 		}
 
 		settings.setParameterValue(
-				AlignerAdvancedSettings.P_SIMILARITY_DISTANCE,
-				advancedParameters
-						.getParameterValue(AlignerAdvancedSettings.P_SIMILARITY_DISTANCE));
+				AlignerSettings.P_SIMILARITY_DISTANCE,
+				parameters.getParameterValue(AlignerSettings.P_SIMILARITY_DISTANCE));
 		settings.setParameterValue(
-				AlignerAdvancedSettings.P_METHOD_DISTRIBUTIONAL,
-				Boolean.TRUE.equals(advancedParameters
-						.getParameterValue(AlignerAdvancedSettings.P_METHOD_DISTRIBUTIONAL)));
+				AlignerSettings.P_METHOD_DISTRIBUTIONAL,
+				Boolean.TRUE.equals(parameters.getParameterValue(AlignerSettings.P_METHOD_DISTRIBUTIONAL)));
 		settings.setParameterValue(
-				AlignerAdvancedSettings.P_METHOD_COMPOSITIONAL,
-				Boolean.TRUE.equals(advancedParameters
-						.getParameterValue(AlignerAdvancedSettings.P_METHOD_COMPOSITIONAL)));
+				AlignerSettings.P_METHOD_COMPOSITIONAL,
+				Boolean.TRUE.equals(parameters.getParameterValue(AlignerSettings.P_METHOD_COMPOSITIONAL)));
 		
-		Object candidates = advancedParameters
-				.getParameterValue(AlignerAdvancedSettings.P_MAX_CANDIDATES);
-		settings.setParameterValue(AlignerAdvancedSettings.P_MAX_CANDIDATES,
+		Object candidates = parameters.getParameterValue(AlignerSettings.P_MAX_CANDIDATES);
+		settings.setParameterValue(AlignerSettings.P_MAX_CANDIDATES,
 				candidates == null ? DEFAULT_MAX_TRANSLATION_CANDIDATES : candidates);
 
 		return settings;
 	}
 
-	@Override
 	public String data() {
 		ConfigurationParameterSettings parameters = this.getTool().getSettings().getMetaData().getConfigurationParameterSettings();
 		return (String) parameters.getParameterValue(AlignerSettings.P_EVALUATION_DIRECTORY);
 	}
 
-	@Override
 	public InputSourceTypes input() {
 		return InputSourceTypes.TXT;
 	}
 
-	@Override
 	public String language() {
 		return null;
 	}
 
-	@Override
 	public String encoding() {
 		return TermSuiteEngine.DEFAULT_ENCODING;
 	}
 
-	@Override
 	public void callBack(CAS cas) throws Exception {
 		this.getTool().getParent().getMixer().doLoad(cas.getJCas());
 	}

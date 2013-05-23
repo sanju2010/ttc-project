@@ -32,8 +32,7 @@ import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 
 import eu.project.ttc.tools.InputSourceTypes;
 import eu.project.ttc.tools.TermSuiteRunner;
-import eu.project.ttc.tools.aligner.AlignerSettings;
-import eu.project.ttc.tools.aligner.AlignerAdvancedSettings;
+import eu.project.ttc.tools.config.AlignerSettings;
 
 /**
  * Command line interface for the Aligner engines.
@@ -71,16 +70,16 @@ public class TermSuiteAlignerCLI {
 	public static final String P_EVALUATION_DIRECTORY = AlignerSettings.P_EVALUATION_DIRECTORY;
 
 	/** Name of the parameter that must be set to enable the compositional method */
-	public static final String P_METHOD_COMPOSITIONAL = AlignerAdvancedSettings.P_METHOD_COMPOSITIONAL;
+	public static final String P_METHOD_COMPOSITIONAL = AlignerSettings.P_METHOD_COMPOSITIONAL;
 
 	/** Name of the parameter that must be set to enable the distributional method */
-	public static final String P_METHOD_DISTRIBUTIONAL = AlignerAdvancedSettings.P_METHOD_DISTRIBUTIONAL;
+	public static final String P_METHOD_DISTRIBUTIONAL = AlignerSettings.P_METHOD_DISTRIBUTIONAL;
 
 	/** Name of the parameter that must be set to enable the distributional method */
-	public static final String P_SIMILARITY_DISTANCE = AlignerAdvancedSettings.P_SIMILARITY_DISTANCE;
+	public static final String P_SIMILARITY_DISTANCE = AlignerSettings.P_SIMILARITY_DISTANCE;
 
 	/** Name of the parameter that must be set to limit the number of translation candidates */
-	public static final String P_MAX_CANDIDATES = AlignerAdvancedSettings.P_MAX_CANDIDATES;
+	public static final String P_MAX_CANDIDATES = AlignerSettings.P_MAX_CANDIDATES;
 	
 	/** Name of the parameter that must be set to the output directory */
 	public static final String P_OUTPUT_DIR = "Directory";

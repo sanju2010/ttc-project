@@ -23,6 +23,14 @@ import fr.free.rocheteau.jerome.dunamis.viewers.SettingViewer;
 
 public abstract class Parameters {
 
+
+    public Parameters(String resource) {
+        this.setResource(resource);
+        this.doLoad();
+        this.setViewer();
+        this.setComponent();
+    }
+
 	protected void addParameter(
 			ConfigurationParameterDeclarations declarations, String name,
 			String type, boolean multiValued, boolean mandatory) {
@@ -134,13 +142,6 @@ public abstract class Parameters {
 
 	public JScrollPane getComponent() {
 		return this.component;
-	}
-
-	public Parameters(String resource) {
-		this.setResource(resource);
-		this.doLoad();
-		this.setViewer();
-		this.setComponent();
 	}
 
 	private String resource;

@@ -31,8 +31,7 @@ import eu.project.ttc.metrics.SimilarityDistance;
 import eu.project.ttc.models.Context;
 import eu.project.ttc.resources.Dictionary;
 import eu.project.ttc.resources.Terminology;
-import eu.project.ttc.tools.aligner.AlignerAdvancedSettings;
-import eu.project.ttc.tools.aligner.AlignerSettings;
+import eu.project.ttc.tools.config.AlignerSettings;
 import eu.project.ttc.tools.utils.InMemoryMWTIndex;
 import eu.project.ttc.tools.utils.PermutationTree;
 import eu.project.ttc.tools.utils.TranslationList;
@@ -83,13 +82,13 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 		try {
 
 			String name = (String) context
-					.getConfigParameterValue(AlignerAdvancedSettings.P_SIMILARITY_DISTANCE);
+					.getConfigParameterValue(AlignerSettings.P_SIMILARITY_DISTANCE);
 			this.setSimilarityDistance(name);
 
 			this.setDistributional(Boolean.TRUE.equals(context
-					.getConfigParameterValue(AlignerAdvancedSettings.P_METHOD_DISTRIBUTIONAL)));
+					.getConfigParameterValue(AlignerSettings.P_METHOD_DISTRIBUTIONAL)));
 			this.setCompositional(Boolean.TRUE.equals(context
-					.getConfigParameterValue(AlignerAdvancedSettings.P_METHOD_COMPOSITIONAL)));
+					.getConfigParameterValue(AlignerSettings.P_METHOD_COMPOSITIONAL)));
 
 			if (sourceTerminology == null) {
 				sourceTerminology = (Terminology) context
@@ -134,7 +133,7 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 			outputFile = createOutputFile(context);
 
 			translationCandidateCutOff = (Integer) context
-					.getConfigParameterValue(AlignerAdvancedSettings.P_MAX_CANDIDATES);
+					.getConfigParameterValue(AlignerSettings.P_MAX_CANDIDATES);
 			if (translationCandidateCutOff > 100)
 				translationCandidateCutOff = 100;
 
@@ -827,7 +826,7 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 	 * provides the translated term from translated term component combinations
 	 * 
 	 * @param components
-	 * @param glues
+	 * @param glue
 	 * @return
 	 */
 	private List<String> flatten(List<List<String>> components, String glue) {
@@ -979,7 +978,6 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 		Collections.sort(annotCand,
 				new Comparator<TranslationCandidateAnnotation>() {
 
-					@Override
 					public int compare(TranslationCandidateAnnotation o1,
 							TranslationCandidateAnnotation o2) {
 						int r = Double.compare(o2.getScore(), o1.getScore());
@@ -1061,7 +1059,6 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 			this.map = map;
 		}
 
-		@Override
 		public int compare(String sourceKey, String targetKey) {
 			Double sourceValue = this.map.get(sourceKey);
 			Double targetValue = this.map.get(targetKey);

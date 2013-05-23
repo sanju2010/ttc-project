@@ -23,6 +23,7 @@ import java.util.Properties;
 
 import javax.swing.SwingUtilities;
 
+import eu.project.ttc.tools.config.IndexerSettings;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
@@ -32,9 +33,6 @@ import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 
 import eu.project.ttc.tools.InputSourceTypes;
 import eu.project.ttc.tools.TermSuiteRunner;
-import eu.project.ttc.tools.indexer.IndexerAdvancedSettings;
-import eu.project.ttc.tools.indexer.TBXSettings;
-import eu.project.ttc.tools.indexer.TBXSettings.FilterRules;
 
 /**
  * Command line interface for the Indexer engines.
@@ -55,34 +53,34 @@ public class TermSuiteIndexerCLI {
 	 * Name of the parameter that must be set to ignore diacritics in multiword
 	 * term conflating
 	 */
-	public static final String P_IGNORE_DIACRITICS = IndexerAdvancedSettings.P_IGNORE_DIACRITICS;
+	public static final String P_IGNORE_DIACRITICS = IndexerSettings.P_IGNORE_DIACRITICS;
 
 	/** Name of the parameter that must be set to enable variant detection */
 	public static final String P_TERM_VARIANT_DETECTION = "EnableTermGathering";
 
 	/** Name of the parameter that must be set to the edit distance classname */
-	public static final String P_EDIT_DISTANCE_CLASS = IndexerAdvancedSettings.P_EDIT_DISTANCE_CLASS;
+	public static final String P_EDIT_DISTANCE_CLASS = IndexerSettings.P_EDIT_DISTANCE_CLASS;
 
 	/** Name of the parameter that must be set to the distance threshold */
-	public static final String P_EDIT_DISTANCE_THRESHOLD = IndexerAdvancedSettings.P_EDIT_DISTANCE_THRESHOLD;
+	public static final String P_EDIT_DISTANCE_THRESHOLD = IndexerSettings.P_EDIT_DISTANCE_THRESHOLD;
 
 	/** Name of the parameter that must be set to the distance ngrams */
-	public static final String P_EDIT_DISTANCE_NGRAMS = IndexerAdvancedSettings.P_EDIT_DISTANCE_NGRAMS;
+	public static final String P_EDIT_DISTANCE_NGRAMS = IndexerSettings.P_EDIT_DISTANCE_NGRAMS;
 
 	/** Name of the parameter that must be set to filter terms by frequency */
-	public static final String P_OCC_THRESHOLD = IndexerAdvancedSettings.P_FREQUENCY_THRESHOLD;
+	public static final String P_OCC_THRESHOLD = IndexerSettings.P_FREQUENCY_THRESHOLD;
 
 	/** Name of the parameter that must be set to filter terms by frequency */
 	public static final String P_ASSOCIATION_MEASURE = "AssociationRateClassName";
 	
 	/** Name of the parameter that must be set to filter terms by frequency */
-	public static final String P_FILTERING_THRESHOLD = TBXSettings.P_FILTERING_THRESHOLD;
+	public static final String P_FILTERING_THRESHOLD = IndexerSettings.P_FILTERING_THRESHOLD;
 
 	/** Name of the parameter that must be set to filter terms by a given criteria */
-	public static final String P_FILTER_RULE = TBXSettings.P_FILTER_RULE;
+	public static final String P_FILTER_RULE = IndexerSettings.P_FILTER_RULE;
 
 	/** Name of the parameter that must be set to keep verbs and other categories in TBX output */
-	public static final String P_KEEP_VERBS = TBXSettings.P_KEEP_VERBS;
+	public static final String P_KEEP_VERBS = IndexerSettings.P_KEEP_VERBS;
 	
 	/** Name of the parameter that must be set to the output directory */
 	public static final String P_OUTPUT_DIR = "Directory";
@@ -181,7 +179,7 @@ public class TermSuiteIndexerCLI {
 						&& !TermSuiteCLIUtils.isNull(storedProps, P_EDIT_DISTANCE_CLASS)) {
 					
 					if (TermSuiteCLIUtils.isNull(storedProps,
-							IndexerAdvancedSettings.P_EDIT_DISTANCE_THRESHOLD)) {
+							IndexerSettings.P_EDIT_DISTANCE_THRESHOLD)) {
 						throw new ParseException("Missing required parameter "
 								+ P_EDIT_DISTANCE_THRESHOLD
 								+ " to be used with the "
@@ -227,19 +225,19 @@ public class TermSuiteIndexerCLI {
 
 	/**
 	 * Determines whether <code>filter</code> is <code>null</code> or equals to
-	 * {@link FilterRules#None} in the given <code>properties</code> list.
+	 * {@link IndexerSettings.FilterRules#None} in the given <code>properties</code> list.
 	 * 
 	 * @param properties
 	 *            The property list
 	 * @param filter
 	 *            The filter name
 	 * @return <code>true</code> if <code>filter</code> is <code>null</code> or
-	 *         its value equals to {@link FilterRules#None}, otherwise
+	 *         its value equals to {@link IndexerSettings.FilterRules#None}, otherwise
 	 *         <code>false</code>.
 	 */
 	private static boolean isNoneOrNull(Properties properties, String filter) {
 		return TermSuiteCLIUtils.isNull(properties, filter)
 				|| properties.getProperty(filter).equals(
-						TBXSettings.FilterRules.None.name());
+						IndexerSettings.FilterRules.None.name());
 	}
 }
