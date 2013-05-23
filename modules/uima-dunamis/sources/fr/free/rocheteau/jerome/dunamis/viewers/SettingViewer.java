@@ -337,7 +337,6 @@ public class SettingViewer {
 		checkbox.setSelected(!checkbox.isSelected());
 		checkbox.addItemListener(new ItemListener() {
 
-			@Override
 			public void itemStateChanged(ItemEvent e) {
 				Field field;
 				for (String f : fields) {

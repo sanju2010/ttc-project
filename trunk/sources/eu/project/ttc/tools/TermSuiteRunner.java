@@ -24,6 +24,7 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
+import org.apache.commons.io.FileUtils;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
@@ -192,7 +193,7 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 			
 			switch (mode) {
 			case TXT:
-				String text = this.readAll(file, encoding);
+				String text = FileUtils.readFileToString(file, encoding);
 				cas.setDocumentLanguage(language);
 				cas.setDocumentText(text);
 				sdi.setBegin(0);
@@ -243,16 +244,6 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 		} else {
 			this.termSuite.getToolBar().getRun().setEnabled(true);
 			this.termSuite.getToolBar().getStop().setEnabled(false);
-		}
-	}
-
-	private String readAll(File file, String encoding) throws Exception {
-		Scanner scanner = new Scanner(file, encoding);
-		try {
-			scanner.useDelimiter("\\Z");
-			return scanner.next();
-		} finally {
-			scanner.close();
 		}
 	}
 
