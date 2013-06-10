@@ -1,17 +1,12 @@
 package eu.project.ttc.tools;
 
-import java.awt.Component;
-import java.awt.Desktop;
-import java.awt.Dimension;
+import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JSplitPane;
-import javax.swing.JTabbedPane;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
+import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -205,11 +200,37 @@ public class TermSuite implements Runnable {
         System.exit(1);
     }
 
-    public void displayException(String msg, Exception e) {
+    public void displayException(String msg, Throwable e) {
+        final JPanel errorPane = new JPanel();
+        errorPane.setLayout(new BorderLayout());
+        errorPane.setSize(new Dimension(30, 100));
+
+        // Create a label for the message
+        final JLabel lblMsg = new JLabel();
+        lblMsg.setText("<html>" + msg.replaceAll("\n", "<br>")); // multiline
+        errorPane.add(lblMsg, BorderLayout.NORTH);
+
+        // Create and configure a text area for the exception
+        if (e != null) {
+            final JTextArea taErr = new JTextArea();
+            taErr.setFont(new Font("Sans-Serif", Font.PLAIN, 10));
+            taErr.setEditable(false);
+            StringWriter writer = new StringWriter();
+            writer.write(e.getMessage());
+            writer.write("\n\n");
+            e.printStackTrace(new PrintWriter(writer));
+            taErr.setText(writer.toString());
+            // stuff it in a scrollpane with a controlled size.
+            JScrollPane scrollPane = new JScrollPane(taErr);
+            scrollPane.setPreferredSize(new Dimension(350, 150));
+            errorPane.add(scrollPane, BorderLayout.SOUTH);
+        }
+
+        // pass the error pane to the joptionpane.
         JOptionPane.showMessageDialog(
                 getFrame(),
-                msg + e.getMessage(),
-                e.getClass().getSimpleName(),
+                errorPane,
+                "An error has occurred",
                 JOptionPane.ERROR_MESSAGE);
     }
 

@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Scanner;
+import java.util.concurrent.ExecutionException;
 
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
@@ -126,40 +127,38 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 		// System.out.println("START");
 		try {
 			this.setAnalysisEngine();
-		} catch (Throwable e) {
-			System.out.print(e.toString());
-		        e.printStackTrace();
-			System.exit(1);
-		}
-		// System.out.println("INITIALIZED");
-		int max = this.data.size();
-		this.setProgress(0);
-		for (int index = 0; index < this.data.size(); index++) {
-			if (this.isCancelled()) {
-				break;
-			}
-			File file = this.data.get(index);
-			// System.out.println("PROCESS " + file);
-			info("Process : " + file);
-			boolean last = index == this.data.size() - 1;
-			// this.publish(file);
-			try {
-				this.process(file, this.encoding, this.language, this.input, last);
-			} catch (Throwable e) {
-				TermSuiteRunner.warning(e.getMessage());
-				e.printStackTrace();
-				// System.exit(3);
-			}
-			int progress = (index * 100) / max;
-			this.setProgress(progress);
-		}
-		try {
+            // System.out.println("INITIALIZED");
+            int max = this.data.size();
+            this.setProgress(0);
+            for (int index = 0; index < this.data.size(); index++) {
+                if (this.isCancelled()) {
+                    break;
+                }
+                File file = this.data.get(index);
+                // System.out.println("PROCESS " + file);
+                info("Process : " + file);
+                boolean last = index == this.data.size() - 1;
+                // this.publish(file);
+                try {
+                    this.process(file, this.encoding, this.language, this.input, last);
+                } catch (Throwable e) {
+                    TermSuiteRunner.warning(e.getMessage());
+                    e.printStackTrace();
+                    // System.exit(3);
+                }
+                int progress = (index * 100) / max;
+                this.setProgress(progress);
+            }
 			this.analysisEngine.collectionProcessComplete();
+            this.setProgress(100);
+            return null;
 		} catch (Throwable e) {
-			System.exit(2);
+            System.out.print(e.toString());
+            e.printStackTrace();
+            termSuite.displayException("An error occurred while running the analysis.", e);
+			//System.exit(2);
+            return null;
 		}
-		this.setProgress(100);
-		return null;
 	}
 
 	/*
