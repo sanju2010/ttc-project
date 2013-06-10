@@ -1,13 +1,10 @@
 package eu.project.ttc.tools.config;
 
-import eu.project.ttc.tools.TermSuiteSettings;
-import eu.project.ttc.tools.utils.Parameters;
+import eu.project.ttc.tools.TermSuiteConfigurationFile;
 import org.apache.uima.resource.metadata.ConfigurationParameter;
 import org.apache.uima.resource.metadata.ConfigurationParameterDeclarations;
 
-import javax.swing.*;
-
-public class IndexerSettings extends Parameters implements TermSuiteSettings {
+public class IndexerSettings extends UIMAParameters implements TermSuiteConfigurationFile {
 
     public static final String P_LANGUAGE = "Language";
     public static final String P_INPUT_DIRECTORY = "InputDirectory";
@@ -114,6 +111,8 @@ public class IndexerSettings extends Parameters implements TermSuiteSettings {
                 new String[] { P_FILTERING_THRESHOLD },
                 // Keep verbs
                 new String[] { " Grammatical categories  ", P_KEEP_VERBS, "false" },
+                // Export
+                //new String[] {" Export ", P_ENABLE_TSV, "false"}
                 new String[] {}
         };
     }

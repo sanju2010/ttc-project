@@ -8,7 +8,7 @@ public interface TermSuiteTool {
 
 	public TermSuite getParent();
 
-	public TermSuiteSettings getSettings();
+	public TermSuiteConfigurationFile getSettings();
 	
 	public Component getComponent();
 

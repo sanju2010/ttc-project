@@ -1,4 +1,4 @@
-package eu.project.ttc.tools.utils;
+package eu.project.ttc.tools.config;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.swing.JScrollPane;
 
+import fr.free.rocheteau.jerome.dunamis.fields.Field;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.resource.ResourceConfigurationException;
 import org.apache.uima.resource.metadata.ConfigurationParameter;
@@ -18,13 +19,11 @@ import org.apache.uima.util.Level;
 import org.apache.uima.util.XMLInputSource;
 import org.xml.sax.SAXException;
 
-import fr.free.rocheteau.jerome.dunamis.fields.Field;
-import fr.free.rocheteau.jerome.dunamis.viewers.SettingViewer;
 
-public abstract class Parameters {
+public abstract class UIMAParameters {
 
 
-    public Parameters(String resource) {
+    public UIMAParameters(String resource) {
         this.setResource(resource);
         this.doLoad();
         this.setViewer();

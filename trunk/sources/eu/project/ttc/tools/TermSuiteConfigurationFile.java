@@ -6,7 +6,7 @@ import org.apache.uima.resource.ResourceConfigurationException;
 import org.apache.uima.resource.metadata.ResourceMetaData;
 import org.xml.sax.SAXException;
 
-public interface TermSuiteSettings {
+public interface TermSuiteConfigurationFile {
 
 	public void doUpdate();
 	

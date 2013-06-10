@@ -1,14 +1,12 @@
 package eu.project.ttc.tools.config;
 
+import eu.project.ttc.tools.TermSuiteConfigurationFile;
 import org.apache.uima.resource.metadata.ConfigurationParameter;
 import org.apache.uima.resource.metadata.ConfigurationParameterDeclarations;
 
-import eu.project.ttc.tools.TermSuiteSettings;
-import eu.project.ttc.tools.utils.Parameters;
-
 import javax.swing.*;
 
-public class AlignerSettings extends Parameters implements TermSuiteSettings {	
+public class AlignerSettings extends UIMAParameters implements TermSuiteConfigurationFile {
 	
 	/** Name of the parameter that must be set to the output dir path */
 	public static final String P_OUTPUT_DIRECTORY = "AlignerOutputDirectory";

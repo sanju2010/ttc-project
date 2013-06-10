@@ -7,7 +7,7 @@ import java.io.File;
  * @author grdscarabe
  * @date 23/05/13
  */
-public class TermSuiteSettings {
+public abstract class TermSuiteSettings {
 
     /** Name of the directory where the config is persisted */
     static final String CFG_ROOTDIR_NAME = ".term-suite";
