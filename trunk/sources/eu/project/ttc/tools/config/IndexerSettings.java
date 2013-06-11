@@ -111,8 +111,9 @@ public class IndexerSettings extends UIMAParameters implements TermSuiteConfigur
                 new String[] { P_FILTERING_THRESHOLD },
                 // Keep verbs
                 new String[] { " Grammatical categories  ", P_KEEP_VERBS, "false" },
+                new String[] {},
                 // Export
-                //new String[] {" Export ", P_ENABLE_TSV, "false"}
+                new String[] {" Export ", P_ENABLE_TSV, "false"},
                 new String[] {}
         };
     }
