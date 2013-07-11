@@ -22,7 +22,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.net.URL;
 
-import eu.project.ttc.tools.InputSourceTypes;
+import eu.project.ttc.tools.InputSource.InputSourceTypes;
 
 /**
  * A {@link FilenameFilter} that verifies that the specified file is of the
@@ -38,7 +38,6 @@ public class InputSourceFilter implements FilenameFilter {
 		this.input = input;
 	}
 
-	@Override
 	public boolean accept(File directory, String name) {
 		File file = new File(directory, name);
 		boolean res = false;
