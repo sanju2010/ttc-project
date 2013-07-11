@@ -292,7 +292,7 @@ public final class TermSuiteCLIUtils {
 	public static AnalysisEngineDescription getSpotterAEDescription(String lang)
 			throws IOException, URISyntaxException, InvalidXMLException {
 		String language = new Locale(lang).getDisplayLanguage(Locale.ENGLISH);
-		return getAEDescription(language, "Spotter");
+		return getAEDescription(language, "SpotterController");
 	}
 
 	/**
@@ -324,7 +324,7 @@ public final class TermSuiteCLIUtils {
 	 * @param language
 	 *            The language display name in english
 	 * @param engine
-	 *            The engine type, i.e. Spotter or Indexer (case sensitive)
+	 *            The engine type, i.e. SpotterController or Indexer (case sensitive)
 	 * @return The engine descriptor
 	 * @throws IOException
 	 * @throws URISyntaxException

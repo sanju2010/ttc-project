@@ -260,17 +260,14 @@ public class AlignerViewer {
 			return this.columns[col];
 		}
 		
-		@Override
 		public int getColumnCount() {
 			return this.columns.length;
 		}
 
-		@Override
 		public int getRowCount() {
 			return 20;
 		}
 
-		@Override
 		public Object getValueAt(int row, int col) {
 			return this.getArray()[row][col];
 		}
@@ -302,7 +299,6 @@ public class AlignerViewer {
 
 	private class CandidateComparator implements Comparator<TranslationCandidateAnnotation> {
 
-		@Override
 		public int compare(TranslationCandidateAnnotation source,TranslationCandidateAnnotation target) {
 			int diff = Double.compare(source.getRank(), target.getRank());
 			if (diff == 0) {

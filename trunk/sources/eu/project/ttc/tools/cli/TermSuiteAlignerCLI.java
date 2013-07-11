@@ -23,6 +23,7 @@ import java.util.Properties;
 
 import javax.swing.SwingUtilities;
 
+import eu.project.ttc.tools.InputSource;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
@@ -30,7 +31,6 @@ import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 
-import eu.project.ttc.tools.InputSourceTypes;
 import eu.project.ttc.tools.TermSuiteRunner;
 import eu.project.ttc.tools.config.AlignerSettings;
 
@@ -202,9 +202,10 @@ public class TermSuiteAlignerCLI {
 						.getAlignerAEDescription(storedProps.getProperty(TermSuiteCLIUtils.P_LANGUAGE));
 				TermSuiteCLIUtils.setConfigurationParameters(description, storedProps);
 
+                // FIXME
 				TermSuiteRunner runner = new TermSuiteRunner(description,
 						storedProps.getProperty(TermSuiteCLIUtils.P_INPUT_DIR),
-						InputSourceTypes.TXT,
+						InputSource.InputSourceTypes.TXT,
 						storedProps.getProperty(TermSuiteCLIUtils.P_LANGUAGE),
 						storedProps.getProperty(TermSuiteCLIUtils.P_ENCODING));
 

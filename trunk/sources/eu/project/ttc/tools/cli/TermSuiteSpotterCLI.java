@@ -23,6 +23,8 @@ import java.util.Properties;
 
 import javax.swing.SwingUtilities;
 
+import eu.project.ttc.tools.InputSource;
+import eu.project.ttc.tools.spotter.SpotterModel;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
@@ -30,12 +32,10 @@ import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 
-import eu.project.ttc.tools.InputSourceTypes;
 import eu.project.ttc.tools.TermSuiteRunner;
-import eu.project.ttc.tools.config.SpotterSettings;
 
 /**
- * Command line interface for the Spotter engines.
+ * Command line interface for the SpotterController engines.
  * 
  * @author Damien Vintache
  */
@@ -53,7 +53,7 @@ public class TermSuiteSpotterCLI {
 	public static final String P_OUTPUT_DIR = "Directory";
 	
 	/** Name of the parameter that must be set to the target language */
-	public static final String P_TREETAGGER_HOME_DIRECTORY = SpotterSettings.P_TREETAGGER_HOME_DIRECTORY;
+	public static final String P_TREETAGGER_HOME_DIRECTORY = SpotterModel.P_TREETAGGER_HOME_DIRECTORY;
 	
 	/**
 	 * Application entry point
@@ -128,9 +128,10 @@ public class TermSuiteSpotterCLI {
 						.getSpotterAEDescription(storedProps.getProperty(TermSuiteCLIUtils.P_LANGUAGE));
 				TermSuiteCLIUtils.setConfigurationParameters(description, storedProps);
 
+                // FIXME
 				TermSuiteRunner runner = new TermSuiteRunner(description,
 						storedProps.getProperty(TermSuiteCLIUtils.P_INPUT_DIR),
-						InputSourceTypes.TXT,
+						InputSource.InputSourceTypes.TXT,
 						storedProps.getProperty(TermSuiteCLIUtils.P_LANGUAGE),
 						storedProps.getProperty(TermSuiteCLIUtils.P_ENCODING));
 
