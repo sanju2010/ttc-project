@@ -3,6 +3,8 @@ package eu.project.ttc.tools;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
@@ -11,6 +13,9 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import eu.project.ttc.tools.config.TermSuiteSettings;
+import eu.project.ttc.tools.spotter.SpotterController;
+import eu.project.ttc.tools.spotter.SpotterModel;
+import eu.project.ttc.tools.spotter.SpotterView;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.util.Level;
 
@@ -20,7 +25,6 @@ import eu.project.ttc.tools.aligner.AlignerViewer;
 import eu.project.ttc.tools.indexer.Indexer;
 import eu.project.ttc.tools.indexer.IndexerEngine;
 import eu.project.ttc.tools.indexer.IndexerViewer;
-import eu.project.ttc.tools.spotter.Spotter;
 import eu.project.ttc.tools.spotter.SpotterEngine;
 import eu.project.ttc.tools.utils.About;
 import eu.project.ttc.tools.utils.Preferences;
@@ -33,7 +37,26 @@ public class TermSuite implements Runnable {
 	/** Current version of the program */
 	public static final String TERMSUITE_VERSION = "1.4";
 
+    /** Name of the directory where the config is persisted */
+    public static final String CFG_ROOTDIR_NAME = ".term-suite";
+    /** Name of the file where the SpotterController config is persisted */
+    public static final String CFG_SPOTTER_NAME = "spotter.settings";
+    /** Name of the file where the Indexer config is persisted */
+    public static final String CFG_INDEXER_NAME = "indexer.settings";
+    /** Name of the file where the Aligner config is persisted */
+    public static final String CFG_ALIGNER_NAME = "aligner.settings";
+
+    /** Path to the directory where the configuration files are stored */
+    private String cfgDirPath;
+    /** Path to the spotter configuration */
+    private File cfgSpotterFile;
+    /** Path to the indexer configuration */
+    private File cfgIndexerFile;
+    /** Path to the aligner configuration */
+    private File cfgAlignerFile;
+
     private final TermSuiteSettings pConfig;
+
 
     public TermSuite() {
         this.setDesktop();
@@ -41,10 +64,12 @@ public class TermSuite implements Runnable {
 
         // Prepare persisted config
         pConfig = new TermSuiteSettings(this.getPreferences().getVersion());
+        initConfig(); // FIXME (redundant lines)
+
 
         this.setAbout();
         this.setToolBar();
-        this.setTagger();
+        this.setSpotter();
         this.setViewer();
         this.setIndexer();
         this.setBanker();
@@ -131,25 +156,59 @@ public class TermSuite implements Runnable {
     }
 
     public void enableListeners() {
-        if (this.isTaggerSelected()) {
-            this.listener.setTool(this.getSpotter());
-            SpotterEngine engine = new SpotterEngine();
-            engine.setTool(this.getSpotter());
-            this.listener.setEngine(engine);
-        } else if (this.isIndexerSelected()) {
-            this.listener.setTool(this.getIndexer());
-            IndexerEngine engine = new IndexerEngine();
-            engine.setTool(this.getIndexer());
-            this.listener.setEngine(engine);
-        } else if (this.isAlignerSelected()) {
-            this.listener.setTool(this.getAligner());
-            AlignerEngine engine = new AlignerEngine();
-            engine.setTool(this.getAligner());
-            this.listener.setEngine(engine);
-        }
+        // FIXME
+//        if (this.isTaggerSelected()) {
+//            this.listener.setTool(this.getSpotter());
+//            SpotterEngine engine = new SpotterEngine();
+//            engine.setTool(this.getSpotter());
+//            this.listener.setEngine(engine);
+//        } else if (this.isIndexerSelected()) {
+//            this.listener.setTool(this.getIndexer());
+//            IndexerEngine engine = new IndexerEngine();
+//            engine.setTool(this.getIndexer());
+//            this.listener.setEngine(engine);
+//        } else if (this.isAlignerSelected()) {
+//            this.listener.setTool(this.getAligner());
+//            AlignerEngine engine = new AlignerEngine();
+//            engine.setTool(this.getAligner());
+//            this.listener.setEngine(engine);
+//        }
     }
 
-    /******************************************************************************************************* ACTIONS */
+    //////////////////////////////////////////////////////////////// CONFIG VALUES
+
+    /**
+     * Initialize the configuration by computing the path to the various configuration
+     * files for each tool.
+     */
+    private void initConfig() {
+        // Compute the path to the configuration dir and create it if necessary
+        cfgDirPath = System.getProperty("user.home")
+                + File.separator + CFG_ROOTDIR_NAME + File.separator + TERMSUITE_VERSION;
+        File cfgDir = new File(cfgDirPath);
+        if (! cfgDir.exists()) {
+            cfgDir.mkdirs();
+        }
+
+        // Compute other settings path
+        cfgSpotterFile = new File(cfgDir.getAbsolutePath() + File.separator + CFG_SPOTTER_NAME);
+        cfgIndexerFile = new File(cfgDir.getAbsolutePath() + File.separator + CFG_INDEXER_NAME);
+        cfgAlignerFile = new File(cfgDir.getAbsolutePath() + File.separator + CFG_ALIGNER_NAME);
+    }
+
+    public File getSpotterCfg() {
+        return cfgSpotterFile;
+    }
+
+    public File getIndexerCfg() {
+        return cfgIndexerFile;
+    }
+
+    public File getAlignerCfg() {
+        return cfgAlignerFile;
+    }
+
+    //////////////////////////////////////////////////////////////// ACTIONS
 
     public boolean isTaggerSelected() {
         return this.getContent().getSelectedIndex() == 0;
@@ -165,7 +224,7 @@ public class TermSuite implements Runnable {
 
     public void save() {
         try {
-            this.getSpotter().getSettings().doSave();
+            this.getSpotter().saveConfiguration(); //.getSettings().doSave();
             this.getIndexer().getSettings().doSave();
             this.getAligner().getSettings().doSave();
         } catch (Exception e) {
@@ -281,9 +340,10 @@ public class TermSuite implements Runnable {
     private void setContent() {
         this.content = new JTabbedPane();
         this.content.setTabPlacement(JTabbedPane.LEFT);
-        this.content.addTab(" Spotter ",this.embed(this.getSpotter().getComponent(), this.getViewer().getComponent()));
-        this.content.addTab(" Indexer ",this.embed(this.getIndexer().getComponent(), this.getBanker().getComponent()));
-        this.content.addTab(" Aligner ",this.embed(this.getAligner().getComponent(), this.getMixer().getComponent()));
+//        this.content.addTab(" Spotter ",this.embed(this.getSpotter().getView(), this.getViewer().getComponent()));
+        this.content.addTab(" Spotter ", this.getSpotter().getView());
+        this.content.addTab(" Indexer ",this.embed(this.getIndexer().getView(), this.getBanker().getComponent()));
+        this.content.addTab(" Aligner ",this.embed(this.getAligner().getView(), this.getMixer().getComponent()));
         Listener listener = new Listener();
         listener.setTermSuite(this);
         this.content.addChangeListener(listener);
@@ -304,14 +364,21 @@ public class TermSuite implements Runnable {
 
     /*************************************************************************************************** SPOTTER TAB */
 
-	private Spotter spotter;
+	private SpotterController spotter;
 	
-	private void setTagger() {
-		this.spotter = new Spotter(pConfig);
-		this.spotter.setParent(this);
+	private void setSpotter() {
+        // Prepare the MVC
+        SpotterModel sModel = new SpotterModel(getSpotterCfg());
+        SpotterView sView = new SpotterView();
+		this.spotter = new SpotterController(sModel, sView);
+
+        // Load the persisted configuration if any
+        try {
+            spotter.loadConfiguration();
+        } catch (IOException e) {} // Non lethal if no configuration
 	}
 	
-	private Spotter getSpotter() {
+	private SpotterController getSpotter() {
 		return this.spotter;
 	}
 

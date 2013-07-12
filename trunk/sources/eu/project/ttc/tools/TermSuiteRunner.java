@@ -12,8 +12,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Scanner;
-import java.util.concurrent.ExecutionException;
 
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
@@ -49,11 +47,14 @@ import org.apache.commons.cli.OptionGroup;
 import org.apache.commons.cli.OptionBuilder;
 import eu.project.ttc.tools.utils.FileComparator;
 import eu.project.ttc.tools.utils.InputSourceFilter;
+import eu.project.ttc.tools.InputSource.InputSourceTypes;
 
 
 public class TermSuiteRunner extends SwingWorker<Void, Void> {
 
-	public static void error(Throwable e, int code) {
+    private ToolController tool; // FIXME final ?
+
+    public static void error(Throwable e, int code) {
         UIMAFramework.getLogger().log(Level.SEVERE, e.getMessage());
         e.printStackTrace();
         System.exit(code);
@@ -103,24 +104,24 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 		this.description = description;
 	}
 
-	private void setData(String path, InputSourceTypes mode) throws Exception {
-		InputSourceFilter filter = new InputSourceFilter(mode);
-		File file = new File(path);
-		if (file.isDirectory()) {
-			File[] files = file.listFiles(filter);
-			for (File f : files) {
-				this.data.add(f);
-			}
-		} else if (file.isFile()
-				&& filter.accept(file.getParentFile(), file.getName())) {
-			this.data.add(file);
-		} else {
-			throw new FileNotFoundException(path
-					+ " is not a directory, or it cannot be found.");
-		}
-		Collections.sort(this.data, new FileComparator());
-		// System.out.println("Number of documents to process: " + this.data.size());
-	}
+//	private void setData(String path, InputSourceTypes mode) throws Exception {
+//		InputSourceFilter filter = new InputSourceFilter(mode);
+//		File file = new File(path);
+//		if (file.isDirectory()) {
+//			File[] files = file.listFiles(filter);
+//			for (File f : files) {
+//				this.data.add(f);
+//			}
+//		} else if (file.isFile()
+//				&& filter.accept(file.getParentFile(), file.getName())) {
+//			this.data.add(file);
+//		} else {
+//			throw new FileNotFoundException(path
+//					+ " is not a directory, or it cannot be found.");
+//		}
+//		Collections.sort(this.data, new FileComparator());
+//		// System.out.println("Number of documents to process: " + this.data.size());
+//	}
 
 	@Override
 	protected Void doInBackground() throws Exception {
@@ -184,6 +185,11 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 	}
 
 	private void process(File file, String encoding, String language, InputSourceTypes mode, boolean last) throws Exception {
+
+        // FIXME quick hack to dispose language
+        language = (String) this.analysisEngine.getAnalysisEngineMetaData()
+                .getConfigurationParameterSettings().getParameterValue("Language");
+
 		JCas cas = this.pool.getJCas();
 		try {
 			String uri = file.toURI().toString();
@@ -221,16 +227,20 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 				JCasIterator iterator = this.analysisEngine.processAndOutputNewCASes(cas);
 				while (iterator.hasNext()) {
 					JCas c = iterator.next();
-					if (this.engine != null) { 
-						this.engine.callBack(c.getCas());
-					}
+                    if (this.tool != null )
+                        this.tool.processingCallback(c.getCas());
+//					if (this.engine != null) {
+//						this.engine.callBack(c.getCas());
+//					}
 				}
 				iterator.release();
 			} else {
 				this.analysisEngine.process(cas);
-				if (this.engine != null) {
-					this.engine.callBack(cas.getCas());
-				}
+                if (this.tool != null )
+                    this.tool.processingCallback(cas.getCas());
+//				if (this.engine != null) {
+//					this.engine.callBack(cas.getCas());
+//				}
 			}
 		} finally {
 			this.pool.releaseJCas(cas);
@@ -286,23 +296,33 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 
 	private TermSuiteEngine engine;
 
+    @Deprecated
 	public TermSuiteRunner(TermSuite termSuite, TermSuiteEngine engine) throws Exception {
 		this.termSuite = termSuite;
 		this.engine = engine;
-		this.input = this.engine.input();
-		this.language = this.engine.language();
-		this.encoding = this.engine.encoding();
-		this.setDescription(this.engine.get(), this.engine.settings());
-		this.setData(this.engine.data(), this.input);
+//		this.input = this.engine.input();
+//		this.language = this.engine.language();
+//		this.encoding = this.engine.encoding();
+//		this.setDescription(this.engine.getEngineDescriptor(), this.engine.getAESettings());
+//		this.setData(this.engine.getInputSource(), this.input);
 	}
 
+    @Deprecated
 	public TermSuiteRunner(AnalysisEngineDescription description, String directory,	InputSourceTypes input, String language, String encoding) throws Exception {
 		this.input = input;
 		this.language = language;
 		this.encoding = encoding;
 		this.setDescription(description, description.getAnalysisEngineMetaData().getConfigurationParameterSettings());
-		this.setData(directory, this.input);
+//		this.setData(directory, this.input);
 	}
+
+    public TermSuiteRunner(ToolController tool, String language, String encoding) throws Exception {
+        this.tool = tool;
+        this.language = language;
+        this.encoding = encoding;
+        this.description = tool.getAEDescription();
+        this.data = new ArrayList<File>( tool.getInputSource().getInputFiles() );
+    }
 
 	private static String usage;
     
@@ -356,8 +376,8 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 			if (i<arguments.length) {		
 				engineName= arguments[i+1];
 				System.out.println(engineName);				
-				if(engineName.contains("Spotter")) {
-					// Spotter engine
+				if(engineName.contains("SpotterController")) {
+					// SpotterController engine
 					System.out.println("spotter : " + engineName);
 					options.addOption( "", "Directory", true, "output directory" );
 					options.addOption( "", "TreeTaggerHomeDirectory", true, "TreeTagger home directory" );

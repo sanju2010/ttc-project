@@ -1,12 +1,14 @@
 package eu.project.ttc.tools.config;
 
-import eu.project.ttc.tools.TermSuiteConfigurationFile;
+import eu.project.ttc.tools.ToolModel;
 import org.apache.uima.resource.metadata.ConfigurationParameter;
 import org.apache.uima.resource.metadata.ConfigurationParameterDeclarations;
 
 import javax.swing.*;
 
-public class AlignerSettings extends UIMAParameters implements TermSuiteConfigurationFile {
+// FIXME
+// public class AlignerSettings extends TermSuiteToolConfiguration implements ToolModel {
+public class AlignerSettings extends TermSuiteToolConfiguration {
 	
 	/** Name of the parameter that must be set to the output dir path */
 	public static final String P_OUTPUT_DIRECTORY = "AlignerOutputDirectory";
@@ -54,7 +56,12 @@ public class AlignerSettings extends UIMAParameters implements TermSuiteConfigur
         getComponent().setBorder(BorderFactory.createTitledBorder("Settings"));
 	}
 
-	protected void setMetaData(ConfigurationParameterDeclarations declarations) {
+    @Override
+    protected GroupOfParameters[] getParameters() {
+        return new GroupOfParameters[0];  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    protected void setMetaData(ConfigurationParameterDeclarations declarations) {
 		this.addParameter(declarations, P_EVALUATION_DIRECTORY,
                 ConfigurationParameter.TYPE_STRING, false, true);
 		this.addParameter(declarations, P_SOURCE_LANGUAGE,
@@ -91,7 +98,6 @@ public class AlignerSettings extends UIMAParameters implements TermSuiteConfigur
             new String[] { P_METHOD_DISTRIBUTIONAL, P_SIMILARITY_DISTANCE, P_MAX_CANDIDATES }
     };
 
-	@Override
 	protected String[][] getParameterGroups() {
 		return null;
 	}

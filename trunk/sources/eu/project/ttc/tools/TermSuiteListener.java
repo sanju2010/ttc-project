@@ -14,15 +14,15 @@ import javax.swing.JOptionPane;
  */
 public class TermSuiteListener implements ActionListener, PropertyChangeListener  {
 
-    private TermSuiteTool termSuiteTool;
+    private ToolController termSuiteTool;
     private TermSuiteEngine termSuiteEngine;
     private TermSuiteRunner runner;
 
-    public void setTool(TermSuiteTool termSuiteTool) {
+    public void setTool(ToolController termSuiteTool) {
         this.termSuiteTool = termSuiteTool;
     }
 
-    private TermSuiteTool getTermSuiteTool() {
+    private ToolController getTermSuiteTool() {
         return this.termSuiteTool;
     }
 
@@ -86,9 +86,9 @@ public class TermSuiteListener implements ActionListener, PropertyChangeListener
      * Run TermSuite in the current configuration.
      */
 	public void doRun() {
-		this.getTermSuiteTool().getSettings().doUpdate();
+// FIXME		this.getTermSuiteTool().getSettings().doUpdate();
 		try {
-			this.getTermSuiteTool().getSettings().validate();
+// FIXME			this.getTermSuiteTool().getSettings().validate();
 		} catch (Exception e) {
             getTermSuiteTool().getParent().displayException("An error occurred while validating config.", e);
 			e.printStackTrace();

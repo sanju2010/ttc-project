@@ -20,10 +20,10 @@ import org.apache.uima.util.XMLInputSource;
 import org.xml.sax.SAXException;
 
 
-public abstract class UIMAParameters {
+public abstract class TermSuiteToolConfiguration {
 
 
-    public UIMAParameters(String resource) {
+    public TermSuiteToolConfiguration(String resource) {
         this.setResource(resource);
         this.doLoad();
         this.setViewer();
@@ -58,28 +58,14 @@ public abstract class UIMAParameters {
 
 	private ResourceMetaData metaData;
 
-	protected abstract void setMetaData(
-			ConfigurationParameterDeclarations declarations);
+    // FIXME
+//	protected abstract void setMetaData(
+//			ConfigurationParameterDeclarations declarations);
 
 	/**
-	 * Returns parameter groups definitions if any. Each group is defined by 2
-	 * {@link String} arrays.
-	 * <p>
-	 * The first array should contain the following data :
-	 * <ul>
-	 * <li>group name
-	 * <li>group's first field, i.e. the head field
-	 * <li>The string <code>"true"</code> if group field should be
-	 * enable/disabled w.r.t the head field
-	 * <ul>
-	 * <p>
-	 * The second array should contain the list of fields in the group (minus
-	 * the head), or an empty array if the group contains a single field.
-	 * 
-	 * @return An array of an even number of {@link String} arrays, or <code>
-	 *         null</code> if there are no groups.
+	 * @return the group of parameters that configure the associated ToolController.
 	 */
-	protected abstract String[][] getParameterGroups();
+	protected abstract GroupOfParameters[] getParameters();
 
 	/**
 	 * Returns logical buttons group definitions for boolean fields. Each button
@@ -118,15 +104,17 @@ public abstract class UIMAParameters {
 
 	}
 
+    // FIXME
 	private void setGroups() {
-		String[][] groups = this.getParameterGroups();
+		GroupOfParameters[] groups = this.getParameters();
 		if (groups == null)
 			return;
 
-		for (int i = 0; i < groups.length; i += 2) {
-			viewer.addParameterGroup(groups[i][0], groups[i][1],
-					Boolean.parseBoolean(groups[i][2]), groups[i + 1]);
-		}
+//		for (int i = 0; i < groups.length; i += 2) {
+//            // FIXME
+//			viewer.addParameterGroup(groups[i].getName(), groups[i][1],
+//					Boolean.parseBoolean(groups[i][2]), groups[i + 1]);
+//		}
 	}
 
 	private SettingViewer getViewer() {
@@ -175,7 +163,7 @@ public abstract class UIMAParameters {
 				ConfigurationParameterDeclarations declarations = UIMAFramework
 						.getResourceSpecifierFactory()
 						.createConfigurationParameterDeclarations();
-				this.setMetaData(declarations);
+//				this.setMetaData(declarations);
 				this.metaData = UIMAFramework.getResourceSpecifierFactory()
 						.createResourceMetaData();
 				this.metaData

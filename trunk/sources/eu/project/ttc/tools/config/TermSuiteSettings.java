@@ -1,6 +1,8 @@
 // Copyright © 2013 Dictanova SAS
 package eu.project.ttc.tools.config;
 
+import eu.project.ttc.tools.spotter.SpotterModel;
+
 import java.io.File;
 
 /**
@@ -11,7 +13,7 @@ public class TermSuiteSettings {
 
     /** Name of the directory where the config is persisted */
     static final String CFG_ROOTDIR_NAME = ".term-suite";
-    /** Name of the file where the Spotter config is persisted */
+    /** Name of the file where the SpotterController config is persisted */
     static final String CFG_SPOTTER_NAME = "spotter.settings";
     /** Name of the file where the Indexer config is persisted */
     static final String CFG_INDEXER_NAME = "indexer.settings";
@@ -23,10 +25,10 @@ public class TermSuiteSettings {
     /** Actual configuration directory */
     private final File cfgDir;
 
-    /** Path to the Spotter configuration*/
+    /** Path to the SpotterController configuration*/
     private final String cfgSpotterPath;
-    /** Instance of Spotter settings */
-    private final SpotterSettings cfgSpotter;
+    /** Instance of SpotterController settings */
+    private final SpotterModel cfgSpotter;
 
     /** Path to the Indexer configuration*/
     private final String cfgIndexerPath;
@@ -47,9 +49,9 @@ public class TermSuiteSettings {
             cfgDir.mkdirs();
         }
 
-        // Prepare Spotter settings
+        // Prepare SpotterController settings
         cfgSpotterPath = cfgDir.getAbsolutePath() + File.separator + CFG_SPOTTER_NAME;
-        cfgSpotter = new SpotterSettings(cfgSpotterPath);
+        cfgSpotter = new SpotterModel( new File(cfgSpotterPath) );
 
         // Prepare Indexer settings
         cfgIndexerPath = cfgDir.getAbsolutePath() + File.separator + CFG_INDEXER_NAME;
@@ -60,7 +62,7 @@ public class TermSuiteSettings {
         cfgAligner = new AlignerSettings(cfgAlignerPath);
     }
 
-    public SpotterSettings getSpotterSettings() {
+    public SpotterModel getSpotterSettings() {
         return cfgSpotter;
     }
 

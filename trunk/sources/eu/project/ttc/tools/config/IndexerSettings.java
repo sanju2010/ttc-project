@@ -1,10 +1,12 @@
 package eu.project.ttc.tools.config;
 
-import eu.project.ttc.tools.TermSuiteConfigurationFile;
+import eu.project.ttc.tools.ToolModel;
 import org.apache.uima.resource.metadata.ConfigurationParameter;
 import org.apache.uima.resource.metadata.ConfigurationParameterDeclarations;
 
-public class IndexerSettings extends UIMAParameters implements TermSuiteConfigurationFile {
+// FIXME
+//public class IndexerSettings extends TermSuiteToolConfiguration implements ToolModel {
+public class IndexerSettings extends TermSuiteToolConfiguration {
 
     public static final String P_LANGUAGE = "Language";
     public static final String P_INPUT_DIRECTORY = "InputDirectory";
@@ -54,7 +56,7 @@ public class IndexerSettings extends UIMAParameters implements TermSuiteConfigur
 
 	public IndexerSettings(String resource) {
 		super(resource);
-//        getComponent().setBorder(BorderFactory.createTitledBorder("Settings"));
+//        getView().setBorder(BorderFactory.createTitledBorder("Settings"));
 	}
 
 	protected void setMetaData(ConfigurationParameterDeclarations declarations) {
@@ -92,30 +94,31 @@ public class IndexerSettings extends UIMAParameters implements TermSuiteConfigur
 	}
 
     @Override
-    protected String[][] getParameterGroups() {
-        return new String[][] {
-                // Basic
-                new String[] { " Basic   ", P_LANGUAGE, "false" },
-                new String[] { P_INPUT_DIRECTORY, P_OUTPUT_DIRECTORY },
-                // Variant detection group
-                new String[] { " Conflation   ", P_TERM_VARIANT_DETECTION, "true" },
-                new String[] { P_EDIT_DISTANCE_CLASS,
-                        P_EDIT_DISTANCE_THRESHOLD, P_EDIT_DISTANCE_NGRAMS,
-                        P_IGNORE_DIACRITICS },
-                // Context vector group
-                new String[] { " Context vectors   ", P_FREQUENCY_THRESHOLD,
-                        "false" },
-                new String[] { P_ASSOCIATION_MEASURE },
-                // Filtering settings
-                new String[] { " Statistical filtering  ", P_FILTER_RULE, "false" },
-                new String[] { P_FILTERING_THRESHOLD },
-                // Keep verbs
-                new String[] { " Grammatical categories  ", P_KEEP_VERBS, "false" },
-                new String[] {},
-                // Export
-                new String[] {" Export ", P_ENABLE_TSV, "false"},
-                new String[] {}
-        };
+    protected GroupOfParameters[] getParameters() {
+//        return new String[][] {
+//                // Basic
+//                new String[] { " Basic   ", P_LANGUAGE, "false" },
+//                new String[] { P_INPUT_DIRECTORY, P_OUTPUT_DIRECTORY },
+//                // Variant detection group
+//                new String[] { " Conflation   ", P_TERM_VARIANT_DETECTION, "true" },
+//                new String[] { P_EDIT_DISTANCE_CLASS,
+//                        P_EDIT_DISTANCE_THRESHOLD, P_EDIT_DISTANCE_NGRAMS,
+//                        P_IGNORE_DIACRITICS },
+//                // Context vector group
+//                new String[] { " Context vectors   ", P_FREQUENCY_THRESHOLD,
+//                        "false" },
+//                new String[] { P_ASSOCIATION_MEASURE },
+//                // Filtering settings
+//                new String[] { " Statistical filtering  ", P_FILTER_RULE, "false" },
+//                new String[] { P_FILTERING_THRESHOLD },
+//                // Keep verbs
+//                new String[] { " Grammatical categories  ", P_KEEP_VERBS, "false" },
+//                new String[] {},
+//                // Export
+//                new String[] {" Export ", P_ENABLE_TSV, "false"},
+//                new String[] {}
+//        };
+        return new GroupOfParameters[]{};
     }
 
     @Override

@@ -1,24 +1,19 @@
 package eu.project.ttc.tools.indexer;
 
-import java.awt.Component;
+import eu.project.ttc.tools.TermSuite;
+import eu.project.ttc.tools.config.IndexerSettings;
+import eu.project.ttc.tools.config.TermSuiteSettings;
 
 import javax.swing.*;
+import java.awt.*;
 
-import eu.project.ttc.tools.InputSource;
-import eu.project.ttc.tools.TermSuite;
-import eu.project.ttc.tools.ToolController;
-import eu.project.ttc.tools.config.*;
-import org.apache.uima.analysis_engine.AnalysisEngineDescription;
-import org.apache.uima.cas.CAS;
-import org.apache.uima.resource.metadata.ConfigurationParameterSettings;
-
-public class Indexer {
+public class IndexerController {
 
 private TermSuite parent;
 
     private IndexerSettings settings;
 
-    public Indexer(TermSuiteSettings tsConfig) {
+    public IndexerController(TermSuiteSettings tsConfig) {
         // Save the references to the settings
         this.settings = tsConfig.getIndexerSettings();
 

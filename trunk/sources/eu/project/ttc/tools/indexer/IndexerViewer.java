@@ -342,8 +342,7 @@ public class IndexerViewer {
 	}
 
 	private class NameComparator implements Comparator<DefaultMutableTreeNode> {
-		
-		@Override
+
 		public int compare(DefaultMutableTreeNode source,
 				DefaultMutableTreeNode target) {
 			String src = (String) source.getUserObject();
@@ -355,7 +354,6 @@ public class IndexerViewer {
 
 	private class FreqComparator implements Comparator<DefaultMutableTreeNode> {
 
-		@Override
 		public int compare(DefaultMutableTreeNode source,
 				DefaultMutableTreeNode target) {
 			Double src = Double.valueOf(this.getFreq(source));
@@ -381,7 +379,6 @@ public class IndexerViewer {
 
 	private class SpecComparator implements Comparator<DefaultMutableTreeNode> {
 
-		@Override
 		public int compare(DefaultMutableTreeNode source,
 				DefaultMutableTreeNode target) {
 			Double src = Double.valueOf(this.getSpec(source));
@@ -413,7 +410,6 @@ public class IndexerViewer {
 			this.viewer = viewer;
 		}
 
-		@Override
 		public void actionPerformed(ActionEvent event) {
 			Object object = event.getSource();
 			if (object instanceof JMenuItem) {
