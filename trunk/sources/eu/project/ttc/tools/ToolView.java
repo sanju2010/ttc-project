@@ -11,6 +11,6 @@ import java.beans.PropertyChangeEvent;
 public interface ToolView {
 
     // TODO
-    public abstract void modelPropertyChange(PropertyChangeEvent evt);
+//    public abstract void modelPropertyChange(PropertyChangeEvent evt);
 
 }

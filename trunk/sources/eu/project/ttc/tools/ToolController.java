@@ -45,10 +45,6 @@ public abstract class ToolController implements PropertyChangeListener {
         registeredModel.addPropertyChangeListener(this);
     }
 
-    public JComponent getView() {
-        return (JComponent) registeredView;
-    }
-
     /**
      * (re)Load the persisted configuration for the model.
      */
@@ -104,7 +100,7 @@ public abstract class ToolController implements PropertyChangeListener {
      *      the PropertyChangeEvent to share with the view
      */
     public void propertyChange(PropertyChangeEvent evt) {
-        registeredView.modelPropertyChange(evt);
+//        registeredView.modelPropertyChange(evt);
     }
 
     /**

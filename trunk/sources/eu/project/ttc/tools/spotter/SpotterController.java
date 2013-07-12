@@ -1,5 +1,8 @@
 package eu.project.ttc.tools.spotter;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Locale;
 
@@ -28,7 +31,6 @@ import org.apache.uima.util.XMLInputSource;
  */
 public class SpotterController extends ToolController {
 
-
     /**
      * Constructor.
      * Create a new empty SpotterController that is simply connected to
@@ -37,16 +39,53 @@ public class SpotterController extends ToolController {
     public SpotterController(SpotterModel model, SpotterView view) {
         super(model, view);
 
-        // Bind model and view
-//        view.addLanguageListener(this);
-//        view.addInputDirectoryListener(this);
-//        view.addOutputDirectoryListener(this);
-//        view.addTtgDirectoryListener(this);
+        // Reflect changes in view on model
+        getView().addLanguageChangeListener(new PropertyChangeListener() {
+            public void propertyChange(PropertyChangeEvent evt) {
+                System.out.println("Reflecting language change from view->" + evt.getNewValue());
+                getModel().setLanguage((String) evt.getNewValue());
+            }
+        });
+        getView().addInputDirectoryChangeListener(new PropertyChangeListener() {
+            public void propertyChange(PropertyChangeEvent evt) {
+                System.out.println("Reflecting input directory change from view->" + evt.getNewValue());
+                getModel().setInputDirectory((String) evt.getNewValue());
+            }
+        });
+        getView().addOutputDirectoryChangeListener(new PropertyChangeListener() {
+            public void propertyChange(PropertyChangeEvent evt) {
+                System.out.println("Reflecting output directory change from view->" + evt.getNewValue());
+                getModel().setOutputDirectory((String) evt.getNewValue());
+            }
+        });
+        getView().addTtgDirectoryChangeListener(new PropertyChangeListener() {
+            public void propertyChange(PropertyChangeEvent evt) {
+                System.out.println("Reflecting treetagger directory change from view->" + evt.getNewValue());
+                try {
+                    getModel().setTreetaggerHome((String) evt.getNewValue());
+                } catch (FileNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+
+        // Reflect changes in model on view
+        getModel().addLanguageChangeListener(new PropertyChangeListener() {
+            public void propertyChange(PropertyChangeEvent evt) {
+                System.out.println("Reflecting language change from model->" + evt.getNewValue());
+                getView().setLanguage((String) evt.getNewValue());
+            }
+        });
     }
 
     /** Getter to the model with appropriate casting */
     protected SpotterModel getModel() {
         return (SpotterModel) registeredModel;
+    }
+
+    /** Getter to the view with appropriate casting */
+    protected SpotterView getView() {
+        return (SpotterView) registeredView;
     }
 
     /**

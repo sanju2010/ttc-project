@@ -62,15 +62,12 @@ public abstract class ToolModel {
      */
     public abstract void save() throws IOException;
 
-
-
-
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-        propertyChangeSupport.addPropertyChangeListener(listener);
+    public void addPropertyChangeListener(String property, PropertyChangeListener listener) {
+        propertyChangeSupport.addPropertyChangeListener(property, listener);
     }
 
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
-        propertyChangeSupport.removePropertyChangeListener(listener);
+    public void removePropertyChangeListener(String property, PropertyChangeListener listener) {
+        propertyChangeSupport.removePropertyChangeListener(property, listener);
     }
 
     protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {

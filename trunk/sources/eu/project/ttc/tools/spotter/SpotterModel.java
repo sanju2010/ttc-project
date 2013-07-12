@@ -8,6 +8,7 @@ import org.apache.uima.util.Level;
 import org.apache.uima.util.XMLInputSource;
 import org.xml.sax.SAXException;
 
+import java.beans.PropertyChangeListener;
 import java.io.*;
 
 /**
@@ -179,6 +180,10 @@ public class SpotterModel extends ToolModel {
     @Override
     public NameValuePair[] getParameterSettings() {
         return pSettings.getParameterSettings();
+    }
+
+    public void addLanguageChangeListener(PropertyChangeListener listener) {
+        addPropertyChangeListener("spotter.language", listener);
     }
 
     /** Setter for language property. */

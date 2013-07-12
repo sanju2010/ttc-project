@@ -2,17 +2,25 @@
 package eu.project.ttc.tools.spotter;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Locale;
 
 /**
- * @author grdscarabe
- * @date 10/07/13
+ * This JPanel exposes the configuration part of the Spotter tool.
+ *
+ * @author Fabien Poulard <fpoulard@dictanova.com>
  */
 public class ConfigPanel extends JPanel {
 
@@ -185,18 +193,28 @@ public class ConfigPanel extends JPanel {
         cbLanguage.setPreferredSize(new Dimension(
                 (int) cbLanguage.getPreferredSize().getHeight(),
                 preferredWidth ));
+        cbLanguage.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    ConfigPanel.LanguageItem item = (ConfigPanel.LanguageItem) e.getItem();;
+                    System.out.println("Detected a language change, fire spotter.language property change.");
+                    firePropertyChange("spotter.language", null, item.getValue());
+                }
+            }
+        });
 
         // Help pane
         epLanguage = new JEditorPane();
+
         epLanguage.setEditable(false);
         epLanguage.setOpaque(false);
-        epLanguage.setPreferredSize( new Dimension(
+        epLanguage.setPreferredSize(new Dimension(
                 (int) epLanguage.getPreferredSize().getHeight(),
-                preferredWidth ));
+                preferredWidth));
         try {
             URL res = getClass().getResource("/eu/project/ttc/gui/params/spotter.language.html");
             epLanguage.setPage(res);
-        } catch (IOException e) {} // No help
+        } catch (IOException e){} // No help
     }
 
     /**
@@ -215,6 +233,12 @@ public class ConfigPanel extends JPanel {
                 (int) fcInDirectory.getPreferredSize().getHeight(),
                 preferredWidth ));
         //fcInDirectory.setBorder(BorderFactory.createLineBorder(Color.BLUE, 1));
+        fcInDirectory.addPropertyChangeListener(new PropertyChangeListener() {
+            public void propertyChange(PropertyChangeEvent evt) {
+                if ("path".equals(evt.getPropertyName()))
+                    firePropertyChange("spotter.inputdirectory", evt.getOldValue(), evt.getNewValue());
+            }
+        });
 
         // Help pane
         epInDirectory = new JEditorPane();
@@ -245,6 +269,12 @@ public class ConfigPanel extends JPanel {
                 (int) fcOutDirectory.getPreferredSize().getHeight(),
                 preferredWidth ));
         //fcOutDirectory.setBorder(BorderFactory.createLineBorder(Color.BLUE, 1));
+        fcOutDirectory.addPropertyChangeListener(new PropertyChangeListener() {
+            public void propertyChange(PropertyChangeEvent evt) {
+                if ("path".equals(evt.getPropertyName()))
+                    firePropertyChange("spotter.outputdirectory", evt.getOldValue(), evt.getNewValue());
+            }
+        });
 
         // Help pane
         epOutDirectory = new JEditorPane();
@@ -275,6 +305,12 @@ public class ConfigPanel extends JPanel {
                 (int) fcTtgDirectory.getPreferredSize().getHeight(),
                 preferredWidth ));
         //fcTtgDirectory.setBorder(BorderFactory.createLineBorder(Color.BLUE, 1));
+        fcTtgDirectory.addPropertyChangeListener(new PropertyChangeListener() {
+            public void propertyChange(PropertyChangeEvent evt) {
+                if ("path".equals(evt.getPropertyName()))
+                    firePropertyChange("spotter.ttgdirectory", evt.getOldValue(), evt.getNewValue());
+            }
+        });
 
         // Help pane
         epTtgDirectory = new JEditorPane();
@@ -287,6 +323,10 @@ public class ConfigPanel extends JPanel {
             URL res = getClass().getResource("/eu/project/ttc/gui/params/spotter.ttgdirectory.html");
             epTtgDirectory.setPage(res);
         } catch (IOException e) {} // No help
+    }
+
+    public void setLanguage(String language) {
+        cbLanguage.setSelectedItem(new LanguageItem(language));
     }
 
     static class LanguageItem {
@@ -317,6 +357,7 @@ public class ConfigPanel extends JPanel {
         private final JTextField tfPath;
         private final JButton btBrowse;
         private final String jfcTitle;
+        private final Color defaultBgColor;
 
         public TTCFileChooser(String title) {
             super();
@@ -326,6 +367,43 @@ public class ConfigPanel extends JPanel {
 
             // Field to display path
             tfPath = new JTextField(25);
+            defaultBgColor = tfPath.getBackground();
+            tfPath.getDocument().addDocumentListener(new DocumentListener() {
+                public void insertUpdate(DocumentEvent e) {
+                    if ( new File(tfPath.getText()).exists() ) {
+                        firePropertyChange("path", null, tfPath.getText());
+                        tfPath.setBackground(defaultBgColor);
+                        tfPath.setOpaque(false);
+                    } else {
+                        // FIXME does not work!!!
+                        tfPath.setBackground(Color.RED);
+                        tfPath.setOpaque(true);
+                    }
+                }
+
+                public void removeUpdate(DocumentEvent e) {
+                    if ( new File(tfPath.getText()).exists() ) {
+                        firePropertyChange("path", null, tfPath.getText());
+                        tfPath.setBackground(defaultBgColor);
+                        tfPath.setOpaque(false);
+                    } else {
+                        tfPath.setBackground(Color.RED);
+                        tfPath.setOpaque(true);
+                    }
+                }
+
+                public void changedUpdate(DocumentEvent e) {
+                    if ( new File(tfPath.getText()).exists() ) {
+                        firePropertyChange("path", null, tfPath.getText());
+                        tfPath.setBackground(defaultBgColor);
+                        tfPath.setOpaque(false);
+                    } else {
+                        tfPath.setBackground(Color.RED);
+                        tfPath.setOpaque(true);
+                    }
+                }
+            });
+
             //tfPath.setBorder(BorderFactory.createLineBorder(Color.BLUE, 3));
             // Button to browse
             btBrowse = new JButton();
@@ -333,7 +411,7 @@ public class ConfigPanel extends JPanel {
             btBrowse.setText("Browse");
             btBrowse.setHorizontalTextPosition(SwingConstants.CENTER);
             btBrowse.setHorizontalAlignment(SwingConstants.CENTER);
-            btBrowse.setActionCommand("browse");
+//            btBrowse.setActionCommand("browse");
             btBrowse.setPreferredSize( new Dimension(96,32) );
             //btBrowse.setBorder(BorderFactory.createLineBorder(Color.BLUE, 3));
 
@@ -357,16 +435,17 @@ public class ConfigPanel extends JPanel {
                         }
                     }
                     // Operate browsing
-                    if (e.getActionCommand().equals("browse")) {
+//                    if (e.getActionCommand().equals("browse")) {
                         jfc.setDialogTitle(jfcTitle);
                         if (jfc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
                             // Some new path have been selected
+                            String prev = tfPath.getText();
                             tfPath.setText( jfc.getSelectedFile().getAbsolutePath() );
+                            firePropertyChange("path", prev, tfPath.getText());
                         }
-                    }
+//                    }
                 }
             });
         }
-
     }
 }
