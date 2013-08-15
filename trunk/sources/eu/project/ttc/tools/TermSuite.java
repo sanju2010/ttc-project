@@ -1,18 +1,23 @@
 package eu.project.ttc.tools;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
-import eu.project.ttc.tools.config.TermSuiteSettings;
+import eu.project.ttc.tools.commons.InvalidTermSuiteConfiguration;
+import eu.project.ttc.tools.commons.ToolController;
+import eu.project.ttc.tools.config.AlignerSettings;
+import eu.project.ttc.tools.config.IndexerSettings;
 import eu.project.ttc.tools.spotter.SpotterController;
 import eu.project.ttc.tools.spotter.SpotterModel;
 import eu.project.ttc.tools.spotter.SpotterView;
@@ -20,23 +25,21 @@ import org.apache.uima.UIMAFramework;
 import org.apache.uima.util.Level;
 
 import eu.project.ttc.tools.aligner.Aligner;
-import eu.project.ttc.tools.aligner.AlignerEngine;
 import eu.project.ttc.tools.aligner.AlignerViewer;
 import eu.project.ttc.tools.indexer.Indexer;
-import eu.project.ttc.tools.indexer.IndexerEngine;
 import eu.project.ttc.tools.indexer.IndexerViewer;
-import eu.project.ttc.tools.spotter.SpotterEngine;
-import eu.project.ttc.tools.utils.About;
-import eu.project.ttc.tools.utils.Preferences;
-import eu.project.ttc.tools.utils.ToolBar;
-import fr.free.rocheteau.jerome.dunamis.listeners.ProcessingResultListener;
+import eu.project.ttc.tools.various.About;
+import eu.project.ttc.tools.various.Preferences;
+import eu.project.ttc.tools.various.ToolBar;
 import fr.free.rocheteau.jerome.dunamis.viewers.ProcessingResultViewer;
 
+/**
+ * Main class of the GUI version of TermSuite.
+ */
 public class TermSuite implements Runnable {
 
-	/** Current version of the program */
-	public static final String TERMSUITE_VERSION = "1.4";
-
+    /** Current version of the program */
+    public static final String TERMSUITE_VERSION = "1.5-SNAPSHOT";
     /** Name of the directory where the config is persisted */
     public static final String CFG_ROOTDIR_NAME = ".term-suite";
     /** Name of the file where the SpotterController config is persisted */
@@ -46,26 +49,31 @@ public class TermSuite implements Runnable {
     /** Name of the file where the Aligner config is persisted */
     public static final String CFG_ALIGNER_NAME = "aligner.settings";
 
-    /** Path to the directory where the configuration files are stored */
-    private String cfgDirPath;
-    /** Path to the spotter configuration */
-    private File cfgSpotterFile;
-    /** Path to the indexer configuration */
-    private File cfgIndexerFile;
-    /** Path to the aligner configuration */
-    private File cfgAlignerFile;
-
-    private final TermSuiteSettings pConfig;
-
+    /** Preferences store various data used to define the system */
+    public static final Preferences preferences = new Preferences();
+    static {
+        preferences.setSummary(
+                "This tool provides 3 tools for processing terminology extraction "
+                + "and terminology alignment from comparable corpora. "
+                + "It has been developed within the European TTC project (see http://www.ttc-project.eu/).");
+        preferences.setLicense(
+                "This software is distributed under the Apache Licence version 2.");
+        preferences.setTitle("Term Suite");
+        preferences.setVersion(TERMSUITE_VERSION);
+        preferences.setConfigRoot( System.getProperty("user.home")
+                + File.separator + CFG_ROOTDIR_NAME + File.separator + TERMSUITE_VERSION);
+        preferences.setSpotterConfig(
+                preferences.getConfigRoot() + File.separator + CFG_SPOTTER_NAME);
+        preferences.setIndexerConfig(
+                preferences.getConfigRoot() + File.separator + CFG_INDEXER_NAME);
+        preferences.setAlignerConfig(
+                preferences.getConfigRoot() + File.separator + CFG_ALIGNER_NAME);
+    }
 
     public TermSuite() {
         this.setDesktop();
-        this.setPreferences();
 
-        // Prepare persisted config
-        pConfig = new TermSuiteSettings(this.getPreferences().getVersion());
-        initConfig(); // FIXME (redundant lines)
-
+        initConfig();
 
         this.setAbout();
         this.setToolBar();

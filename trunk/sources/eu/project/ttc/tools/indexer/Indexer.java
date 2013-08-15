@@ -4,9 +4,9 @@ import java.awt.Component;
 
 import javax.swing.*;
 
-import eu.project.ttc.tools.InputSource;
+import eu.project.ttc.tools.commons.InputSource;
 import eu.project.ttc.tools.TermSuite;
-import eu.project.ttc.tools.ToolController;
+import eu.project.ttc.tools.commons.ToolController;
 import eu.project.ttc.tools.config.*;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.cas.CAS;

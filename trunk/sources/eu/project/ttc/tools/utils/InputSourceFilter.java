@@ -22,7 +22,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.net.URL;
 
-import eu.project.ttc.tools.InputSource.InputSourceTypes;
+import eu.project.ttc.tools.commons.InputSource.InputSourceTypes;
 
 /**
  * A {@link FilenameFilter} that verifies that the specified file is of the

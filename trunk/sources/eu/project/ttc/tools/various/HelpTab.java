@@ -1,4 +1,4 @@
-package eu.project.ttc.tools.help;
+package eu.project.ttc.tools.various;
 
 import java.io.IOException;
 import java.net.URL;

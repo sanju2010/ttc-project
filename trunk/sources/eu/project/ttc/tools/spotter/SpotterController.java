@@ -2,22 +2,26 @@ package eu.project.ttc.tools.spotter;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Locale;
 
-import eu.project.ttc.tools.InputSource;
+import eu.project.ttc.tools.TermSuiteRunner;
+import eu.project.ttc.tools.commons.InputSource;
 import eu.project.ttc.tools.TermSuite;
-import eu.project.ttc.tools.ToolModel;
-import eu.project.ttc.tools.ToolController;
+import eu.project.ttc.tools.commons.ToolModel;
+import eu.project.ttc.tools.commons.ToolController;
 import fr.free.rocheteau.jerome.dunamis.models.ProcessingResult;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.resource.ResourceSpecifier;
 import org.apache.uima.resource.metadata.ConfigurationParameterSettings;
+import org.apache.uima.resource.metadata.NameValuePair;
 import org.apache.uima.util.InvalidXMLException;
 import org.apache.uima.util.XMLInputSource;
+
+import org.apache.commons.lang3.text.WordUtils;
 
 /**
  * Controller of the Spotter tool.

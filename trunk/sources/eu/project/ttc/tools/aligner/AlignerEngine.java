@@ -3,15 +3,15 @@ package eu.project.ttc.tools.aligner;
 import java.io.File;
 import java.io.FileNotFoundException;
 
-import eu.project.ttc.tools.InputSource;
-import eu.project.ttc.tools.InputSource.InputSourceTypes;
-import eu.project.ttc.tools.ToolController;
+import eu.project.ttc.tools.commons.InputSource;
+import eu.project.ttc.tools.commons.InputSource.InputSourceTypes;
+import eu.project.ttc.tools.commons.ToolController;
 import eu.project.ttc.tools.config.AlignerSettings;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.resource.metadata.ConfigurationParameterSettings;
 
-import eu.project.ttc.tools.TermSuiteEngine;
+import eu.project.ttc.tools.commons.TermSuiteEngine;
 
 public class AlignerEngine implements TermSuiteEngine {
 

@@ -1,4 +1,4 @@
-package eu.project.ttc.tools.help;
+package eu.project.ttc.tools.various;
 
 import java.awt.Component;
 import java.io.IOException;

@@ -16,6 +16,8 @@ import java.util.Properties;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
+import eu.project.ttc.tools.commons.TermSuiteEngine;
+import eu.project.ttc.tools.commons.ToolController;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.HelpFormatter;
@@ -47,7 +49,7 @@ import org.apache.commons.cli.OptionGroup;
 import org.apache.commons.cli.OptionBuilder;
 import eu.project.ttc.tools.utils.FileComparator;
 import eu.project.ttc.tools.utils.InputSourceFilter;
-import eu.project.ttc.tools.InputSource.InputSourceTypes;
+import eu.project.ttc.tools.commons.InputSource.InputSourceTypes;
 
 
 public class TermSuiteRunner extends SwingWorker<Void, Void> {

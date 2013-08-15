@@ -4,15 +4,16 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Locale;
 
-import eu.project.ttc.tools.InputSource;
-import eu.project.ttc.tools.ToolController;
+import eu.project.ttc.tools.commons.InputSource;
+import eu.project.ttc.tools.commons.ProcessingResult;
+import eu.project.ttc.tools.commons.ToolController;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.resource.metadata.ConfigurationParameterSettings;
 
-import eu.project.ttc.tools.TermSuiteEngine;
-import fr.free.rocheteau.jerome.dunamis.models.ProcessingResult;
+import eu.project.ttc.tools.commons.TermSuiteEngine;
 
+@Deprecated
 public class SpotterEngine implements TermSuiteEngine {
 
 	private ToolController tool;

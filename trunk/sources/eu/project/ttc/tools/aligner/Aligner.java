@@ -5,7 +5,7 @@ import java.awt.Component;
 import javax.swing.*;
 
 import eu.project.ttc.tools.TermSuite;
-import eu.project.ttc.tools.ToolController;
+import eu.project.ttc.tools.commons.ToolController;
 import eu.project.ttc.tools.config.AlignerSettings;
 import eu.project.ttc.tools.config.TermSuiteSettings;
 
@@ -16,9 +16,17 @@ public class Aligner {
 	private TermSuite parent;
     private AlignerSettings settings;
 
+    @Deprecated
     public Aligner(TermSuiteSettings tsConfig) {
         // Save the references to the settings
         this.settings = tsConfig.getAlignerSettings();
+
+        this.setComponent();
+    }
+
+    public Aligner(AlignerSettings settings) {
+        // Save the references to the settings
+        this.settings = settings;
 
         this.setComponent();
     }

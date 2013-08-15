@@ -1,6 +1,7 @@
 package eu.project.ttc.tools.spotter;
 
-import eu.project.ttc.tools.ToolModel;
+import eu.project.ttc.tools.commons.InvalidTermSuiteConfiguration;
+import eu.project.ttc.tools.commons.ToolModel;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.resource.metadata.*;
 import org.apache.uima.util.InvalidXMLException;
@@ -8,8 +9,10 @@ import org.apache.uima.util.Level;
 import org.apache.uima.util.XMLInputSource;
 import org.xml.sax.SAXException;
 
+import javax.management.InvalidAttributeValueException;
 import java.beans.PropertyChangeListener;
 import java.io.*;
+import java.util.ArrayList;
 
 /**
  * Model of the Spotter tool.
@@ -17,7 +20,7 @@ import java.io.*;
  * The spotter is responsible for processing documents and extract term candidates from it.
  * This model maintains the values of the parameters used by the dedicated engine.
  */
-public class SpotterModel extends ToolModel {
+public class SpotterModel extends ToolModel implements SpotterBinding {
 
     public static final String P_LANGUAGE = "Language";
     public static final String P_INPUT_DIRECTORY = "InputDirectory";

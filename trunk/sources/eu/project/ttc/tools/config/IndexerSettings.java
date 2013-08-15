@@ -1,6 +1,6 @@
 package eu.project.ttc.tools.config;
 
-import eu.project.ttc.tools.ToolModel;
+import eu.project.ttc.tools.commons.ToolModel;
 import org.apache.uima.resource.metadata.ConfigurationParameter;
 import org.apache.uima.resource.metadata.ConfigurationParameterDeclarations;
 

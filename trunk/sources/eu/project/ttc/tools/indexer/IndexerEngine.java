@@ -2,15 +2,15 @@ package eu.project.ttc.tools.indexer;
 
 import java.util.Locale;
 
-import eu.project.ttc.tools.InputSource;
-import eu.project.ttc.tools.InputSource.InputSourceTypes;
+import eu.project.ttc.tools.commons.InputSource;
+import eu.project.ttc.tools.commons.InputSource.InputSourceTypes;
 import eu.project.ttc.tools.config.IndexerSettings;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.resource.metadata.ConfigurationParameterSettings;
 
-import eu.project.ttc.tools.TermSuiteEngine;
-import eu.project.ttc.tools.ToolController;
+import eu.project.ttc.tools.commons.TermSuiteEngine;
+import eu.project.ttc.tools.commons.ToolController;
 
 public class IndexerEngine implements TermSuiteEngine {
 

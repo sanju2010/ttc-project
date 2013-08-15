@@ -1,4 +1,4 @@
-package eu.project.ttc.tools;
+package eu.project.ttc.tools.commons;
 
 import org.apache.uima.resource.ResourceConfigurationException;
 import org.apache.uima.resource.metadata.NameValuePair;
@@ -44,18 +44,23 @@ public abstract class ToolModel {
 
     /**
      * Access all the parameters registered in the system.
+     *
+     * @param includeLanguage
+     *      if set, then the Language parameter is included as well which will
+     *      generate an error if you try to run the engine from here as the
+     *      corresponding parameter does not exist
      */
-    public abstract NameValuePair[] getParameterSettings();
+    public abstract NameValuePair[] getParameterSettings(boolean includeLanguage);
 
     /**
      * Provides the means to set or reset the model to a default state.
      */
-    public abstract void initDefault() throws FileNotFoundException;
+    public abstract void initDefault() throws FileNotFoundException, InvalidTermSuiteConfiguration;
 
     /**
      * Load the configuration persisted if any.
      */
-    public abstract void load() throws IOException;
+    public abstract void load() throws IOException, InvalidTermSuiteConfiguration;
 
     /**
      * Persists the configuration.
@@ -66,12 +71,20 @@ public abstract class ToolModel {
         propertyChangeSupport.addPropertyChangeListener(property, listener);
     }
 
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        propertyChangeSupport.addPropertyChangeListener(listener);
+    }
+
     public void removePropertyChangeListener(String property, PropertyChangeListener listener) {
         propertyChangeSupport.removePropertyChangeListener(property, listener);
     }
 
     protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
         propertyChangeSupport.firePropertyChange(propertyName, oldValue, newValue);
+    }
+
+    public File getConfigurationFile() {
+        return persistedCfg;
     }
 
     // FIXME remove all these

@@ -1,4 +1,4 @@
-package eu.project.ttc.tools.utils;
+package eu.project.ttc.tools.various;
 
 import java.awt.Frame;
 

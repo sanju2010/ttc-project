@@ -1,4 +1,4 @@
-package eu.project.ttc.tools;
+package eu.project.ttc.tools.commons;
 
 import eu.project.ttc.tools.utils.FileComparator;
 import eu.project.ttc.tools.utils.InputSourceFilter;

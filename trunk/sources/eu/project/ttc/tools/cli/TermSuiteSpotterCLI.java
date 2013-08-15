@@ -23,7 +23,7 @@ import java.util.Properties;
 
 import javax.swing.SwingUtilities;
 
-import eu.project.ttc.tools.InputSource;
+import eu.project.ttc.tools.commons.InputSource;
 import eu.project.ttc.tools.spotter.SpotterModel;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;

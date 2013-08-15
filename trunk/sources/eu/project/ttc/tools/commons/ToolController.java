@@ -1,5 +1,6 @@
-package eu.project.ttc.tools;
+package eu.project.ttc.tools.commons;
 
+import eu.project.ttc.tools.TermSuite;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.resource.metadata.ConfigurationParameterSettings;
@@ -7,6 +8,7 @@ import org.apache.uima.resource.metadata.ConfigurationParameterSettings;
 import javax.swing.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
 
@@ -48,7 +50,7 @@ public abstract class ToolController implements PropertyChangeListener {
     /**
      * (re)Load the persisted configuration for the model.
      */
-    public void loadConfiguration() throws IOException {
+    public void loadConfiguration() throws IOException, InvalidTermSuiteConfiguration {
         // Proxy for ToolModel#load()
         registeredModel.load();
     }
@@ -56,8 +58,8 @@ public abstract class ToolController implements PropertyChangeListener {
     /**
      * Persist the configuration for the model.
      */
-    public void saveConfiguration() throws IOException {
-        // Proxy for ToolModel#save()
+    public void saveConfiguration() throws IOException, InvalidTermSuiteConfiguration {
+        // Proxy for ToolModel#doSave()
         registeredModel.save();
     }
 
@@ -68,10 +70,15 @@ public abstract class ToolController implements PropertyChangeListener {
     public abstract ConfigurationParameterSettings getAESettings();
 
     /**
-     * Build the analysis engine description from the model so that it can be
-     * run directly or through a CPE.
+     * Compute the name of the resource corresponding to the descriptor to use
+     * to run the corresponding engine.
      */
-    public abstract AnalysisEngineDescription getAEDescription() throws Exception;
+    public abstract String getAEDescriptor() throws Exception;
+
+    /**
+     * Specify the kind of files to be processed by the tool.
+     */
+    public abstract InputSource.InputSourceTypes getInputSourceType();
 
     /**
      * Compute the description of where and what the files to be processed are.
@@ -133,7 +140,11 @@ public abstract class ToolController implements PropertyChangeListener {
 	public abstract TermSuite getParent();
 
 	public abstract ToolModel getSettings();
-	
+
+    public File getConfigurationFile() {
+        return registeredModel.getConfigurationFile();
+    }
+
 //	public abstract Component getView();
 
 }

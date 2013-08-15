@@ -1,8 +1,8 @@
-package eu.project.ttc.tools;
+package eu.project.ttc.tools.commons;
 
 import org.apache.uima.cas.CAS;
 import org.apache.uima.resource.metadata.ConfigurationParameterSettings;
-import eu.project.ttc.tools.InputSource.InputSourceTypes;
+import eu.project.ttc.tools.commons.InputSource.InputSourceTypes;
 
 public interface TermSuiteEngine {
 
