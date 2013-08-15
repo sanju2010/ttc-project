@@ -87,20 +87,15 @@ public class TermSuite implements Runnable {
         this.setContent();
         this.setComponent();
         this.setFrame();
-        this.setListener();
-    }
+//        this.setListener();
 
-	public void error(Exception e) {
-		UIMAFramework.getLogger().log(Level.SEVERE,e.getMessage());
-	}
-	
-	public void warning(String message) {
-		UIMAFramework.getLogger().log(Level.WARNING,message);
-	}
-	
-	public void message(String message) {
-		UIMAFramework.getLogger().log(Level.INFO,message);
-	}
+        // Bind window close button
+        getFrame().addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent event) {
+                TermSuite.this.doQuit();
+            }
+        });
+    }
 	
 	private Desktop desktop;
 	
@@ -113,158 +108,225 @@ public class TermSuite implements Runnable {
 	public Desktop getDesktop() {
 		return this.desktop;
 	}
-	
-	private Preferences preferences;
-	
-	private void setPreferences() {
-		this.preferences = new Preferences("term-suite.properties");
-		try {
-			this.preferences.load();
-		} catch (Exception e) {
-			this.error(e);
-		}
-	}
 
-    public Preferences  getPreferences() {
+    public Preferences getPreferences() {
         return this.preferences;
     }
 
-    public eu.project.ttc.tools.config.TermSuiteSettings getPConfig() {
-        return this.pConfig;
+    public void run() {
+        this.getFrame().setVisible(true);
     }
+
+    private Dimension getDimension() {
+        return new Dimension(1000,1000);
+    }
+
+    /**
+     * Access the tool currently manipulated by the user, that is the one
+     * with the focus.
+     */
+    public ToolController getTermSuiteTool() {
+        switch ( getContent().getSelectedIndex() ) {
+            case 0:
+                return getSpotter();
+            case 1:
+//                return getIndexer();
+            case 2:
+//                return getAligner();
+            default:
+                // FIXME should not happen... but for now everything but spotted ends up here!
+                return null;
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////// TOOLBAR
 
     private ToolBar toolBar;
 
     private void setToolBar() {
         this.toolBar = new ToolBar();
+        // Bind "about" command
+        toolBar.getAbout().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if ( "about".equals( e.getActionCommand() ) ) {
+                    getAbout().show();
+                }
+            }
+        });
+        // Bind "run" command
+        toolBar.getRun().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if ( "run".equals( e.getActionCommand() ) ) {
+                    doRun();
+                }
+            }
+        });
+        // Bind "save" command
+        toolBar.getSave().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if ( "save".equals( e.getActionCommand() ) ) {
+                    doSave(true);
+                }
+            }
+        });
+        // Bind "quit" command
+        toolBar.getQuit().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if ( "quit".equals( e.getActionCommand() ) ) {
+                    doQuit();
+                }
+            }
+        });
     }
 
     public ToolBar getToolBar() {
         return this.toolBar;
     }
 
-
-    public void run() {
-        this.show();
-    }
-
-    private TermSuite parent;
-
-    public void setParent(TermSuite parent) {
-        this.parent = parent;
-    }
-
-    public TermSuite getParent() {
-        return this.parent;
-    }
-
-    private Dimension getDimension()
-    {
-        return new Dimension(1000,1000);
-    }
-
-    public void enableListeners() {
-        // FIXME
-//        if (this.isTaggerSelected()) {
-//            this.listener.setTool(this.getSpotter());
-//            SpotterEngine engine = new SpotterEngine();
-//            engine.setTool(this.getSpotter());
-//            this.listener.setEngine(engine);
-//        } else if (this.isIndexerSelected()) {
-//            this.listener.setTool(this.getIndexer());
-//            IndexerEngine engine = new IndexerEngine();
-//            engine.setTool(this.getIndexer());
-//            this.listener.setEngine(engine);
-//        } else if (this.isAlignerSelected()) {
-//            this.listener.setTool(this.getAligner());
-//            AlignerEngine engine = new AlignerEngine();
-//            engine.setTool(this.getAligner());
-//            this.listener.setEngine(engine);
-//        }
-    }
-
     //////////////////////////////////////////////////////////////// CONFIG VALUES
 
     /**
-     * Initialize the configuration by computing the path to the various configuration
-     * files for each tool.
+     * Create the root directory for configuration files if necessary.
      */
     private void initConfig() {
-        // Compute the path to the configuration dir and create it if necessary
-        cfgDirPath = System.getProperty("user.home")
-                + File.separator + CFG_ROOTDIR_NAME + File.separator + TERMSUITE_VERSION;
-        File cfgDir = new File(cfgDirPath);
+        File cfgDir = new File( getPreferences().getConfigRoot() );
         if (! cfgDir.exists()) {
             cfgDir.mkdirs();
         }
-
-        // Compute other settings path
-        cfgSpotterFile = new File(cfgDir.getAbsolutePath() + File.separator + CFG_SPOTTER_NAME);
-        cfgIndexerFile = new File(cfgDir.getAbsolutePath() + File.separator + CFG_INDEXER_NAME);
-        cfgAlignerFile = new File(cfgDir.getAbsolutePath() + File.separator + CFG_ALIGNER_NAME);
     }
 
     public File getSpotterCfg() {
-        return cfgSpotterFile;
+        return new File( getPreferences().getSpotterConfig() );
     }
 
     public File getIndexerCfg() {
-        return cfgIndexerFile;
+        return new File( getPreferences().getIndexerConfig() );
     }
 
     public File getAlignerCfg() {
-        return cfgAlignerFile;
+        return new File( getPreferences().getAlignerConfig() );
     }
 
-    //////////////////////////////////////////////////////////////// ACTIONS
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////// ACTIONS
 
-    public boolean isTaggerSelected() {
-        return this.getContent().getSelectedIndex() == 0;
-    }
-
-    public boolean isIndexerSelected() {
-        return this.getContent().getSelectedIndex() == 1;
-    }
-
-    public boolean isAlignerSelected() {
-        return this.getContent().getSelectedIndex() == 2;
-    }
-
-    public void save() {
+    /**
+     * Persists the models of the various tools.
+     * Once executed flawlessly, the current TermSuite configuration is persisted on disk.
+     *
+     * @param showConfirmation  flag indicating if a confirmation dialog should be
+     *                          presented to the user after the saving process.
+     */
+    public void doSave(boolean showConfirmation) {
         try {
-            this.getSpotter().saveConfiguration(); //.getSettings().doSave();
+            spotter.saveConfiguration();
             this.getIndexer().getSettings().doSave();
             this.getAligner().getSettings().doSave();
+            if ( showConfirmation ) {
+                JOptionPane.showMessageDialog(this.getFrame(),
+                        "The TermSuite configuration has been successfully saved",
+                        "Success",
+                        JOptionPane.INFORMATION_MESSAGE);
+            }
         } catch (Exception e) {
-            this.error(e);
+            UIMAFramework.getLogger().log(Level.SEVERE,e.getMessage());
+            e.printStackTrace();
+            displayException("An error occurred while saving the configuration.\n", e);
         }
     }
 
-    private void hide() {
-        this.save();
-        this.getFrame().setVisible(false);
+    /**
+     * Quit the application.
+     */
+    private void doQuit() {
+        int response = JOptionPane.showConfirmDialog(this.getFrame(),
+                "Do you really want to quit " + getPreferences().getTitle() + "?",
+                "Quit",
+                JOptionPane.YES_NO_OPTION);
+        if (response == 0) {
+            // FIXME Ask for save ?
+            doSave(false);
+            this.getFrame().setVisible(false);
+            this.getFrame().dispose();
+            System.exit(0);
+        }
     }
 
-    private void show() {
-        this.getFrame().setVisible(true);
-    }
-
-    public void quit() {
-        this.hide();
-        this.getFrame().dispose();
-        System.exit(0);
-    }
-
-    public void quit(Exception e) {
+    /**
+     * Force to quit the application without user approval.
+     * @param e the exception responsible for this force quit.
+     */
+    public void doForceQuit(Exception e) {
         // Log the exception
         UIMAFramework.getLogger().log(Level.SEVERE,e.getMessage());
         e.printStackTrace();
         // Inform the user we crashed
         displayException("TermSuite has crashed because of the following error:\n", e);
-        // Do crash!
-        this.hide();
+        // Do crash! Save configuration first.
+        doSave(false);
+        this.getFrame().setVisible(false);
         this.getFrame().dispose();
         System.exit(1);
+    }
+
+    /**
+     * Run the currently selected TermSuite tool in its current configuration.
+     */
+    public void doRun() {
+        // Make sure to persist the configuration
+        try {
+            getTermSuiteTool().saveConfiguration();
+        } catch (InvalidTermSuiteConfiguration e) {
+            displayException("Unable to run: the TermSuite configuration is invalid.", e);
+            e.printStackTrace();
+            return;
+        } catch (IOException e) {
+            displayException("Unable to run: the TermSuite configuration cannot be written on disk.", e);
+            e.printStackTrace();
+            return;
+        }
+
+        // Run the tool
+        try {
+            // FIXME Gui stuff
+            getViewer().doEnable(false);
+            getViewer().getResultModel().clear();
+            getToolBar().getRun().setEnabled(false);
+
+            final TermSuiteRunner runner = new TermSuiteRunner(getTermSuiteTool());
+            final JProgressBar pBar = getToolBar().getProgressBar();
+            runner.addPropertyChangeListener(new PropertyChangeListener() {
+                @Override
+                public void propertyChange(PropertyChangeEvent evt) {
+                    if ( "progress".equals(evt.getPropertyName()) ) {
+                        int progress = runner.getProgress();
+                        pBar.setValue(progress);
+                        pBar.setString(progress + " %");
+                    }
+                }
+            });
+            runner.execute();
+
+            // FIXME again Gui stuff
+            getToolBar().getStop().setEnabled(true);
+            getToolBar().getStop().addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if ("stop".equals(e.getActionCommand())) {
+                        runner.cancel(false);
+                    }
+                }
+            });
+        } catch (Exception e) {
+            displayException("An error occurred while running the tool.", e);
+            e.printStackTrace();
+        } finally {
+            getToolBar().getStop().setEnabled(false);
+            getToolBar().getRun().setEnabled(true);
+        }
     }
 
     public void displayException(String msg, Throwable e) {
@@ -349,13 +411,67 @@ public class TermSuite implements Runnable {
         this.content = new JTabbedPane();
         this.content.setTabPlacement(JTabbedPane.LEFT);
 //        this.content.addTab(" Spotter ",this.embed(this.getSpotter().getView(), this.getViewer().getComponent()));
-        this.content.addTab(" Spotter ", this.getSpotter().getView());
+//        this.content.addTab(" Spotter ", this.getSpotter().getView());
+        this.content.addTab(" Spotter ", this.spotterV);
         this.content.addTab(" Indexer ",this.embed(this.getIndexer().getView(), this.getBanker().getComponent()));
         this.content.addTab(" Aligner ",this.embed(this.getAligner().getView(), this.getMixer().getComponent()));
-        Listener listener = new Listener();
-        listener.setTermSuite(this);
-        this.content.addChangeListener(listener);
+//		ProcessingResultListener processingRresultListener = new ProcessingResultListener();
+//		processingRresultListener.setViewer(this.getViewer());
+//        Listener listener = new Listener();
+//        listener.setTermSuite(this);
+//        this.content.addChangeListener(listener);
     }
+
+    public void enableListeners() {
+        // FIXME
+//        if (this.isTaggerSelected()) {
+//            this.listener.setTool(this.getSpotter());
+//            SpotterEngine engine = new SpotterEngine();
+//            engine.setTool(this.getSpotter());
+//            this.listener.setEngine(engine);
+//        } else if (this.isIndexerSelected()) {
+//            this.listener.setTool(this.getIndexer());
+//            IndexerEngine engine = new IndexerEngine();
+//            engine.setTool(this.getIndexer());
+//            this.listener.setEngine(engine);
+//        } else if (this.isAlignerSelected()) {
+//            this.listener.setTool(this.getAligner());
+//            AlignerEngine engine = new AlignerEngine();
+//            engine.setTool(this.getAligner());
+//            this.listener.setEngine(engine);
+//        }
+    }
+
+    //
+////	private TermSuiteListener listener;
+//
+//	private void setListener() {
+//		this.listener = new TermSuiteListener();
+//		this.enableListeners();
+//		this.getToolBar().enableListeners(this.listener);
+//		ProcessingResultListener processingRresultListener = new ProcessingResultListener();
+//		processingRresultListener.setViewer(this.getViewer());
+//		this.getViewer().enableListeners(processingRresultListener);
+//		WindowListener windowListener = new WindowListener();
+//		windowListener.setTermSuite(this);
+//		this.getFrame().addWindowListener(windowListener);
+//	}
+//
+//
+//
+//    private class Listener implements ChangeListener {
+//
+//        private TermSuite termSuite;
+//
+//        public void setTermSuite(TermSuite termSuite) {
+//            this.termSuite = termSuite;
+//        }
+//
+//        public void stateChanged(ChangeEvent event) {
+//            this.termSuite.enableListeners();
+//        }
+//
+//    }
 
     /************************************************************************************************** ABOUT WINDOW */
 	
@@ -373,17 +489,27 @@ public class TermSuite implements Runnable {
     /*************************************************************************************************** SPOTTER TAB */
 
 	private SpotterController spotter;
+    private SpotterView spotterV;
 	
 	private void setSpotter() {
         // Prepare the MVC
         SpotterModel sModel = new SpotterModel(getSpotterCfg());
-        SpotterView sView = new SpotterView();
-		this.spotter = new SpotterController(sModel, sView);
+        //SpotterView sView = new SpotterView();
+        this.spotterV = new SpotterView();
+		this.spotter = new SpotterController(sModel, this.spotterV);
 
         // Load the persisted configuration if any
         try {
             spotter.loadConfiguration();
-        } catch (IOException e) {} // Non lethal if no configuration
+        } catch (IOException e) {
+            // Non lethal if no configuration
+        } catch (InvalidTermSuiteConfiguration e) {
+            // Problem
+            displayException("There was a problem loading the Spotter configuration.<br/>" +
+                    "I recommend deleting the configuration file '" + spotter.getConfigurationFile() +
+                    "' if it exists. If not, that may be the first time you run the program and " +
+                    "the default configuration does not apply to you.", e);
+        }
 	}
 	
 	private SpotterController getSpotter() {
@@ -405,7 +531,8 @@ public class TermSuite implements Runnable {
 	private Indexer indexer;
 	
 	private void setIndexer() {
-		this.indexer = new Indexer(pConfig);
+        IndexerSettings cfg = new IndexerSettings( getPreferences().getIndexerConfig() );
+		this.indexer = new Indexer(cfg);
 		this.indexer.setParent(this);
 	}
 	
@@ -428,7 +555,8 @@ public class TermSuite implements Runnable {
 	private Aligner aligner;
 	
 	private void setAligner() {
-		this.aligner = new Aligner(pConfig);
+        AlignerSettings cfg = new AlignerSettings( getPreferences().getAlignerConfig() );
+		this.aligner = new Aligner(cfg);
 		this.aligner.setParent(this);
 	}
 	
@@ -449,59 +577,6 @@ public class TermSuite implements Runnable {
 	public JFrame getFrame() {
 		return this.frame;
 	}
-	
-	private TermSuiteListener listener;
-	
-	private void setListener() {
-		this.listener = new TermSuiteListener();
-		this.enableListeners();
-		this.getToolBar().enableListeners(this.listener);
-		ProcessingResultListener processingRresultListener = new ProcessingResultListener();
-		processingRresultListener.setViewer(this.getViewer());
-		this.getViewer().enableListeners(processingRresultListener);
-		WindowListener windowListener = new WindowListener();
-		windowListener.setTermSuite(this);
-		this.getFrame().addWindowListener(windowListener);
-	}
-
-
-
-    private class Listener implements ChangeListener {
-
-        private TermSuite termSuite;
-
-        public void setTermSuite(TermSuite termSuite) {
-            this.termSuite = termSuite;
-        }
-
-        public void stateChanged(ChangeEvent event) {
-            this.termSuite.enableListeners();
-        }
-
-    }
-
-    private class WindowListener extends WindowAdapter {
-
-        private TermSuite termSuite;
-
-        public void setTermSuite(TermSuite termSuite) {
-            this.termSuite = termSuite;
-        }
-
-        private TermSuite getTermSuite() {
-            return this.termSuite;
-        }
-
-        public void windowClosing(WindowEvent event) {
-            String message = "Do you really want to quit " + this.getTermSuite().getPreferences().getTitle() + "?";
-            String title = "Exit?";
-            int response = JOptionPane.showConfirmDialog(this.getTermSuite().getFrame(),message,title,JOptionPane.OK_CANCEL_OPTION);
-            if (response == 0) {
-                this.getTermSuite().quit();
-            }
-        }
-
-    }
 
     /********************************************************************************************************** MAIN */
 

@@ -96,21 +96,27 @@ public class SpotterModel extends ToolModel implements SpotterBinding {
      * Set all properties to their default values.
      */
     @Override
-    public void initDefault() throws FileNotFoundException {
-        setLanguage("fr");
-        setInputDirectory("data/input/wind-energy/French/txt/");
-        setOutputDirectory("data/output/wind-energy_FR");
-        setTreetaggerHome("libs/TreeTagger");
+    public void initDefault() throws InvalidTermSuiteConfiguration {
+        try {
+            setLanguage("fr");
+            setInputDirectory("data/input/wind-energy/French/txt/");
+            setOutputDirectory("data/output/wind-energy_FR");
+            setTreetaggerHome("libs/TreeTagger");
+        } catch (IllegalArgumentException e) {
+            String msg = "Unable to use the default configuration.";
+            UIMAFramework.getLogger().log(Level.WARNING, msg);
+            throw new InvalidTermSuiteConfiguration(msg, e);
+        }
     }
 
     /**
      * Load persisted parameters values from the configuration file.
      * We use UIMA metadata resource format to persist the configuration.
      *
-     * @see eu.project.ttc.tools.ToolModel#load()
+     * @see eu.project.ttc.tools.commons.ToolModel#load()
      */
     @Override
-    public void load() throws IOException {
+    public void load() throws IOException, InvalidTermSuiteConfiguration {
         // Check if the file exist, not an error if it is empty
         if (!persistedCfg.exists())
             return;
@@ -129,18 +135,25 @@ public class SpotterModel extends ToolModel implements SpotterBinding {
         ConfigurationParameterSettings settings =
                 uimaMetadata.getConfigurationParameterSettings();
         for(NameValuePair nvp: settings.getParameterSettings()) {
-            if ( pLang.getName().equals(nvp.getName()) ) {
-                setLanguage((String) nvp.getValue());
-            } else if ( pIDir.getName().equals(nvp.getName()) ) {
-                setInputDirectory((String) nvp.getValue());
-            } else if ( pODir.getName().equals(nvp.getName()) ) {
-                setOutputDirectory((String) nvp.getValue());
-            } else if ( pTtg.getName().equals(nvp.getName()) ) {
-                setTreetaggerHome((String) nvp.getValue());
-            } else {
-                UIMAFramework.getLogger().log(Level.WARNING,
-                        "Ignoring parameter {} as it is not supported by the model.",
-                        new String[]{nvp.getName()});
+            try {
+                if ( pLang.getName().equals(nvp.getName()) ) {
+                    setLanguage((String) nvp.getValue());
+                } else if ( pIDir.getName().equals(nvp.getName()) ) {
+                    setInputDirectory((String) nvp.getValue());
+                } else if ( pODir.getName().equals(nvp.getName()) ) {
+                    setOutputDirectory((String) nvp.getValue());
+                } else if ( pTtg.getName().equals(nvp.getName()) ) {
+                    setTreetaggerHome((String) nvp.getValue());
+                } else {
+                    UIMAFramework.getLogger().log(Level.WARNING,
+                            "Ignoring parameter {} as it is not supported by the model.",
+                            new String[]{nvp.getName()});
+                }
+            } catch (IllegalArgumentException e) {
+                String msg = "Unable to correctly load the configuration persisted in file '"
+                        + persistedCfg.getAbsolutePath() + "' as it contains invalid values.";
+                UIMAFramework.getLogger().log(Level.SEVERE, msg);
+                throw new InvalidTermSuiteConfiguration(msg, e);
             }
         }
     }
@@ -149,7 +162,7 @@ public class SpotterModel extends ToolModel implements SpotterBinding {
      * Persist the model as it is to a configuration file.
      * We use UIMA metadata resource format to persist the configuration.
      *
-     * @see eu.project.ttc.tools.ToolModel#save()
+     * @see eu.project.ttc.tools.commons.ToolModel#save()
      */
     @Override
     public void save() throws IOException {
@@ -179,78 +192,146 @@ public class SpotterModel extends ToolModel implements SpotterBinding {
         }
     }
 
-    /** Getter for all the parameter settings. */
+    //////////////////////////////////////////////////////////////////// ACCESSORS
+
+    /**
+     * Getter for all the parameter settings.
+     *
+     * @param includeLanguage
+     *      if set, then the Language parameter is included as well which will
+     *      generate an error if you try to run the engine from here as the
+     *      corresponding parameter does not exist
+     */
     @Override
-    public NameValuePair[] getParameterSettings() {
-        return pSettings.getParameterSettings();
+    public NameValuePair[] getParameterSettings(boolean includeLanguage) {
+        if (includeLanguage) {
+            return pSettings.getParameterSettings();
+        } else {
+            ArrayList<NameValuePair> paramSettings = new ArrayList<NameValuePair>();
+            for(NameValuePair p: pSettings.getParameterSettings()) {
+                if ( ! pLang.equals(p.getName()) ) {
+                    paramSettings.add(p);
+                }
+            }
+            return paramSettings.toArray(new NameValuePair[paramSettings.size()]);
+        }
     }
 
+    @Override
     public void addLanguageChangeListener(PropertyChangeListener listener) {
-        addPropertyChangeListener("spotter.language", listener);
+        addPropertyChangeListener(EVT_LANGUAGE, listener);
     }
 
-    /** Setter for language property. */
+    @Override
+    public void addInputDirectoryChangeListener(PropertyChangeListener listener) {
+        addPropertyChangeListener(EVT_INPUT, listener);
+    }
+
+    @Override
+    public void addOutputDirectoryChangeListener(PropertyChangeListener listener) {
+        addPropertyChangeListener(EVT_OUTPUT, listener);
+    }
+
+    @Override
+    public void addTtgDirectoryChangeListener(PropertyChangeListener listener) {
+        addPropertyChangeListener(EVT_TTGHOME, listener);
+    }
+
+    /**
+     * Setter for language parameter value.
+     * If the value is valid, then the parameter value is changed in the
+     * model and an event is fired indicating that the property has
+     * changed in the model.
+     */
     public void setLanguage(String language) {
-        pSettings.setParameterValue(pLang.getName(), language);
+        if ( language.matches("en|fr|de|es|ru|da|lv|zh") ) {
+            String oldValue = (String) pSettings.getParameterValue(pLang.getName());
+            pSettings.setParameterValue(pLang.getName(), language);
+            firePropertyChange(EVT_LANGUAGE, oldValue, language);
+        } else {
+            String msg = "Language parameter value '" + language
+                    + "' is invalid. No change reflected in model.";
+            UIMAFramework.getLogger().log(Level.SEVERE, msg);
+            throw new IllegalArgumentException(msg);
+        }
     }
     /** Getter for language property */
     public String getLanguage() {
         return (String) pSettings.getParameterValue(pLang.getName());
     }
 
-    /** Setter for input directory property. */
+    /**
+     * Setter for input directory parameter value.
+     * If the value is valid, then the parameter value is changed in the
+     * model and an event is fired indicating that the property has
+     * changed in the model.
+     */
     public void setInputDirectory(String inputDirectory) {
-        pSettings.setParameterValue(pIDir.getName(), inputDirectory);
+        File input = new File(inputDirectory);
+        if ( input.exists() && input.isDirectory() ) {
+            String oldValue = (String) pSettings.getParameterValue(pIDir.getName());
+            pSettings.setParameterValue(pIDir.getName(), inputDirectory);
+            firePropertyChange(EVT_INPUT, oldValue, inputDirectory);
+        } else {
+            String msg = "Input directory parameter value '" + inputDirectory
+                    + "' is invalid. No change reflected in model.";
+            UIMAFramework.getLogger().log(Level.SEVERE, msg);
+            throw new IllegalArgumentException(msg);
+        }
     }
     /** Getter for input directory property */
     public String getInputDirectory() {
         return (String) pSettings.getParameterValue(pIDir.getName());
     }
 
-    /** Setter for output directory property. */
+    /**
+     * Setter for output directory parameter value.
+     * If the value is valid, then the parameter value is changed in the
+     * model and an event is fired indicating that the property has
+     * changed in the model.
+     */
     public void setOutputDirectory(String outputDirectory) {
-        pSettings.setParameterValue(pODir.getName(), outputDirectory);
+        File output = new File(outputDirectory);
+        if ( ! output.exists() )
+            output.mkdirs(); // make sure output directory exists
+        if ( output.exists() && output.isDirectory() ) {
+            String oldValue = (String) pSettings.getParameterValue(pODir.getName());
+            pSettings.setParameterValue(pODir.getName(), outputDirectory);
+            firePropertyChange(EVT_OUTPUT, oldValue, outputDirectory);
+        } else {
+            String msg = "Output directory parameter value '" + outputDirectory
+                    + "' is invalid. No change reflected in model.";
+            UIMAFramework.getLogger().log(Level.SEVERE, msg);
+            throw new IllegalArgumentException(msg);
+        }
     }
     /** Getter for output directory property */
     public String getOutputDirectory() {
         return (String) pSettings.getParameterValue(pODir.getName());
     }
 
-    /** Setter for tree tagger home property. */
-    public void setTreetaggerHome(String treetaggerHome) throws FileNotFoundException {
-        File treeTaggerHomeDirectory = new File(treetaggerHome);
-        if (treeTaggerHomeDirectory.exists()) {
+    /**
+     * Setter for treetagger directory parameter value.
+     * If the value is valid, then the parameter value is changed in the
+     * model and an event is fired indicating that the property has
+     * changed in the model.
+     */
+    public void setTreetaggerHome(String treetaggerHome) {
+        File output = new File(treetaggerHome);
+        if ( output.exists() && output.isDirectory() ) {
+            String oldValue = (String) pSettings.getParameterValue(pTtg.getName());
             pSettings.setParameterValue(pTtg.getName(), treetaggerHome);
+            firePropertyChange(EVT_TTGHOME, oldValue, treetaggerHome);
         } else {
-            throw new FileNotFoundException("Unable to find TreeTagger home directory : " + treetaggerHome);
+            String msg = "TreeTagger home parameter value '" + treetaggerHome
+                    + "' is invalid. No change reflected in model.";
+            UIMAFramework.getLogger().log(Level.SEVERE, msg);
+            throw new IllegalArgumentException(msg);
         }
     }
     /** Getter for tree tagger home property. */
     public String getTreetaggerHome() {
         return (String) pSettings.getParameterValue(pTtg.getName());
     }
-
-
-    // FIXME get rid of these
-//
-//    @Override
-//    public void doUpdate() {
-//        //To change body of implemented methods use File | Settings | File Templates.
-//    }
-//
-//    @Override
-//    public void validate() throws ResourceConfigurationException {
-//        //To change body of implemented methods use File | Settings | File Templates.
-//    }
-//
-//    @Override
-//    public void doSave() throws IOException, SAXException {
-//        //To change body of implemented methods use File | Settings | File Templates.
-//    }
-//
-//    @Override
-//    public ResourceMetaData getMetaData() {
-//        return null;  //To change body of implemented methods use File | Settings | File Templates.
-//    }
 
 }

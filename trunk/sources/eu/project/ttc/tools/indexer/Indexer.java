@@ -18,9 +18,17 @@ private TermSuite parent;
 
     private IndexerSettings settings;
 
+    @Deprecated
     public Indexer(TermSuiteSettings tsConfig) {
         // Save the references to the settings
         this.settings = tsConfig.getIndexerSettings();
+
+        this.setComponent();
+    }
+
+    public Indexer(IndexerSettings settings) {
+        // Save the references to the settings
+        this.settings = settings;
 
         this.setComponent();
     }

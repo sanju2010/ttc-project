@@ -318,11 +318,12 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 //		this.setData(directory, this.input);
 	}
 
-    public TermSuiteRunner(ToolController tool, String language, String encoding) throws Exception {
+    public TermSuiteRunner(ToolController tool) throws Exception {
         this.tool = tool;
-        this.language = language;
-        this.encoding = encoding;
-        this.description = tool.getAEDescription();
+        this.input = tool.getInputSourceType();
+        this.language = tool.getLanguage();
+        this.encoding = tool.getEncoding();
+        setDescription(description(tool.getAEDescriptor()), tool.getAESettings());
         this.data = new ArrayList<File>( tool.getInputSource().getInputFiles() );
     }
 
@@ -416,7 +417,7 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 				String propertiesFileName = engineName.substring(engineName.lastIndexOf(".")+1).concat(".properties");
 
 				try {
-					//save properties to project root folder
+					//doSave properties to project root folder
 		    		myProperties.load(new FileInputStream(propertiesFileName));
 				} catch (IOException ex) {
 		    		info("unable to find the properties file name" + propertiesFileName);			
@@ -445,7 +446,7 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 					}
 										
 					try {
-						//save properties to project root folder
+						//doSave properties to project root folder
 			    		myProperties.store(new FileOutputStream(propertiesFileName), null);
 					} catch (IOException ex) {
 			    		ex.printStackTrace();			
@@ -457,13 +458,13 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 							myProperties.getProperty("encoding"));
 
 				} catch (ParseException e) {
-					// automatically generate the help statement
+					// automatically generate the various statement
 					HelpFormatter formatter = new HelpFormatter();
 					formatter.printHelp( "java -Xms1g  -Xmx2g -cp target/ttc-term-suite-1.3.jar eu.project.ttc.tools.TermSuiteRunner", options );					
 				}
 				
 			} else {
-				// automatically generate the help statement
+				// automatically generate the various statement
 				HelpFormatter formatter = new HelpFormatter();
 				formatter.printHelp( "TermSuiteRunner", options );
 			}
@@ -493,6 +494,23 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 			    runner.get();
 		}
 	}
+
+    /**
+     * @param resource  descriptor resource
+     * @return  an analysis engine description without any specified configuration
+     * @throws Exception
+     */
+    private static AnalysisEngineDescription description(String resource) throws Exception {
+        URL url = TermSuiteRunner.class.getClassLoader().getResource(resource.replaceAll("\\.", "/") + ".xml");
+        System.out.println("resource specifier :" + url.toString());
+        XMLInputSource in = new XMLInputSource(url.toURI().toString());
+        ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);
+        if (specifier instanceof AnalysisEngineDescription) {
+            return (AnalysisEngineDescription) specifier;
+        } else {
+            throw new Exception("Wrong XML Analysis Engine Descriptor: " + url.toExternalForm());
+        }
+    }
 
 	private static AnalysisEngineDescription description(String path, Map<String, String> options) throws Exception {
 		URL url = TermSuiteRunner.class.getClassLoader().getResource(path.replaceAll("\\.", "/") + ".xml");

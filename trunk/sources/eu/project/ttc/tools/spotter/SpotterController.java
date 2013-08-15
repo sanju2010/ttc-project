@@ -37,47 +37,135 @@ public class SpotterController extends ToolController {
 
     /**
      * Constructor.
-     * Create a new empty SpotterController that is simply connected to
-     * a model and does not have any view yet.
+     * Create a SpotterController that is connected to a view and a model.
+     * Double binds the view and the model so that a change in the view is
+     * reflected to the model, and a change in the model is reflected in
+     * the view.
      */
     public SpotterController(SpotterModel model, SpotterView view) {
         super(model, view);
+        bindViewToModel();
+        bindModelToView();
+    }
 
-        // Reflect changes in view on model
+    /**
+     * Bind view listeners to model changes so that any change to the view
+     * is reflected to the model.
+     */
+    private void bindViewToModel() {
+        // Language
         getView().addLanguageChangeListener(new PropertyChangeListener() {
             public void propertyChange(PropertyChangeEvent evt) {
-                System.out.println("Reflecting language change from view->" + evt.getNewValue());
-                getModel().setLanguage((String) evt.getNewValue());
+                boolean success = true;
+                if ((getModel().getLanguage() == null) ||
+                        !getModel().getLanguage().equals(evt.getNewValue())) {
+                    try {
+                        System.out.println("Reflecting language change from view->" + evt.getNewValue());
+                        getModel().setLanguage((String) evt.getNewValue());
+                    } catch (IllegalArgumentException e) {
+                        success = false;
+                        getView().setLanguageError(e);
+                    }
+                } // else, no need to reflect the change (and prevent looping)
+                if (success) getView().unsetLanguageError();
             }
         });
+        // Input directory
         getView().addInputDirectoryChangeListener(new PropertyChangeListener() {
             public void propertyChange(PropertyChangeEvent evt) {
-                System.out.println("Reflecting input directory change from view->" + evt.getNewValue());
-                getModel().setInputDirectory((String) evt.getNewValue());
+                boolean success = true;
+                if ( (getModel().getInputDirectory()==null) ||
+                        ! getModel().getInputDirectory().equals(evt.getNewValue()) ) {
+                    try {
+                        System.out.println("Reflecting input directory change from view->" + evt.getNewValue());
+                        getModel().setInputDirectory((String) evt.getNewValue());
+                    } catch (IllegalArgumentException e) {
+                        success = false;
+                        getView().setInputDirectoryError(e);
+                    }
+                } // else, no need to reflect the change (and prevent looping)
+                if ( success ) getView().unsetInputDirectoryError();
             }
         });
+        // Output directory
         getView().addOutputDirectoryChangeListener(new PropertyChangeListener() {
             public void propertyChange(PropertyChangeEvent evt) {
-                System.out.println("Reflecting output directory change from view->" + evt.getNewValue());
-                getModel().setOutputDirectory((String) evt.getNewValue());
+                boolean success = true;
+                if ( (getModel().getOutputDirectory()==null) ||
+                        ! getModel().getOutputDirectory().equals(evt.getNewValue()) ) {
+                    try {
+                        System.out.println("Reflecting output directory change from view->" + evt.getNewValue());
+                        getModel().setOutputDirectory((String) evt.getNewValue());
+                    } catch (IllegalArgumentException e) {
+                        success = false;
+                        getView().setOutputDirectoryError(e);
+                    }
+                } // else, no need to reflect the change (and prevent looping)
+                if ( success ) getView().unsetOutputDirectoryError();
             }
         });
+        // TreeTagger directory
         getView().addTtgDirectoryChangeListener(new PropertyChangeListener() {
             public void propertyChange(PropertyChangeEvent evt) {
-                System.out.println("Reflecting treetagger directory change from view->" + evt.getNewValue());
-                try {
-                    getModel().setTreetaggerHome((String) evt.getNewValue());
-                } catch (FileNotFoundException e) {
-                    throw new RuntimeException(e);
-                }
+                boolean success = true;
+                if ((getModel().getTreetaggerHome() == null) ||
+                        !getModel().getTreetaggerHome().equals(evt.getNewValue())) {
+                    try {
+                        System.out.println("Reflecting treetagger directory change from view->" + evt.getNewValue());
+                        getModel().setTreetaggerHome((String) evt.getNewValue());
+                    } catch (IllegalArgumentException e) {
+                        success = false;
+                        getView().setTreetaggerHomeError(e);
+                    }
+                } // else, no need to reflect the change (and prevent looping)
+                if (success) getView().unsetTreetaggerHomeError();
             }
         });
+    }
 
-        // Reflect changes in model on view
+    /**
+     * Bind model listeners to view changes so that any change to the model
+     * is reflected to the view.
+     */
+    private void bindModelToView() {
+        // Language
         getModel().addLanguageChangeListener(new PropertyChangeListener() {
             public void propertyChange(PropertyChangeEvent evt) {
-                System.out.println("Reflecting language change from model->" + evt.getNewValue());
-                getView().setLanguage((String) evt.getNewValue());
+                if ( (getView().getLanguage()==null) ||
+                        ! getView().getLanguage().equals(evt.getNewValue()) ) {
+                    System.out.println("Reflecting language change from model->" + evt.getNewValue());
+                    getView().setLanguage((String) evt.getNewValue());
+                } // else, no need to reflect the change (and prevent looping)
+            }
+        });
+        // Input directory
+        getModel().addInputDirectoryChangeListener(new PropertyChangeListener() {
+            public void propertyChange(PropertyChangeEvent evt) {
+                if ( (getView().getInputDirectory()==null) ||
+                        ! getView().getInputDirectory().equals(evt.getNewValue()) ) {
+                    System.out.println("Reflecting input directory change from model->" + evt.getNewValue());
+                    getView().setInputDirectory((String) evt.getNewValue());
+                } // else, no need to reflect the change (and prevent looping)
+            }
+        });
+        // Output directory
+        getModel().addOutputDirectoryChangeListener(new PropertyChangeListener() {
+            public void propertyChange(PropertyChangeEvent evt) {
+                if ( (getView().getOutputDirectory()==null) ||
+                        ! getView().getOutputDirectory().equals(evt.getNewValue()) ) {
+                    System.out.println("Reflecting output directory change from model->" + evt.getNewValue());
+                    getView().setOutputDirectory((String) evt.getNewValue());
+                } // else, no need to reflect the change (and prevent looping)
+            }
+        });
+        // TreeTagger directory
+        getModel().addTtgDirectoryChangeListener(new PropertyChangeListener() {
+            public void propertyChange(PropertyChangeEvent evt) {
+                if ( (getView().getTreetaggerHome()==null) ||
+                        ! getView().getTreetaggerHome().equals(evt.getNewValue()) ) {
+                    System.out.println("Reflecting ttg directory change from model->" + evt.getNewValue());
+                    getView().setTreetaggerHome((String) evt.getNewValue());
+                } // else, no need to reflect the change (and prevent looping)
             }
         });
     }
@@ -93,7 +181,7 @@ public class SpotterController extends ToolController {
     }
 
     /**
-     * @see eu.project.ttc.tools.ToolController#getInputSource()
+     * @see eu.project.ttc.tools.commons.ToolController#getInputSource()
      *
      * For the spotter tool, the data files to processed are text files
      * and they are located in the input directory specified as parameter.
@@ -115,7 +203,7 @@ public class SpotterController extends ToolController {
     }
 
     /**
-     * @see eu.project.ttc.tools.ToolController#getLanguage()
+     * @see eu.project.ttc.tools.commons.ToolController#getLanguage()
      */
     @Override
     public String getLanguage() {
@@ -128,58 +216,48 @@ public class SpotterController extends ToolController {
      * The returned ConfigurationParameterSettings is configured using the data
      * in the model.
      *
-     * @see eu.project.ttc.tools.ToolController#getAESettings()
+     * @see eu.project.ttc.tools.commons.ToolController#getAESettings()
      */
     @Override
     public ConfigurationParameterSettings getAESettings() {
         // Prepare an empty ConfigurationParameterSetting
         ConfigurationParameterSettings settings = UIMAFramework
                 .getResourceSpecifierFactory().createConfigurationParameterSettings();
-
-        // Populate the settings with data from the model
-        settings.setParameterSettings( getModel().getParameterSettings() );
-        // TODO why ?
+        // Only set parameters needed by the Spotter AE
         settings.setParameterValue("Directory", getModel().getOutputDirectory());
+        settings.setParameterValue("TreeTaggerHomeDirectory", getModel().getTreetaggerHome());
+//
+//        // Populate the settings with data from the model
+//        settings.setParameterSettings(getModel().getParameterSettings(false));
+//        // TODO why ?
+//        settings.setParameterValue("Directory", getModel().getOutputDirectory());
 
         return settings;
     }
 
     /**
-     * @see eu.project.ttc.tools.ToolController#getAEDescription()
+     * @return  the name of the AE descriptor file
      */
     @Override
-    public AnalysisEngineDescription getAEDescription() {
-        // Compute the name of the AE descriptor file
-        String descPath = null;
+    public String getAEDescriptor() {
         if ( getModel().getLanguage() != null) {
             String code = getModel().getLanguage();
             String language = new Locale(code)
                     .getDisplayLanguage(Locale.ENGLISH).toLowerCase();
-            descPath = String.format("eu/project/ttc/%1/engines/spotter/%1SpotterController.xml",
-                    language.toLowerCase(), language);
-        }
-        if (descPath == null) {
-            // FIXME throw exception
-        }
-
-        // Build descriptor
-        try {
-            XMLInputSource in = new XMLInputSource(descPath);
-            ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);
-            AnalysisEngineDescription descAE = (AnalysisEngineDescription) specifier;
-            descAE.getAnalysisEngineMetaData().setConfigurationParameterSettings( getAESettings() );
-            return descAE;
-        } catch (IOException e) {
-            RuntimeException e2 = new RuntimeException("Unable to access the Analysis Engine Descriptor: " + descPath);
-            e2.initCause(e);
-            throw e2;
-        } catch (InvalidXMLException e) {
-            RuntimeException e2 = new RuntimeException("Unable to parse the Analysis Engine Descriptor: " + descPath);
-            e2.initCause(e);
-            throw e2;
+//            return String.format("eu/project/ttc/%s/engines/spotter/%sSpotter.xml",
+//                    language.toLowerCase(), WordUtils.capitalizeFully(language));
+            return String.format("eu.project.ttc.%s.engines.spotter.%sSpotter",
+                    language.toLowerCase(), WordUtils.capitalizeFully(language));
+        } else {
+            throw new IllegalStateException("Unable to generate descriptor name for Spotter as no " +
+                    "language have been specified in the model.");
         }
     }
 
+    @Override
+    public InputSource.InputSourceTypes getInputSourceType() {
+        return InputSource.InputSourceTypes.TXT;
+    }
 
     // FIXME remove all these
 

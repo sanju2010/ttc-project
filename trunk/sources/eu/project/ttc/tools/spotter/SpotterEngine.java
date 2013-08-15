@@ -25,7 +25,7 @@ public class SpotterEngine implements TermSuiteEngine {
 	private ToolController getTool() {
 		return this.tool;
 	}
-		
+
 	public void callBack(CAS cas) throws Exception {
 		ProcessingResult result = new ProcessingResult();
 		result.setCas(cas);
@@ -36,7 +36,7 @@ public class SpotterEngine implements TermSuiteEngine {
 //		ConfigurationParameterSettings parameters = this.getTool().getSettings().getMetaData().getConfigurationParameterSettings();
 //		String code = (String) parameters.getParameterValue(SpotterModel.P_SOURCE_LANGUAGE);
 //		String language = new Locale (code).getDisplayLanguage(Locale.ENGLISH);
-//		return "eu/project/ttc/" + language.toLowerCase() + "/engines/spotter/" + language + "SpotterController.xml";
+//		return "eu/project/ttc/" + language.toLowerCase() + "/engines/spotter/" + language + "Spotter.xml";
 //	}
 //
 //	public ConfigurationParameterSettings getAESettings() throws Exception {

@@ -1,6 +1,9 @@
 // Copyright © 2013 Dictanova SAS
 package eu.project.ttc.tools.spotter;
 
+import eu.project.ttc.tools.commons.LanguageItem;
+import eu.project.ttc.tools.commons.TTCFileChooser;
+
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -36,6 +39,8 @@ public class ConfigPanel extends JPanel {
     private JLabel lblInDirectory;
     private JEditorPane epInDirectory;
     private TTCFileChooser fcInDirectory;
+    private Color fcInDirectoryInErrorColor = Color.RED;
+    private Color fcInDirectoryRegularColor;
 
     // Output directory parameter
     private JLabel lblOutDirectory;
@@ -66,7 +71,14 @@ public class ConfigPanel extends JPanel {
     }
 
     /**
-     * TODO: Describe what we try to achieve
+     * This HUGE method is responsible to layout the panel by grouping
+     * together parameters labels, fields and descriptions.
+     *
+     * Yes, this is quite massive and it looks messy, but I didn't find
+     * a better way to do it as there are side effects regarding the
+     * group layout.
+     * So please, do not intend to change things unless you're sure you
+     * plainly understand the group layout!
      */
     private void layoutComponents() {
         JPanel config = new JPanel();
@@ -172,7 +184,7 @@ public class ConfigPanel extends JPanel {
         try {
             URL resHelp = getClass().getResource("/eu/project/ttc/gui/params/spotter.help.html");
             epHelp.setPage(resHelp);
-        } catch (IOException e) {} // No help available
+        } catch (IOException e) {} // No various available
     }
 
     /**
@@ -196,9 +208,9 @@ public class ConfigPanel extends JPanel {
         cbLanguage.addItemListener(new ItemListener() {
             public void itemStateChanged(ItemEvent e) {
                 if (e.getStateChange() == ItemEvent.SELECTED) {
-                    ConfigPanel.LanguageItem item = (ConfigPanel.LanguageItem) e.getItem();;
+                    LanguageItem item = (LanguageItem) e.getItem();;
                     System.out.println("Detected a language change, fire spotter.language property change.");
-                    firePropertyChange("spotter.language", null, item.getValue());
+                    firePropertyChange(SpotterBinding.EVT_LANGUAGE, null, item.getValue());
                 }
             }
         });
@@ -214,7 +226,7 @@ public class ConfigPanel extends JPanel {
         try {
             URL res = getClass().getResource("/eu/project/ttc/gui/params/spotter.language.html");
             epLanguage.setPage(res);
-        } catch (IOException e){} // No help
+        } catch (IOException e){} // No various
     }
 
     /**
@@ -229,6 +241,7 @@ public class ConfigPanel extends JPanel {
 
         // Input directory field
         fcInDirectory = new TTCFileChooser("Choose the input directory");
+        fcInDirectoryRegularColor = fcInDirectory.getBackground();
         fcInDirectory.setPreferredSize(new Dimension(
                 (int) fcInDirectory.getPreferredSize().getHeight(),
                 preferredWidth ));
@@ -236,11 +249,11 @@ public class ConfigPanel extends JPanel {
         fcInDirectory.addPropertyChangeListener(new PropertyChangeListener() {
             public void propertyChange(PropertyChangeEvent evt) {
                 if ("path".equals(evt.getPropertyName()))
-                    firePropertyChange("spotter.inputdirectory", evt.getOldValue(), evt.getNewValue());
+                    firePropertyChange(SpotterBinding.EVT_INPUT, evt.getOldValue(), evt.getNewValue());
             }
         });
 
-        // Help pane
+        // Help panel
         epInDirectory = new JEditorPane();
         epInDirectory.setEditable(false);
         epInDirectory.setOpaque(false);
@@ -250,7 +263,7 @@ public class ConfigPanel extends JPanel {
         try {
             URL res = getClass().getResource("/eu/project/ttc/gui/params/spotter.inputdirectory.html");
             epInDirectory.setPage(res);
-        } catch (IOException e) {} // No help
+        } catch (IOException e) {} // No various
     }
 
     /**
@@ -272,7 +285,7 @@ public class ConfigPanel extends JPanel {
         fcOutDirectory.addPropertyChangeListener(new PropertyChangeListener() {
             public void propertyChange(PropertyChangeEvent evt) {
                 if ("path".equals(evt.getPropertyName()))
-                    firePropertyChange("spotter.outputdirectory", evt.getOldValue(), evt.getNewValue());
+                    firePropertyChange(SpotterBinding.EVT_OUTPUT, evt.getOldValue(), evt.getNewValue());
             }
         });
 
@@ -286,7 +299,7 @@ public class ConfigPanel extends JPanel {
         try {
             URL res = getClass().getResource("/eu/project/ttc/gui/params/spotter.outputdirectory.html");
             epOutDirectory.setPage(res);
-        } catch (IOException e) {} // No help
+        } catch (IOException e) {} // No various
     }
 
     /**
@@ -308,7 +321,7 @@ public class ConfigPanel extends JPanel {
         fcTtgDirectory.addPropertyChangeListener(new PropertyChangeListener() {
             public void propertyChange(PropertyChangeEvent evt) {
                 if ("path".equals(evt.getPropertyName()))
-                    firePropertyChange("spotter.ttgdirectory", evt.getOldValue(), evt.getNewValue());
+                    firePropertyChange(SpotterBinding.EVT_TTGHOME, evt.getOldValue(), evt.getNewValue());
             }
         });
 
@@ -322,130 +335,83 @@ public class ConfigPanel extends JPanel {
         try {
             URL res = getClass().getResource("/eu/project/ttc/gui/params/spotter.ttgdirectory.html");
             epTtgDirectory.setPage(res);
-        } catch (IOException e) {} // No help
+        } catch (IOException e) {} // No various
     }
+
+    ////////////////////////////////////////////////////////////////////// ACCESSORS
 
     public void setLanguage(String language) {
-        cbLanguage.setSelectedItem(new LanguageItem(language));
+        for(int i=0 ; i < cbLanguage.getItemCount() ; i++) {
+            LanguageItem item = (LanguageItem) cbLanguage.getItemAt(i);
+            if ( item.getValue().equals(language) ) {
+                if (cbLanguage.getSelectedIndex() != i) {
+                    cbLanguage.setSelectedItem( item );
+                }
+                return;
+            }
+        }
+        // If reach here, we have a problem
+        throw new IllegalArgumentException("I cannot reflect the change to value '"
+                + language + "' as I do not handle this value.");
     }
 
-    static class LanguageItem {
-        private String code;
-
-        public LanguageItem(String code) {
-            this.code = code;
-        }
-
-        public String getValue() {
-            return code;
-        }
-
-        @Override
-        public String toString() {
-            return new Locale(code).getDisplayLanguage(Locale.ENGLISH);
-        }
+    public void setLanguageError(IllegalArgumentException e) {
+        lblLanguage.setText("<html><b>Language</b><br/><p style=\"color: red; font-size: small\">"
+                + e.getMessage() + "</p></html>");
+    }
+    public void unsetLanguageError() {
+        lblLanguage.setText("<html><b>Language</b></html>");
     }
 
-    static class TTCFileChooser extends JPanel {
+    public String getLanguage() {
+        return ((LanguageItem) cbLanguage.getSelectedItem()).getValue();
+    }
 
-        private static final JFileChooser jfc;
-        static {
-            jfc = new JFileChooser();
-            jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-        }
+    public void setInputDirectory(String inputDirectory) {
+        fcInDirectory.setPath(inputDirectory);
+    }
 
-        private final JTextField tfPath;
-        private final JButton btBrowse;
-        private final String jfcTitle;
-        private final Color defaultBgColor;
+    public void setInputDirectoryError(IllegalArgumentException e) {
+        lblInDirectory.setText("<html><b>Input Directory</b><br/><p style=\"color: red; font-size: small\">"
+                + e.getMessage() + "</p></html>");
+    }
+    public void unsetInputDirectoryError() {
+        lblInDirectory.setText("<html><b>Input Directory</b></html>");
+    }
 
-        public TTCFileChooser(String title) {
-            super();
-            setLayout(new FlowLayout(FlowLayout.LEADING, 0, 0));
+    public String getInputDirectory() {
+        return fcInDirectory.getPath();
+    }
 
-            jfcTitle = title;
+    public void setOutputDirectory(String outputDirectory) {
+        fcOutDirectory.setPath(outputDirectory);
+    }
 
-            // Field to display path
-            tfPath = new JTextField(25);
-            defaultBgColor = tfPath.getBackground();
-            tfPath.getDocument().addDocumentListener(new DocumentListener() {
-                public void insertUpdate(DocumentEvent e) {
-                    if ( new File(tfPath.getText()).exists() ) {
-                        firePropertyChange("path", null, tfPath.getText());
-                        tfPath.setBackground(defaultBgColor);
-                        tfPath.setOpaque(false);
-                    } else {
-                        // FIXME does not work!!!
-                        tfPath.setBackground(Color.RED);
-                        tfPath.setOpaque(true);
-                    }
-                }
+    public void setOutputDirectoryError(IllegalArgumentException e) {
+        lblOutDirectory.setText("<html><b>Output Directory</b><br/><p style=\"color: red; font-size: small\">"
+                + e.getMessage() + "</p></html>");
+    }
+    public void unsetOutputDirectoryError() {
+        lblOutDirectory.setText("<html><b>Output Directory</b></html>");
+    }
 
-                public void removeUpdate(DocumentEvent e) {
-                    if ( new File(tfPath.getText()).exists() ) {
-                        firePropertyChange("path", null, tfPath.getText());
-                        tfPath.setBackground(defaultBgColor);
-                        tfPath.setOpaque(false);
-                    } else {
-                        tfPath.setBackground(Color.RED);
-                        tfPath.setOpaque(true);
-                    }
-                }
+    public String getOutputDirectory() {
+        return fcOutDirectory.getPath();
+    }
 
-                public void changedUpdate(DocumentEvent e) {
-                    if ( new File(tfPath.getText()).exists() ) {
-                        firePropertyChange("path", null, tfPath.getText());
-                        tfPath.setBackground(defaultBgColor);
-                        tfPath.setOpaque(false);
-                    } else {
-                        tfPath.setBackground(Color.RED);
-                        tfPath.setOpaque(true);
-                    }
-                }
-            });
+    public void setTreetaggerHome(String ttgDirectory) {
+        fcTtgDirectory.setPath(ttgDirectory);
+    }
 
-            //tfPath.setBorder(BorderFactory.createLineBorder(Color.BLUE, 3));
-            // Button to browse
-            btBrowse = new JButton();
-            btBrowse.setBorder(BorderFactory.createEmptyBorder());
-            btBrowse.setText("Browse");
-            btBrowse.setHorizontalTextPosition(SwingConstants.CENTER);
-            btBrowse.setHorizontalAlignment(SwingConstants.CENTER);
-//            btBrowse.setActionCommand("browse");
-            btBrowse.setPreferredSize( new Dimension(96,32) );
-            //btBrowse.setBorder(BorderFactory.createLineBorder(Color.BLUE, 3));
+    public void setTreetaggerHomeError(IllegalArgumentException e) {
+        lblTtgDirectory.setText("<html><b>TreeTagger Home Directory</b><br/><p style=\"color: red; font-size: small\">"
+                + e.getMessage() + "</p></html>");
+    }
+    public void unsetTreetaggerHomeError() {
+        lblTtgDirectory.setText("<html><b>TreeTagger Home Directory</b></html>");
+    }
 
-            add(tfPath);
-            add(btBrowse);
-
-
-            setPreferredSize(getPreferredSize());
-//            new Dimension(
-//                    Math.max(tfPath.getHeight(), btBrowse.getHeight()),
-//                    (int) 1.2*(tfPath.getgetWidth() + btBrowse.getWidth()) ));
-
-            // Bind action on button to choose file
-            btBrowse.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    // Set to current path if any
-                    if ( tfPath.getText() != null ) {
-                        File current = new File(tfPath.getText());
-                        if (current.exists()) {
-                            jfc.setCurrentDirectory(current.getParentFile());
-                        }
-                    }
-                    // Operate browsing
-//                    if (e.getActionCommand().equals("browse")) {
-                        jfc.setDialogTitle(jfcTitle);
-                        if (jfc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-                            // Some new path have been selected
-                            String prev = tfPath.getText();
-                            tfPath.setText( jfc.getSelectedFile().getAbsolutePath() );
-                            firePropertyChange("path", prev, tfPath.getText());
-                        }
-//                    }
-                }
-            });
-        }
+    public String getTreetaggerHome() {
+        return fcTtgDirectory.getPath();
     }
 }
