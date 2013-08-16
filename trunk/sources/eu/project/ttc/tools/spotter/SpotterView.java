@@ -1,12 +1,12 @@
 // Copyright © 2013 Dictanova SAS
 package eu.project.ttc.tools.spotter;
 
+import eu.project.ttc.tools.commons.ProcessingResult;
 import eu.project.ttc.tools.commons.ToolView;
 
 import javax.swing.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.FileNotFoundException;
 
 /**
  * Main view of the Spotter tool.
@@ -17,7 +17,6 @@ public class SpotterView extends JTabbedPane implements ToolView, SpotterBinding
 
     private final ConfigPanel compConfig;
     private final ResultsPanel compResults;
-    private IllegalArgumentException inputDirectoryError;
 
     /**
      * Create the view.
@@ -50,8 +49,25 @@ public class SpotterView extends JTabbedPane implements ToolView, SpotterBinding
         JScrollPane scrollConfig = new JScrollPane(compConfig,
                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        addTab(" Configure ", scrollConfig);
-        addTab(" Processing Results ", compResults);
+        addTab(" Configure ",
+                new ImageIcon( ClassLoader.getSystemResource("eu/project/ttc/gui/icons/cog_24x24.png")),
+                scrollConfig);
+        addTab(" Visualize Spotter results ",
+                new ImageIcon( ClassLoader.getSystemResource("eu/project/ttc/gui/icons/eye_24x18.png")),
+                compResults);
+    }
+
+    //////////////////////////////////////////////////////// TOOLVIEW
+
+    @Override
+    public void runStarts() {
+        compResults.getResultModel().clear();
+        compResults.setEnabled(false);
+    }
+
+    @Override
+    public void runEnds() {
+        compResults.setEnabled(true);
     }
 
     //////////////////////////////////////////////////////// SPOTTER BINDINGS
@@ -146,5 +162,15 @@ public class SpotterView extends JTabbedPane implements ToolView, SpotterBinding
 
     public void unsetTreetaggerHomeError() {
         compConfig.unsetTreetaggerHomeError();
+    }
+
+    /**
+     * Add a processing result into the ResultsPanel.
+     * @param result
+     *      a ProcessingResult from the current running that should
+     *      be added to the list of ProcessingResult in the ResultsPanel
+     */
+    public void addProcessingResult(ProcessingResult result) {
+        compResults.addResult(result);
     }
 }

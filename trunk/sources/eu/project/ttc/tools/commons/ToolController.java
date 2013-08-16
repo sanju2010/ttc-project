@@ -1,8 +1,11 @@
 package eu.project.ttc.tools.commons;
 
 import eu.project.ttc.tools.TermSuite;
+import eu.project.ttc.tools.spotter.SpotterModel;
+import eu.project.ttc.tools.spotter.SpotterView;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.cas.CAS;
+import org.apache.uima.resource.ResourceConfigurationException;
 import org.apache.uima.resource.metadata.ConfigurationParameterSettings;
 
 import javax.swing.*;
@@ -25,15 +28,16 @@ import java.lang.reflect.Method;
  *
  * @author Fabien Poulard <fpoulard@dictanova.com>
  */
-public abstract class ToolController implements PropertyChangeListener {
+//public abstract class ToolController implements PropertyChangeListener {
+public abstract class ToolController {
 
     // Default encoding for TermSuite analysis engines
     public static final String DEFAULT_ENCODING = "utf-8";
 
     // All the registered views this controller controls
-    protected ToolView registeredView;
+    private ToolView registeredView;
     // There is only one registered model
-    protected ToolModel registeredModel;
+    private ToolModel registeredModel;
 
     /**
      * Constructor.
@@ -44,7 +48,7 @@ public abstract class ToolController implements PropertyChangeListener {
         registeredView = view;
 
         registeredModel = model;
-        registeredModel.addPropertyChangeListener(this);
+//        registeredModel.addPropertyChangeListener(this);
     }
 
     /**
@@ -58,9 +62,13 @@ public abstract class ToolController implements PropertyChangeListener {
     /**
      * Persist the configuration for the model.
      */
-    public void saveConfiguration() throws IOException, InvalidTermSuiteConfiguration {
-        // Proxy for ToolModel#doSave()
-        registeredModel.save();
+    public void validateAndSaveConfiguration() throws IOException, InvalidTermSuiteConfiguration {
+        try {
+            registeredModel.validate();
+            registeredModel.save();
+        } catch (ResourceConfigurationException e) {
+            throw new InvalidTermSuiteConfiguration("The configuration is invalid in UIMA terms.", e);
+        }
     }
 
     /**
@@ -73,7 +81,7 @@ public abstract class ToolController implements PropertyChangeListener {
      * Compute the name of the resource corresponding to the descriptor to use
      * to run the corresponding engine.
      */
-    public abstract String getAEDescriptor() throws Exception;
+    public abstract String getAEDescriptor();
 
     /**
      * Specify the kind of files to be processed by the tool.
@@ -99,52 +107,81 @@ public abstract class ToolController implements PropertyChangeListener {
         return DEFAULT_ENCODING;
     }
 
+
     /**
-     * Use this to observe property changes from registered models
-     * and propagate them on to the view.
-     *
-     * @param evt
-     *      the PropertyChangeEvent to share with the view
+     * Getter to the model
      */
-    public void propertyChange(PropertyChangeEvent evt) {
-//        registeredView.modelPropertyChange(evt);
+    protected ToolModel getToolModel() {
+        return registeredModel;
     }
 
     /**
-     * This is a convenience method that subclasses can call upon
-     * to fire property changes back to the models. This method
-     * uses reflection to inspect each of the model classes
-     * to determine whether it is the owner of the property
-     * in question. If it isn't, a NoSuchMethodException is thrown,
-     * which the method ignores.
-     *
-     * @param propertyName
-     *      The name of the property.
-     * @param newValue
-     *      An object that represents the new value of the property.
+     * Getter to the view
      */
-    protected void setModelProperty(String propertyName, Object newValue) {
-        try {
-            Method method = registeredModel.getClass().
-                    getMethod("set" + propertyName, new Class[]{newValue.getClass()});
-            method.invoke(registeredModel, newValue);
-        } catch (Exception ex) {
-            //  Handle exception.
-        }
+    protected ToolView getToolView() {
+        return registeredView;
     }
 
-    // FIXME remove all these
-
-	public abstract void setParent(TermSuite parent);
-
-	public abstract TermSuite getParent();
-
-	public abstract ToolModel getSettings();
-
+    /**
+     * Accessor to the tool configuration file where its model is persisted.
+     */
     public File getConfigurationFile() {
         return registeredModel.getConfigurationFile();
     }
 
-//	public abstract Component getView();
+    /**
+     * Method called when a new run is about to start. If necessary some elements in the
+     * tool should be reset (some parts of the views like results, some stats too).
+     */
+    public abstract void runStarts();
+
+    /**
+     * Method called when the run has ended. If necessary some elements in the tool
+     * should be displayed or computed (parts of the views like results, stats...).
+     */
+    public abstract void runEnds();
+
+    // FIXME remove all these
+//
+//
+//    /**
+//     * Use this to observe property changes from registered models
+//     * and propagate them on to the view.
+//     *
+//     * @param evt
+//     *      the PropertyChangeEvent to share with the view
+//     */
+//    public void propertyChange(PropertyChangeEvent evt) {
+////        registeredView.modelPropertyChange(evt);
+//    }
+//
+//    /**
+//     * This is a convenience method that subclasses can call upon
+//     * to fire property changes back to the models. This method
+//     * uses reflection to inspect each of the model classes
+//     * to determine whether it is the owner of the property
+//     * in question. If it isn't, a NoSuchMethodException is thrown,
+//     * which the method ignores.
+//     *
+//     * @param propertyName
+//     *      The name of the property.
+//     * @param newValue
+//     *      An object that represents the new value of the property.
+//     */
+//    protected void setModelProperty(String propertyName, Object newValue) {
+//        try {
+//            Method method = registeredModel.getClass().
+//                    getMethod("set" + propertyName, new Class[]{newValue.getClass()});
+//            method.invoke(registeredModel, newValue);
+//        } catch (Exception ex) {
+//            //  Handle exception.
+//        }
+//    }
+//
+//	public abstract void setParent(TermSuite parent);
+//
+//	public abstract TermSuite getParent();
+//
+//	public abstract ToolModel getSettings();
 
 }

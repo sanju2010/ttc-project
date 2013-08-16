@@ -30,9 +30,11 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
+import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 
 import eu.project.ttc.tools.TermSuiteRunner;
+import org.apache.uima.util.Level;
 
 /**
  * Command line interface for the Indexer engines.
@@ -99,7 +101,7 @@ public class TermSuiteIndexerCLI {
 			String preferencesFileName = System.getProperty(
 					TermSuiteCLIUtils.P_PROPERTIES_FILE,
 					TermSuiteCLIUtils.USER_HOME + File.separator + PREFERENCES_FILE_NAME);
-			TermSuiteRunner.info("preferencesFileName : " + preferencesFileName);
+            UIMAFramework.getLogger().log(Level.INFO, "preferencesFileName : " + preferencesFileName);
 
 			Properties storedProps = TermSuiteCLIUtils
 					.readPropertiesFileName(preferencesFileName);
@@ -220,7 +222,7 @@ public class TermSuiteIndexerCLI {
 			}
 
 		} catch (Exception e) {
-			TermSuiteRunner.error(e, 1);
+            UIMAFramework.getLogger().log(Level.SEVERE, e.getMessage());
 		}
 	}
 

@@ -22,6 +22,7 @@ import eu.project.ttc.tools.config.IndexerSettings;
 import eu.project.ttc.tools.spotter.SpotterController;
 import eu.project.ttc.tools.spotter.SpotterModel;
 import eu.project.ttc.tools.spotter.SpotterView;
+import eu.project.ttc.tools.various.MainToolBar;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.util.Level;
 
@@ -29,9 +30,6 @@ import eu.project.ttc.tools.aligner.Aligner;
 import eu.project.ttc.tools.aligner.AlignerViewer;
 import eu.project.ttc.tools.indexer.Indexer;
 import eu.project.ttc.tools.indexer.IndexerViewer;
-import eu.project.ttc.tools.various.About;
-import eu.project.ttc.tools.various.ToolBar;
-import fr.free.rocheteau.jerome.dunamis.viewers.ProcessingResultViewer;
 
 /**
  * Main class of the GUI version of TermSuite.
@@ -41,51 +39,35 @@ import fr.free.rocheteau.jerome.dunamis.viewers.ProcessingResultViewer;
  */
 public class TermSuite implements Runnable {
 
+    private Desktop desktop;
+
     public TermSuite() {
-        this.setDesktop();
+        // Prepare minimal GUI
+        initCommonGUIComponents();
 
-        initConfig();
+        // Initialize configuration and tools
+        initConfigs();
+        initSpotter();
+        this.setIndexer(); // TODO
+        this.setBanker();  // TODO
+        this.setAligner(); // TODO
+        this.setMixer();   // TODO
 
-        this.setAbout();
-        this.setToolBar();
-        this.setSpotter();
-        this.setViewer();
-        this.setIndexer();
-        this.setBanker();
-
-        this.setAligner();
-        this.setMixer();
-        this.setContent();
-        this.setComponent();
-        this.setFrame();
-//        this.setListener();
-
-        // Bind window close button
-        getFrame().addWindowListener(new WindowAdapter() {
+        // Create and bind the Window
+        createMainWindow(new Dimension(1000, 1000));
+        getMainWindow().addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent event) {
                 TermSuite.this.doQuit();
             }
         });
     }
-	
-	private Desktop desktop;
-	
-	private void setDesktop() {
-		if (Desktop.isDesktopSupported()) {
-			this.desktop = Desktop.getDesktop();
-		}
-	}
-	
-	public Desktop getDesktop() {
-		return this.desktop;
-	}
 
+    /**
+     * Implements Runnable. Actually mimics it as Swing components already
+     * are running. Just show the Window.
+     */
     public void run() {
-        this.getFrame().setVisible(true);
-    }
-
-    private Dimension getDimension() {
-        return new Dimension(1000,1000);
+        getMainWindow().setVisible(true);
     }
 
     /**
@@ -93,7 +75,7 @@ public class TermSuite implements Runnable {
      * with the focus.
      */
     public ToolController getTermSuiteTool() {
-        switch ( getContent().getSelectedIndex() ) {
+        switch ( getMainTabs().getSelectedIndex() ) {
             case 0:
                 return getSpotter();
             case 1:
@@ -106,60 +88,12 @@ public class TermSuite implements Runnable {
         }
     }
 
-    ///////////////////////////////////////////////////////////////////////////////////////////// TOOLBAR
-
-    private ToolBar toolBar;
-
-    private void setToolBar() {
-        this.toolBar = new ToolBar();
-        // Bind "about" command
-        toolBar.getAbout().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if ( "about".equals( e.getActionCommand() ) ) {
-                    getAbout().show();
-                }
-            }
-        });
-        // Bind "run" command
-        toolBar.getRun().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if ( "run".equals( e.getActionCommand() ) ) {
-                    doRun();
-                }
-            }
-        });
-        // Bind "save" command
-        toolBar.getSave().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if ( "save".equals( e.getActionCommand() ) ) {
-                    doSave(true);
-                }
-            }
-        });
-        // Bind "quit" command
-        toolBar.getQuit().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if ( "quit".equals( e.getActionCommand() ) ) {
-                    doQuit();
-                }
-            }
-        });
-    }
-
-    public ToolBar getToolBar() {
-        return this.toolBar;
-    }
-
-    //////////////////////////////////////////////////////////////// CONFIG VALUES
+    //////////////////////////////////////////////////////////////////////////////////////////////////// CONFIG VALUES
 
     /**
      * Create the root directory for configuration files if necessary.
      */
-    private void initConfig() {
+    private void initConfigs() {
         File cfgDir = new File( TermSuiteVersion.CFG_ROOT );
         if (! cfgDir.exists()) {
             cfgDir.mkdirs();
@@ -189,11 +123,11 @@ public class TermSuite implements Runnable {
      */
     public void doSave(boolean showConfirmation) {
         try {
-            spotter.saveConfiguration();
+            spotter.validateAndSaveConfiguration();
             this.getIndexer().getSettings().doSave();
             this.getAligner().getSettings().doSave();
             if ( showConfirmation ) {
-                JOptionPane.showMessageDialog(this.getFrame(),
+                JOptionPane.showMessageDialog(this.getMainWindow(),
                         "The TermSuite configuration has been successfully saved",
                         "Success",
                         JOptionPane.INFORMATION_MESSAGE);
@@ -206,79 +140,47 @@ public class TermSuite implements Runnable {
     }
 
     /**
-     * Quit the application.
+     * Operates the «quitting process» of the application. It asks the user if
+     * he really wants to quit and if he wouldn't want to save its configuration
+     * in the process.
+     *
+     * The user still can cancel the process at this point.
      */
     private void doQuit() {
-        int response = JOptionPane.showConfirmDialog(this.getFrame(),
-                "Do you really want to quit " + TermSuiteVersion.TITLE + "?",
-                "Quit",
-                JOptionPane.YES_NO_OPTION);
-        if (response == 0) {
-            // FIXME Ask for save ?
-            doSave(false);
-            this.getFrame().setVisible(false);
-            this.getFrame().dispose();
-            System.exit(0);
+        int saveAndQuitResponse = JOptionPane.showConfirmDialog(
+                this.getMainWindow(),
+                "You are about to quit " + TermSuiteVersion.TITLE + ".\n"
+                + "Would you like to save the configuration before?",
+                "Save and Quit",
+                JOptionPane.YES_NO_CANCEL_OPTION);
+        switch (saveAndQuitResponse) {
+            case JOptionPane.YES_OPTION:
+                doSave(false);
+                // no break as we must quit afterward
+            case JOptionPane.NO_OPTION:
+                this.getMainWindow().setVisible(false);
+                this.getMainWindow().dispose();
+                System.exit(0);
+            // Otherwise, cancel the quit!
         }
-    }
-
-    /**
-     * Force to quit the application without user approval.
-     * @param e the exception responsible for this force quit.
-     */
-    public void doForceQuit(Exception e) {
-        // Log the exception
-        UIMAFramework.getLogger().log(Level.SEVERE,e.getMessage());
-        e.printStackTrace();
-        // Inform the user we crashed
-        displayException("TermSuite has crashed because of the following error:\n", e);
-        // Do crash! Save configuration first.
-        doSave(false);
-        this.getFrame().setVisible(false);
-        this.getFrame().dispose();
-        System.exit(1);
     }
 
     /**
      * Run the currently selected TermSuite tool in its current configuration.
+     * Prepare the GUI in consequence.
      */
     public void doRun() {
-        // Make sure to persist the configuration
         try {
-            getTermSuiteTool().saveConfiguration();
-        } catch (InvalidTermSuiteConfiguration e) {
-            displayException("Unable to run: the TermSuite configuration is invalid.", e);
-            e.printStackTrace();
-            return;
-        } catch (IOException e) {
-            displayException("Unable to run: the TermSuite configuration cannot be written on disk.", e);
-            e.printStackTrace();
-            return;
-        }
+            // Prepare for start
+            getToolBar().setRunMode(true);
+            getToolBar().setProgress(0, "Preparing the runner...");
+            getTermSuiteTool().runStarts();
 
-        // Run the tool
-        try {
-            // FIXME Gui stuff
-            getViewer().doEnable(false);
-            getViewer().getResultModel().clear();
-            getToolBar().getRun().setEnabled(false);
-
+            // Check configuration and prepare the runner
+            getTermSuiteTool().validateAndSaveConfiguration();
             final TermSuiteRunner runner = new TermSuiteRunner(getTermSuiteTool());
-            final JProgressBar pBar = getToolBar().getProgressBar();
-            runner.addPropertyChangeListener(new PropertyChangeListener() {
-                @Override
-                public void propertyChange(PropertyChangeEvent evt) {
-                    if ( "progress".equals(evt.getPropertyName()) ) {
-                        int progress = runner.getProgress();
-                        pBar.setValue(progress);
-                        pBar.setString(progress + " %");
-                    }
-                }
-            });
-            runner.execute();
 
-            // FIXME again Gui stuff
-            getToolBar().getStop().setEnabled(true);
+            // Bind everything GUI related to the execution
             getToolBar().getStop().addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -287,12 +189,42 @@ public class TermSuite implements Runnable {
                     }
                 }
             });
-        } catch (Exception e) {
-            displayException("An error occurred while running the tool.", e);
+            runner.addPropertyChangeListener(new PropertyChangeListener() {
+                @Override
+                public void propertyChange(PropertyChangeEvent evt) {
+                    if ( "progress".equals(evt.getPropertyName()) ) {
+                        int progress = runner.getProgress();
+                        getToolBar().setProgress(progress, progress + " %");
+                    } else if ( "inerror".equals(evt.getPropertyName()) ) {
+                        // Reset GUI
+                        int progress = runner.getProgress();
+                        getToolBar().setProgress(progress, "The analysis failed!");
+                        getToolBar().setRunMode(false);
+                        getTermSuiteTool().runEnds();
+                        displayException("The analysis failed!", runner.getLastError());
+                    }else if ( "cancelled".equals(evt.getPropertyName()) ) {
+                        // Reset GUI
+                        getToolBar().setProgress(0, "The analysis has been cancelled!");
+                        getToolBar().setRunMode(false);
+                        getTermSuiteTool().runEnds();
+                    } else if ( "done".equals(evt.getPropertyName()) ) {
+                        // Reset GUI
+                        getToolBar().setProgress(100, "The analysis is complete!");
+                        getToolBar().setRunMode(false);
+                        getTermSuiteTool().runEnds();
+                    }
+                }
+            });
+
+            // Execute
+            getToolBar().setProgress(0, "Starting the analysis...");
+            runner.execute();
+        } catch (InvalidTermSuiteConfiguration e) {
+            displayException("Unable to run: the TermSuite configuration is invalid.", e);
             e.printStackTrace();
-        } finally {
-            getToolBar().getStop().setEnabled(false);
-            getToolBar().getRun().setEnabled(true);
+        } catch (IOException e) {
+            displayException("Unable to run: the TermSuite configuration cannot be written on disk.", e);
+            e.printStackTrace();
         }
     }
 
@@ -324,7 +256,7 @@ public class TermSuite implements Runnable {
 
         // pass the error pane to the joptionpane.
         JOptionPane.showMessageDialog(
-                getFrame(),
+                getMainWindow(),
                 errorPane,
                 "An error has occurred",
                 JOptionPane.ERROR_MESSAGE);
@@ -333,64 +265,87 @@ public class TermSuite implements Runnable {
 
     /***************************************************************************************************** MAIN PANE */
 
-    private JTabbedPane getContent() {
-        return this.content;
+    private JFrame mainWindow;
+
+    /**
+     * Create the only frame of the application. This frame contains
+     * all the components that the application is made of.
+     *
+     * @param preferredDimension
+     *      preferred window dimension of the application
+     */
+    private void createMainWindow(Dimension preferredDimension) {
+        // Create the window
+        this.mainWindow = new JFrame();
+        this.mainWindow.setTitle(TermSuiteVersion.TITLE);
+        this.mainWindow.setPreferredSize(preferredDimension);
+        this.mainWindow.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        this.mainWindow.setJMenuBar(null);
+        this.mainWindow.pack();
+        this.mainWindow.setLocationRelativeTo(null);
+        this.mainWindow.setResizable(true);
+
+        // Add the components
+        JSplitPane mainPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+        mainPane.setTopComponent(this.getToolBar());
+        mainPane.setBottomComponent(this.getMainTabs());
+        mainPane.setDividerSize(0);
+        mainPane.setEnabled(false);
+        this.mainWindow.getContentPane().add(mainPane);
     }
 
-    private JSplitPane component;
+    private JTabbedPane mainTabs;
+    private MainToolBar toolBar;
 
-    private void setComponent() {
-        this.component = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-        this.component.setTopComponent(this.getToolBar().getComponent());
-        this.component.setBottomComponent(this.getContent());
-        this.component.setDividerSize(0);
-        this.component.setEnabled(false);
+    /**
+     * Creates all the components that constitutes the main GUI frame
+     * in which the tools are plugged: toolbar and tabs.
+     *
+     * This is not responsible for plugging the tools, neither for
+     * creating the frame itself.
+     */
+    private void initCommonGUIComponents() {
+        // Check for Desktop support
+        if (Desktop.isDesktopSupported()) {
+            this.desktop = Desktop.getDesktop();
+        }
+
+        // Toolbar
+        this.toolBar = new MainToolBar();
+        toolBar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if ( "run".equals( e.getActionCommand() ) ) {
+                    doRun();
+                } else if ( "save".equals( e.getActionCommand() ) ) {
+                    doSave(true);
+                } else if ( "quit".equals( e.getActionCommand() ) ) {
+                    doQuit();
+                }
+            }
+        });
+
+        // Tabs for the tools
+        this.mainTabs = new JTabbedPane();
+        this.mainTabs.setTabPlacement(JTabbedPane.LEFT);
     }
 
-    private JSplitPane getComponent() {
-        return this.component;
+    public MainToolBar getToolBar() {
+        return this.toolBar;
     }
 
-    private JFrame frame;
-
-    private void setFrame() {
-        this.frame = new JFrame();
-        this.frame.setTitle(TermSuiteVersion.TITLE);
-        this.frame.setPreferredSize(this.getDimension());
-        this.frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        this.frame.getContentPane().add(this.getComponent());
-        this.frame.setJMenuBar(null);
-        this.frame.pack();
-        this.frame.setLocationRelativeTo(null);
-        this.frame.setResizable(true);
+    private JTabbedPane getMainTabs() {
+        return this.mainTabs;
     }
 
-    private JTabbedPane embed(Component edit, Component view) {
-        JTabbedPane tabs = new JTabbedPane(JTabbedPane.TOP);
-        tabs.addTab(" Edit ", edit);
-        tabs.addTab(" View ", view);
-        return tabs;
-    }
-
-    private JTabbedPane content;
-
-    private void setContent() {
-        this.content = new JTabbedPane();
-        this.content.setTabPlacement(JTabbedPane.LEFT);
-//        this.content.addTab(" Spotter ",this.embed(this.getSpotter().getView(), this.getViewer().getComponent()));
-//        this.content.addTab(" Spotter ", this.getSpotter().getView());
-        this.content.addTab(" Spotter ", this.spotterV);
-        this.content.addTab(" Indexer ",this.embed(this.getIndexer().getView(), this.getBanker().getComponent()));
-        this.content.addTab(" Aligner ",this.embed(this.getAligner().getView(), this.getMixer().getComponent()));
-//		ProcessingResultListener processingRresultListener = new ProcessingResultListener();
-//		processingRresultListener.setViewer(this.getViewer());
-//        Listener listener = new Listener();
-//        listener.setTermSuite(this);
-//        this.content.addChangeListener(listener);
-    }
-
-    public void enableListeners() {
-        // FIXME
+    // FIXME old stuff to be removed
+//    private JTabbedPane embed(Component edit, Component view) {
+//        JTabbedPane tabs = new JTabbedPane(JTabbedPane.TOP);
+//        tabs.addTab(" Edit ", edit);
+//        tabs.addTab(" View ", view);
+//        return tabs;
+//    }
+//    public void enableListeners() {
 //        if (this.isTaggerSelected()) {
 //            this.listener.setTool(this.getSpotter());
 //            SpotterEngine engine = new SpotterEngine();
@@ -407,9 +362,8 @@ public class TermSuite implements Runnable {
 //            engine.setTool(this.getAligner());
 //            this.listener.setEngine(engine);
 //        }
-    }
-
-    //
+//    }
+//
 ////	private TermSuiteListener listener;
 //
 //	private void setListener() {
@@ -421,7 +375,7 @@ public class TermSuite implements Runnable {
 //		this.getViewer().enableListeners(processingRresultListener);
 //		WindowListener windowListener = new WindowListener();
 //		windowListener.setTermSuite(this);
-//		this.getFrame().addWindowListener(windowListener);
+//		this.getMainWindow().addWindowListener(windowListener);
 //	}
 //
 //
@@ -440,29 +394,20 @@ public class TermSuite implements Runnable {
 //
 //    }
 
-    /************************************************************************************************** ABOUT WINDOW */
-	
-	private About about;
-	
-	private void setAbout() {
-		this.about = new About();
-	}
-	
-	public About getAbout() {
-		return this.about;
-	}
-
     /*************************************************************************************************** SPOTTER TAB */
 
 	private SpotterController spotter;
-    private SpotterView spotterV;
-	
-	private void setSpotter() {
+
+	private void initSpotter() {
+        // Main content must have been initialized
+        assert getMainTabs() != null;
+
         // Prepare the MVC
         SpotterModel sModel = new SpotterModel(getSpotterCfg());
-        //SpotterView sView = new SpotterView();
-        this.spotterV = new SpotterView();
-		this.spotter = new SpotterController(sModel, this.spotterV);
+        SpotterView sView = new SpotterView();
+		this.spotter = new SpotterController(sModel, sView);
+        // Add to the tabs
+        getMainTabs().insertTab(" Spotter ", null, sView, null, 0);
 
         // Load the persisted configuration if any
         try {
@@ -482,16 +427,6 @@ public class TermSuite implements Runnable {
 		return this.spotter;
 	}
 
-    private ProcessingResultViewer viewer;
-
-    private void setViewer() {
-        this.viewer = new ProcessingResultViewer();
-    }
-
-    public ProcessingResultViewer getViewer() {
-        return this.viewer;
-    }
-
     /*************************************************************************************************** INDEXER TAB */
 
 	private Indexer indexer;
@@ -500,6 +435,8 @@ public class TermSuite implements Runnable {
         IndexerSettings cfg = new IndexerSettings( TermSuiteVersion.CFG_INDEXER );
 		this.indexer = new Indexer(cfg);
 		this.indexer.setParent(this);
+
+        //        this.mainTabs.addTab(" Indexer ",this.embed(this.getIndexer().getView(), this.getBanker().getComponent()));
 	}
 	
 	public Indexer getIndexer() {
@@ -524,6 +461,8 @@ public class TermSuite implements Runnable {
         AlignerSettings cfg = new AlignerSettings( TermSuiteVersion.CFG_INDEXER );
 		this.aligner = new Aligner(cfg);
 		this.aligner.setParent(this);
+
+        //        this.mainTabs.addTab(" Aligner ", this.embed(this.getAligner().getView(), this.getMixer().getComponent()));
 	}
 	
 	public Aligner getAligner() {
@@ -540,8 +479,8 @@ public class TermSuite implements Runnable {
 		return this.mixer;
 	}
 	
-	public JFrame getFrame() {
-		return this.frame;
+	public JFrame getMainWindow() {
+		return this.mainWindow;
 	}
 
     /********************************************************************************************************** MAIN */

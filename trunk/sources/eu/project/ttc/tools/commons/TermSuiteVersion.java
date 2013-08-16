@@ -18,11 +18,12 @@ public class TermSuiteVersion {
     /** Summary description of TermSuite */
     public static final String SUMMARY =
             "This tool provides 3 tools for processing terminology extraction "
-            + "and terminology alignment from comparable corpora. "
+            + "and terminology alignment from comparable corpora.\n"
             + "It has been developed within the European TTC project (see http://www.ttc-project.eu/).";
     /** License */
     public static final String LICENSE =
-            "This software is distributed under the Apache Licence version 2.";
+            "This software is distributed under the Apache Licence version 2.\n"
+            + "Icons by Iconic CC-by-sa 3.0 (http://somerandomdude.com/work/iconic/).";
 
     /** Name of the directory where the config is persisted */
     public static final String CFG_ROOT = System.getProperty("user.home")

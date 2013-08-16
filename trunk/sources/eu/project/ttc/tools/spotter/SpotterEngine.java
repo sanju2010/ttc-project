@@ -29,7 +29,7 @@ public class SpotterEngine implements TermSuiteEngine {
 	public void callBack(CAS cas) throws Exception {
 		ProcessingResult result = new ProcessingResult();
 		result.setCas(cas);
-		this.getTool().getParent().getViewer().getResultModel().addElement(result);
+		// FIXME this.getTool().getParent().getViewer().getResultModel().addElement(result);
 	}
 
 //	public String getEngineDescriptor() throws Exception {

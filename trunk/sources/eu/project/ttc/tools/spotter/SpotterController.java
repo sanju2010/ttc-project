@@ -2,24 +2,14 @@ package eu.project.ttc.tools.spotter;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.IOException;
-import java.net.URL;
 import java.util.Locale;
 
-import eu.project.ttc.tools.TermSuiteRunner;
 import eu.project.ttc.tools.commons.InputSource;
-import eu.project.ttc.tools.TermSuite;
-import eu.project.ttc.tools.commons.ToolModel;
+import eu.project.ttc.tools.commons.ProcessingResult;
 import eu.project.ttc.tools.commons.ToolController;
-import fr.free.rocheteau.jerome.dunamis.models.ProcessingResult;
 import org.apache.uima.UIMAFramework;
-import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.cas.CAS;
-import org.apache.uima.resource.ResourceSpecifier;
 import org.apache.uima.resource.metadata.ConfigurationParameterSettings;
-import org.apache.uima.resource.metadata.NameValuePair;
-import org.apache.uima.util.InvalidXMLException;
-import org.apache.uima.util.XMLInputSource;
 
 import org.apache.commons.lang3.text.WordUtils;
 
@@ -172,12 +162,12 @@ public class SpotterController extends ToolController {
 
     /** Getter to the model with appropriate casting */
     protected SpotterModel getModel() {
-        return (SpotterModel) registeredModel;
+        return (SpotterModel) getToolModel();
     }
 
     /** Getter to the view with appropriate casting */
     protected SpotterView getView() {
-        return (SpotterView) registeredView;
+        return (SpotterView) getToolView();
     }
 
     /**
@@ -196,10 +186,9 @@ public class SpotterController extends ToolController {
      */
     @Override
     public void processingCallback(CAS cas) throws Exception {
-        // FIXME remove dependency if possible
         ProcessingResult result = new ProcessingResult();
         result.setCas(cas);
-        // FIXME this.getTool().getParent().getViewer().getResultModel().addElement(result);
+        getView().addProcessingResult(result);
     }
 
     /**
@@ -226,17 +215,11 @@ public class SpotterController extends ToolController {
         // Only set parameters needed by the Spotter AE
         settings.setParameterValue("Directory", getModel().getOutputDirectory());
         settings.setParameterValue("TreeTaggerHomeDirectory", getModel().getTreetaggerHome());
-//
-//        // Populate the settings with data from the model
-//        settings.setParameterSettings(getModel().getParameterSettings(false));
-//        // TODO why ?
-//        settings.setParameterValue("Directory", getModel().getOutputDirectory());
-
         return settings;
     }
 
     /**
-     * @return  the name of the AE descriptor file
+     * @return  the name of the AE descriptor resource
      */
     @Override
     public String getAEDescriptor() {
@@ -244,8 +227,6 @@ public class SpotterController extends ToolController {
             String code = getModel().getLanguage();
             String language = new Locale(code)
                     .getDisplayLanguage(Locale.ENGLISH).toLowerCase();
-//            return String.format("eu/project/ttc/%s/engines/spotter/%sSpotter.xml",
-//                    language.toLowerCase(), WordUtils.capitalizeFully(language));
             return String.format("eu.project.ttc.%s.engines.spotter.%sSpotter",
                     language.toLowerCase(), WordUtils.capitalizeFully(language));
         } else {
@@ -259,49 +240,16 @@ public class SpotterController extends ToolController {
         return InputSource.InputSourceTypes.TXT;
     }
 
-    // FIXME remove all these
-
     @Override
-    public void setParent(TermSuite parent) {
-        //To change body of implemented methods use File | Settings | File Templates.
+    public void runStarts() {
+        getView().runStarts();
+        getModel().runStarts();
     }
 
     @Override
-    public TermSuite getParent() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public ToolModel getSettings() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-
-//    /** Parent container = the term suite application */
-//    private TermSuite mainApp;
-//
-//    /** Model */
-//    private SpotterModel model;
-//    /** View */
-//    private SpotterView view;
-
-
-	
-//	public TermSuite getMainApp() {
-//		return this.mainApp;
-//	}
-
-    public void doUpdate() {
-//        ConfigurationParameterSettings settings = this.getMetaData()
-//                .getConfigurationParameterSettings();
-//        List<Field> fields = this.getViewer().getFields();
-//        for (Field field : fields) {
-//            if (field.isModified()) {
-//                String name = field.getName();
-//                Object value = field.getValue();
-//                settings.setParameterValue(name, value);
-//            }
-//        }
+    public void runEnds() {
+        getView().runEnds();
+        getModel().runEnds();
     }
 		
 }

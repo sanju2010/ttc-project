@@ -44,6 +44,7 @@ import org.apache.uima.resource.metadata.ConfigurationParameter;
 import org.apache.uima.resource.metadata.ConfigurationParameterDeclarations;
 import org.apache.uima.resource.metadata.ConfigurationParameterSettings;
 import org.apache.uima.util.InvalidXMLException;
+import org.apache.uima.util.Level;
 import org.apache.uima.util.XMLInputSource;
 
 import eu.project.ttc.tools.TermSuiteRunner;
@@ -387,7 +388,7 @@ public final class TermSuiteCLIUtils {
 
 			if (declaration != null) {
 				String type = declaration.getType();
-				TermSuiteRunner.info(option + "\t" + type + "\t" + value);
+                UIMAFramework.getLogger().log(Level.INFO, option + "\t" + type + "\t" + value);
 				// TODO boolean multiValued = declaration.isMultiValued();
 				if (type.equals(ConfigurationParameter.TYPE_STRING)) {
 					settings.setParameterValue(option, value);

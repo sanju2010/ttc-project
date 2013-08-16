@@ -5,15 +5,13 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.JProgressBar;
-import javax.swing.UIManager;
+import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
 
-public class ToolBar {
+public class MainToolBar extends JPanel {
 
 	private final Dimension dimension = new Dimension(66, 33);
 	private final Insets insets = new Insets(0, 0, 0, 0);
@@ -38,6 +36,8 @@ public class ToolBar {
 	private JButton about;
 
 	private void setAbout() {
+        this.setAboutWindow();
+
 		this.about = new JButton("About");
 		this.about.setActionCommand("about");
 		this.about.setEnabled(true);
@@ -45,6 +45,14 @@ public class ToolBar {
 		this.about.setMargin(insets);
 		this.about.setBackground(color);
 		this.about.setBorderPainted(false);
+        this.about.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if ( "about".equals(e.getActionCommand()) ) {
+                    getAboutWindow().show();
+                }
+            }
+        });
 	}
 
 	public JButton getAbout() {
@@ -135,45 +143,39 @@ public class ToolBar {
 		return progressBar;
 	}
 
-	private JPanel component;
-	
-	private void setComponent() {
-		this.component = new JPanel(new GridBagLayout());
-		GridBagConstraints c = new GridBagConstraints();
-		c.insets = new Insets(0, 10, 0, 3);
-		c.weightx = 0.0; 
-		c.gridx = 0; 
-		c.gridy = 0; 
-		c.gridwidth = 1; 
-		this.component.add(this.getAbout(), c);
-		c.gridx = 1; 
-		c.insets = new Insets(0, 3, 0, 3);
-		c.weightx = 0.0; 
-		this.component.add(this.getRun(), c);
-		c.gridx = 2; 
-		c.insets = new Insets(0, 3, 0, 3);
-		c.weightx = 0.0; 
-		this.component.add(this.getStop(), c);
-		c.insets = new Insets(0, 3, 0, 10);
-		c.weightx = 1.0; 
-		c.gridx = 3; 
-		c.gridwidth = 5; 
-		c.fill = GridBagConstraints.BOTH; 
-		this.component.add(this.getProgressBar(), c);
-		c.gridx = 8;  
-		c.insets = new Insets(0, 3, 0, 3);
-		c.weightx = 0.0;
-		c.gridwidth = 1; 
-		this.component.add(this.getSave(), c);
-		c.gridx = 9;  
-		c.insets = new Insets(0, 3, 0, 10);
-		c.weightx = 0.0;
-		c.gridwidth = 1; 
-		this.component.add(this.getQuit(), c);
-	}
-	
-	public JPanel getComponent(){
-		return this.component;
+    private GridBagConstraints constraints;
+
+	private void populatePanel() {
+		constraints.insets = new Insets(0, 10, 0, 3);
+		constraints.weightx = 0.0;
+		constraints.gridx = 0;
+		constraints.gridy = 0;
+		constraints.gridwidth = 1;
+		add(this.getAbout(), constraints);
+		constraints.gridx = 1;
+		constraints.insets = new Insets(0, 3, 0, 3);
+		constraints.weightx = 0.0;
+		add(this.getRun(), constraints);
+		constraints.gridx = 2;
+		constraints.insets = new Insets(0, 3, 0, 3);
+		constraints.weightx = 0.0;
+		add(this.getStop(), constraints);
+		constraints.insets = new Insets(0, 3, 0, 10);
+		constraints.weightx = 1.0;
+		constraints.gridx = 3;
+		constraints.gridwidth = 5;
+		constraints.fill = GridBagConstraints.BOTH;
+		add(this.getProgressBar(), constraints);
+		constraints.gridx = 8;
+		constraints.insets = new Insets(0, 3, 0, 3);
+		constraints.weightx = 0.0;
+		constraints.gridwidth = 1;
+		add(this.getSave(), constraints);
+		constraints.gridx = 9;
+		constraints.insets = new Insets(0, 3, 0, 10);
+		constraints.weightx = 0.0;
+		constraints.gridwidth = 1;
+		add(this.getQuit(), constraints);
 	}
 	
 	public void enableListeners(ActionListener listener) {
@@ -183,15 +185,71 @@ public class ToolBar {
 		this.getStop().addActionListener(listener);
 		this.getRun().addActionListener(listener);
 	}
-	
-	public ToolBar() {
+
+    /**
+     * Adds an <code>ActionListener</code> to the each component able
+     * to fire an action.
+     */
+    public void addActionListener(ActionListener l) {
+        getRun().addActionListener(l);
+        getQuit().addActionListener(l);
+        getSave().addActionListener(l);
+        getAbout().addActionListener(l);
+    }
+
+	public MainToolBar() {
+        super(new GridBagLayout());
+        constraints = new GridBagConstraints();
+
 		this.setQuit();
 		this.setAbout();
 		this.setSave();
 		this.setRun();
 		this.setStop();
 		this.setProgressBar();
-		this.setComponent();
+		this.populatePanel();
 	}
-	
+
+    /**
+     * Indicates if the toolbar should be in run mode or not.
+     * When in run mode:
+     * <ul>
+     *     <li>the progress bar progresses,</li>
+     *     <li>the Run button should not be enabled,</li>
+     *     <li>the Stop button should be enabled.</li>
+     * </ul>
+     *
+     * @param isRun
+     *      flag indicating if the run mode should be activated
+     *      (when true) or deactivated (false)
+     */
+    public void setRunMode(boolean isRun) {
+        getRun().setEnabled(!isRun);
+        getStop().setEnabled(isRun);
+
+        // Disable all stop listeners as it does not make sense when
+        // not in run mode
+        if ( ! isRun ) {
+            for(ActionListener l: getStop().getActionListeners()) {
+                getStop().removeActionListener(l);
+            }
+        }
+    }
+
+    public void setProgress(int progress, String s) {
+        getProgressBar().setValue(progress);
+        getProgressBar().setString(s);
+    }
+
+    /************************************************************************************************** ABOUT WINDOW */
+
+    private About aboutWindow;
+
+    private void setAboutWindow() {
+        this.aboutWindow = new About();
+    }
+
+    public About getAboutWindow() {
+        return this.aboutWindow;
+    }
 }

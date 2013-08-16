@@ -3,6 +3,7 @@ package eu.project.ttc.tools.spotter;
 import eu.project.ttc.tools.commons.InvalidTermSuiteConfiguration;
 import eu.project.ttc.tools.commons.ToolModel;
 import org.apache.uima.UIMAFramework;
+import org.apache.uima.resource.ResourceConfigurationException;
 import org.apache.uima.resource.metadata.*;
 import org.apache.uima.util.InvalidXMLException;
 import org.apache.uima.util.Level;
@@ -190,6 +191,38 @@ public class SpotterModel extends ToolModel implements SpotterBinding {
         } finally {
             out.close();
         }
+    }
+
+    @Override
+    public void validate() throws ResourceConfigurationException {
+        // FIXME code is redundant with save()
+
+        // Create the UIMA declaration out of the properties
+        ConfigurationParameterDeclarations uimaParamDeclarations = UIMAFramework
+                .getResourceSpecifierFactory()
+                .createConfigurationParameterDeclarations();
+        uimaParamDeclarations.addConfigurationParameter(pLang);
+        uimaParamDeclarations.addConfigurationParameter(pIDir);
+        uimaParamDeclarations.addConfigurationParameter(pODir);
+        uimaParamDeclarations.addConfigurationParameter(pTtg);
+
+        // Create and populate the metadata
+        ResourceMetaData uimaMetadata = UIMAFramework
+                .getResourceSpecifierFactory().createResourceMetaData();
+        uimaMetadata.setConfigurationParameterDeclarations(uimaParamDeclarations);
+        uimaMetadata.setConfigurationParameterSettings(pSettings);
+
+        uimaMetadata.validateConfigurationParameterSettings();
+    }
+
+    @Override
+    public void runStarts() {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void runEnds() {
+        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     //////////////////////////////////////////////////////////////////// ACCESSORS

@@ -87,6 +87,23 @@ public abstract class ToolModel {
         return persistedCfg;
     }
 
+    /**
+     * Validate the current configuration.
+     */
+    public abstract void validate() throws ResourceConfigurationException;
+
+    /**
+     * Method called when a new run is about to start. If necessary some elements in the
+     * model should be reset (stats...).
+     */
+    public abstract void runStarts();
+
+    /**
+     * Method called when the run has ended. If necessary some elements in the model
+     * should be computed (stats...).
+     */
+    public abstract void runEnds();
+
     // FIXME remove all these
 //
 //	public abstract void doUpdate();

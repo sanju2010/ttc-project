@@ -1,14 +1,9 @@
 package eu.project.ttc.tools;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -16,6 +11,7 @@ import java.util.Properties;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
+import eu.project.ttc.tools.commons.InvalidTermSuiteConfiguration;
 import eu.project.ttc.tools.commons.TermSuiteEngine;
 import eu.project.ttc.tools.commons.ToolController;
 import org.apache.commons.cli.CommandLine;
@@ -40,6 +36,7 @@ import org.apache.uima.resource.metadata.ConfigurationParameter;
 import org.apache.uima.resource.metadata.ConfigurationParameterDeclarations;
 import org.apache.uima.resource.metadata.ConfigurationParameterSettings;
 import org.apache.uima.resource.metadata.NameValuePair;
+import org.apache.uima.util.InvalidXMLException;
 import org.apache.uima.util.JCasPool;
 import org.apache.uima.util.Level;
 import org.apache.uima.util.XMLInputSource;
@@ -47,28 +44,32 @@ import org.apache.uima.util.XMLInputSource;
 
 import org.apache.commons.cli.OptionGroup;
 import org.apache.commons.cli.OptionBuilder;
-import eu.project.ttc.tools.utils.FileComparator;
-import eu.project.ttc.tools.utils.InputSourceFilter;
 import eu.project.ttc.tools.commons.InputSource.InputSourceTypes;
 
 
 public class TermSuiteRunner extends SwingWorker<Void, Void> {
 
     private ToolController tool; // FIXME final ?
+    private boolean inError;
+    private Throwable lastError;
 
-    public static void error(Throwable e, int code) {
+    public void error(Throwable e, int code) {
         UIMAFramework.getLogger().log(Level.SEVERE, e.getMessage());
         e.printStackTrace();
-        System.exit(code);
+        //System.exit(code);
+        setError(true, e);
+
+        firePropertyChange("fatalerror", null, e);
 	}
 
-	public static void warning(String message) {
-		UIMAFramework.getLogger().log(Level.WARNING, message);
-	}
+    private void setError(boolean b, Throwable e) {
+        inError = b;
+        lastError = e;
+    }
 
-	public static void info(String message) {
-		UIMAFramework.getLogger().log(Level.INFO, message);
-	}
+    private boolean isInError() {
+        return inError;
+    }
 	
 	/**
 	 * This attribute corresponds to the CAS pool build from the XMI file list
@@ -138,15 +139,15 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
                     break;
                 }
                 File file = this.data.get(index);
-                // System.out.println("PROCESS " + file);
-                info("Process : " + file);
+                UIMAFramework.getLogger().log(Level.INFO, "Processing file '" + file + "'.");
                 boolean last = index == this.data.size() - 1;
                 // this.publish(file);
                 try {
                     this.process(file, this.encoding, this.language, this.input, last);
                 } catch (Throwable e) {
-                    TermSuiteRunner.warning(e.getMessage());
+                    UIMAFramework.getLogger().log(Level.SEVERE, e.getMessage());
                     e.printStackTrace();
+                    // FIXME use CPE capabilities to handle errors and report them
                     // System.exit(3);
                 }
                 int progress = (index * 100) / max;
@@ -178,15 +179,20 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 
 	@Override
 	public void done() {
-		this.reset();
-		if (this.isCancelled()) {
+		this.reset(); // FIXME shouldn't we reset error and cancel flags ?
+        if (isInError()) {
+            firePropertyChange("inerror", null, lastError);
+            return;
+        } else if (isCancelled()) {
+            firePropertyChange("cancelled", false, true);
 			return;
 		}
 		String message = this.display(this.analysisEngine.getAnalysisEngineMetaData(), this.analysisEngine.getManagementInterface(), 0);
-		info(message);//UIMAFramework.getLogger().log(Level.INFO, message);
+        UIMAFramework.getLogger().log(Level.INFO, message);
+        firePropertyChange("done", false, true);
 	}
 
-	private void process(File file, String encoding, String language, InputSourceTypes mode, boolean last) throws Exception {
+    private void process(File file, String encoding, String language, InputSourceTypes mode, boolean last) throws Exception {
 
         // FIXME quick hack to dispose language
         language = (String) this.analysisEngine.getAnalysisEngineMetaData()
@@ -318,7 +324,7 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 //		this.setData(directory, this.input);
 	}
 
-    public TermSuiteRunner(ToolController tool) throws Exception {
+    public TermSuiteRunner(ToolController tool) throws InvalidTermSuiteConfiguration, FileNotFoundException {
         this.tool = tool;
         this.input = tool.getInputSourceType();
         this.language = tool.getLanguage();
@@ -420,7 +426,8 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 					//doSave properties to project root folder
 		    		myProperties.load(new FileInputStream(propertiesFileName));
 				} catch (IOException ex) {
-		    		info("unable to find the properties file name" + propertiesFileName);			
+                    UIMAFramework.getLogger().log(Level.INFO,
+                            "Unable to find the properties file name" + propertiesFileName);
 				}
 
 								
@@ -470,7 +477,7 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 			}
 			
 		} catch (Exception e) {
-			TermSuiteRunner.error(e, 1);
+            UIMAFramework.getLogger().log(Level.SEVERE, e.getMessage());
 		}
 	}
 
@@ -500,15 +507,23 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
      * @return  an analysis engine description without any specified configuration
      * @throws Exception
      */
-    private static AnalysisEngineDescription description(String resource) throws Exception {
-        URL url = TermSuiteRunner.class.getClassLoader().getResource(resource.replaceAll("\\.", "/") + ".xml");
-        System.out.println("resource specifier :" + url.toString());
-        XMLInputSource in = new XMLInputSource(url.toURI().toString());
-        ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);
-        if (specifier instanceof AnalysisEngineDescription) {
-            return (AnalysisEngineDescription) specifier;
-        } else {
-            throw new Exception("Wrong XML Analysis Engine Descriptor: " + url.toExternalForm());
+    private static AnalysisEngineDescription description(String resource) throws InvalidTermSuiteConfiguration {
+        try {
+            URL url = TermSuiteRunner.class.getClassLoader().getResource(resource.replaceAll("\\.", "/") + ".xml");
+            System.out.println("resource specifier :" + url.toString());
+            XMLInputSource in = new XMLInputSource(url.toURI().toString());
+            ResourceSpecifier specifier = UIMAFramework.getXMLParser().parseResourceSpecifier(in);
+            if (specifier instanceof AnalysisEngineDescription) {
+                return (AnalysisEngineDescription) specifier;
+            } else {
+                throw new RuntimeException("Wrong XML Analysis Engine Descriptor: " + url.toExternalForm());
+            }
+        } catch (URISyntaxException e) {
+            throw new InvalidTermSuiteConfiguration("Unable to access the tool descriptor.", e);
+        } catch (IOException e) {
+            throw new InvalidTermSuiteConfiguration("Unable to access the tool descriptor.", e);
+        } catch (InvalidXMLException e) {
+            throw new InvalidTermSuiteConfiguration("Unable to parse the tool descriptor.", e);
         }
     }
 
@@ -536,7 +551,7 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 			ConfigurationParameter declaration = declarations.getConfigurationParameter(null, option);
 			if (declaration != null) { 
 				String type = declaration.getType();
-				info(option + "\t" + type + "\t"+ value);
+                UIMAFramework.getLogger().log(Level.INFO, option + "\t" + type + "\t" + value);
 				// TODO boolean multiValued = declaration.isMultiValued();
 				if (type.equals(ConfigurationParameter.TYPE_STRING)) {
 					settings.setParameterValue(option, value);
@@ -550,4 +565,8 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 			}
 		}
 	}
+
+    public Throwable getLastError() {
+        return lastError;
+    }
 }

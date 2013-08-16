@@ -117,7 +117,7 @@ public class AlignerEngine implements TermSuiteEngine {
 	}
 
 	public void callBack(CAS cas) throws Exception {
-		this.getTool().getParent().getMixer().doLoad(cas.getJCas());
+		// FIXME this.getTool().getParent().getMixer().doLoad(cas.getJCas());
 	}
 	
 }

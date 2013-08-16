@@ -10,7 +10,16 @@ import java.beans.PropertyChangeEvent;
  */
 public interface ToolView {
 
-    // TODO
-//    public abstract void modelPropertyChange(PropertyChangeEvent evt);
+    /**
+     * Method called when a new run is about to start. If necessary some elements in the
+     * view should be reset (results...).
+     */
+    public abstract void runStarts();
+
+    /**
+     * Method called when the run has ended. If necessary some elements in the view
+     * should be displayed (results...).
+     */
+    public abstract void runEnds();
 
 }
