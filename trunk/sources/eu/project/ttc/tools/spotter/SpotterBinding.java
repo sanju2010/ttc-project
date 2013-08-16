@@ -78,7 +78,7 @@ public interface SpotterBinding {
      */
     void addOutputDirectoryChangeListener(PropertyChangeListener listener);
 
-    ///////////////////////////////////////////////////////////// INPUT DIRECTORY
+    ///////////////////////////////////////////////////////////// TREETAGGER DIRECTORY
 
     /**
      * Setter for the treetagger directory parameter value.

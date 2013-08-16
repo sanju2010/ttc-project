@@ -94,23 +94,6 @@ public class SpotterModel extends ToolModel implements SpotterBinding {
     }
 
     /**
-     * Set all properties to their default values.
-     */
-    @Override
-    public void initDefault() throws InvalidTermSuiteConfiguration {
-        try {
-            setLanguage("fr");
-            setInputDirectory("data/input/wind-energy/French/txt/");
-            setOutputDirectory("data/output/wind-energy_FR");
-            setTreetaggerHome("libs/TreeTagger");
-        } catch (IllegalArgumentException e) {
-            String msg = "Unable to use the default configuration.";
-            UIMAFramework.getLogger().log(Level.WARNING, msg);
-            throw new InvalidTermSuiteConfiguration(msg, e);
-        }
-    }
-
-    /**
      * Load persisted parameters values from the configuration file.
      * We use UIMA metadata resource format to persist the configuration.
      *
@@ -119,12 +102,12 @@ public class SpotterModel extends ToolModel implements SpotterBinding {
     @Override
     public void load() throws IOException, InvalidTermSuiteConfiguration {
         // Check if the file exist, not an error if it is empty
-        if (!persistedCfg.exists())
+        if (!getConfigurationFile().exists())
             return;
 
         // Load data from the persisted file as a UIMA metadata resource
         ResourceMetaData uimaMetadata;
-        XMLInputSource input = new XMLInputSource(persistedCfg);
+        XMLInputSource input = new XMLInputSource(getConfigurationFile());
         try {
             uimaMetadata = UIMAFramework.getXMLParser().parseResourceMetaData(input);
         } catch (InvalidXMLException e) {
@@ -152,7 +135,7 @@ public class SpotterModel extends ToolModel implements SpotterBinding {
                 }
             } catch (IllegalArgumentException e) {
                 String msg = "Unable to correctly load the configuration persisted in file '"
-                        + persistedCfg.getAbsolutePath() + "' as it contains invalid values.";
+                        + getConfigurationFile().getAbsolutePath() + "' as it contains invalid values.";
                 UIMAFramework.getLogger().log(Level.SEVERE, msg);
                 throw new InvalidTermSuiteConfiguration(msg, e);
             }
@@ -183,7 +166,7 @@ public class SpotterModel extends ToolModel implements SpotterBinding {
         uimaMetadata.setConfigurationParameterSettings(pSettings);
 
         // Persist everything
-        OutputStream out = new FileOutputStream(persistedCfg);
+        OutputStream out = new FileOutputStream(getConfigurationFile());
         try {
             uimaMetadata.toXML(out);
         } catch (SAXException e) {
@@ -215,40 +198,7 @@ public class SpotterModel extends ToolModel implements SpotterBinding {
         uimaMetadata.validateConfigurationParameterSettings();
     }
 
-    @Override
-    public void runStarts() {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public void runEnds() {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
     //////////////////////////////////////////////////////////////////// ACCESSORS
-
-    /**
-     * Getter for all the parameter settings.
-     *
-     * @param includeLanguage
-     *      if set, then the Language parameter is included as well which will
-     *      generate an error if you try to run the engine from here as the
-     *      corresponding parameter does not exist
-     */
-    @Override
-    public NameValuePair[] getParameterSettings(boolean includeLanguage) {
-        if (includeLanguage) {
-            return pSettings.getParameterSettings();
-        } else {
-            ArrayList<NameValuePair> paramSettings = new ArrayList<NameValuePair>();
-            for(NameValuePair p: pSettings.getParameterSettings()) {
-                if ( ! pLang.equals(p.getName()) ) {
-                    paramSettings.add(p);
-                }
-            }
-            return paramSettings.toArray(new NameValuePair[paramSettings.size()]);
-        }
-    }
 
     @Override
     public void addLanguageChangeListener(PropertyChangeListener listener) {

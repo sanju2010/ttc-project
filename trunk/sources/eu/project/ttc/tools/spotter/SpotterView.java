@@ -1,7 +1,6 @@
 // Copyright © 2013 Dictanova SAS
 package eu.project.ttc.tools.spotter;
 
-import eu.project.ttc.tools.commons.ProcessingResult;
 import eu.project.ttc.tools.commons.ToolView;
 
 import javax.swing.*;

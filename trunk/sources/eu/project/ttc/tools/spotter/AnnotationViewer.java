@@ -1,4 +1,4 @@
-package eu.project.ttc.tools.commons;
+package eu.project.ttc.tools.spotter;
 
 import javax.swing.*;
 import javax.swing.text.*;

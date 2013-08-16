@@ -1,15 +1,7 @@
 package eu.project.ttc.tools.spotter;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Locale;
-
-import eu.project.ttc.tools.commons.InputSource;
-import eu.project.ttc.tools.commons.ProcessingResult;
 import eu.project.ttc.tools.commons.ToolController;
-import org.apache.uima.UIMAFramework;
 import org.apache.uima.cas.CAS;
-import org.apache.uima.resource.metadata.ConfigurationParameterSettings;
 
 import eu.project.ttc.tools.commons.TermSuiteEngine;
 

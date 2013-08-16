@@ -1,4 +1,4 @@
-package eu.project.ttc.tools.commons;
+package eu.project.ttc.tools.spotter;
 
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;

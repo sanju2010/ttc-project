@@ -1,4 +1,4 @@
-package eu.project.ttc.tools.commons;
+package eu.project.ttc.tools.spotter;
 
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;

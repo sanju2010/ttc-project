@@ -184,7 +184,7 @@ public class ConfigPanel extends JPanel {
         try {
             URL resHelp = getClass().getResource("/eu/project/ttc/gui/params/spotter.help.html");
             epHelp.setPage(resHelp);
-        } catch (IOException e) {} // No various available
+        } catch (IOException e) {} // No help available
     }
 
     /**
