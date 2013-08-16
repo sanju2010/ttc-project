@@ -34,6 +34,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import eu.project.ttc.tools.commons.TermSuiteVersion;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -54,7 +55,7 @@ public final class TranslationListTBXWriter {
 
 	/** Name of the programm that produced the TBX file */
 	public static final String ORIGINATING_PROGRAM_NAME = TermSuite.class
-			.getSimpleName() + " " + TermSuite.TERMSUITE_VERSION;
+			.getSimpleName() + " " + TermSuiteVersion.VERSION;
 
 	/** URL of the format DTD. */
 	public static final String TBX_DTD_URI = "http://ttc-project.googlecode.com/files/tbxcore.dtd";

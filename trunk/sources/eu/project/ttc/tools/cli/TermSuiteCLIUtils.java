@@ -30,6 +30,7 @@ import java.net.URL;
 import java.util.Locale;
 import java.util.Properties;
 
+import eu.project.ttc.tools.commons.TermSuiteVersion;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.HelpFormatter;
@@ -45,7 +46,6 @@ import org.apache.uima.resource.metadata.ConfigurationParameterSettings;
 import org.apache.uima.util.InvalidXMLException;
 import org.apache.uima.util.XMLInputSource;
 
-import eu.project.ttc.tools.TermSuite;
 import eu.project.ttc.tools.TermSuiteRunner;
 import eu.project.ttc.tools.aligner.AlignerEngine;
 import eu.project.ttc.tools.indexer.IndexerEngine;
@@ -59,9 +59,7 @@ import eu.project.ttc.tools.spotter.SpotterEngine;
 public final class TermSuiteCLIUtils {
 
 	/** Preferences directory for the current user */
-	public static final String USER_HOME = System.getProperty("user.home")
-			+ File.separator + ".term-suite" + File.separator
-			+ TermSuite.TERMSUITE_VERSION + File.separator;
+	public static final String USER_HOME = TermSuiteVersion.CFG_ROOT + File.separator;
 
 	/** Path to the aligner engine */
 	private static final String ALIGNER_ENGINE = "eu/project/ttc/all/engines/aligner/Aligner.xml";

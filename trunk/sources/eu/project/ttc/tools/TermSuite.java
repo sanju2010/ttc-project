@@ -15,6 +15,7 @@ import java.io.StringWriter;
 import javax.swing.*;
 
 import eu.project.ttc.tools.commons.InvalidTermSuiteConfiguration;
+import eu.project.ttc.tools.commons.TermSuiteVersion;
 import eu.project.ttc.tools.commons.ToolController;
 import eu.project.ttc.tools.config.AlignerSettings;
 import eu.project.ttc.tools.config.IndexerSettings;
@@ -29,46 +30,16 @@ import eu.project.ttc.tools.aligner.AlignerViewer;
 import eu.project.ttc.tools.indexer.Indexer;
 import eu.project.ttc.tools.indexer.IndexerViewer;
 import eu.project.ttc.tools.various.About;
-import eu.project.ttc.tools.various.Preferences;
 import eu.project.ttc.tools.various.ToolBar;
 import fr.free.rocheteau.jerome.dunamis.viewers.ProcessingResultViewer;
 
 /**
  * Main class of the GUI version of TermSuite.
+ *
+ * This class is reponsible for creating the main GUI of TermSuite, as
+ * well as creating the views, controllers and models of the tools.
  */
 public class TermSuite implements Runnable {
-
-    /** Current version of the program */
-    public static final String TERMSUITE_VERSION = "1.5-SNAPSHOT";
-    /** Name of the directory where the config is persisted */
-    public static final String CFG_ROOTDIR_NAME = ".term-suite";
-    /** Name of the file where the SpotterController config is persisted */
-    public static final String CFG_SPOTTER_NAME = "spotter.settings";
-    /** Name of the file where the Indexer config is persisted */
-    public static final String CFG_INDEXER_NAME = "indexer.settings";
-    /** Name of the file where the Aligner config is persisted */
-    public static final String CFG_ALIGNER_NAME = "aligner.settings";
-
-    /** Preferences store various data used to define the system */
-    public static final Preferences preferences = new Preferences();
-    static {
-        preferences.setSummary(
-                "This tool provides 3 tools for processing terminology extraction "
-                + "and terminology alignment from comparable corpora. "
-                + "It has been developed within the European TTC project (see http://www.ttc-project.eu/).");
-        preferences.setLicense(
-                "This software is distributed under the Apache Licence version 2.");
-        preferences.setTitle("Term Suite");
-        preferences.setVersion(TERMSUITE_VERSION);
-        preferences.setConfigRoot( System.getProperty("user.home")
-                + File.separator + CFG_ROOTDIR_NAME + File.separator + TERMSUITE_VERSION);
-        preferences.setSpotterConfig(
-                preferences.getConfigRoot() + File.separator + CFG_SPOTTER_NAME);
-        preferences.setIndexerConfig(
-                preferences.getConfigRoot() + File.separator + CFG_INDEXER_NAME);
-        preferences.setAlignerConfig(
-                preferences.getConfigRoot() + File.separator + CFG_ALIGNER_NAME);
-    }
 
     public TermSuite() {
         this.setDesktop();
@@ -108,10 +79,6 @@ public class TermSuite implements Runnable {
 	public Desktop getDesktop() {
 		return this.desktop;
 	}
-
-    public Preferences getPreferences() {
-        return this.preferences;
-    }
 
     public void run() {
         this.getFrame().setVisible(true);
@@ -193,22 +160,22 @@ public class TermSuite implements Runnable {
      * Create the root directory for configuration files if necessary.
      */
     private void initConfig() {
-        File cfgDir = new File( getPreferences().getConfigRoot() );
+        File cfgDir = new File( TermSuiteVersion.CFG_ROOT );
         if (! cfgDir.exists()) {
             cfgDir.mkdirs();
         }
     }
 
     public File getSpotterCfg() {
-        return new File( getPreferences().getSpotterConfig() );
+        return new File( TermSuiteVersion.CFG_SPOTTER );
     }
 
     public File getIndexerCfg() {
-        return new File( getPreferences().getIndexerConfig() );
+        return new File( TermSuiteVersion.CFG_INDEXER );
     }
 
     public File getAlignerCfg() {
-        return new File( getPreferences().getAlignerConfig() );
+        return new File( TermSuiteVersion.CFG_ALIGNER );
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////// ACTIONS
@@ -243,7 +210,7 @@ public class TermSuite implements Runnable {
      */
     private void doQuit() {
         int response = JOptionPane.showConfirmDialog(this.getFrame(),
-                "Do you really want to quit " + getPreferences().getTitle() + "?",
+                "Do you really want to quit " + TermSuiteVersion.TITLE + "?",
                 "Quit",
                 JOptionPane.YES_NO_OPTION);
         if (response == 0) {
@@ -388,7 +355,7 @@ public class TermSuite implements Runnable {
 
     private void setFrame() {
         this.frame = new JFrame();
-        this.frame.setTitle(this.getPreferences().getTitle());
+        this.frame.setTitle(TermSuiteVersion.TITLE);
         this.frame.setPreferredSize(this.getDimension());
         this.frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         this.frame.getContentPane().add(this.getComponent());
@@ -479,7 +446,6 @@ public class TermSuite implements Runnable {
 	
 	private void setAbout() {
 		this.about = new About();
-		this.about.setPreferences(this.getPreferences());
 	}
 	
 	public About getAbout() {
@@ -531,7 +497,7 @@ public class TermSuite implements Runnable {
 	private Indexer indexer;
 	
 	private void setIndexer() {
-        IndexerSettings cfg = new IndexerSettings( getPreferences().getIndexerConfig() );
+        IndexerSettings cfg = new IndexerSettings( TermSuiteVersion.CFG_INDEXER );
 		this.indexer = new Indexer(cfg);
 		this.indexer.setParent(this);
 	}
@@ -555,7 +521,7 @@ public class TermSuite implements Runnable {
 	private Aligner aligner;
 	
 	private void setAligner() {
-        AlignerSettings cfg = new AlignerSettings( getPreferences().getAlignerConfig() );
+        AlignerSettings cfg = new AlignerSettings( TermSuiteVersion.CFG_INDEXER );
 		this.aligner = new Aligner(cfg);
 		this.aligner.setParent(this);
 	}
