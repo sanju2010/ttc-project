@@ -4,11 +4,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.List;
 
 import javax.swing.JScrollPane;
 
-import fr.free.rocheteau.jerome.dunamis.fields.Field;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.resource.ResourceConfigurationException;
 import org.apache.uima.resource.metadata.ConfigurationParameter;
@@ -181,14 +179,14 @@ public abstract class TermSuiteToolConfiguration {
 	public void doUpdate() {
 		ConfigurationParameterSettings settings = this.getMetaData()
 				.getConfigurationParameterSettings();
-		List<Field> fields = this.getViewer().getFields();
-		for (Field field : fields) {
-			if (field.isModified()) {
-				String name = field.getName();
-				Object value = field.getValue();
-				settings.setParameterValue(name, value);
-			}
-		}
+//		List<Field> fields = this.getViewer().getFields();
+//		for (Field field : fields) {
+//			if (field.isModified()) {
+//				String name = field.getName();
+//				Object value = field.getValue();
+//				settings.setParameterValue(name, value);
+//			}
+//		}
 	}
 
 }

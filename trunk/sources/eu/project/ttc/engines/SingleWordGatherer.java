@@ -8,7 +8,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import eu.project.ttc.tools.config.IndexerSettings;
+import eu.project.ttc.tools.indexer.IndexerBinding;
+import eu.project.ttc.tools.indexer.IndexerModel;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
@@ -108,7 +109,7 @@ public class SingleWordGatherer extends JCasAnnotator_ImplBase {
 
 				if (Boolean.TRUE
 						.equals(context
-								.getConfigParameterValue(IndexerSettings.P_IGNORE_DIACRITICS)))
+								.getConfigParameterValue(IndexerBinding.CFG.IGNOREDIACRITICS.getParameter())))
 					extraGatherer = new MultiWordAsSimpleGatherer();
 
 			}

@@ -18,7 +18,9 @@ import eu.project.ttc.tools.commons.InvalidTermSuiteConfiguration;
 import eu.project.ttc.tools.commons.TermSuiteVersion;
 import eu.project.ttc.tools.commons.ToolController;
 import eu.project.ttc.tools.config.AlignerSettings;
-import eu.project.ttc.tools.config.IndexerSettings;
+import eu.project.ttc.tools.indexer.IndexerController;
+import eu.project.ttc.tools.indexer.IndexerModel;
+import eu.project.ttc.tools.indexer.IndexerView;
 import eu.project.ttc.tools.spotter.SpotterController;
 import eu.project.ttc.tools.spotter.SpotterModel;
 import eu.project.ttc.tools.spotter.SpotterView;
@@ -28,8 +30,6 @@ import org.apache.uima.util.Level;
 
 import eu.project.ttc.tools.aligner.Aligner;
 import eu.project.ttc.tools.aligner.AlignerViewer;
-import eu.project.ttc.tools.indexer.Indexer;
-import eu.project.ttc.tools.indexer.IndexerViewer;
 
 /**
  * Main class of the GUI version of TermSuite.
@@ -48,8 +48,7 @@ public class TermSuite implements Runnable {
         // Initialize configuration and tools
         initConfigs();
         initSpotter();
-        this.setIndexer(); // TODO
-        this.setBanker();  // TODO
+        initIndexer();
         this.setAligner(); // TODO
         this.setMixer();   // TODO
 
@@ -79,7 +78,7 @@ public class TermSuite implements Runnable {
             case 0:
                 return getSpotter();
             case 1:
-//                return getIndexer();
+                return getIndexer();
             case 2:
 //                return getAligner();
             default:
@@ -124,8 +123,8 @@ public class TermSuite implements Runnable {
     public void doSave(boolean showConfirmation) {
         try {
             spotter.validateAndSaveConfiguration();
-            this.getIndexer().getSettings().doSave();
-            this.getAligner().getSettings().doSave();
+            indexer.validateAndSaveConfiguration();
+            this.getAligner().getSettings().doSave(); // FIXME
             if ( showConfirmation ) {
                 JOptionPane.showMessageDialog(this.getMainWindow(),
                         "The TermSuite configuration has been successfully saved",
@@ -338,62 +337,6 @@ public class TermSuite implements Runnable {
         return this.mainTabs;
     }
 
-    // FIXME old stuff to be removed
-//    private JTabbedPane embed(Component edit, Component view) {
-//        JTabbedPane tabs = new JTabbedPane(JTabbedPane.TOP);
-//        tabs.addTab(" Edit ", edit);
-//        tabs.addTab(" View ", view);
-//        return tabs;
-//    }
-//    public void enableListeners() {
-//        if (this.isTaggerSelected()) {
-//            this.listener.setTool(this.getSpotter());
-//            SpotterEngine engine = new SpotterEngine();
-//            engine.setTool(this.getSpotter());
-//            this.listener.setEngine(engine);
-//        } else if (this.isIndexerSelected()) {
-//            this.listener.setTool(this.getIndexer());
-//            IndexerEngine engine = new IndexerEngine();
-//            engine.setTool(this.getIndexer());
-//            this.listener.setEngine(engine);
-//        } else if (this.isAlignerSelected()) {
-//            this.listener.setTool(this.getAligner());
-//            AlignerEngine engine = new AlignerEngine();
-//            engine.setTool(this.getAligner());
-//            this.listener.setEngine(engine);
-//        }
-//    }
-//
-////	private TermSuiteListener listener;
-//
-//	private void setListener() {
-//		this.listener = new TermSuiteListener();
-//		this.enableListeners();
-//		this.getToolBar().enableListeners(this.listener);
-//		ProcessingResultListener processingRresultListener = new ProcessingResultListener();
-//		processingRresultListener.setViewer(this.getViewer());
-//		this.getViewer().enableListeners(processingRresultListener);
-//		WindowListener windowListener = new WindowListener();
-//		windowListener.setTermSuite(this);
-//		this.getMainWindow().addWindowListener(windowListener);
-//	}
-//
-//
-//
-//    private class Listener implements ChangeListener {
-//
-//        private TermSuite termSuite;
-//
-//        public void setTermSuite(TermSuite termSuite) {
-//            this.termSuite = termSuite;
-//        }
-//
-//        public void stateChanged(ChangeEvent event) {
-//            this.termSuite.enableListeners();
-//        }
-//
-//    }
-
     /*************************************************************************************************** SPOTTER TAB */
 
 	private SpotterController spotter;
@@ -429,29 +372,36 @@ public class TermSuite implements Runnable {
 
     /*************************************************************************************************** INDEXER TAB */
 
-	private Indexer indexer;
-	
-	private void setIndexer() {
-        IndexerSettings cfg = new IndexerSettings( TermSuiteVersion.CFG_INDEXER );
-		this.indexer = new Indexer(cfg);
-		this.indexer.setParent(this);
+    private IndexerController indexer;
 
-        //        this.mainTabs.addTab(" Indexer ",this.embed(this.getIndexer().getView(), this.getBanker().getComponent()));
-	}
-	
-	public Indexer getIndexer() {
-		return this.indexer;
-	}
-	
-	private IndexerViewer banker;
-	
-	private void setBanker() {
-		this.banker = new IndexerViewer();
-	}
-	
-	public IndexerViewer getBanker() {
-		return this.banker;
-	}
+    private void initIndexer() {
+        // Main content must have been initialized
+        assert getMainTabs() != null;
+
+        // Prepare the MVC
+        IndexerModel sModel = new IndexerModel(getIndexerCfg());
+        IndexerView sView = new IndexerView();
+        this.indexer = new IndexerController(sModel, sView);
+        // Add to the tabs
+        getMainTabs().insertTab(" Indexer ", null, sView, null, 1);
+
+        // Load the persisted configuration if any
+        try {
+            indexer.loadConfiguration();
+        } catch (IOException e) {
+            // Non lethal if no configuration
+        } catch (InvalidTermSuiteConfiguration e) {
+            // Problem
+            displayException("There was a problem loading the Indexer configuration.<br/>" +
+                    "I recommend deleting the configuration file '" + indexer.getConfigurationFile() +
+                    "' if it exists. If not, that may be the first time you run the program and " +
+                    "the default configuration does not apply to you.", e);
+        }
+    }
+
+    private IndexerController getIndexer() {
+        return this.indexer;
+    }
 
     /*************************************************************************************************** ALIGNER TAB */
 

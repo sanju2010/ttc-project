@@ -23,8 +23,8 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import eu.project.ttc.tools.config.IndexerSettings;
-import eu.project.ttc.tools.config.IndexerSettings.FilterRules;
+import eu.project.ttc.tools.indexer.IndexerBinding;
+import eu.project.ttc.tools.indexer.IndexerModel;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
@@ -104,7 +104,7 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 
 				// Set up TBX filtering
 				if (Boolean.TRUE.equals(context
-						.getConfigParameterValue(IndexerSettings.P_KEEP_VERBS)))
+						.getConfigParameterValue(IndexerBinding.CFG.KEEPVERBS.getParameter())))
 					predicate = TermPredicates.createOrPredicate(predicate,
 							TermPredicates.createVerbAdverbPredicate());
 
@@ -112,14 +112,14 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 
 				filterRule = getFilterRulePredicate(
 						(String) context
-								.getConfigParameterValue(IndexerSettings.P_FILTER_RULE),
+								.getConfigParameterValue(IndexerBinding.CFG.FILTERRULE.getParameter()),
 						(Float) context
-								.getConfigParameterValue(IndexerSettings.P_FILTERING_THRESHOLD));
+								.getConfigParameterValue(IndexerBinding.CFG.FILTERINGTLD.getParameter()));
 
 				predicate = TermPredicates.createAndPredicate(predicate,
 						filterRule);
 				tsvEnabled = Boolean.TRUE.equals(context
-						.getConfigParameterValue(IndexerSettings.P_ENABLE_TSV));
+						.getConfigParameterValue(IndexerBinding.CFG.TSV.getParameter()));
 
 			}
 			if (this.variants == null) {
@@ -139,7 +139,7 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 	private TermPredicate getFilterRulePredicate(String filterRule,
 			Float filteringThreshold) throws Exception {
 		try {
-			FilterRules rule = FilterRules.valueOf(filterRule);
+			IndexerBinding.FilterRules rule = IndexerBinding.FilterRules.valueOf(filterRule);
 			TermPredicate pred = null;
 			int cutoff = (int) Math.floor(filteringThreshold.doubleValue());
 			switch (rule) {

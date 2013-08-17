@@ -1,6 +1,7 @@
 // Copyright © 2013 Dictanova SAS
 package eu.project.ttc.tools.config;
 
+import eu.project.ttc.tools.indexer.IndexerModel;
 import eu.project.ttc.tools.spotter.SpotterModel;
 
 import java.io.File;
@@ -33,7 +34,7 @@ public class TermSuiteSettings {
     /** Path to the Indexer configuration*/
     private final String cfgIndexerPath;
     /** Instance of Indexer settings */
-    private final IndexerSettings cfgIndexer;
+    private final IndexerModel cfgIndexer;
 
     /** Path to the Aligner configuration*/
     private final String cfgAlignerPath;
@@ -55,7 +56,7 @@ public class TermSuiteSettings {
 
         // Prepare Indexer settings
         cfgIndexerPath = cfgDir.getAbsolutePath() + File.separator + CFG_INDEXER_NAME;
-        cfgIndexer = new IndexerSettings(cfgIndexerPath);
+        cfgIndexer = new IndexerModel( new File(cfgIndexerPath) );
 
         // Prepare Aligner settings
         cfgAlignerPath = cfgDir.getAbsolutePath() + File.separator + CFG_ALIGNER_NAME;
@@ -66,7 +67,7 @@ public class TermSuiteSettings {
         return cfgSpotter;
     }
 
-    public IndexerSettings getIndexerSettings() {
+    public IndexerModel getIndexerSettings() {
         return cfgIndexer;
     }
 

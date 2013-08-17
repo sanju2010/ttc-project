@@ -49,7 +49,6 @@ import org.apache.uima.util.XMLInputSource;
 
 import eu.project.ttc.tools.TermSuiteRunner;
 import eu.project.ttc.tools.aligner.AlignerEngine;
-import eu.project.ttc.tools.indexer.IndexerEngine;
 import eu.project.ttc.tools.spotter.SpotterEngine;
 
 /**

@@ -13,7 +13,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
@@ -31,7 +30,6 @@ import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.util.CasCreationUtils;
-import org.apache.uima.util.Level;
 import org.apache.uima.util.XMLInputSource;
 import org.apache.uima.util.XMLParser;
 
@@ -39,9 +37,8 @@ import eu.project.ttc.types.MultiWordTermAnnotation;
 import eu.project.ttc.types.SingleWordTermAnnotation;
 import eu.project.ttc.types.TermAnnotation;
 import eu.project.ttc.types.TermComponentAnnotation;
-import fr.free.rocheteau.jerome.dunamis.fields.FieldFactory;
 
-public class IndexerViewer {
+public class TermsBankViewer {
 
 	private Dimension getDimension() {
 		return new Dimension(600, 400);
@@ -93,7 +90,7 @@ public class IndexerViewer {
 		return this.scroll;
 	}
 
-	public IndexerViewer() {
+	public TermsBankViewer() {
 		this.setRoot();
 		this.setModel();
 		this.setTree();
@@ -404,9 +401,9 @@ public class IndexerViewer {
 
 	private class Listener implements ActionListener {
 
-		private IndexerViewer viewer;
+		private TermsBankViewer viewer;
 
-		public Listener(IndexerViewer viewer) {
+		public Listener(TermsBankViewer viewer) {
 			this.viewer = viewer;
 		}
 
@@ -416,17 +413,18 @@ public class IndexerViewer {
 				JMenuItem source = (JMenuItem) object;
 				String action = source.getActionCommand();
 				if (action.equals("load")) {
-					int rv = FieldFactory.getChooser().showOpenDialog(null);
-					if (rv == JFileChooser.APPROVE_OPTION) {
-						File file = FieldFactory.getChooser().getSelectedFile();
-						try {
-							this.viewer.doLoad(file);
-						} catch (Exception e) {
-							UIMAFramework.getLogger().log(Level.SEVERE,
-									e.getMessage());
-							e.printStackTrace();
-						}
-					}
+                    // FIXME
+//					int rv = FieldFactory.getChooser().showOpenDialog(null);
+//					if (rv == JFileChooser.APPROVE_OPTION) {
+//						File file = FieldFactory.getChooser().getSelectedFile();
+//						try {
+//							this.viewer.doLoad(file);
+//						} catch (Exception e) {
+//							UIMAFramework.getLogger().log(Level.SEVERE,
+//									e.getMessage());
+//							e.printStackTrace();
+//						}
+//					}
 				} else if (action.equals("name")) {
 					this.viewer.sortByName();
 				} else if (action.equals("freq")) {
