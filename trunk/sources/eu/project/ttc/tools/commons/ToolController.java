@@ -133,13 +133,19 @@ public abstract class ToolController {
      * Method called when a new run is about to start. If necessary some elements in the
      * tool should be reset (some parts of the views like results, some stats too).
      */
-    public abstract void runStarts();
+    public void runStarts() {
+        getToolView().runStarts();
+        getToolModel().runStarts();
+    }
 
     /**
      * Method called when the run has ended. If necessary some elements in the tool
      * should be displayed or computed (parts of the views like results, stats...).
      */
-    public abstract void runEnds();
+    public void runEnds() {
+        getToolView().runEnds();
+        getToolModel().runEnds();
+    }
 
     // FIXME remove all these
 //

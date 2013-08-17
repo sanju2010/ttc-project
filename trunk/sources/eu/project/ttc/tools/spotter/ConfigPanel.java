@@ -5,20 +5,13 @@ import eu.project.ttc.tools.commons.LanguageItem;
 import eu.project.ttc.tools.commons.TTCFileChooser;
 
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Locale;
 
 /**
  * This JPanel exposes the configuration part of the Spotter tool.
@@ -39,8 +32,6 @@ public class ConfigPanel extends JPanel {
     private JLabel lblInDirectory;
     private JEditorPane epInDirectory;
     private TTCFileChooser fcInDirectory;
-    private Color fcInDirectoryInErrorColor = Color.RED;
-    private Color fcInDirectoryRegularColor;
 
     // Output directory parameter
     private JLabel lblOutDirectory;
@@ -182,7 +173,7 @@ public class ConfigPanel extends JPanel {
         epHelp.setEditable(false);
         epHelp.setOpaque(false);
         try {
-            URL resHelp = getClass().getResource("/eu/project/ttc/gui/params/spotter.help.html");
+            URL resHelp = getClass().getResource("/eu/project/ttc/gui/texts/spotter/mainhelp.html");
             epHelp.setPage(resHelp);
         } catch (IOException e) {} // No help available
     }
@@ -224,7 +215,7 @@ public class ConfigPanel extends JPanel {
                 (int) epLanguage.getPreferredSize().getHeight(),
                 preferredWidth));
         try {
-            URL res = getClass().getResource("/eu/project/ttc/gui/params/spotter.language.html");
+            URL res = getClass().getResource("/eu/project/ttc/gui/texts/spotter/param.language.html");
             epLanguage.setPage(res);
         } catch (IOException e){} // No various
     }
@@ -241,7 +232,6 @@ public class ConfigPanel extends JPanel {
 
         // Input directory field
         fcInDirectory = new TTCFileChooser("Choose the input directory");
-        fcInDirectoryRegularColor = fcInDirectory.getBackground();
         fcInDirectory.setPreferredSize(new Dimension(
                 (int) fcInDirectory.getPreferredSize().getHeight(),
                 preferredWidth ));
@@ -261,7 +251,7 @@ public class ConfigPanel extends JPanel {
                 (int) epInDirectory.getPreferredSize().getHeight(),
                 preferredWidth ));
         try {
-            URL res = getClass().getResource("/eu/project/ttc/gui/params/spotter.inputdirectory.html");
+            URL res = getClass().getResource("/eu/project/ttc/gui/texts/spotter/param.inputdirectory.html");
             epInDirectory.setPage(res);
         } catch (IOException e) {} // No various
     }
@@ -297,7 +287,7 @@ public class ConfigPanel extends JPanel {
                 (int) epOutDirectory.getPreferredSize().getHeight(),
                 preferredWidth ));
         try {
-            URL res = getClass().getResource("/eu/project/ttc/gui/params/spotter.outputdirectory.html");
+            URL res = getClass().getResource("/eu/project/ttc/gui/texts/spotter/param.outputdirectory.html");
             epOutDirectory.setPage(res);
         } catch (IOException e) {} // No various
     }
@@ -333,7 +323,7 @@ public class ConfigPanel extends JPanel {
                 (int) epTtgDirectory.getPreferredSize().getHeight(),
                 preferredWidth ));
         try {
-            URL res = getClass().getResource("/eu/project/ttc/gui/params/spotter.ttgdirectory.html");
+            URL res = getClass().getResource("/eu/project/ttc/gui/texts/spotter/param.ttgdirectory.html");
             epTtgDirectory.setPage(res);
         } catch (IOException e) {} // No various
     }

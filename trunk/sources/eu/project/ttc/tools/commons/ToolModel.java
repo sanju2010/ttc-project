@@ -1,14 +1,10 @@
 package eu.project.ttc.tools.commons;
 
 import org.apache.uima.resource.ResourceConfigurationException;
-import org.apache.uima.resource.metadata.NameValuePair;
-import org.apache.uima.resource.metadata.ResourceMetaData;
-import org.xml.sax.SAXException;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
@@ -30,7 +26,7 @@ public abstract class ToolModel {
     // Watch property changes in the bean
     protected PropertyChangeSupport propertyChangeSupport;
     // File where the model is serialized (UIMA configuration file)
-    protected File persistedCfg;
+    private File persistedCfg;
 
     /**
      * Constructor.
@@ -43,19 +39,27 @@ public abstract class ToolModel {
     }
 
     /**
-     * Access all the parameters registered in the system.
-     *
-     * @param includeLanguage
-     *      if set, then the Language parameter is included as well which will
-     *      generate an error if you try to run the engine from here as the
-     *      corresponding parameter does not exist
+     * Access to the configuration file where the configuration is persisted.
      */
-    public abstract NameValuePair[] getParameterSettings(boolean includeLanguage);
+    public File getConfigurationFile() {
+        return persistedCfg;
+    }
 
     /**
-     * Provides the means to set or reset the model to a default state.
+     * Method called when a new run is about to start. If necessary some elements in the
+     * model should be reset (stats...).
      */
-    public abstract void initDefault() throws FileNotFoundException, InvalidTermSuiteConfiguration;
+    public void runStarts() {
+        // Nothing to do
+    }
+
+    /**
+     * Method called when the run has ended. If necessary some elements in the model
+     * should be computed (stats...).
+     */
+    public void runEnds() {
+        // Nothing to do
+    }
 
     /**
      * Load the configuration persisted if any.
@@ -63,55 +67,43 @@ public abstract class ToolModel {
     public abstract void load() throws IOException, InvalidTermSuiteConfiguration;
 
     /**
-     * Persists the configuration.
-     */
-    public abstract void save() throws IOException;
-
-    public void addPropertyChangeListener(String property, PropertyChangeListener listener) {
-        propertyChangeSupport.addPropertyChangeListener(property, listener);
-    }
-
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-        propertyChangeSupport.addPropertyChangeListener(listener);
-    }
-
-    public void removePropertyChangeListener(String property, PropertyChangeListener listener) {
-        propertyChangeSupport.removePropertyChangeListener(property, listener);
-    }
-
-    protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
-        propertyChangeSupport.firePropertyChange(propertyName, oldValue, newValue);
-    }
-
-    public File getConfigurationFile() {
-        return persistedCfg;
-    }
-
-    /**
      * Validate the current configuration.
      */
     public abstract void validate() throws ResourceConfigurationException;
 
     /**
-     * Method called when a new run is about to start. If necessary some elements in the
-     * model should be reset (stats...).
+     * Persists the configuration.
      */
-    public abstract void runStarts();
+    public abstract void save() throws IOException;
 
     /**
-     * Method called when the run has ended. If necessary some elements in the model
-     * should be computed (stats...).
+     * For the controller to bind to property changes on the model side.
+     *
+     * @param property
+     *      name of the property to look for
+     * @param listener
+     *      listener that will be called when the property is changed
+     *
+     * @see PropertyChangeSupport#addPropertyChangeListener(String, java.beans.PropertyChangeListener)
      */
-    public abstract void runEnds();
+    public void addPropertyChangeListener(String property, PropertyChangeListener listener) {
+        propertyChangeSupport.addPropertyChangeListener(property, listener);
+    }
 
-    // FIXME remove all these
-//
-//	public abstract void doUpdate();
-//
-//	public abstract void validate() throws ResourceConfigurationException;
-//
-//	public abstract void doSave() throws IOException, SAXException;
-//
-//	public abstract ResourceMetaData getMetaData();
+    /**
+     * Informs the listeners that some specific property has changed.
+     *
+     * @param property
+     *      name of the property that has changed
+     * @param oldValue
+     *      the previous value of the property
+     * @param newValue
+     *      the new value of the property
+     *
+     * @see PropertyChangeSupport#firePropertyChange(String, boolean, boolean)
+     */
+    protected void firePropertyChange(String property, Object oldValue, Object newValue) {
+        propertyChangeSupport.firePropertyChange(property, oldValue, newValue);
+    }
 	
 }

@@ -5,7 +5,6 @@ import java.beans.PropertyChangeListener;
 import java.util.Locale;
 
 import eu.project.ttc.tools.commons.InputSource;
-import eu.project.ttc.tools.commons.ProcessingResult;
 import eu.project.ttc.tools.commons.ToolController;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.cas.CAS;
@@ -238,18 +237,6 @@ public class SpotterController extends ToolController {
     @Override
     public InputSource.InputSourceTypes getInputSourceType() {
         return InputSource.InputSourceTypes.TXT;
-    }
-
-    @Override
-    public void runStarts() {
-        getView().runStarts();
-        getModel().runStarts();
-    }
-
-    @Override
-    public void runEnds() {
-        getView().runEnds();
-        getModel().runEnds();
     }
 		
 }
