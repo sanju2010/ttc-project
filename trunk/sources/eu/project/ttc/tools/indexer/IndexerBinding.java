@@ -108,6 +108,16 @@ public interface IndexerBinding {
      */
     void addLanguageChangeListener(PropertyChangeListener listener);
 
+    /**
+     * Mark the parameter as in error.
+     */
+    void setLanguageError(Throwable e);
+
+    /**
+     * Unmark the parameter as in error.
+     */
+    void unsetLanguageError();
+
     ///////////////////////////////////////////////////////////// INPUT DIRECTORY
 
     /**
@@ -125,6 +135,16 @@ public interface IndexerBinding {
      * Listener to a change regarding the input directory parameter.
      */
     void addInputDirectoryChangeListener(PropertyChangeListener listener);
+
+    /**
+     * Mark the parameter as in error.
+     */
+    void setInputDirectoryError(Throwable e);
+
+    /**
+     * Unmark the parameter as in error.
+     */
+    void unsetInputDirectoryError();
 
     ///////////////////////////////////////////////////////////// OUTPUT DIRECTORY
 
@@ -144,6 +164,16 @@ public interface IndexerBinding {
      */
     void addOutputDirectoryChangeListener(PropertyChangeListener listener);
 
+    /**
+     * Mark the parameter as in error.
+     */
+    void setOutputDirectoryError(Throwable e);
+
+    /**
+     * Unmark the parameter as in error.
+     */
+    void unsetOutputDirectoryError();
+
     ///////////////////////////////////////////////////////////// IGNORE DIACRITICS
 
     /**
@@ -155,12 +185,22 @@ public interface IndexerBinding {
     /**
      * Accessor to the ignore diacritics parameter value.
      */
-    boolean isIgnoreDiacritics();
+    Boolean isIgnoreDiacritics();
 
     /**
      * Listener to a change regarding the ignore diacritics parameter.
      */
     void addIgnoreDiacriticsChangeListener(PropertyChangeListener listener);
+
+    /**
+     * Mark the parameter as in error.
+     */
+    void setIgnoreDiacriticsError(Throwable e);
+
+    /**
+     * Unmark the parameter as in error.
+     */
+    void unsetIgnoreDiacriticsError();
 
     ///////////////////////////////////////////////////////////// VARIANT DETECTIONS
 
@@ -173,12 +213,22 @@ public interface IndexerBinding {
     /**
      * Accessor to the variant detection parameter value.
      */
-    boolean isVariantDetection();
+    Boolean isVariantDetection();
 
     /**
      * Listener to a change regarding the variant detection parameter.
      */
     void addVariantDetectionChangeListener(PropertyChangeListener listener);
+
+    /**
+     * Mark the parameter as in error.
+     */
+    void setVariantDetectionError(Throwable e);
+
+    /**
+     * Unmark the parameter as in error.
+     */
+    void unsetVariantDetectionError();
 
     ///////////////////////////////////////////////////////////// EDIT DISTANCE CLASS
 
@@ -198,6 +248,16 @@ public interface IndexerBinding {
      */
     void addEditDistanceClassChangeListener(PropertyChangeListener listener);
 
+    /**
+     * Mark the parameter as in error.
+     */
+    void setEditDistanceClassError(Throwable e);
+
+    /**
+     * Unmark the parameter as in error.
+     */
+    void unsetEditDistanceClassError();
+
     ///////////////////////////////////////////////////////////// EDIT DISTANCE THRESHOLD
 
     /**
@@ -215,6 +275,16 @@ public interface IndexerBinding {
      * Listener to a change regarding the edit distance threshold parameter.
      */
     void addEditDistanceThresholdChangeListener(PropertyChangeListener listener);
+
+    /**
+     * Mark the parameter as in error.
+     */
+    void setEditDistanceThresholdError(Throwable e);
+
+    /**
+     * Unmark the parameter as in error.
+     */
+    void unsetEditDistanceThresholdError();
 
     ///////////////////////////////////////////////////////////// EDIT DISTANCE NGRAMS
 
@@ -234,6 +304,16 @@ public interface IndexerBinding {
      */
     void addEditDistanceNgramsChangeListener(PropertyChangeListener listener);
 
+    /**
+     * Mark the parameter as in error.
+     */
+    void setEditDistanceNgramsError(Throwable e);
+
+    /**
+     * Unmark the parameter as in error.
+     */
+    void unsetEditDistanceNgramsError();
+
     ///////////////////////////////////////////////////////////// FREQUENCY THRESHOLD
 
     /**
@@ -251,6 +331,16 @@ public interface IndexerBinding {
      * Listener to a change regarding the frequency threshold parameter.
      */
     void addFrequencyThresholdChangeListener(PropertyChangeListener listener);
+
+    /**
+     * Mark the parameter as in error.
+     */
+    void setFrequencyThresholdError(Throwable e);
+
+    /**
+     * Unmark the parameter as in error.
+     */
+    void unsetFrequencyThresholdError();
 
     ///////////////////////////////////////////////////////////// ASSOCIATION MEASURE
 
@@ -270,6 +360,16 @@ public interface IndexerBinding {
      */
     void addAssociationMeasureChangeListener(PropertyChangeListener listener);
 
+    /**
+     * Mark the parameter as in error.
+     */
+    void setAssociationMeasureError(Throwable e);
+
+    /**
+     * Unmark the parameter as in error.
+     */
+    void unsetAssociationMeasureError();
+
     ///////////////////////////////////////////////////////////// FILTERING THRESHOLD
 
     /**
@@ -287,6 +387,16 @@ public interface IndexerBinding {
      * Listener to a change regarding the filtering threshold parameter.
      */
     void addFilteringThresholdChangeListener(PropertyChangeListener listener);
+
+    /**
+     * Mark the parameter as in error.
+     */
+    void setFilteringThresholdError(Throwable e);
+
+    /**
+     * Unmark the parameter as in error.
+     */
+    void unsetFilteringThresholdError();
 
     ///////////////////////////////////////////////////////////// FILTERING RULE
 
@@ -306,6 +416,16 @@ public interface IndexerBinding {
      */
     void addFilterRuleChangeListener(PropertyChangeListener listener);
 
+    /**
+     * Mark the parameter as in error.
+     */
+    void setFilterRuleError(Throwable e);
+
+    /**
+     * Unmark the parameter as in error.
+     */
+    void unsetFilterRuleError();
+
     ///////////////////////////////////////////////////////////// KEEP VERBS
 
     /**
@@ -324,6 +444,16 @@ public interface IndexerBinding {
      */
     void addKeepVerbsChangeListener(PropertyChangeListener listener);
 
+    /**
+     * Mark the parameter as in error.
+     */
+    void setKeepVerbsError(Throwable e);
+
+    /**
+     * Unmark the parameter as in error.
+     */
+    void unsetKeepVerbsError();
+
     ///////////////////////////////////////////////////////////// TSV
 
     /**
@@ -341,5 +471,15 @@ public interface IndexerBinding {
      * Listener to a change regarding the TSV export parameter.
      */
     void addTSVExportChangeListener(PropertyChangeListener listener);
+
+    /**
+     * Mark the parameter as in error.
+     */
+    void setTSVExportError(Throwable e);
+
+    /**
+     * Unmark the parameter as in error.
+     */
+    void unsetTSVExportError();
 
 }

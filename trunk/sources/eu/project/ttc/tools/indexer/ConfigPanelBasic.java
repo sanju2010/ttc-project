@@ -266,7 +266,7 @@ public class ConfigPanelBasic extends JPanel {
                 + language + "' as I do not handle this value.");
     }
 
-    public void setLanguageError(IllegalArgumentException e) {
+    public void setLanguageError(Throwable e) {
         lblLanguage.setText("<html><b>Language</b><br/><p style=\"color: red; font-size: small\">"
                 + e.getMessage() + "</p></html>");
     }
@@ -282,7 +282,7 @@ public class ConfigPanelBasic extends JPanel {
         fcInDirectory.setPath(inputDirectory);
     }
 
-    public void setInputDirectoryError(IllegalArgumentException e) {
+    public void setInputDirectoryError(Throwable e) {
         lblInDirectory.setText("<html><b>Input Directory</b><br/><p style=\"color: red; font-size: small\">"
                 + e.getMessage() + "</p></html>");
     }
@@ -298,7 +298,7 @@ public class ConfigPanelBasic extends JPanel {
         fcOutDirectory.setPath(outputDirectory);
     }
 
-    public void setOutputDirectoryError(IllegalArgumentException e) {
+    public void setOutputDirectoryError(Throwable e) {
         lblOutDirectory.setText("<html><b>Output Directory</b><br/><p style=\"color: red; font-size: small\">"
                 + e.getMessage() + "</p></html>");
     }

@@ -22,7 +22,6 @@ public class IndexerView extends JTabbedPane implements ToolView, IndexerBinding
     private final ResultsPanel compResults;
     private final ConfigPanelExport compEConfig;
 
-    private JPanel configTitlePanel;
     private JTabbedPane configTabs;
     private Box configGUI;
 
@@ -60,7 +59,7 @@ public class IndexerView extends JTabbedPane implements ToolView, IndexerBinding
                     firePropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
             }
         });
-        configTabs.addTab("Variant", new JScrollPane(compVConfig));
+        configTabs.addTab("Variant detection", new JScrollPane(compVConfig));
         compEConfig = new ConfigPanelExport();
         compEConfig.addPropertyChangeListener(new PropertyChangeListener() {
             public void propertyChange(PropertyChangeEvent evt) {
@@ -68,7 +67,7 @@ public class IndexerView extends JTabbedPane implements ToolView, IndexerBinding
                     firePropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
             }
         });
-        configTabs.addTab("Export", new JScrollPane(compEConfig));
+        configTabs.addTab("Filtering and Export", new JScrollPane(compEConfig));
 
 
         // Plug to main GUI part Config and results
@@ -90,9 +89,9 @@ public class IndexerView extends JTabbedPane implements ToolView, IndexerBinding
         try {
             URL resHelp = getClass().getResource("/eu/project/ttc/gui/texts/indexer/mainhelp.html");
             epConfigTitle.setPage(resHelp);
-        } catch (IOException e) {} // No help available
+        } catch (IOException ignored) {} // No help available
 
-        configTitlePanel = new JPanel(new BorderLayout());
+        JPanel configTitlePanel = new JPanel(new BorderLayout());
         configTitlePanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
         configTitlePanel.setOpaque(false);
         configTitlePanel.add(epConfigTitle);
@@ -131,9 +130,11 @@ public class IndexerView extends JTabbedPane implements ToolView, IndexerBinding
     public String getLanguage() {
         return compBConfig.getLanguage();
     }
-    public void setLanguageError(IllegalArgumentException e) {
+    @Override
+    public void setLanguageError(Throwable e) {
         compBConfig.setLanguageError(e);
     }
+    @Override
     public void unsetLanguageError() {
         compBConfig.unsetLanguageError();
     }
@@ -150,9 +151,11 @@ public class IndexerView extends JTabbedPane implements ToolView, IndexerBinding
     public String getInputDirectory() {
         return compBConfig.getInputDirectory();
     }
-    public void setInputDirectoryError(IllegalArgumentException e) {
+    @Override
+    public void setInputDirectoryError(Throwable e) {
         compBConfig.setInputDirectoryError(e);
     }
+    @Override
     public void unsetInputDirectoryError() {
         compBConfig.unsetInputDirectoryError();
     }
@@ -169,9 +172,11 @@ public class IndexerView extends JTabbedPane implements ToolView, IndexerBinding
     public String getOutputDirectory() {
         return compBConfig.getOutputDirectory();
     }
-    public void setOutputDirectoryError(IllegalArgumentException e) {
+    @Override
+    public void setOutputDirectoryError(Throwable e) {
         compBConfig.setOutputDirectoryError(e);
     }
+    @Override
     public void unsetOutputDirectoryError() {
         compBConfig.unsetOutputDirectoryError();
     }
@@ -185,12 +190,20 @@ public class IndexerView extends JTabbedPane implements ToolView, IndexerBinding
         compVConfig.setIgnoreDiacritics(ignoreDiacritics);
     }
     @Override
-    public boolean isIgnoreDiacritics() {
+    public Boolean isIgnoreDiacritics() {
         return compVConfig.isIgnoreDiacritics();
     }
     @Override
     public void addIgnoreDiacriticsChangeListener(PropertyChangeListener listener) {
         addPropertyChangeListener(CFG.IGNOREDIACRITICS.getProperty(), listener);
+    }
+    @Override
+    public void setIgnoreDiacriticsError(Throwable e) {
+        compVConfig.setIgnoreDiacriticsError(e);
+    }
+    @Override
+    public void unsetIgnoreDiacriticsError() {
+        compVConfig.unsetIgnoreDiacriticsError();
     }
 
     @Override
@@ -198,12 +211,20 @@ public class IndexerView extends JTabbedPane implements ToolView, IndexerBinding
         compVConfig.setVariantDetection(variantDetection);
     }
     @Override
-    public boolean isVariantDetection() {
+    public Boolean isVariantDetection() {
         return compVConfig.isVariantDetection();
     }
     @Override
     public void addVariantDetectionChangeListener(PropertyChangeListener listener) {
         addPropertyChangeListener(CFG.VARIANTDETECTION.getProperty(), listener);
+    }
+    @Override
+    public void setVariantDetectionError(Throwable e) {
+        compVConfig.setVariantDetectionError(e);
+    }
+    @Override
+    public void unsetVariantDetectionError() {
+        compVConfig.unsetVariantDetectionError();
     }
 
     @Override
@@ -218,6 +239,14 @@ public class IndexerView extends JTabbedPane implements ToolView, IndexerBinding
     public void addEditDistanceClassChangeListener(PropertyChangeListener listener) {
         addPropertyChangeListener(CFG.EDITDISTANCECLS.getProperty(), listener);
     }
+    @Override
+    public void setEditDistanceClassError(Throwable e) {
+        compVConfig.setEditDistanceClassError(e);
+    }
+    @Override
+    public void unsetEditDistanceClassError() {
+        compVConfig.unsetEditDistanceClassError();
+    }
 
     @Override
     public void setEditDistanceThreshold(Float editDistanceThreshold) {
@@ -230,6 +259,14 @@ public class IndexerView extends JTabbedPane implements ToolView, IndexerBinding
     @Override
     public void addEditDistanceThresholdChangeListener(PropertyChangeListener listener) {
         addPropertyChangeListener(CFG.EDITDISTANCETLD.getProperty(), listener);
+    }
+    @Override
+    public void setEditDistanceThresholdError(Throwable e) {
+        compVConfig.setEditDistanceTldError(e);
+    }
+    @Override
+    public void unsetEditDistanceThresholdError() {
+        compVConfig.unsetEditDistanceTldError();
     }
 
     @Override
@@ -244,83 +281,139 @@ public class IndexerView extends JTabbedPane implements ToolView, IndexerBinding
     public void addEditDistanceNgramsChangeListener(PropertyChangeListener listener) {
         addPropertyChangeListener(CFG.EDITDISTANCENGRAMS.getProperty(), listener);
     }
+    @Override
+    public void setEditDistanceNgramsError(Throwable e) {
+        compVConfig.setEditDistanceNgramsError(e);
+    }
+    @Override
+    public void unsetEditDistanceNgramsError() {
+        compVConfig.unsetEditDistanceNgramsError();
+    }
 
     @Override
     public void setFrequencyThreshold(Float frequencyThreshold) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        compEConfig.setFrequencyThreshold(frequencyThreshold);
     }
     @Override
     public Float getFrequencyThreshold() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return compEConfig.getFrequencyThreshold();
     }
     @Override
     public void addFrequencyThresholdChangeListener(PropertyChangeListener listener) {
         addPropertyChangeListener(CFG.FREQUENCYTLD.getProperty(), listener);
     }
+    @Override
+    public void setFrequencyThresholdError(Throwable e) {
+        compEConfig.setFrequencyThresholdError(e);
+    }
+    @Override
+    public void unsetFrequencyThresholdError() {
+        compEConfig.unsetFrequencyThresholdError();
+    }
 
     @Override
     public void setAssociationMeasure(String associationMeasure) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        compEConfig.setAssociationMeasure(associationMeasure);
     }
     @Override
     public String getAssociationMeasure() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return compEConfig.getAssociationMeasure();
     }
     @Override
     public void addAssociationMeasureChangeListener(PropertyChangeListener listener) {
         addPropertyChangeListener(CFG.ASSOCIATIONMEASURE.getProperty(), listener);
     }
+    @Override
+    public void setAssociationMeasureError(Throwable e) {
+        compEConfig.setAssociationMeasureError(e);
+    }
+    @Override
+    public void unsetAssociationMeasureError() {
+        compEConfig.unsetAssociationMeasureError();
+    }
 
     @Override
     public void setFilteringThreshold(Float filteringThreshold) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        compEConfig.setFilteringThreshold(filteringThreshold);
     }
     @Override
     public Float getFilteringThreshold() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return compEConfig.getFilteringThreshold();
     }
     @Override
     public void addFilteringThresholdChangeListener(PropertyChangeListener listener) {
         addPropertyChangeListener(CFG.FILTERINGTLD.getProperty(), listener);
     }
+    @Override
+    public void setFilteringThresholdError(Throwable e) {
+        compEConfig.setFilteringThresholdError(e);
+    }
+    @Override
+    public void unsetFilteringThresholdError() {
+        compEConfig.unsetFilteringThresholdError();
+    }
 
     @Override
     public void setFilterRule(String filterRule) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        compEConfig.setFilterRule(filterRule);
     }
     @Override
     public String getFilterRule() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return compEConfig.getFilterRule();
     }
     @Override
     public void addFilterRuleChangeListener(PropertyChangeListener listener) {
         addPropertyChangeListener(CFG.FILTERRULE.getProperty(), listener);
     }
+    @Override
+    public void setFilterRuleError(Throwable e) {
+        compEConfig.setFilterRuleError(e);
+    }
+    @Override
+    public void unsetFilterRuleError() {
+        compEConfig.unsetFilterRuleError();
+    }
 
     @Override
     public void setKeepVerbs(Boolean keepVerbs) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        compEConfig.setKeepVerbs(keepVerbs);
     }
     @Override
     public Boolean isKeepVerbs() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return compEConfig.isKeepVerbs();
     }
     @Override
     public void addKeepVerbsChangeListener(PropertyChangeListener listener) {
         addPropertyChangeListener(CFG.KEEPVERBS.getProperty(), listener);
     }
+    @Override
+    public void setKeepVerbsError(Throwable e) {
+        compEConfig.setKeepVerbsError(e);
+    }
+    @Override
+    public void unsetKeepVerbsError() {
+        compEConfig.unsetKeepVerbsError();
+    }
 
     @Override
     public void setTSVExport(Boolean tsvExport) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        compEConfig.setTSVExport(tsvExport);
     }
     @Override
     public Boolean isTSVExport() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return compEConfig.isTSVExport();
     }
     @Override
     public void addTSVExportChangeListener(PropertyChangeListener listener) {
         addPropertyChangeListener(CFG.TSV.getProperty(), listener);
+    }
+    @Override
+    public void setTSVExportError(Throwable e) {
+        compEConfig.setTSVExportError(e);
+    }
+    @Override
+    public void unsetTSVExportError() {
+        compEConfig.unsetTSVExportError();
     }
 
 }

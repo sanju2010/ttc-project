@@ -292,13 +292,13 @@ public class ConfigPanelVariants extends JPanel {
 
         // Comboxbox as it is a limited list of choices
         cbEditDistanceClass = new JComboBox();
-        cbEditDistanceClass.addItem( new EditDistanceClassItem(
+        cbEditDistanceClass.addItem( new ClassItem(
                 "eu.project.ttc.metrics.Levenshtein",
                 "Levenshtein") );
-        cbEditDistanceClass.addItem( new EditDistanceClassItem(
+        cbEditDistanceClass.addItem( new ClassItem(
                 "eu.project.ttc.metrics.DiacriticInsensitiveLevenshtein",
                 "Diacritic insensitive Levenshtein") );
-        cbEditDistanceClass.addItem( new EditDistanceClassItem(
+        cbEditDistanceClass.addItem( new ClassItem(
                 "eu.project.ttc.metrics.LongestCommonSubsequence",
                 "Longest common subsequence") );
         cbEditDistanceClass.setPreferredSize(new Dimension(
@@ -307,7 +307,7 @@ public class ConfigPanelVariants extends JPanel {
         cbEditDistanceClass.addItemListener(new ItemListener() {
             public void itemStateChanged(ItemEvent e) {
                 if (e.getStateChange() == ItemEvent.SELECTED) {
-                    EditDistanceClassItem item = (EditDistanceClassItem) e.getItem();
+                    ClassItem item = (ClassItem) e.getItem();
                     System.out.println("Detected a edit distance class change, fire property change.");
                     firePropertyChange(IndexerBinding.CFG.EDITDISTANCECLS.getProperty(), null, item.getClassName());
                 }
@@ -403,7 +403,7 @@ public class ConfigPanelVariants extends JPanel {
         cbIgnoreDiacritics.setSelected(ignoreDiacritics);
     }
 
-    public void setIgnoreDiacriticsError(IllegalArgumentException e) {
+    public void setIgnoreDiacriticsError(Throwable e) {
         lblIgnoreDiacritics.setText("<html><b>Group graphical variants</b><br/><p style=\"color: red; font-size: small\">"
                 + e.getMessage() + "</p></html>");
     }
@@ -419,7 +419,7 @@ public class ConfigPanelVariants extends JPanel {
         cbVariantDetection.setSelected(variantDetection);
     }
 
-    public void setVariantDetectionError(IllegalArgumentException e) {
+    public void setVariantDetectionError(Throwable e) {
         lblVariantDetection.setText("<html><b>Variant detection</b><br/><p style=\"color: red; font-size: small\">"
                 + e.getMessage() + "</p></html>");
     }
@@ -433,7 +433,7 @@ public class ConfigPanelVariants extends JPanel {
 
     public void setEditDistanceClass(String className) {
         for(int i=0 ; i < cbEditDistanceClass.getItemCount() ; i++) {
-            EditDistanceClassItem item = (EditDistanceClassItem) cbEditDistanceClass.getItemAt(i);
+            ClassItem item = (ClassItem) cbEditDistanceClass.getItemAt(i);
             if ( item.getClassName().equals(className) ) {
                 if (cbEditDistanceClass.getSelectedIndex() != i) {
                     cbEditDistanceClass.setSelectedItem( item );
@@ -446,7 +446,7 @@ public class ConfigPanelVariants extends JPanel {
                 + className + "' as I do not handle this value.");
     }
 
-    public void setEditDistanceClassError(IllegalArgumentException e) {
+    public void setEditDistanceClassError(Throwable e) {
         lblEditDistanceClass.setText("<html><b>Edit distance</b><br/><p style=\"color: red; font-size: small\">"
                 + e.getMessage() + "</p></html>");
     }
@@ -455,7 +455,7 @@ public class ConfigPanelVariants extends JPanel {
     }
 
     public String getEditDistanceClass() {
-        return ((EditDistanceClassItem) cbEditDistanceClass.getSelectedItem()).getClassName();
+        return ((ClassItem) cbEditDistanceClass.getSelectedItem()).getClassName();
     }
 
     public void setEditDistanceTld(Float threshold) {
@@ -463,7 +463,7 @@ public class ConfigPanelVariants extends JPanel {
         spEditDistanceTld.setValue(threshold);
     }
 
-    public void setEditDistanceTldError(IllegalArgumentException e) {
+    public void setEditDistanceTldError(Throwable e) {
         lblEditDistanceTld.setText("<html><b>Edit distance threshold</b><br/><p style=\"color: red; font-size: small\">"
                 + e.getMessage() + "</p></html>");
     }
@@ -480,7 +480,7 @@ public class ConfigPanelVariants extends JPanel {
         spEditDistanceNgrams.setValue(size);
     }
 
-    public void setEditDistanceNgramsError(IllegalArgumentException e) {
+    public void setEditDistanceNgramsError(Throwable e) {
         lblEditDistanceNgrams.setText("<html><b>Edit distance ngrams</b><br/><p style=\"color: red; font-size: small\">"
                 + e.getMessage() + "</p></html>");
     }

@@ -396,6 +396,14 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
     public void addLanguageChangeListener(PropertyChangeListener listener) {
         addPropertyChangeListener(CFG.LANGUAGE.getProperty(), listener);
     }
+    @Override
+    public void setLanguageError(Throwable e) {
+        // TODO how to handle errors in the model ?
+    }
+    @Override
+    public void unsetLanguageError() {
+        // TODO how to handle errors in the model ?
+    }
 
     /**
      * Setter for input directory parameter value.
@@ -426,6 +434,14 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
     @Override
     public void addInputDirectoryChangeListener(PropertyChangeListener listener) {
         addPropertyChangeListener(CFG.INPUT.getProperty(), listener);
+    }
+    @Override
+    public void setInputDirectoryError(Throwable e) {
+        // TODO how to handle errors in the model ?
+    }
+    @Override
+    public void unsetInputDirectoryError() {
+        // TODO how to handle errors in the model ?
     }
 
     /**
@@ -461,6 +477,14 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
     public void addOutputDirectoryChangeListener(PropertyChangeListener listener) {
         addPropertyChangeListener(CFG.OUTPUT.getProperty(), listener);
     }
+    @Override
+    public void setOutputDirectoryError(Throwable e) {
+        // TODO how to handle errors in the model ?
+    }
+    @Override
+    public void unsetOutputDirectoryError() {
+        // TODO how to handle errors in the model ?
+    }
 
     /**
      * Setter for ignore diacritics parameter value.
@@ -476,13 +500,21 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
     }
     /** Getter for ignore diacritics property */
     @Override
-    public boolean isIgnoreDiacritics() {
+    public Boolean isIgnoreDiacritics() {
         return (Boolean) pSettings.getParameterValue(CFG.IGNOREDIACRITICS.getParameter());
     }
     /** Listener binder for ignore diacritics property */
     @Override
     public void addIgnoreDiacriticsChangeListener(PropertyChangeListener listener) {
         addPropertyChangeListener(CFG.IGNOREDIACRITICS.getProperty(), listener);
+    }
+    @Override
+    public void setIgnoreDiacriticsError(Throwable e) {
+        // TODO how to handle errors in the model ?
+    }
+    @Override
+    public void unsetIgnoreDiacriticsError() {
+        // TODO how to handle errors in the model ?
     }
 
     /**
@@ -499,13 +531,21 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
     }
     /** Getter for variant detection property */
     @Override
-    public boolean isVariantDetection() {
+    public Boolean isVariantDetection() {
         return (Boolean) pSettings.getParameterValue(CFG.VARIANTDETECTION.getParameter());
     }
     /** Listener binder for variant detection property */
     @Override
     public void addVariantDetectionChangeListener(PropertyChangeListener listener) {
         addPropertyChangeListener(CFG.VARIANTDETECTION.getProperty(), listener);
+    }
+    @Override
+    public void setVariantDetectionError(Throwable e) {
+        // TODO how to handle errors in the model ?
+    }
+    @Override
+    public void unsetVariantDetectionError() {
+        // TODO how to handle errors in the model ?
     }
 
     /**
@@ -539,6 +579,14 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
     public void addEditDistanceClassChangeListener(PropertyChangeListener listener) {
         addPropertyChangeListener(CFG.EDITDISTANCECLS.getProperty(), listener);
     }
+    @Override
+    public void setEditDistanceClassError(Throwable e) {
+        // TODO how to handle errors in the model ?
+    }
+    @Override
+    public void unsetEditDistanceClassError() {
+        // TODO how to handle errors in the model ?
+    }
 
     /**
      * Setter for edit distance threshold parameter value.
@@ -568,6 +616,14 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
     @Override
     public void addEditDistanceThresholdChangeListener(PropertyChangeListener listener) {
         addPropertyChangeListener(CFG.EDITDISTANCETLD.getProperty(), listener);
+    }
+    @Override
+    public void setEditDistanceThresholdError(Throwable e) {
+        // TODO how to handle errors in the model ?
+    }
+    @Override
+    public void unsetEditDistanceThresholdError() {
+        // TODO how to handle errors in the model ?
     }
 
     /**
@@ -599,6 +655,14 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
     public void addEditDistanceNgramsChangeListener(PropertyChangeListener listener) {
         addPropertyChangeListener(CFG.EDITDISTANCENGRAMS.getProperty(), listener);
     }
+    @Override
+    public void setEditDistanceNgramsError(Throwable e) {
+        // TODO how to handle errors in the model ?
+    }
+    @Override
+    public void unsetEditDistanceNgramsError() {
+        // TODO how to handle errors in the model ?
+    }
 
     /**
      * Setter for frequency threshold parameter value.
@@ -628,6 +692,14 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
     @Override
     public void addFrequencyThresholdChangeListener(PropertyChangeListener listener) {
         addPropertyChangeListener(CFG.FREQUENCYTLD.getProperty(), listener);
+    }
+    @Override
+    public void setFrequencyThresholdError(Throwable e) {
+        // TODO how to handle errors in the model ?
+    }
+    @Override
+    public void unsetFrequencyThresholdError() {
+        // TODO how to handle errors in the model ?
     }
 
     /**
@@ -660,6 +732,14 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
     public void addAssociationMeasureChangeListener(PropertyChangeListener listener) {
         addPropertyChangeListener(CFG.ASSOCIATIONMEASURE.getProperty(), listener);
     }
+    @Override
+    public void setAssociationMeasureError(Throwable e) {
+        // TODO how to handle errors in the model ?
+    }
+    @Override
+    public void unsetAssociationMeasureError() {
+        // TODO how to handle errors in the model ?
+    }
 
     /**
      * Setter for filtering threshold parameter value.
@@ -689,6 +769,14 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
     @Override
     public void addFilteringThresholdChangeListener(PropertyChangeListener listener) {
         addPropertyChangeListener(CFG.FILTERINGTLD.getProperty(), listener);
+    }
+    @Override
+    public void setFilteringThresholdError(Throwable e) {
+        // TODO how to handle errors in the model ?
+    }
+    @Override
+    public void unsetFilteringThresholdError() {
+        // TODO how to handle errors in the model ?
     }
 
     /**
@@ -721,6 +809,14 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
     public void addFilterRuleChangeListener(PropertyChangeListener listener) {
         addPropertyChangeListener(CFG.FILTERRULE.getProperty(), listener);
     }
+    @Override
+    public void setFilterRuleError(Throwable e) {
+        // TODO how to handle errors in the model ?
+    }
+    @Override
+    public void unsetFilterRuleError() {
+        // TODO how to handle errors in the model ?
+    }
 
     /**
      * Setter for keep verbs parameter value.
@@ -744,6 +840,14 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
     public void addKeepVerbsChangeListener(PropertyChangeListener listener) {
         addPropertyChangeListener(CFG.KEEPVERBS.getProperty(), listener);
     }
+    @Override
+    public void setKeepVerbsError(Throwable e) {
+        // TODO how to handle errors in the model ?
+    }
+    @Override
+    public void unsetKeepVerbsError() {
+        // TODO how to handle errors in the model ?
+    }
 
     /**
      * Setter for TSV export parameter value.
@@ -766,6 +870,14 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
     @Override
     public void addTSVExportChangeListener(PropertyChangeListener listener) {
         addPropertyChangeListener(CFG.TSV.getProperty(), listener);
+    }
+    @Override
+    public void setTSVExportError(Throwable e) {
+        // TODO how to handle errors in the model ?
+    }
+    @Override
+    public void unsetTSVExportError() {
+        // TODO how to handle errors in the model ?
     }
 
 }

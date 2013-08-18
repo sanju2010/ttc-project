@@ -5,12 +5,12 @@ package eu.project.ttc.tools.indexer;
  * @author grdscarabe
  * @date 17/08/13
  */
-public class EditDistanceClassItem {
+public class ClassItem {
 
     private final String className;
     private final String name;
 
-    public EditDistanceClassItem(String className, String name) {
+    public ClassItem(String className, String name) {
         this.className = className;
         this.name = name;
     }
