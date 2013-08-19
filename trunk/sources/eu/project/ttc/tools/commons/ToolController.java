@@ -56,7 +56,7 @@ public abstract class ToolController {
      */
     public void loadConfiguration() throws IOException, InvalidTermSuiteConfiguration {
         // Proxy for ToolModel#load()
-        registeredModel.load();
+        getToolModel().load();
     }
 
     /**
@@ -64,8 +64,8 @@ public abstract class ToolController {
      */
     public void validateAndSaveConfiguration() throws IOException, InvalidTermSuiteConfiguration {
         try {
-            registeredModel.validate();
-            registeredModel.save();
+            getToolModel().validate();
+            getToolModel().save();
         } catch (ResourceConfigurationException e) {
             throw new InvalidTermSuiteConfiguration("The configuration is invalid in UIMA terms.", e);
         }
@@ -75,7 +75,7 @@ public abstract class ToolController {
      * Build the analysis engine settings from the model so that the resulting settings
      * can be directly passed to the corresponding engine.
      */
-    public abstract ConfigurationParameterSettings getAESettings();
+    public abstract ConfigurationParameterSettings getAESettings() throws ResourceConfigurationException;
 
     /**
      * Compute the name of the resource corresponding to the descriptor to use

@@ -8,6 +8,7 @@ import eu.project.ttc.tools.commons.InputSource;
 import eu.project.ttc.tools.commons.ToolController;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.cas.CAS;
+import org.apache.uima.resource.ResourceConfigurationException;
 import org.apache.uima.resource.metadata.ConfigurationParameterSettings;
 
 import org.apache.commons.lang3.text.WordUtils;
@@ -207,13 +208,17 @@ public class SpotterController extends ToolController {
      * @see eu.project.ttc.tools.commons.ToolController#getAESettings()
      */
     @Override
-    public ConfigurationParameterSettings getAESettings() {
+    public ConfigurationParameterSettings getAESettings() throws ResourceConfigurationException {
+        getModel().validate();
+
         // Prepare an empty ConfigurationParameterSetting
         ConfigurationParameterSettings settings = UIMAFramework
                 .getResourceSpecifierFactory().createConfigurationParameterSettings();
+
         // Only set parameters needed by the Spotter AE
         settings.setParameterValue("Directory", getModel().getOutputDirectory());
         settings.setParameterValue("TreeTaggerHomeDirectory", getModel().getTreetaggerHome());
+
         return settings;
     }
 

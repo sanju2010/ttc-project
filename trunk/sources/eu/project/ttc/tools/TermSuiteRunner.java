@@ -31,6 +31,8 @@ import org.apache.uima.analysis_engine.metadata.AnalysisEngineMetaData;
 import org.apache.uima.cas.impl.XmiCasDeserializer;
 import org.apache.uima.examples.SourceDocumentInformation;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.resource.ResourceConfigurationException;
+import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceSpecifier;
 import org.apache.uima.resource.metadata.ConfigurationParameter;
 import org.apache.uima.resource.metadata.ConfigurationParameterDeclarations;
@@ -89,10 +91,9 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 
 	private String encoding;
 	
-	private void setAnalysisEngine() throws Exception {
+	private void setAnalysisEngine() throws ResourceInitializationException {
 		// System.out.println("Initializing '" + this.description.getAnalysisEngineMetaData().getName() + "'");
-		Runtime runtime = Runtime.getRuntime();
-		int threads = runtime.availableProcessors();
+		int threads = Runtime.getRuntime().availableProcessors();
 		this.analysisEngine = UIMAFramework.produceAnalysisEngine(this.description, threads, 0);
 		this.pool = new JCasPool(threads, this.analysisEngine);
 	}
@@ -329,7 +330,12 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
         this.input = tool.getInputSourceType();
         this.language = tool.getLanguage();
         this.encoding = tool.getEncoding();
-        setDescription(description(tool.getAEDescriptor()), tool.getAESettings());
+        try {
+            setDescription(description(tool.getAEDescriptor()), tool.getAESettings());
+        } catch (ResourceConfigurationException e) {
+            throw new InvalidTermSuiteConfiguration(
+                    "Unable to validate the configuration then unable to launch the processing.", e);
+        }
         this.data = new ArrayList<File>( tool.getInputSource().getInputFiles() );
     }
 
