@@ -408,7 +408,7 @@ public class TermSuite implements Runnable {
 	private Aligner aligner;
 	
 	private void setAligner() {
-        AlignerSettings cfg = new AlignerSettings( TermSuiteVersion.CFG_INDEXER );
+        AlignerSettings cfg = new AlignerSettings( TermSuiteVersion.CFG_ALIGNER );
 		this.aligner = new Aligner(cfg);
 		this.aligner.setParent(this);
 
