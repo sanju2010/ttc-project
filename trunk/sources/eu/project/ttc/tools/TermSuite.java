@@ -14,10 +14,12 @@ import java.io.StringWriter;
 
 import javax.swing.*;
 
+import eu.project.ttc.tools.aligner.AlignerController;
+import eu.project.ttc.tools.aligner.AlignerModel;
+import eu.project.ttc.tools.aligner.AlignerView;
 import eu.project.ttc.tools.commons.InvalidTermSuiteConfiguration;
 import eu.project.ttc.tools.commons.TermSuiteVersion;
 import eu.project.ttc.tools.commons.ToolController;
-import eu.project.ttc.tools.config.AlignerSettings;
 import eu.project.ttc.tools.indexer.IndexerController;
 import eu.project.ttc.tools.indexer.IndexerModel;
 import eu.project.ttc.tools.indexer.IndexerView;
@@ -27,9 +29,6 @@ import eu.project.ttc.tools.spotter.SpotterView;
 import eu.project.ttc.tools.various.MainToolBar;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.util.Level;
-
-import eu.project.ttc.tools.aligner.Aligner;
-import eu.project.ttc.tools.aligner.AlignerViewer;
 
 /**
  * Main class of the GUI version of TermSuite.
@@ -49,8 +48,7 @@ public class TermSuite implements Runnable {
         initConfigs();
         initSpotter();
         initIndexer();
-        this.setAligner(); // TODO
-        this.setMixer();   // TODO
+        initAligner();
 
         // Create and bind the Window
         createMainWindow(new Dimension(1000, 1000));
@@ -80,9 +78,9 @@ public class TermSuite implements Runnable {
             case 1:
                 return getIndexer();
             case 2:
-//                return getAligner();
+                return getAligner();
             default:
-                // FIXME should not happen... but for now everything but spotted ends up here!
+                // FIXME should not happen
                 return null;
         }
     }
@@ -124,7 +122,7 @@ public class TermSuite implements Runnable {
         try {
             spotter.validateAndSaveConfiguration();
             indexer.validateAndSaveConfiguration();
-            this.getAligner().getSettings().doSave(); // FIXME
+            aligner.validateAndSaveConfiguration();
             if ( showConfirmation ) {
                 JOptionPane.showMessageDialog(this.getMainWindow(),
                         "The TermSuite configuration has been successfully saved",
@@ -329,6 +327,10 @@ public class TermSuite implements Runnable {
         this.mainTabs.setTabPlacement(JTabbedPane.LEFT);
     }
 
+    public JFrame getMainWindow() {
+        return this.mainWindow;
+    }
+
     public MainToolBar getToolBar() {
         return this.toolBar;
     }
@@ -405,33 +407,36 @@ public class TermSuite implements Runnable {
 
     /*************************************************************************************************** ALIGNER TAB */
 
-	private Aligner aligner;
-	
-	private void setAligner() {
-        AlignerSettings cfg = new AlignerSettings( TermSuiteVersion.CFG_ALIGNER );
-		this.aligner = new Aligner(cfg);
-		this.aligner.setParent(this);
+    private AlignerController aligner;
 
-        //        this.mainTabs.addTab(" Aligner ", this.embed(this.getAligner().getView(), this.getMixer().getComponent()));
-	}
-	
-	public Aligner getAligner() {
-		return this.aligner;
-	}
-	
-	private AlignerViewer mixer;
-	
-	private void setMixer() {
-		this.mixer = new AlignerViewer();
-	}
-	
-	public AlignerViewer getMixer() {
-		return this.mixer;
-	}
-	
-	public JFrame getMainWindow() {
-		return this.mainWindow;
-	}
+    private void initAligner() {
+        // Main content must have been initialized
+        assert getMainTabs() != null;
+
+        // Prepare the MVC
+        AlignerModel sModel = new AlignerModel(getAlignerCfg());
+        AlignerView sView = new AlignerView();
+        this.aligner = new AlignerController(sModel, sView);
+        // Add to the tabs
+        getMainTabs().insertTab(" Aligner ", null, sView, null, 2);
+
+        // Load the persisted configuration if any
+        try {
+            aligner.loadConfiguration();
+        } catch (IOException e) {
+            // Non lethal if no configuration
+        } catch (InvalidTermSuiteConfiguration e) {
+            // Problem
+            displayException("There was a problem loading the Aligner configuration.<br/>" +
+                    "I recommend deleting the configuration file '" + aligner.getConfigurationFile() +
+                    "' if it exists. If not, that may be the first time you run the program and " +
+                    "the default configuration does not apply to you.", e);
+        }
+    }
+
+    private AlignerController getAligner() {
+        return this.aligner;
+    }
 
     /********************************************************************************************************** MAIN */
 

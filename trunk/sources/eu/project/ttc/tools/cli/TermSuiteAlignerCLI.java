@@ -23,6 +23,8 @@ import java.util.Properties;
 
 import javax.swing.SwingUtilities;
 
+import eu.project.ttc.tools.aligner.AlignerBinding;
+import eu.project.ttc.tools.aligner.AlignerModel;
 import eu.project.ttc.tools.commons.InputSource;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
@@ -33,7 +35,6 @@ import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 
 import eu.project.ttc.tools.TermSuiteRunner;
-import eu.project.ttc.tools.config.AlignerSettings;
 import org.apache.uima.util.Level;
 
 /**
@@ -51,40 +52,40 @@ public class TermSuiteAlignerCLI {
 
 	/// Parameter names
 	/** Name of the parameter that must be set to the output dir path */
-	public static final String P_OUTPUT_DIRECTORY = AlignerSettings.P_OUTPUT_DIRECTORY;
+	public static final String P_OUTPUT_DIRECTORY = AlignerBinding.PRM.OUTPUT.getParameter();
 	
 	/** Name of the parameter that must be set to the source language */
-	public static final String P_SOURCE_LANGUAGE = AlignerSettings.P_SOURCE_LANGUAGE;
+	public static final String P_SOURCE_LANGUAGE = AlignerBinding.PRM.SRCLANGUAGE.getParameter();
 	
 	/** Name of the parameter that must be set to the target language */
-	public static final String P_TARGET_LANGUAGE = AlignerSettings.P_TARGET_LANGUAGE;
+	public static final String P_TARGET_LANGUAGE = AlignerBinding.PRM.TGTLANGUAGE.getParameter();
 	
 	/** Name of the parameter that must be set to the source terminology XMI file */
-	public static final String P_SOURCE_TERMINOLOGY = AlignerSettings.P_SOURCE_TERMINOLOGY;
+	public static final String P_SOURCE_TERMINOLOGY = AlignerBinding.PRM.SRCTERMINOLOGY.getParameter();
 	
 	/** Name of the parameter that must be set to the target terminology XMI file */
-	public static final String P_TARGET_TERMINOLOGY = AlignerSettings.P_TARGET_TERMINOLOGY;
+	public static final String P_TARGET_TERMINOLOGY = AlignerBinding.PRM.TGTTERMINOLOGY.getParameter();
 	
 	/** Name of the parameter that must be set to the bilingual dictionary */
-	public static final String P_BILINGUAL_DICTIONARY = "DictionaryFile";
+	public static final String P_BILINGUAL_DICTIONARY = AlignerBinding.PRM.DICTIONARY.getParameter();
 	
 	/** Name of the parameter that must be set to the bilingual dictionary */
-	public static final String P_EVALUATION_DIRECTORY = AlignerSettings.P_EVALUATION_DIRECTORY;
+	public static final String P_EVALUATION_DIRECTORY = AlignerBinding.PRM.EVALDIR.getParameter();
 
 	/** Name of the parameter that must be set to enable the compositional method */
-	public static final String P_METHOD_COMPOSITIONAL = AlignerSettings.P_METHOD_COMPOSITIONAL;
+	public static final String P_METHOD_COMPOSITIONAL = AlignerBinding.PRM.COMPOSITIONAL.getParameter();
 
 	/** Name of the parameter that must be set to enable the distributional method */
-	public static final String P_METHOD_DISTRIBUTIONAL = AlignerSettings.P_METHOD_DISTRIBUTIONAL;
+	public static final String P_METHOD_DISTRIBUTIONAL = AlignerBinding.PRM.DISTRIBUTIONAL.getParameter();
 
 	/** Name of the parameter that must be set to enable the distributional method */
-	public static final String P_SIMILARITY_DISTANCE = AlignerSettings.P_SIMILARITY_DISTANCE;
+	public static final String P_SIMILARITY_DISTANCE = AlignerBinding.PRM.SIMILARITY.getParameter();
 
 	/** Name of the parameter that must be set to limit the number of translation candidates */
-	public static final String P_MAX_CANDIDATES = AlignerSettings.P_MAX_CANDIDATES;
+	public static final String P_MAX_CANDIDATES = AlignerBinding.PRM.MAXCANDIDATES.getParameter();
 	
 	/** Name of the parameter that must be set to the output directory */
-	public static final String P_OUTPUT_DIR = "Directory";
+	public static final String P_OUTPUT_DIR = AlignerBinding.PRM.OUTPUT.getParameter();
 	
 	/**
 	 * Application entry point

@@ -732,7 +732,7 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
     @Override
     public String getAssociationMeasure() {
         String className = (String) pSettings.getParameterValue(PRM.ASSOCIATIONMEASURE.getParameter());
-        return className==null ? "eu.project.ttc.metrics.LogLikelihood" : className;
+        return className==null ? (String) PRM.ASSOCIATIONMEASURE.getDefaultValue() : className;
     }
     /** Listener binder for association measure property */
     @Override

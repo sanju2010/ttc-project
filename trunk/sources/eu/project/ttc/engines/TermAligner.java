@@ -15,6 +15,8 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import eu.project.ttc.tools.aligner.AlignerBinding;
+import eu.project.ttc.tools.aligner.AlignerModel;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
@@ -31,7 +33,6 @@ import eu.project.ttc.metrics.SimilarityDistance;
 import eu.project.ttc.models.Context;
 import eu.project.ttc.resources.Dictionary;
 import eu.project.ttc.resources.Terminology;
-import eu.project.ttc.tools.config.AlignerSettings;
 import eu.project.ttc.tools.utils.InMemoryMWTIndex;
 import eu.project.ttc.tools.utils.PermutationTree;
 import eu.project.ttc.tools.utils.TranslationList;
@@ -82,19 +83,19 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 		try {
 
 			String name = (String) context
-					.getConfigParameterValue(AlignerSettings.P_SIMILARITY_DISTANCE);
+					.getConfigParameterValue(AlignerBinding.PRM.SIMILARITY.getParameter());
 			this.setSimilarityDistance(name);
 
 			this.setDistributional(Boolean.TRUE.equals(context
-					.getConfigParameterValue(AlignerSettings.P_METHOD_DISTRIBUTIONAL)));
+					.getConfigParameterValue(AlignerBinding.PRM.DISTRIBUTIONAL.getParameter())));
 			this.setCompositional(Boolean.TRUE.equals(context
-					.getConfigParameterValue(AlignerSettings.P_METHOD_COMPOSITIONAL)));
+					.getConfigParameterValue(AlignerBinding.PRM.COMPOSITIONAL.getParameter())));
 
 			if (sourceTerminology == null) {
 				sourceTerminology = (Terminology) context
 						.getResourceObject("SourceTerminology");
 				String path = (String) context
-						.getConfigParameterValue(AlignerSettings.P_SOURCE_TERMINOLOGY);
+						.getConfigParameterValue(AlignerBinding.PRM.SRCTERMINOLOGY.getParameter());
 				if (path != null) {
 					sourceTerminology.load(path);
 				}
@@ -104,7 +105,7 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 				targetTerminology = (Terminology) context
 						.getResourceObject("TargetTerminology");
 				String path = (String) context
-						.getConfigParameterValue(AlignerSettings.P_TARGET_TERMINOLOGY);
+						.getConfigParameterValue(AlignerBinding.PRM.TGTTERMINOLOGY.getParameter());
 				if (path != null) {
 					targetTerminology.load(path);
 				}
@@ -115,7 +116,7 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 						.getResourceObject("Dictionary");
 				this.setDictionary(dictionary);
 				String path = (String) context
-						.getConfigParameterValue("DictionaryFile");
+						.getConfigParameterValue(AlignerBinding.PRM.DICTIONARY.getParameter());
 				if (path != null) {
 					File file = new File(path);
 					dictionary.load(file.toURI());
@@ -133,7 +134,7 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 			outputFile = createOutputFile(context);
 
 			translationCandidateCutOff = (Integer) context
-					.getConfigParameterValue(AlignerSettings.P_MAX_CANDIDATES);
+					.getConfigParameterValue(AlignerBinding.PRM.MAXCANDIDATES.getParameter());
 			if (translationCandidateCutOff > 100)
 				translationCandidateCutOff = 100;
 
@@ -201,7 +202,7 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 	private File createOutputFile(UimaContext context) throws CASException {
 		return new File(
 				(String) context
-						.getConfigParameterValue(AlignerSettings.P_OUTPUT_DIRECTORY),
+						.getConfigParameterValue(AlignerBinding.PRM.OUTPUT.getParameter()),
 				sourceTerminology.getJCas().getDocumentLanguage() + "-"
 						+ targetTerminology.getJCas().getDocumentLanguage()
 						+ "-alignment.tbx");

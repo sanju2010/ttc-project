@@ -27,7 +27,7 @@ public class IndexerController extends ToolController {
 
     /**
      * Constructor.
-     * Create a SpotterController that is connected to a view and a model.
+     * Create a IndexerController that is connected to a view and a model.
      * Double binds the view and the model so that a change in the view is
      * reflected to the model, and a change in the model is reflected in
      * the view.
