@@ -195,7 +195,7 @@ public class ConfigPanelVariants extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Detected a ignore diacritics change, fire property change.");
-                firePropertyChange(IndexerBinding.CFG.IGNOREDIACRITICS.getProperty(),
+                firePropertyChange(IndexerBinding.PRM.IGNOREDIACRITICS.getProperty(),
                         !cbIgnoreDiacritics.isSelected(), cbIgnoreDiacritics.isSelected());
             }
         });
@@ -229,7 +229,7 @@ public class ConfigPanelVariants extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Detected a variant detection change, fire property change.");
-                firePropertyChange(IndexerBinding.CFG.VARIANTDETECTION.getProperty(),
+                firePropertyChange(IndexerBinding.PRM.VARIANTDETECTION.getProperty(),
                         !cbVariantDetection.isSelected(), cbVariantDetection.isSelected());
                 toggleVariantDetectionParameters(cbVariantDetection.isSelected());
             }
@@ -309,7 +309,7 @@ public class ConfigPanelVariants extends JPanel {
                 if (e.getStateChange() == ItemEvent.SELECTED) {
                     ClassItem item = (ClassItem) e.getItem();
                     System.out.println("Detected a edit distance class change, fire property change.");
-                    firePropertyChange(IndexerBinding.CFG.EDITDISTANCECLS.getProperty(), null, item.getClassName());
+                    firePropertyChange(IndexerBinding.PRM.EDITDISTANCECLS.getProperty(), null, item.getClassName());
                 }
             }
         });
@@ -344,7 +344,7 @@ public class ConfigPanelVariants extends JPanel {
             @Override
             public void stateChanged(ChangeEvent e) {
                 System.out.println("Detected a edit distance threshold change, fire property change.");
-                firePropertyChange(IndexerBinding.CFG.EDITDISTANCETLD.getProperty(), null,
+                firePropertyChange(IndexerBinding.PRM.EDITDISTANCETLD.getProperty(), null,
                         spEditDistanceTld.getValue());
             }
         });
@@ -379,7 +379,7 @@ public class ConfigPanelVariants extends JPanel {
             @Override
             public void stateChanged(ChangeEvent e) {
                 System.out.println("Detected a edit distance ngrams change, fire property change.");
-                firePropertyChange(IndexerBinding.CFG.EDITDISTANCENGRAMS.getProperty(), null,
+                firePropertyChange(IndexerBinding.PRM.EDITDISTANCENGRAMS.getProperty(), null,
                         spEditDistanceNgrams.getValue());
             }
         });

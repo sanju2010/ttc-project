@@ -3,7 +3,6 @@ package eu.project.ttc.tools.indexer;
 
 import eu.project.ttc.tools.commons.LanguageItem;
 import eu.project.ttc.tools.commons.TTCFileChooser;
-import eu.project.ttc.tools.spotter.SpotterBinding;
 
 import javax.swing.*;
 import java.awt.*;
@@ -158,7 +157,7 @@ public class ConfigPanelBasic extends JPanel {
                 if (e.getStateChange() == ItemEvent.SELECTED) {
                     LanguageItem item = (LanguageItem) e.getItem();;
                     System.out.println("Detected a language change, fire indexer.language property change.");
-                    firePropertyChange(SpotterBinding.EVT_LANGUAGE, null, item.getValue());
+                    firePropertyChange(IndexerBinding.PRM.LANGUAGE.getProperty(), null, item.getValue());
                 }
             }
         });
@@ -196,7 +195,7 @@ public class ConfigPanelBasic extends JPanel {
         fcInDirectory.addPropertyChangeListener(new PropertyChangeListener() {
             public void propertyChange(PropertyChangeEvent evt) {
                 if ("path".equals(evt.getPropertyName()))
-                    firePropertyChange(SpotterBinding.EVT_INPUT, evt.getOldValue(), evt.getNewValue());
+                    firePropertyChange(IndexerBinding.PRM.INPUT.getProperty(), evt.getOldValue(), evt.getNewValue());
             }
         });
 
@@ -232,7 +231,7 @@ public class ConfigPanelBasic extends JPanel {
         fcOutDirectory.addPropertyChangeListener(new PropertyChangeListener() {
             public void propertyChange(PropertyChangeEvent evt) {
                 if ("path".equals(evt.getPropertyName()))
-                    firePropertyChange(SpotterBinding.EVT_OUTPUT, evt.getOldValue(), evt.getNewValue());
+                    firePropertyChange(IndexerBinding.PRM.OUTPUT.getProperty(), evt.getOldValue(), evt.getNewValue());
             }
         });
 

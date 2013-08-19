@@ -73,7 +73,7 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
         // Language
         pLang = UIMAFramework
                 .getResourceSpecifierFactory().createConfigurationParameter();
-        pLang.setName(CFG.LANGUAGE.getParameter());
+        pLang.setName(PRM.LANGUAGE.getParameter());
         pLang.setType(ConfigurationParameter.TYPE_STRING);
         pLang.setMultiValued(false);
         pLang.setMandatory(true);
@@ -82,7 +82,7 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
         // Input directory
         pIDir = UIMAFramework
                 .getResourceSpecifierFactory().createConfigurationParameter();
-        pIDir.setName(CFG.INPUT.getParameter());
+        pIDir.setName(PRM.INPUT.getParameter());
         pIDir.setType(ConfigurationParameter.TYPE_STRING);
         pIDir.setMultiValued(false);
         pIDir.setMandatory(true);
@@ -90,7 +90,7 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
         // Output directory
         pODir = UIMAFramework
                 .getResourceSpecifierFactory().createConfigurationParameter();
-        pODir.setName(CFG.OUTPUT.getParameter());
+        pODir.setName(PRM.OUTPUT.getParameter());
         pODir.setType(ConfigurationParameter.TYPE_STRING);
         pODir.setMultiValued(false);
         pODir.setMandatory(true);
@@ -98,7 +98,7 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
         // Variants detection
         pVariantDetection = UIMAFramework
                 .getResourceSpecifierFactory().createConfigurationParameter();
-        pVariantDetection.setName(CFG.VARIANTDETECTION.getParameter());
+        pVariantDetection.setName(PRM.VARIANTDETECTION.getParameter());
         pVariantDetection.setType(ConfigurationParameter.TYPE_BOOLEAN);
         pVariantDetection.setMultiValued(false);
         pVariantDetection.setMandatory(true);
@@ -106,7 +106,7 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
         // Edit distance class
         pEditDistanceClass = UIMAFramework
                 .getResourceSpecifierFactory().createConfigurationParameter();
-        pEditDistanceClass.setName(CFG.EDITDISTANCECLS.getParameter());
+        pEditDistanceClass.setName(PRM.EDITDISTANCECLS.getParameter());
         pEditDistanceClass.setType(ConfigurationParameter.TYPE_STRING);
         pEditDistanceClass.setMultiValued(false);
         pEditDistanceClass.setMandatory(true);
@@ -118,7 +118,7 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
         // Edit distance threshold
         pEditDistanceThreshold = UIMAFramework
                 .getResourceSpecifierFactory().createConfigurationParameter();
-        pEditDistanceThreshold.setName(CFG.EDITDISTANCETLD.getParameter());
+        pEditDistanceThreshold.setName(PRM.EDITDISTANCETLD.getParameter());
         pEditDistanceThreshold.setType(ConfigurationParameter.TYPE_FLOAT);
         pEditDistanceThreshold.setMultiValued(false);
         pEditDistanceThreshold.setMandatory(true);
@@ -126,7 +126,7 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
         // Edit distance ngrams
         pEditDistanceNgrams = UIMAFramework
                 .getResourceSpecifierFactory().createConfigurationParameter();
-        pEditDistanceNgrams.setName(CFG.EDITDISTANCENGRAMS.getParameter());
+        pEditDistanceNgrams.setName(PRM.EDITDISTANCENGRAMS.getParameter());
         pEditDistanceNgrams.setType(ConfigurationParameter.TYPE_INTEGER);
         pEditDistanceNgrams.setMultiValued(false);
         pEditDistanceNgrams.setMandatory(true);
@@ -134,7 +134,7 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
         // Ignore diacritics
         pIgnoreDiacritics = UIMAFramework
                 .getResourceSpecifierFactory().createConfigurationParameter();
-        pIgnoreDiacritics.setName(CFG.IGNOREDIACRITICS.getParameter());
+        pIgnoreDiacritics.setName(PRM.IGNOREDIACRITICS.getParameter());
         pIgnoreDiacritics.setType(ConfigurationParameter.TYPE_BOOLEAN);
         pIgnoreDiacritics.setMultiValued(false);
         pIgnoreDiacritics.setMandatory(false);
@@ -142,7 +142,7 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
         // Frequency threshold
         pFrequencyThreshold = UIMAFramework
                 .getResourceSpecifierFactory().createConfigurationParameter();
-        pFrequencyThreshold.setName(CFG.FREQUENCYTLD.getParameter());
+        pFrequencyThreshold.setName(PRM.FREQUENCYTLD.getParameter());
         pFrequencyThreshold.setType(ConfigurationParameter.TYPE_INTEGER);
         pFrequencyThreshold.setMultiValued(false);
         pFrequencyThreshold.setMandatory(true);
@@ -150,7 +150,7 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
         // Association measure
         pAssociationMeasure = UIMAFramework
                 .getResourceSpecifierFactory().createConfigurationParameter();
-        pAssociationMeasure.setName(CFG.ASSOCIATIONMEASURE.getParameter());
+        pAssociationMeasure.setName(PRM.ASSOCIATIONMEASURE.getParameter());
         pAssociationMeasure.setType(ConfigurationParameter.TYPE_STRING);
         pAssociationMeasure.setMultiValued(false);
         pAssociationMeasure.setMandatory(true);
@@ -161,7 +161,7 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
         // Filtering rule
         pFilterRule = UIMAFramework
                 .getResourceSpecifierFactory().createConfigurationParameter();
-        pFilterRule.setName(CFG.FILTERRULE.getParameter());
+        pFilterRule.setName(PRM.FILTERRULE.getParameter());
         pFilterRule.setType(ConfigurationParameter.TYPE_STRING);
         pFilterRule.setMultiValued(false);
         pFilterRule.setMandatory(true);
@@ -177,7 +177,7 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
         // Filtering threshold
         pFilteringThreshold = UIMAFramework
                 .getResourceSpecifierFactory().createConfigurationParameter();
-        pFilteringThreshold.setName(CFG.FILTERINGTLD.getParameter());
+        pFilteringThreshold.setName(PRM.FILTERINGTLD.getParameter());
         pFilteringThreshold.setType(ConfigurationParameter.TYPE_FLOAT);
         pFilteringThreshold.setMultiValued(false);
         pFilteringThreshold.setMandatory(true);
@@ -185,7 +185,7 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
         // Keep verbs
         pKeepVerbs = UIMAFramework
                 .getResourceSpecifierFactory().createConfigurationParameter();
-        pKeepVerbs.setName(CFG.KEEPVERBS.getParameter());
+        pKeepVerbs.setName(PRM.KEEPVERBS.getParameter());
         pKeepVerbs.setType(ConfigurationParameter.TYPE_BOOLEAN);
         pKeepVerbs.setMultiValued(false);
         pKeepVerbs.setMandatory(true);
@@ -193,7 +193,7 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
         // Enable TSV
         pTSV = UIMAFramework
                 .getResourceSpecifierFactory().createConfigurationParameter();
-        pTSV.setName(CFG.TSV.getParameter());
+        pTSV.setName(PRM.TSV.getParameter());
         pTSV.setType(ConfigurationParameter.TYPE_BOOLEAN);
         pTSV.setMultiValued(false);
         pTSV.setMandatory(true);
@@ -231,7 +231,7 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
                 uimaMetadata.getConfigurationParameterSettings();
         for(NameValuePair nvp: settings.getParameterSettings()) {
             try {
-                switch ( CFG.fromParameter(nvp.getName()) ) {
+                switch ( PRM.fromParameter(nvp.getName()) ) {
                     case LANGUAGE:
                         setLanguage((String) nvp.getValue());
                         break;
@@ -257,7 +257,7 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
                         setEditDistanceNgrams((Integer) nvp.getValue());
                         break;
                     case FREQUENCYTLD:
-                        setFrequencyThreshold((Float) nvp.getValue());
+                        setFrequencyThreshold((Integer) nvp.getValue());
                         break;
                     case ASSOCIATIONMEASURE:
                         setAssociationMeasure((String) nvp.getValue());
@@ -378,7 +378,7 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
         if ( language.matches("en|fr|de|es|ru|da|lv|zh") ) {
             String oldValue = (String) pSettings.getParameterValue(pLang.getName());
             pSettings.setParameterValue(pLang.getName(), language);
-            firePropertyChange(CFG.LANGUAGE.getProperty(), oldValue, language);
+            firePropertyChange(PRM.LANGUAGE.getProperty(), oldValue, language);
         } else {
             String msg = "Language parameter value '" + language
                     + "' is invalid. No change reflected in model.";
@@ -389,12 +389,12 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
     /** Getter for language property */
     @Override
     public String getLanguage() {
-        return (String) pSettings.getParameterValue(CFG.LANGUAGE.getParameter());
+        return (String) pSettings.getParameterValue(PRM.LANGUAGE.getParameter());
     }
     /** Listener binder for language property */
     @Override
     public void addLanguageChangeListener(PropertyChangeListener listener) {
-        addPropertyChangeListener(CFG.LANGUAGE.getProperty(), listener);
+        addPropertyChangeListener(PRM.LANGUAGE.getProperty(), listener);
     }
     @Override
     public void setLanguageError(Throwable e) {
@@ -417,7 +417,7 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
         if ( input.exists() && input.isDirectory() ) {
             String oldValue = (String) pSettings.getParameterValue(pIDir.getName());
             pSettings.setParameterValue(pIDir.getName(), inputDirectory);
-            firePropertyChange(CFG.INPUT.getProperty(), oldValue, inputDirectory);
+            firePropertyChange(PRM.INPUT.getProperty(), oldValue, inputDirectory);
         } else {
             String msg = "Input directory parameter value '" + inputDirectory
                     + "' is invalid. No change reflected in model.";
@@ -428,12 +428,12 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
     /** Getter for input directory property */
     @Override
     public String getInputDirectory() {
-        return (String) pSettings.getParameterValue(CFG.INPUT.getParameter());
+        return (String) pSettings.getParameterValue(PRM.INPUT.getParameter());
     }
     /** Listener binder for input directory property */
     @Override
     public void addInputDirectoryChangeListener(PropertyChangeListener listener) {
-        addPropertyChangeListener(CFG.INPUT.getProperty(), listener);
+        addPropertyChangeListener(PRM.INPUT.getProperty(), listener);
     }
     @Override
     public void setInputDirectoryError(Throwable e) {
@@ -459,7 +459,7 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
         if ( output.exists() && output.isDirectory() ) {
             String oldValue = (String) pSettings.getParameterValue(pODir.getName());
             pSettings.setParameterValue(pODir.getName(), outputDirectory);
-            firePropertyChange(CFG.OUTPUT.getProperty(), oldValue, outputDirectory);
+            firePropertyChange(PRM.OUTPUT.getProperty(), oldValue, outputDirectory);
         } else {
             String msg = "Output directory parameter value '" + outputDirectory
                     + "' is invalid. No change reflected in model.";
@@ -470,12 +470,12 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
     /** Getter for output directory property */
     @Override
     public String getOutputDirectory() {
-        return (String) pSettings.getParameterValue(CFG.OUTPUT.getParameter());
+        return (String) pSettings.getParameterValue(PRM.OUTPUT.getParameter());
     }
     /** Listener binder for output directory property */
     @Override
     public void addOutputDirectoryChangeListener(PropertyChangeListener listener) {
-        addPropertyChangeListener(CFG.OUTPUT.getProperty(), listener);
+        addPropertyChangeListener(PRM.OUTPUT.getProperty(), listener);
     }
     @Override
     public void setOutputDirectoryError(Throwable e) {
@@ -494,19 +494,20 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
      */
     @Override
     public void setIgnoreDiacritics(boolean ignoreDiacritics) {
-        Boolean oldValue = (Boolean) pSettings.getParameterValue(CFG.IGNOREDIACRITICS.getParameter());
-        pSettings.setParameterValue(CFG.IGNOREDIACRITICS.getParameter(), ignoreDiacritics);
-        firePropertyChange(CFG.IGNOREDIACRITICS.getProperty(), oldValue, ignoreDiacritics);
+        Boolean oldValue = (Boolean) pSettings.getParameterValue(PRM.IGNOREDIACRITICS.getParameter());
+        pSettings.setParameterValue(PRM.IGNOREDIACRITICS.getParameter(), ignoreDiacritics);
+        firePropertyChange(PRM.IGNOREDIACRITICS.getProperty(), oldValue, ignoreDiacritics);
     }
     /** Getter for ignore diacritics property */
     @Override
     public Boolean isIgnoreDiacritics() {
-        return (Boolean) pSettings.getParameterValue(CFG.IGNOREDIACRITICS.getParameter());
+        Boolean isIgnore = (Boolean) pSettings.getParameterValue(PRM.IGNOREDIACRITICS.getParameter());
+        return isIgnore==null ? (Boolean) PRM.IGNOREDIACRITICS.getDefaultValue() : isIgnore;
     }
     /** Listener binder for ignore diacritics property */
     @Override
     public void addIgnoreDiacriticsChangeListener(PropertyChangeListener listener) {
-        addPropertyChangeListener(CFG.IGNOREDIACRITICS.getProperty(), listener);
+        addPropertyChangeListener(PRM.IGNOREDIACRITICS.getProperty(), listener);
     }
     @Override
     public void setIgnoreDiacriticsError(Throwable e) {
@@ -525,19 +526,20 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
      */
     @Override
     public void setVariantDetection(boolean variantDetection) {
-        Boolean oldValue = (Boolean) pSettings.getParameterValue(CFG.VARIANTDETECTION.getParameter());
-        pSettings.setParameterValue(CFG.VARIANTDETECTION.getParameter(), variantDetection);
-        firePropertyChange(CFG.VARIANTDETECTION.getProperty(), oldValue, variantDetection);
+        Boolean oldValue = (Boolean) pSettings.getParameterValue(PRM.VARIANTDETECTION.getParameter());
+        pSettings.setParameterValue(PRM.VARIANTDETECTION.getParameter(), variantDetection);
+        firePropertyChange(PRM.VARIANTDETECTION.getProperty(), oldValue, variantDetection);
     }
     /** Getter for variant detection property */
     @Override
     public Boolean isVariantDetection() {
-        return (Boolean) pSettings.getParameterValue(CFG.VARIANTDETECTION.getParameter());
+        Boolean isVariantDetection = (Boolean) pSettings.getParameterValue(PRM.VARIANTDETECTION.getParameter());
+        return isVariantDetection==null ? false : isVariantDetection;
     }
     /** Listener binder for variant detection property */
     @Override
     public void addVariantDetectionChangeListener(PropertyChangeListener listener) {
-        addPropertyChangeListener(CFG.VARIANTDETECTION.getProperty(), listener);
+        addPropertyChangeListener(PRM.VARIANTDETECTION.getProperty(), listener);
     }
     @Override
     public void setVariantDetectionError(Throwable e) {
@@ -559,9 +561,9 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
         if ( editDistanceClass.matches("eu\\.project\\.ttc\\.metrics\\.Levenshtein" +
                 "|eu\\.project\\.ttc\\.metrics\\.LongestCommonSubsequence" +
                 "|eu\\.project\\.ttc\\.metrics\\.DiacriticInsensitiveLevenshtein") ) {
-            String oldValue = (String) pSettings.getParameterValue(CFG.EDITDISTANCECLS.getParameter());
-            pSettings.setParameterValue(CFG.EDITDISTANCECLS.getParameter(), editDistanceClass);
-            firePropertyChange(CFG.EDITDISTANCECLS.getProperty(), oldValue, editDistanceClass);
+            String oldValue = (String) pSettings.getParameterValue(PRM.EDITDISTANCECLS.getParameter());
+            pSettings.setParameterValue(PRM.EDITDISTANCECLS.getParameter(), editDistanceClass);
+            firePropertyChange(PRM.EDITDISTANCECLS.getProperty(), oldValue, editDistanceClass);
         } else {
             String msg = "Edit distance class parameter value '" + editDistanceClass
                     + "' is invalid. No change reflected in model.";
@@ -572,12 +574,13 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
     /** Getter for edit distance class property */
     @Override
     public String getEditDistanceClass() {
-        return (String) pSettings.getParameterValue(CFG.EDITDISTANCECLS.getParameter());
+        String className = (String) pSettings.getParameterValue(PRM.EDITDISTANCECLS.getParameter());
+        return className==null ? (String) PRM.EDITDISTANCECLS.getDefaultValue() : className;
     }
     /** Listener binder for edit distance class property */
     @Override
     public void addEditDistanceClassChangeListener(PropertyChangeListener listener) {
-        addPropertyChangeListener(CFG.EDITDISTANCECLS.getProperty(), listener);
+        addPropertyChangeListener(PRM.EDITDISTANCECLS.getProperty(), listener);
     }
     @Override
     public void setEditDistanceClassError(Throwable e) {
@@ -597,9 +600,9 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
     @Override
     public void setEditDistanceThreshold(Float editDistanceThreshold) {
         if ( (editDistanceThreshold >= 0) && (editDistanceThreshold <= 1.0) ) {
-            Float oldValue = (Float) pSettings.getParameterValue(CFG.EDITDISTANCETLD.getParameter());
-            pSettings.setParameterValue(CFG.EDITDISTANCETLD.getParameter(), editDistanceThreshold);
-            firePropertyChange(CFG.EDITDISTANCETLD.getProperty(), oldValue, editDistanceThreshold);
+            Float oldValue = (Float) pSettings.getParameterValue(PRM.EDITDISTANCETLD.getParameter());
+            pSettings.setParameterValue(PRM.EDITDISTANCETLD.getParameter(), editDistanceThreshold);
+            firePropertyChange(PRM.EDITDISTANCETLD.getProperty(), oldValue, editDistanceThreshold);
         } else {
             String msg = "Edit distance threshold parameter value '" + editDistanceThreshold
                     + "' is invalid. No change reflected in model.";
@@ -610,12 +613,13 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
     /** Getter for edit distance threshold property */
     @Override
     public Float getEditDistanceThreshold() {
-        return (Float) pSettings.getParameterValue(CFG.EDITDISTANCETLD.getParameter());
+        Float threshold = (Float) pSettings.getParameterValue(PRM.EDITDISTANCETLD.getParameter());
+        return threshold==null ? 0f : threshold;
     }
     /** Listener binder for edit distance threshold property */
     @Override
     public void addEditDistanceThresholdChangeListener(PropertyChangeListener listener) {
-        addPropertyChangeListener(CFG.EDITDISTANCETLD.getProperty(), listener);
+        addPropertyChangeListener(PRM.EDITDISTANCETLD.getProperty(), listener);
     }
     @Override
     public void setEditDistanceThresholdError(Throwable e) {
@@ -635,9 +639,9 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
     @Override
     public void setEditDistanceNgrams(Integer editDistanceNgrams) {
         if ( editDistanceNgrams > 0 ) {
-            Integer oldValue = (Integer) pSettings.getParameterValue(CFG.EDITDISTANCENGRAMS.getParameter());
-            pSettings.setParameterValue(CFG.EDITDISTANCENGRAMS.getParameter(), editDistanceNgrams);
-            firePropertyChange(CFG.EDITDISTANCENGRAMS.getProperty(), oldValue, editDistanceNgrams);
+            Integer oldValue = (Integer) pSettings.getParameterValue(PRM.EDITDISTANCENGRAMS.getParameter());
+            pSettings.setParameterValue(PRM.EDITDISTANCENGRAMS.getParameter(), editDistanceNgrams);
+            firePropertyChange(PRM.EDITDISTANCENGRAMS.getProperty(), oldValue, editDistanceNgrams);
         } else {
             String msg = "Edit distance ngrams parameter value '" + editDistanceNgrams
                     + "' is invalid. No change reflected in model.";
@@ -648,12 +652,13 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
     /** Getter for edit distance ngrams property */
     @Override
     public Integer getEditDistanceNgrams() {
-        return (Integer) pSettings.getParameterValue(CFG.EDITDISTANCENGRAMS.getParameter());
+        Integer ngrams = (Integer) pSettings.getParameterValue(PRM.EDITDISTANCENGRAMS.getParameter());
+        return ngrams==null ? 3 : ngrams;
     }
     /** Listener binder for edit distance ngrams property */
     @Override
     public void addEditDistanceNgramsChangeListener(PropertyChangeListener listener) {
-        addPropertyChangeListener(CFG.EDITDISTANCENGRAMS.getProperty(), listener);
+        addPropertyChangeListener(PRM.EDITDISTANCENGRAMS.getProperty(), listener);
     }
     @Override
     public void setEditDistanceNgramsError(Throwable e) {
@@ -671,11 +676,11 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
      * changed in the model.
      */
     @Override
-    public void setFrequencyThreshold(Float frequencyThreshold) {
+    public void setFrequencyThreshold(Integer frequencyThreshold) {
         if ( (frequencyThreshold >= 0) && (frequencyThreshold <= 1.0) ) {
-            Float oldValue = (Float) pSettings.getParameterValue(CFG.FREQUENCYTLD.getParameter());
-            pSettings.setParameterValue(CFG.FREQUENCYTLD.getParameter(), frequencyThreshold);
-            firePropertyChange(CFG.FREQUENCYTLD.getProperty(), oldValue, frequencyThreshold);
+            Float oldValue = (Float) pSettings.getParameterValue(PRM.FREQUENCYTLD.getParameter());
+            pSettings.setParameterValue(PRM.FREQUENCYTLD.getParameter(), frequencyThreshold);
+            firePropertyChange(PRM.FREQUENCYTLD.getProperty(), oldValue, frequencyThreshold);
         } else {
             String msg = "Frequency threshold parameter value '" + frequencyThreshold
                     + "' is invalid. No change reflected in model.";
@@ -685,13 +690,14 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
     }
     /** Getter for frequency threshold property */
     @Override
-    public Float getFrequencyThreshold() {
-        return (Float) pSettings.getParameterValue(CFG.FREQUENCYTLD.getParameter());
+    public Integer getFrequencyThreshold() {
+        Integer threshold = (Integer) pSettings.getParameterValue(PRM.FREQUENCYTLD.getParameter());
+        return threshold==null ? (Integer) PRM.FREQUENCYTLD.getDefaultValue() : threshold;
     }
     /** Listener binder for frequency threshold property */
     @Override
     public void addFrequencyThresholdChangeListener(PropertyChangeListener listener) {
-        addPropertyChangeListener(CFG.FREQUENCYTLD.getProperty(), listener);
+        addPropertyChangeListener(PRM.FREQUENCYTLD.getProperty(), listener);
     }
     @Override
     public void setFrequencyThresholdError(Throwable e) {
@@ -712,9 +718,9 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
     public void setAssociationMeasure(String associationMeasure) {
         if ( associationMeasure.matches("eu\\.project\\.ttc\\.metrics\\.LogLikelihood" +
                 "|eu\\.project\\.ttc\\.metrics\\.MutualInformation") ) {
-            String oldValue = (String) pSettings.getParameterValue(CFG.ASSOCIATIONMEASURE.getParameter());
-            pSettings.setParameterValue(CFG.ASSOCIATIONMEASURE.getParameter(), associationMeasure);
-            firePropertyChange(CFG.ASSOCIATIONMEASURE.getProperty(), oldValue, associationMeasure);
+            String oldValue = (String) pSettings.getParameterValue(PRM.ASSOCIATIONMEASURE.getParameter());
+            pSettings.setParameterValue(PRM.ASSOCIATIONMEASURE.getParameter(), associationMeasure);
+            firePropertyChange(PRM.ASSOCIATIONMEASURE.getProperty(), oldValue, associationMeasure);
         } else {
             String msg = "Association measure parameter value '" + associationMeasure
                     + "' is invalid. No change reflected in model.";
@@ -725,12 +731,13 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
     /** Getter for association measure property */
     @Override
     public String getAssociationMeasure() {
-        return (String) pSettings.getParameterValue(CFG.ASSOCIATIONMEASURE.getParameter());
+        String className = (String) pSettings.getParameterValue(PRM.ASSOCIATIONMEASURE.getParameter());
+        return className==null ? "eu.project.ttc.metrics.LogLikelihood" : className;
     }
     /** Listener binder for association measure property */
     @Override
     public void addAssociationMeasureChangeListener(PropertyChangeListener listener) {
-        addPropertyChangeListener(CFG.ASSOCIATIONMEASURE.getProperty(), listener);
+        addPropertyChangeListener(PRM.ASSOCIATIONMEASURE.getProperty(), listener);
     }
     @Override
     public void setAssociationMeasureError(Throwable e) {
@@ -750,9 +757,9 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
     @Override
     public void setFilteringThreshold(Float filteringThreshold) {
         if ( filteringThreshold >= 0 ) {
-            Float oldValue = (Float) pSettings.getParameterValue(CFG.FILTERINGTLD.getParameter());
-            pSettings.setParameterValue(CFG.FILTERINGTLD.getParameter(), filteringThreshold);
-            firePropertyChange(CFG.FILTERINGTLD.getProperty(), oldValue, filteringThreshold);
+            Float oldValue = (Float) pSettings.getParameterValue(PRM.FILTERINGTLD.getParameter());
+            pSettings.setParameterValue(PRM.FILTERINGTLD.getParameter(), filteringThreshold);
+            firePropertyChange(PRM.FILTERINGTLD.getProperty(), oldValue, filteringThreshold);
         } else {
             String msg = "Filtering threshold parameter value '" + filteringThreshold
                     + "' is invalid. No change reflected in model.";
@@ -763,12 +770,13 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
     /** Getter for filtering threshold property */
     @Override
     public Float getFilteringThreshold() {
-        return (Float) pSettings.getParameterValue(CFG.FILTERINGTLD.getParameter());
+        Float threshold = (Float) pSettings.getParameterValue(PRM.FILTERINGTLD.getParameter());
+        return threshold == null ? 0.0f : threshold;
     }
     /** Listener binder for filtering threshold property */
     @Override
     public void addFilteringThresholdChangeListener(PropertyChangeListener listener) {
-        addPropertyChangeListener(CFG.FILTERINGTLD.getProperty(), listener);
+        addPropertyChangeListener(PRM.FILTERINGTLD.getProperty(), listener);
     }
     @Override
     public void setFilteringThresholdError(Throwable e) {
@@ -789,9 +797,9 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
     public void setFilterRule(String filterRule) {
         if ( filterRule.matches("None|OccurrenceThreshold|FrequencyThreshold"
                 + "|SpecificityThreshold|TopNByOccurrence|TopNByFrequency|TopNBySpecificity") ) {
-            String oldValue = (String) pSettings.getParameterValue(CFG.FILTERRULE.getParameter());
-            pSettings.setParameterValue(CFG.FILTERRULE.getParameter(), filterRule);
-            firePropertyChange(CFG.FILTERRULE.getProperty(), oldValue, filterRule);
+            String oldValue = (String) pSettings.getParameterValue(PRM.FILTERRULE.getParameter());
+            pSettings.setParameterValue(PRM.FILTERRULE.getParameter(), filterRule);
+            firePropertyChange(PRM.FILTERRULE.getProperty(), oldValue, filterRule);
         } else {
             String msg = "Filter rule parameter value '" + filterRule
                     + "' is invalid. No change reflected in model.";
@@ -802,12 +810,13 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
     /** Getter for filter rule property */
     @Override
     public String getFilterRule() {
-        return (String) pSettings.getParameterValue(CFG.FILTERRULE.getParameter());
+        String filter = (String) pSettings.getParameterValue(PRM.FILTERRULE.getParameter());
+        return filter==null ? (String) PRM.FILTERRULE.getDefaultValue() : filter;
     }
     /** Listener binder for filter rule property */
     @Override
     public void addFilterRuleChangeListener(PropertyChangeListener listener) {
-        addPropertyChangeListener(CFG.FILTERRULE.getProperty(), listener);
+        addPropertyChangeListener(PRM.FILTERRULE.getProperty(), listener);
     }
     @Override
     public void setFilterRuleError(Throwable e) {
@@ -826,19 +835,20 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
      */
     @Override
     public void setKeepVerbs(Boolean keepVerbs) {
-        Boolean oldValue = (Boolean) pSettings.getParameterValue(CFG.KEEPVERBS.getParameter());
-        pSettings.setParameterValue(CFG.KEEPVERBS.getParameter(), keepVerbs);
-        firePropertyChange(CFG.KEEPVERBS.getProperty(), oldValue, keepVerbs);
+        Boolean oldValue = (Boolean) pSettings.getParameterValue(PRM.KEEPVERBS.getParameter());
+        pSettings.setParameterValue(PRM.KEEPVERBS.getParameter(), keepVerbs);
+        firePropertyChange(PRM.KEEPVERBS.getProperty(), oldValue, keepVerbs);
     }
     /** Getter for keep verbs property */
     @Override
     public Boolean isKeepVerbs() {
-        return (Boolean) pSettings.getParameterValue(CFG.KEEPVERBS.getParameter());
+        Boolean isKeepVerbs = (Boolean) pSettings.getParameterValue(PRM.KEEPVERBS.getParameter());
+        return isKeepVerbs==null ? (Boolean) PRM.KEEPVERBS.getDefaultValue() : isKeepVerbs;
     }
     /** Listener binder for keep verbs property */
     @Override
     public void addKeepVerbsChangeListener(PropertyChangeListener listener) {
-        addPropertyChangeListener(CFG.KEEPVERBS.getProperty(), listener);
+        addPropertyChangeListener(PRM.KEEPVERBS.getProperty(), listener);
     }
     @Override
     public void setKeepVerbsError(Throwable e) {
@@ -857,19 +867,20 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
      */
     @Override
     public void setTSVExport(Boolean tsvExport) {
-        Boolean oldValue = (Boolean) pSettings.getParameterValue(CFG.TSV.getParameter());
-        pSettings.setParameterValue(CFG.TSV.getParameter(), tsvExport);
-        firePropertyChange(CFG.TSV.getProperty(), oldValue, tsvExport);
+        Boolean oldValue = (Boolean) pSettings.getParameterValue(PRM.TSV.getParameter());
+        pSettings.setParameterValue(PRM.TSV.getParameter(), tsvExport);
+        firePropertyChange(PRM.TSV.getProperty(), oldValue, tsvExport);
     }
     /** Getter for TSV export property */
     @Override
     public Boolean isTSVExport() {
-        return (Boolean) pSettings.getParameterValue(CFG.TSV.getParameter());
+        Boolean isTSV = (Boolean) pSettings.getParameterValue(PRM.TSV.getParameter());
+        return isTSV==null ? (Boolean) PRM.TSV.getDefaultValue() : isTSV;
     }
     /** Listener binder for TSV export property */
     @Override
     public void addTSVExportChangeListener(PropertyChangeListener listener) {
-        addPropertyChangeListener(CFG.TSV.getProperty(), listener);
+        addPropertyChangeListener(PRM.TSV.getProperty(), listener);
     }
     @Override
     public void setTSVExportError(Throwable e) {

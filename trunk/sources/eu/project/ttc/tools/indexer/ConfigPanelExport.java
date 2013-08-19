@@ -227,7 +227,7 @@ public class ConfigPanelExport extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Detected a TSV change, fire property change.");
-                firePropertyChange(IndexerBinding.CFG.TSV.getProperty(),
+                firePropertyChange(IndexerBinding.PRM.TSV.getProperty(),
                         !cbTSV.isSelected(), cbTSV.isSelected());
             }
         });
@@ -261,7 +261,7 @@ public class ConfigPanelExport extends JPanel {
              @Override
              public void actionPerformed(ActionEvent e) {
                  System.out.println("Detected a keep verb change, fire property change.");
-                 firePropertyChange(IndexerBinding.CFG.KEEPVERBS.getProperty(),
+                 firePropertyChange(IndexerBinding.PRM.KEEPVERBS.getProperty(),
                         cbFilterVerbs.isSelected(), !cbFilterVerbs.isSelected());
              }
          });
@@ -301,7 +301,7 @@ public class ConfigPanelExport extends JPanel {
             public void itemStateChanged(ItemEvent e) {
                 if (e.getStateChange() == ItemEvent.SELECTED) {
                     System.out.println("Detected a filter rule change, fire property change.");
-                    firePropertyChange(IndexerBinding.CFG.FILTERRULE.getProperty(), null,
+                    firePropertyChange(IndexerBinding.PRM.FILTERRULE.getProperty(), null,
                             cbFilterRule.getSelectedItem());
                     updateFilterParameters((String) cbFilterRule.getSelectedItem());
                 }
@@ -498,7 +498,7 @@ public class ConfigPanelExport extends JPanel {
             @Override
             public void stateChanged(ChangeEvent e) {
                 System.out.println("Detected a filtering threshold change, fire property change.");
-                firePropertyChange(IndexerBinding.CFG.FILTERINGTLD.getProperty(), null,
+                firePropertyChange(IndexerBinding.PRM.FILTERINGTLD.getProperty(), null,
                         spFilteringTld.getValue());
             }
         });
@@ -536,7 +536,7 @@ public class ConfigPanelExport extends JPanel {
             public void itemStateChanged(ItemEvent e) {
                 if (e.getStateChange() == ItemEvent.SELECTED) {
                     System.out.println("Detected an association measurechange, fire property change.");
-                    firePropertyChange(IndexerBinding.CFG.ASSOCIATIONMEASURE.getProperty(), null,
+                    firePropertyChange(IndexerBinding.PRM.ASSOCIATIONMEASURE.getProperty(), null,
                             cbAssociationMeasure.getSelectedItem());
                 }
             }
@@ -572,7 +572,7 @@ public class ConfigPanelExport extends JPanel {
             @Override
             public void stateChanged(ChangeEvent e) {
                 System.out.println("Detected a frequency threshold change, fire property change.");
-                firePropertyChange(IndexerBinding.CFG.FREQUENCYTLD.getProperty(), null,
+                firePropertyChange(IndexerBinding.PRM.FREQUENCYTLD.getProperty(), null,
                         spFrequencyTld.getValue());
             }
         });
@@ -645,7 +645,7 @@ public class ConfigPanelExport extends JPanel {
         return (String) cbFilterRule.getSelectedItem();
     }
 
-    public void setFrequencyThreshold(Float frequencyThreshold) {
+    public void setFrequencyThreshold(Integer frequencyThreshold) {
         // FIXME check values
         spFrequencyTld.setValue(frequencyThreshold);
     }
@@ -656,8 +656,8 @@ public class ConfigPanelExport extends JPanel {
     public void unsetFrequencyThresholdError() {
         lblFrequencyTld.setText("<html><b>"+getFrequencyThresholdLbl()+"</b></html>");
     }
-    public Float getFrequencyThreshold() {
-        return (Float) spFrequencyTld.getValue();
+    public Integer getFrequencyThreshold() {
+        return (Integer) spFrequencyTld.getValue();
     }
     private String getFrequencyThresholdLbl() {
         if( "OccurrenceThreshold".equals(getFilterRule()) ) {

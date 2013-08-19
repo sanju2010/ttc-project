@@ -128,35 +128,35 @@ public class TermSuiteIndexerCLI {
 
 			// Indexer specific options
 			options.addOption(TermSuiteCLIUtils.createOption(null,
-                    IndexerBinding.CFG.OUTPUT.getParameter(), true, "output directory",
-					TermSuiteCLIUtils.isNull(storedProps, IndexerBinding.CFG.OUTPUT.getParameter())));
-			options.addOption(null, IndexerBinding.CFG.VARIANTDETECTION.getParameter(), false,
+                    IndexerBinding.PRM.OUTPUT.getParameter(), true, "output directory",
+					TermSuiteCLIUtils.isNull(storedProps, IndexerBinding.PRM.OUTPUT.getParameter())));
+			options.addOption(null, IndexerBinding.PRM.VARIANTDETECTION.getParameter(), false,
 					"enable term gathering");
-			options.addOption(null, IndexerBinding.CFG.EDITDISTANCECLS.getParameter(), true,
+			options.addOption(null, IndexerBinding.PRM.EDITDISTANCECLS.getParameter(), true,
 					"edit distance classname");
-			options.addOption(null, IndexerBinding.CFG.EDITDISTANCETLD.getParameter(), true,
+			options.addOption(null, IndexerBinding.PRM.EDITDISTANCETLD.getParameter(), true,
 					"edit distance threshold");
-			options.addOption(null, IndexerBinding.CFG.EDITDISTANCENGRAMS.getParameter(), true,
+			options.addOption(null, IndexerBinding.PRM.EDITDISTANCENGRAMS.getParameter(), true,
 					"edit distance ngrams");
-			options.addOption(null, IndexerBinding.CFG.IGNOREDIACRITICS.getParameter(), false,
+			options.addOption(null, IndexerBinding.PRM.IGNOREDIACRITICS.getParameter(), false,
 					"ignore diacritics in multiword terms");
-			options.addOption(null, IndexerBinding.CFG.FREQUENCYTLD.getParameter(), true,
+			options.addOption(null, IndexerBinding.PRM.FREQUENCYTLD.getParameter(), true,
 					"occurence threshold");
-			options.addOption(null, IndexerBinding.CFG.ASSOCIATIONMEASURE.getParameter(), true,
+			options.addOption(null, IndexerBinding.PRM.ASSOCIATIONMEASURE.getParameter(), true,
 					"association rate class name");
-			options.addOption(null, IndexerBinding.CFG.FILTERRULE.getParameter(), true, "filter rule");
-			options.addOption(null, IndexerBinding.CFG.FILTERINGTLD.getParameter(), true,
+			options.addOption(null, IndexerBinding.PRM.FILTERRULE.getParameter(), true, "filter rule");
+			options.addOption(null, IndexerBinding.PRM.FILTERINGTLD.getParameter(), true,
 					"threshold used by the filter rule");
-			options.addOption(null, IndexerBinding.CFG.KEEPVERBS.getParameter(), false,
+			options.addOption(null, IndexerBinding.PRM.KEEPVERBS.getParameter(), false,
 					"keep verbs and in TBX output");
 
 			// Default values if necessary
 			TermSuiteCLIUtils.setToValueIfNotExists(storedProps,
-                    IndexerBinding.CFG.VARIANTDETECTION.getParameter(), "false");
+                    IndexerBinding.PRM.VARIANTDETECTION.getParameter(), "false");
 			TermSuiteCLIUtils.setToValueIfNotExists(storedProps,
-                    IndexerBinding.CFG.IGNOREDIACRITICS.getParameter(), "false");
+                    IndexerBinding.PRM.IGNOREDIACRITICS.getParameter(), "false");
 			TermSuiteCLIUtils.setToValueIfNotExists(storedProps,
-                    IndexerBinding.CFG.KEEPVERBS.getParameter(), "false");
+                    IndexerBinding.PRM.KEEPVERBS.getParameter(), "false");
 
 			try {
 				// Parse and set CL options
@@ -171,30 +171,30 @@ public class TermSuiteIndexerCLI {
 				}
 
 				// Check options that are required if other options are present
-				if (!isNoneOrNull(storedProps, IndexerBinding.CFG.FILTERRULE.getParameter())
-						&& TermSuiteCLIUtils.isNull(storedProps, IndexerBinding.CFG.FILTERINGTLD.getParameter()))
+				if (!isNoneOrNull(storedProps, IndexerBinding.PRM.FILTERRULE.getParameter())
+						&& TermSuiteCLIUtils.isNull(storedProps, IndexerBinding.PRM.FILTERINGTLD.getParameter()))
 					throw new ParseException("Missing required parameter "
-							+ IndexerBinding.CFG.FILTERINGTLD.getParameter()
+							+ IndexerBinding.PRM.FILTERINGTLD.getParameter()
 							+ " for the specified filter '"
-							+ storedProps.getProperty(IndexerBinding.CFG.FILTERRULE.getParameter()) + "'.");
+							+ storedProps.getProperty(IndexerBinding.PRM.FILTERRULE.getParameter()) + "'.");
 
-				if ("true".equals(storedProps.getProperty(IndexerBinding.CFG.VARIANTDETECTION.getParameter()))
-						&& !TermSuiteCLIUtils.isNull(storedProps, IndexerBinding.CFG.EDITDISTANCECLS.getParameter())) {
+				if ("true".equals(storedProps.getProperty(IndexerBinding.PRM.VARIANTDETECTION.getParameter()))
+						&& !TermSuiteCLIUtils.isNull(storedProps, IndexerBinding.PRM.EDITDISTANCECLS.getParameter())) {
 					
 					if (TermSuiteCLIUtils.isNull(storedProps,
-                            IndexerBinding.CFG.EDITDISTANCETLD.getParameter())) {
+                            IndexerBinding.PRM.EDITDISTANCETLD.getParameter())) {
 						throw new ParseException("Missing required parameter "
-								+ IndexerBinding.CFG.EDITDISTANCETLD.getParameter()
+								+ IndexerBinding.PRM.EDITDISTANCETLD.getParameter()
 								+ " to be used with the "
-								+ IndexerBinding.CFG.EDITDISTANCECLS.getParameter());
+								+ IndexerBinding.PRM.EDITDISTANCECLS.getParameter());
 					}
 
 					if (TermSuiteCLIUtils.isNull(storedProps,
-                            IndexerBinding.CFG.EDITDISTANCENGRAMS.getParameter())) {
+                            IndexerBinding.PRM.EDITDISTANCENGRAMS.getParameter())) {
 						throw new ParseException("Missing required parameter "
-								+ IndexerBinding.CFG.EDITDISTANCENGRAMS.getParameter()
+								+ IndexerBinding.PRM.EDITDISTANCENGRAMS.getParameter()
 								+ " to be used with the "
-								+ IndexerBinding.CFG.EDITDISTANCECLS.getParameter());
+								+ IndexerBinding.PRM.EDITDISTANCECLS.getParameter());
 					}
 				}
 					

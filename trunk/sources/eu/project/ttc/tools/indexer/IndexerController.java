@@ -2,9 +2,11 @@ package eu.project.ttc.tools.indexer;
 
 import eu.project.ttc.tools.commons.InputSource;
 import eu.project.ttc.tools.commons.ToolController;
+import eu.project.ttc.tools.spotter.ProcessingResult;
 import org.apache.commons.lang3.text.WordUtils;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.cas.CAS;
+import org.apache.uima.resource.ResourceConfigurationException;
 import org.apache.uima.resource.metadata.ConfigurationParameterSettings;
 
 import java.beans.PropertyChangeEvent;
@@ -92,6 +94,200 @@ public class IndexerController extends ToolController {
                 if (success) getView().unsetOutputDirectoryError();
             }
         });
+        // Association measure
+        getView().addAssociationMeasureChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                boolean success = true;
+                if ((getModel().getAssociationMeasure() == null) ||
+                        !getModel().getAssociationMeasure().equals(evt.getNewValue())) {
+                    try {
+                        System.out.println("Reflecting association measure change from view->" + evt.getNewValue());
+                        getModel().setAssociationMeasure((String) evt.getNewValue());
+                    } catch (IllegalArgumentException e) {
+                        success = false;
+                        getView().setAssociationMeasureError(e);
+                    }
+                } // else, no need to reflect the change (and prevent looping)
+                if (success) getView().unsetAssociationMeasureError();
+            }
+        });
+        // Edit distance class
+        getView().addEditDistanceClassChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                boolean success = true;
+                if ((getModel().getEditDistanceClass() == null) ||
+                        !getModel().getEditDistanceClass().equals(evt.getNewValue())) {
+                    try {
+                        System.out.println("Reflecting edit distance class change from view->" + evt.getNewValue());
+                        getModel().setEditDistanceClass((String) evt.getNewValue());
+                    } catch (IllegalArgumentException e) {
+                        success = false;
+                        getView().setEditDistanceClassError(e);
+                    }
+                } // else, no need to reflect the change (and prevent looping)
+                if (success) getView().unsetEditDistanceClassError();
+            }
+        });
+        // Edit distance ngrams
+        getView().addEditDistanceNgramsChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                boolean success = true;
+                if ((getModel().getEditDistanceNgrams() == null) ||
+                        !getModel().getEditDistanceNgrams().equals(evt.getNewValue())) {
+                    try {
+                        System.out.println("Reflecting edit distance ngrams change from view->" + evt.getNewValue());
+                        getModel().setEditDistanceNgrams((Integer) evt.getNewValue());
+                    } catch (IllegalArgumentException e) {
+                        success = false;
+                        getView().setEditDistanceNgramsError(e);
+                    }
+                } // else, no need to reflect the change (and prevent looping)
+                if (success) getView().unsetEditDistanceNgramsError();
+            }
+        });
+        // Edit distance threshold
+        getView().addEditDistanceThresholdChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                boolean success = true;
+                if ((getModel().getEditDistanceThreshold() == null) ||
+                        !getModel().getEditDistanceThreshold().equals(evt.getNewValue())) {
+                    try {
+                        System.out.println("Reflecting edit distance threshold change from view->" + evt.getNewValue());
+                        getModel().setEditDistanceThreshold((Float) evt.getNewValue());
+                    } catch (IllegalArgumentException e) {
+                        success = false;
+                        getView().setEditDistanceThresholdError(e);
+                    }
+                } // else, no need to reflect the change (and prevent looping)
+                if (success) getView().unsetEditDistanceThresholdError();
+            }
+        });
+        // Filtering threshold
+        getView().addFilteringThresholdChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                boolean success = true;
+                if ((getModel().getFilteringThreshold() == null) ||
+                        !getModel().getFilteringThreshold().equals(evt.getNewValue())) {
+                    try {
+                        System.out.println("Reflecting filtering threshold change from view->" + evt.getNewValue());
+                        getModel().setFilteringThreshold((Float) evt.getNewValue());
+                    } catch (IllegalArgumentException e) {
+                        success = false;
+                        getView().setFilteringThresholdError(e);
+                    }
+                } // else, no need to reflect the change (and prevent looping)
+                if (success) getView().unsetFilteringThresholdError();
+            }
+        });
+        // Filter rule
+        getView().addFilterRuleChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                boolean success = true;
+                if ((getModel().getFilterRule() == null) ||
+                        !getModel().getFilterRule().equals(evt.getNewValue())) {
+                    try {
+                        System.out.println("Reflecting filter rule change from view->" + evt.getNewValue());
+                        getModel().setFilterRule((String) evt.getNewValue());
+                    } catch (IllegalArgumentException e) {
+                        success = false;
+                        getView().setFilterRuleError(e);
+                    }
+                } // else, no need to reflect the change (and prevent looping)
+                if (success) getView().unsetFilterRuleError();
+            }
+        });
+        // Frequency threshold
+        getView().addFrequencyThresholdChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                boolean success = true;
+                if ((getModel().getFrequencyThreshold() == null) ||
+                        !getModel().getFrequencyThreshold().equals(evt.getNewValue())) {
+                    try {
+                        System.out.println("Reflecting frequency threshold change from view->" + evt.getNewValue());
+                        getModel().setFrequencyThreshold((Integer) evt.getNewValue());
+                    } catch (IllegalArgumentException e) {
+                        success = false;
+                        getView().setFrequencyThresholdError(e);
+                    }
+                } // else, no need to reflect the change (and prevent looping)
+                if (success) getView().unsetFrequencyThresholdError();
+            }
+        });
+        // Ignore diacritics
+        getView().addIgnoreDiacriticsChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                boolean success = true;
+                if (getModel().isIgnoreDiacritics() == evt.getNewValue()) {
+                    try {
+                        System.out.println("Reflecting ignore diacritics change from view->" + evt.getNewValue());
+                        getModel().setIgnoreDiacritics((Boolean) evt.getNewValue());
+                    } catch (IllegalArgumentException e) {
+                        success = false;
+                        getView().setIgnoreDiacriticsError(e);
+                    }
+                } // else, no need to reflect the change (and prevent looping)
+                if (success) getView().unsetIgnoreDiacriticsError();
+            }
+        });
+        // Keep verbs
+        getView().addKeepVerbsChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                boolean success = true;
+                if (getModel().isKeepVerbs() == evt.getNewValue()) {
+                    try {
+                        System.out.println("Reflecting keep verbs change from view->" + evt.getNewValue());
+                        getModel().setKeepVerbs((Boolean) evt.getNewValue());
+                    } catch (IllegalArgumentException e) {
+                        success = false;
+                        getView().setKeepVerbsError(e);
+                    }
+                } // else, no need to reflect the change (and prevent looping)
+                if (success) getView().unsetKeepVerbsError();
+            }
+        });
+        // TSV export
+        getView().addTSVExportChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                boolean success = true;
+                if (getModel().isTSVExport() == evt.getNewValue()) {
+                    try {
+                        System.out.println("Reflecting TSV export change from view->" + evt.getNewValue());
+                        getModel().setTSVExport((Boolean) evt.getNewValue());
+                    } catch (IllegalArgumentException e) {
+                        success = false;
+                        getView().setTSVExportError(e);
+                    }
+                } // else, no need to reflect the change (and prevent looping)
+                if (success) getView().unsetTSVExportError();
+            }
+        });
+        // Variant detection
+        getView().addVariantDetectionChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                boolean success = true;
+                if (getModel().isVariantDetection() == evt.getNewValue()) {
+                    try {
+                        System.out.println("Reflecting variant detection change from view->" + evt.getNewValue());
+                        getModel().setVariantDetection((Boolean) evt.getNewValue());
+                    } catch (IllegalArgumentException e) {
+                        success = false;
+                        getView().setVariantDetectionError(e);
+                    }
+                } // else, no need to reflect the change (and prevent looping)
+                if (success) getView().unsetVariantDetectionError();
+            }
+        });
     }
 
     /**
@@ -129,6 +325,123 @@ public class IndexerController extends ToolController {
                 } // else, no need to reflect the change (and prevent looping)
             }
         });
+        // Association measure
+        getModel().addAssociationMeasureChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                if ( (getView().getAssociationMeasure()==null) ||
+                        ! getView().getAssociationMeasure().equals(evt.getNewValue()) ) {
+                    System.out.println("Reflecting association measure change from model->" + evt.getNewValue());
+                    getView().setAssociationMeasure((String) evt.getNewValue());
+                } // else, no need to reflect the change (and prevent looping)
+            }
+        });
+        // Edit distance class
+        getModel().addEditDistanceClassChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                if ( (getView().getEditDistanceClass()==null) ||
+                        ! getView().getEditDistanceClass().equals(evt.getNewValue()) ) {
+                    System.out.println("Reflecting edit distance class change from model->" + evt.getNewValue());
+                    getView().setEditDistanceClass((String) evt.getNewValue());
+                } // else, no need to reflect the change (and prevent looping)
+            }
+        });
+        // Edit distance ngrams
+        getModel().addEditDistanceNgramsChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                if ( (getView().getEditDistanceNgrams()==null) ||
+                        ! getView().getEditDistanceNgrams().equals(evt.getNewValue()) ) {
+                    System.out.println("Reflecting edit distance ngrams change from model->" + evt.getNewValue());
+                    getView().setEditDistanceNgrams((Integer) evt.getNewValue());
+                } // else, no need to reflect the change (and prevent looping)
+            }
+        });
+        // Edit distance threshold
+        getModel().addEditDistanceThresholdChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                if ( (getView().getEditDistanceThreshold()==null) ||
+                        ! getView().getEditDistanceThreshold().equals(evt.getNewValue()) ) {
+                    System.out.println("Reflecting edit distance threshold change from model->" + evt.getNewValue());
+                    getView().setEditDistanceThreshold((Float) evt.getNewValue());
+                } // else, no need to reflect the change (and prevent looping)
+            }
+        });
+        // Filtering threshold
+        getModel().addFilteringThresholdChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                if ( (getView().getFilteringThreshold()==null) ||
+                        ! getView().getFilteringThreshold().equals(evt.getNewValue()) ) {
+                    System.out.println("Reflecting filtering threshold change from model->" + evt.getNewValue());
+                    getView().setFilteringThreshold((Float) evt.getNewValue());
+                } // else, no need to reflect the change (and prevent looping)
+            }
+        });
+        // Filter rule
+        getModel().addFilterRuleChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                if ( (getView().getFilterRule()==null) ||
+                        ! getView().getFilterRule().equals(evt.getNewValue()) ) {
+                    System.out.println("Reflecting filter rule change from model->" + evt.getNewValue());
+                    getView().setFilterRule((String) evt.getNewValue());
+                } // else, no need to reflect the change (and prevent looping)
+            }
+        });
+        // Frequency threshold
+        getModel().addFrequencyThresholdChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                if ( (getView().getFrequencyThreshold()==null) ||
+                        ! getView().getFrequencyThreshold().equals(evt.getNewValue()) ) {
+                    System.out.println("Reflecting frequency threshold change from model->" + evt.getNewValue());
+                    getView().setFrequencyThreshold((Integer) evt.getNewValue());
+                } // else, no need to reflect the change (and prevent looping)
+            }
+        });
+        // Ignore diacritics
+        getModel().addIgnoreDiacriticsChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                if ( getView().isIgnoreDiacritics() == evt.getNewValue() ) {
+                    System.out.println("Reflecting ignore diacritics change from model->" + evt.getNewValue());
+                    getView().setIgnoreDiacritics((Boolean) evt.getNewValue());
+                } // else, no need to reflect the change (and prevent looping)
+            }
+        });
+        // Keep verbs
+        getModel().addKeepVerbsChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                if ( getView().isKeepVerbs() == evt.getNewValue() ) {
+                    System.out.println("Reflecting keep verbs change from model->" + evt.getNewValue());
+                    getView().setKeepVerbs((Boolean) evt.getNewValue());
+                } // else, no need to reflect the change (and prevent looping)
+            }
+        });
+        // TSV export
+        getModel().addTSVExportChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                if ( getView().isTSVExport() == evt.getNewValue() ) {
+                    System.out.println("Reflecting TSV export change from model->" + evt.getNewValue());
+                    getView().setTSVExport((Boolean) evt.getNewValue());
+                } // else, no need to reflect the change (and prevent looping)
+            }
+        });
+        // Variant detection
+        getModel().addVariantDetectionChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                if ( getView().isVariantDetection() == evt.getNewValue() ) {
+                    System.out.println("Reflecting variant detection change from model->" + evt.getNewValue());
+                    getView().setVariantDetection((Boolean) evt.getNewValue());
+                } // else, no need to reflect the change (and prevent looping)
+            }
+        });
     }
 
     /** Getter to the model with appropriate casting */
@@ -157,8 +470,7 @@ public class IndexerController extends ToolController {
      */
     @Override
     public void processingCallback(CAS cas) throws Exception {
-        // FIXME
-        // this.getTool().getMainApp().getBanker().doLoad(cas.getJCas());
+        getView().addCasToBanker(cas.getJCas());
     }
 
     /**
@@ -178,61 +490,52 @@ public class IndexerController extends ToolController {
      * @see eu.project.ttc.tools.commons.ToolController#getAESettings()
      */
     @Override
-    public ConfigurationParameterSettings getAESettings() {
+    public ConfigurationParameterSettings getAESettings() throws ResourceConfigurationException {
+        getModel().validate();
+
         // Prepare an empty ConfigurationParameterSetting
         ConfigurationParameterSettings settings = UIMAFramework
                 .getResourceSpecifierFactory().createConfigurationParameterSettings();
-        // Only set parameters needed by the Spotter AE
-        // TODO
-//
-//		ConfigurationParameterSettings parameters = indexer.getSettings().getMetaData().getConfigurationParameterSettings();
-//		//ConfigurationParameterSettings advancedParameters = indexer.getSettings().getMetaData().getConfigurationParameterSettings();
-//		String code = (String) parameters.getParameterValue("Language");
-//
-//
-//		ConfigurationParameterSettings settings = UIMAFramework.getResourceSpecifierFactory().createConfigurationParameterSettings();
-//        settings.setParameterValue("Language", code);
-//        settings.setParameterValue("Directory", parameters.getParameterValue("OutputDirectory"));
-//		settings.setParameterValue("Action", "drop");
-//
-//
-////		// TBX settings
-////		ConfigurationParameterSettings tbxParameters = indexer.getTBXSettings().getMetaData().getConfigurationParameterSettings();
-//		settings.setParameterValue(IndexerModel.P_KEEP_VERBS,
-//                Boolean.TRUE.equals(parameters.getParameterValue(IndexerModel.P_KEEP_VERBS)));
-//		settings.setParameterValue(IndexerModel.P_FILTER_RULE,
-//                parameters.getParameterValue(IndexerModel.P_FILTER_RULE));
-//		Object threshold = parameters.getParameterValue(IndexerModel.P_FILTERING_THRESHOLD);
-//		settings.setParameterValue(IndexerModel.P_FILTERING_THRESHOLD, threshold == null ? 0.0 : threshold);
-//		settings.setParameterValue(IndexerModel.P_ENABLE_TSV,
-//				Boolean.TRUE.equals(parameters.getParameterValue(IndexerModel.P_ENABLE_TSV)));
-//
-//        // settings.setParameterValue("File", (String) parameters.getParameterValue("TerminologyFile"));
-//        // settings.setParameterValue("MultiWordPatternRuleFile", (String) parameters.getParameterValue("MultiWordPatternRuleFile"));
-//        // settings.setParameterValue("TermVariationRuleFile", (String) parameters.getParameterValue("TermVariationRuleFile"));
-//        // settings.setParameterValue("NeoclassicalElementFile", (String) parameters.getParameterValue("NeoclassicalElementFile"));
-//
-//
-//		// Context vector settings
-//		settings.setParameterValue(IndexerModel.P_FREQUENCY_THRESHOLD,
-//                parameters.getParameterValue(IndexerModel.P_FREQUENCY_THRESHOLD));
-//        settings.setParameterValue("AssociationRateClassName",
-//                parameters.getParameterValue(IndexerModel.P_ASSOCIATION_MEASURE));
-//
-//        // Conflation parameters
-//        settings.setParameterValue("EnableTermGathering",
-//                Boolean.TRUE.equals(parameters.getParameterValue(IndexerModel.P_TERM_VARIANT_DETECTION)));
-//        settings.setParameterValue(IndexerModel.P_EDIT_DISTANCE_CLASS,
-//                parameters.getParameterValue(IndexerModel.P_EDIT_DISTANCE_CLASS));
-//        settings.setParameterValue(IndexerModel.P_EDIT_DISTANCE_THRESHOLD,
-//                parameters.getParameterValue(IndexerModel.P_EDIT_DISTANCE_THRESHOLD));
-//        settings.setParameterValue(IndexerModel.P_EDIT_DISTANCE_NGRAMS,
-//                parameters.getParameterValue(IndexerModel.P_EDIT_DISTANCE_NGRAMS));
-//
-//        // Addendum Sebastian Peña
-//        settings.setParameterValue(IndexerModel.P_IGNORE_DIACRITICS,
-//        		Boolean.valueOf(Boolean.TRUE.equals(parameters.getParameterValue(IndexerModel.P_IGNORE_DIACRITICS))));
-//
+
+        // Common parameters settings
+        settings.setParameterValue("Language", getModel().getLanguage());
+        settings.setParameterValue("Directory", getModel().getOutputDirectory());
+		settings.setParameterValue("Action", "drop"); // What ?
+
+		// TBX settings
+		settings.setParameterValue(IndexerBinding.PRM.KEEPVERBS.getParameter(),
+                getModel().isKeepVerbs());
+		settings.setParameterValue(IndexerBinding.PRM.FILTERRULE.getParameter(),
+                getModel().getFilterRule());
+		settings.setParameterValue(IndexerBinding.PRM.FILTERINGTLD.getParameter(),
+                getModel().getFilteringThreshold());
+		settings.setParameterValue(IndexerBinding.PRM.TSV.getParameter(),
+                getModel().isTSVExport());
+
+        // Context vector settings
+        settings.setParameterValue(IndexerBinding.PRM.FREQUENCYTLD.getParameter(),
+                getModel().getFrequencyThreshold());
+        settings.setParameterValue(IndexerBinding.PRM.ASSOCIATIONMEASURE.getParameter(),
+                getModel().getAssociationMeasure());
+
+        // Conflation settings
+        settings.setParameterValue(IndexerBinding.PRM.VARIANTDETECTION.getParameter(),
+                getModel().isVariantDetection());
+        settings.setParameterValue(IndexerBinding.PRM.EDITDISTANCECLS.getParameter(),
+                getModel().getEditDistanceClass());
+        settings.setParameterValue(IndexerBinding.PRM.EDITDISTANCETLD.getParameter(),
+                getModel().getEditDistanceThreshold());
+        settings.setParameterValue(IndexerBinding.PRM.EDITDISTANCENGRAMS.getParameter(),
+                getModel().getEditDistanceNgrams());
+        settings.setParameterValue(IndexerBinding.PRM.IGNOREDIACRITICS.getParameter(),
+                getModel().isIgnoreDiacritics());
+
+        // FIXME Advanced settings
+        // settings.setParameterValue("File", (String) parameters.getParameterValue("TerminologyFile"));
+        // settings.setParameterValue("MultiWordPatternRuleFile", (String) parameters.getParameterValue("MultiWordPatternRuleFile"));
+        // settings.setParameterValue("TermVariationRuleFile", (String) parameters.getParameterValue("TermVariationRuleFile"));
+        // settings.setParameterValue("NeoclassicalElementFile", (String) parameters.getParameterValue("NeoclassicalElementFile"));
+
         return settings;
     }
 

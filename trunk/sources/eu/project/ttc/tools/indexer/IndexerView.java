@@ -2,6 +2,7 @@
 package eu.project.ttc.tools.indexer;
 
 import eu.project.ttc.tools.commons.ToolView;
+import org.apache.uima.jcas.JCas;
 
 import javax.swing.*;
 import java.awt.*;
@@ -35,8 +36,6 @@ public class IndexerView extends JTabbedPane implements ToolView, IndexerBinding
      *     <li>the result panel, responsible for exposing the results
      *     of the processing (this one or another) to the user.</li>
      * </ul>
-     *
-     * Most
      */
     public IndexerView() {
         super(JTabbedPane.TOP);
@@ -105,19 +104,21 @@ public class IndexerView extends JTabbedPane implements ToolView, IndexerBinding
         configGUI.add(configTabs);
     }
 
+    public void addCasToBanker(JCas jCas) {
+        compResults.addCasToBanker(jCas);
+    }
+
     //////////////////////////////////////////////////////// TOOLVIEW
 
     @Override
     public void runStarts() {
-        // TODO
-        // compResults.getResultModel().clear();
-        // compResults.setEnabled(false);
+        compResults.clearBanker();
+        compResults.setEnabled(false);
     }
 
     @Override
     public void runEnds() {
-        // TODO
-        // compResults.setEnabled(true);
+        compResults.setEnabled(true);
     }
 
     //////////////////////////////////////////////////////// INDEXER BINDINGS
@@ -140,7 +141,7 @@ public class IndexerView extends JTabbedPane implements ToolView, IndexerBinding
     }
     @Override
     public void addLanguageChangeListener(PropertyChangeListener listener) {
-        addPropertyChangeListener(CFG.LANGUAGE.getProperty(), listener);
+        addPropertyChangeListener(PRM.LANGUAGE.getProperty(), listener);
     }
 
     @Override
@@ -161,7 +162,7 @@ public class IndexerView extends JTabbedPane implements ToolView, IndexerBinding
     }
     @Override
     public void addInputDirectoryChangeListener(PropertyChangeListener listener) {
-        addPropertyChangeListener(CFG.INPUT.getProperty(), listener);
+        addPropertyChangeListener(PRM.INPUT.getProperty(), listener);
     }
 
     @Override
@@ -182,7 +183,7 @@ public class IndexerView extends JTabbedPane implements ToolView, IndexerBinding
     }
     @Override
     public void addOutputDirectoryChangeListener(PropertyChangeListener listener) {
-        addPropertyChangeListener(CFG.OUTPUT.getProperty(), listener);
+        addPropertyChangeListener(PRM.OUTPUT.getProperty(), listener);
     }
 
     @Override
@@ -195,7 +196,7 @@ public class IndexerView extends JTabbedPane implements ToolView, IndexerBinding
     }
     @Override
     public void addIgnoreDiacriticsChangeListener(PropertyChangeListener listener) {
-        addPropertyChangeListener(CFG.IGNOREDIACRITICS.getProperty(), listener);
+        addPropertyChangeListener(PRM.IGNOREDIACRITICS.getProperty(), listener);
     }
     @Override
     public void setIgnoreDiacriticsError(Throwable e) {
@@ -216,7 +217,7 @@ public class IndexerView extends JTabbedPane implements ToolView, IndexerBinding
     }
     @Override
     public void addVariantDetectionChangeListener(PropertyChangeListener listener) {
-        addPropertyChangeListener(CFG.VARIANTDETECTION.getProperty(), listener);
+        addPropertyChangeListener(PRM.VARIANTDETECTION.getProperty(), listener);
     }
     @Override
     public void setVariantDetectionError(Throwable e) {
@@ -237,7 +238,7 @@ public class IndexerView extends JTabbedPane implements ToolView, IndexerBinding
     }
     @Override
     public void addEditDistanceClassChangeListener(PropertyChangeListener listener) {
-        addPropertyChangeListener(CFG.EDITDISTANCECLS.getProperty(), listener);
+        addPropertyChangeListener(PRM.EDITDISTANCECLS.getProperty(), listener);
     }
     @Override
     public void setEditDistanceClassError(Throwable e) {
@@ -258,7 +259,7 @@ public class IndexerView extends JTabbedPane implements ToolView, IndexerBinding
     }
     @Override
     public void addEditDistanceThresholdChangeListener(PropertyChangeListener listener) {
-        addPropertyChangeListener(CFG.EDITDISTANCETLD.getProperty(), listener);
+        addPropertyChangeListener(PRM.EDITDISTANCETLD.getProperty(), listener);
     }
     @Override
     public void setEditDistanceThresholdError(Throwable e) {
@@ -279,7 +280,7 @@ public class IndexerView extends JTabbedPane implements ToolView, IndexerBinding
     }
     @Override
     public void addEditDistanceNgramsChangeListener(PropertyChangeListener listener) {
-        addPropertyChangeListener(CFG.EDITDISTANCENGRAMS.getProperty(), listener);
+        addPropertyChangeListener(PRM.EDITDISTANCENGRAMS.getProperty(), listener);
     }
     @Override
     public void setEditDistanceNgramsError(Throwable e) {
@@ -291,16 +292,16 @@ public class IndexerView extends JTabbedPane implements ToolView, IndexerBinding
     }
 
     @Override
-    public void setFrequencyThreshold(Float frequencyThreshold) {
+    public void setFrequencyThreshold(Integer frequencyThreshold) {
         compEConfig.setFrequencyThreshold(frequencyThreshold);
     }
     @Override
-    public Float getFrequencyThreshold() {
+    public Integer getFrequencyThreshold() {
         return compEConfig.getFrequencyThreshold();
     }
     @Override
     public void addFrequencyThresholdChangeListener(PropertyChangeListener listener) {
-        addPropertyChangeListener(CFG.FREQUENCYTLD.getProperty(), listener);
+        addPropertyChangeListener(PRM.FREQUENCYTLD.getProperty(), listener);
     }
     @Override
     public void setFrequencyThresholdError(Throwable e) {
@@ -321,7 +322,7 @@ public class IndexerView extends JTabbedPane implements ToolView, IndexerBinding
     }
     @Override
     public void addAssociationMeasureChangeListener(PropertyChangeListener listener) {
-        addPropertyChangeListener(CFG.ASSOCIATIONMEASURE.getProperty(), listener);
+        addPropertyChangeListener(PRM.ASSOCIATIONMEASURE.getProperty(), listener);
     }
     @Override
     public void setAssociationMeasureError(Throwable e) {
@@ -342,7 +343,7 @@ public class IndexerView extends JTabbedPane implements ToolView, IndexerBinding
     }
     @Override
     public void addFilteringThresholdChangeListener(PropertyChangeListener listener) {
-        addPropertyChangeListener(CFG.FILTERINGTLD.getProperty(), listener);
+        addPropertyChangeListener(PRM.FILTERINGTLD.getProperty(), listener);
     }
     @Override
     public void setFilteringThresholdError(Throwable e) {
@@ -363,7 +364,7 @@ public class IndexerView extends JTabbedPane implements ToolView, IndexerBinding
     }
     @Override
     public void addFilterRuleChangeListener(PropertyChangeListener listener) {
-        addPropertyChangeListener(CFG.FILTERRULE.getProperty(), listener);
+        addPropertyChangeListener(PRM.FILTERRULE.getProperty(), listener);
     }
     @Override
     public void setFilterRuleError(Throwable e) {
@@ -384,7 +385,7 @@ public class IndexerView extends JTabbedPane implements ToolView, IndexerBinding
     }
     @Override
     public void addKeepVerbsChangeListener(PropertyChangeListener listener) {
-        addPropertyChangeListener(CFG.KEEPVERBS.getProperty(), listener);
+        addPropertyChangeListener(PRM.KEEPVERBS.getProperty(), listener);
     }
     @Override
     public void setKeepVerbsError(Throwable e) {
@@ -405,7 +406,7 @@ public class IndexerView extends JTabbedPane implements ToolView, IndexerBinding
     }
     @Override
     public void addTSVExportChangeListener(PropertyChangeListener listener) {
-        addPropertyChangeListener(CFG.TSV.getProperty(), listener);
+        addPropertyChangeListener(PRM.TSV.getProperty(), listener);
     }
     @Override
     public void setTSVExportError(Throwable e) {
@@ -415,5 +416,4 @@ public class IndexerView extends JTabbedPane implements ToolView, IndexerBinding
     public void unsetTSVExportError() {
         compEConfig.unsetTSVExportError();
     }
-
 }

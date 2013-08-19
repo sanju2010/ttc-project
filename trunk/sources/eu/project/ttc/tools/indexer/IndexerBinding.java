@@ -16,42 +16,44 @@ public interface IndexerBinding {
     public final static String EVT_PREFIX = "indexer.";
 
     /** Enum of all the properties handled by the Indexer models and views */
-    public static enum CFG {
+    public static enum PRM {
         /** Language parameter */
-        LANGUAGE            ("Language", "indexer.language"),
+        LANGUAGE            ("Language", "indexer.language", "en"),
         /** Input directory parameter */
-        INPUT               ("InputDirectory", "indexer.inputdirectory"),
+        INPUT               ("InputDirectory", "indexer.inputdirectory", null),
         /** Output directory parameter */
-        OUTPUT              ("OutputDirectory", "indexer.outputdirectory"),
+        OUTPUT              ("OutputDirectory", "indexer.outputdirectory", null),
         /** Ignore diacritics parameter */
-        IGNOREDIACRITICS    ("IgnoreDiacriticsInMultiwordTerms", "indexer.ignorediacritics"),
+        IGNOREDIACRITICS    ("IgnoreDiacriticsInMultiwordTerms", "indexer.ignorediacritics", true),
         /** Variant detection parameter */
-        VARIANTDETECTION    ("VariantDetection", "indexer.variantdetection"),
+        VARIANTDETECTION    ("EnableTermGathering", "indexer.variantdetection", true),
         /** Edit distance class parameter */
-        EDITDISTANCECLS     ("EditDistanceClassName", "indexer.editdistanceclass"),
+        EDITDISTANCECLS     ("EditDistanceClassName", "indexer.editdistanceclass", "eu.project.ttc.metrics.Levenshtein"),
         /** Edit distance threshold parameter */
-        EDITDISTANCETLD     ("EditDistanceThreshold", "indexer.editdistancethreshold"),
+        EDITDISTANCETLD     ("EditDistanceThreshold", "indexer.editdistancethreshold", 0f),
         /** Edit distance ngrams parameter */
-        EDITDISTANCENGRAMS  ("EditDistanceNgrams", "indexer.editdistancengrams"),
+        EDITDISTANCENGRAMS  ("EditDistanceNgrams", "indexer.editdistancengrams", 3),
         /** Frequency threshold parameter */
-        FREQUENCYTLD        ("OccurrenceThreshold", "indexer.frequencythreshold"),
+        FREQUENCYTLD        ("OccurrenceThreshold", "indexer.frequencythreshold", 10),
         /** Association measure parameter */
-        ASSOCIATIONMEASURE  ("AssociationMeasure", "indexer.associationmeasure"),
+        ASSOCIATIONMEASURE  ("AssociationRateClassName", "indexer.associationmeasure", "eu.project.ttc.metrics.LogLikelihood"),
         /** Filtering threshold parameter */
-        FILTERINGTLD        ("FilterRuleThreshold", "indexer.filteringthreshold"),
+        FILTERINGTLD        ("FilterRuleThreshold", "indexer.filteringthreshold", 1),
         /** Filter rule parameter */
-        FILTERRULE          ("FilterRule", "indexer.filterrule"),
+        FILTERRULE          ("FilterRule", "indexer.filterrule", "None"),
         /** Keep verbs parameter */
-        KEEPVERBS           ("KeepVerbsAndOthers", "indexer.keepverbs"),
+        KEEPVERBS           ("KeepVerbsAndOthers", "indexer.keepverbs", false),
         /** TSV export parameter */
-        TSV                 ("EnableTsvOutput", "indexer.tsv");
+        TSV                 ("EnableTsvOutput", "indexer.tsv", false);
 
         private final String property;
         private final String parameter;
+        private final Object defaultValue;
 
-        CFG(String uimaParameter, String property) {
+        PRM(String uimaParameter, String property, Object defaultValue) {
             this.parameter = uimaParameter;
             this.property = property;
+            this.defaultValue = defaultValue;
         }
 
         public String getProperty() {
@@ -62,17 +64,21 @@ public interface IndexerBinding {
             return this.parameter;
         }
 
+        public Object getDefaultValue() {
+            return defaultValue;
+        }
+
         /**
-         * Get a particular CFG from a parameter name.
+         * Get a particular PRM from a parameter name.
          *
          * @param parameter
-         *      name of the parameter we want the corresponding CFG of
+         *      name of the parameter we want the corresponding PRM of
          * @return
-         *      either the CFG if found, null otherwise
+         *      either the PRM if found, null otherwise
          */
-        public static CFG fromParameter(String parameter) {
+        public static PRM fromParameter(String parameter) {
             if (parameter != null) {
-                for (CFG c : CFG.values()) {
+                for (PRM c : PRM.values()) {
                     if (parameter.equals(c.getParameter())) {
                         return c;
                     }
@@ -320,12 +326,12 @@ public interface IndexerBinding {
      * Setter for the frequency threshold parameter value.
      * @param frequencyThreshold    threshold for the frequency filtering
      */
-    void setFrequencyThreshold(Float frequencyThreshold);
+    void setFrequencyThreshold(Integer frequencyThreshold);
 
     /**
      * Accessor to the frequency threshold parameter value.
      */
-    Float getFrequencyThreshold();
+    Integer getFrequencyThreshold();
 
     /**
      * Listener to a change regarding the frequency threshold parameter.

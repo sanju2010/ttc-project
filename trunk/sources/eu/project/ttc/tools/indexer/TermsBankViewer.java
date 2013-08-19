@@ -1,8 +1,6 @@
 package eu.project.ttc.tools.indexer;
 
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -13,9 +11,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
-import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -38,71 +33,25 @@ import eu.project.ttc.types.SingleWordTermAnnotation;
 import eu.project.ttc.types.TermAnnotation;
 import eu.project.ttc.types.TermComponentAnnotation;
 
-public class TermsBankViewer {
-
-	private Dimension getDimension() {
-		return new Dimension(600, 400);
-	}
+public class TermsBankViewer extends JTree {
 
 	private DefaultMutableTreeNode root;
-
-	private void setRoot() {
-		this.root = new DefaultMutableTreeNode("Terminology");
-	}
 
 	private DefaultMutableTreeNode getRoot() {
 		return this.root;
 	}
 
-	private DefaultTreeModel model;
-
-	private void setModel() {
-		this.model = new DefaultTreeModel(this.getRoot());
-	}
-
-	public DefaultTreeModel getModel() {
-		return this.model;
-	}
-
-	private JTree tree;
-
-	private void setTree() {
-		this.tree = new JTree(this.getModel());
-		this.tree.setRootVisible(false);
-		this.tree.expandRow(1);
-		// this.tree.setSelectionModel(TreeSelectionModel.SINGLE_TREE_SELECTION);
-		// TODO this.list.setCellRenderer(new Renderer());
-	}
-
-	private JTree getTree() {
-		return this.tree;
-	}
-
-	private JScrollPane scroll;
-
-	private void setScroll() {
-		this.scroll = new JScrollPane();
-		this.scroll.getViewport().add(this.getTree());
-		this.scroll.setMinimumSize(this.getDimension());
-	}
-
-	public JScrollPane getComponent() {
-		return this.scroll;
-	}
-
 	public TermsBankViewer() {
-		this.setRoot();
-		this.setModel();
-		this.setTree();
-		this.setScroll();
-		this.enableListener();
-	}
+        super();
+        root = new DefaultMutableTreeNode("Terminology");
+        setModel( new DefaultTreeModel(getRoot()) );
+        setRootVisible(false);
+        expandRow(1);
 
-	private void enableListener() {
-		ActionListener listener = new Listener(this);
-		JPopupMenu menu = new Menu(listener);
-		this.getComponent().setComponentPopupMenu(menu);
-		this.getTree().setInheritsPopupMenu(true);
+        setMinimumSize( new Dimension(600, 400) );
+
+        // this.tree.setSelectionModel(TreeSelectionModel.SINGLE_TREE_SELECTION);
+        // TODO this.list.setCellRenderer(new Renderer());
 	}
 
 	public void doLoad(String path) throws Exception {
@@ -156,7 +105,7 @@ public class TermsBankViewer {
 					this.addVariants(node, cas, term);
 				}
 			}
-			this.getModel().reload();
+            ((DefaultTreeModel) getModel()).reload();
 		} catch (CASRuntimeException e) {
 			e.printStackTrace();
 		}
@@ -320,7 +269,7 @@ public class TermsBankViewer {
 			this.getRoot().insert(node, i);
 			i++;
 		}
-		this.getModel().reload();
+        ((DefaultTreeModel) getModel()).reload();
 	}
 
 	/** Compare names in a locale sensitive manner */
@@ -395,97 +344,6 @@ public class TermsBankViewer {
 				}
 			}
 			throw new NullPointerException((String) node.getUserObject());
-		}
-
-	}
-
-	private class Listener implements ActionListener {
-
-		private TermsBankViewer viewer;
-
-		public Listener(TermsBankViewer viewer) {
-			this.viewer = viewer;
-		}
-
-		public void actionPerformed(ActionEvent event) {
-			Object object = event.getSource();
-			if (object instanceof JMenuItem) {
-				JMenuItem source = (JMenuItem) object;
-				String action = source.getActionCommand();
-				if (action.equals("load")) {
-                    // FIXME
-//					int rv = FieldFactory.getChooser().showOpenDialog(null);
-//					if (rv == JFileChooser.APPROVE_OPTION) {
-//						File file = FieldFactory.getChooser().getSelectedFile();
-//						try {
-//							this.viewer.doLoad(file);
-//						} catch (Exception e) {
-//							UIMAFramework.getLogger().log(Level.SEVERE,
-//									e.getMessage());
-//							e.printStackTrace();
-//						}
-//					}
-				} else if (action.equals("name")) {
-					this.viewer.sortByName();
-				} else if (action.equals("freq")) {
-					this.viewer.sortByFreq();
-				} else if (action.equals("spec")) {
-					this.viewer.sortBySpec();
-				}
-			}
-		}
-
-	}
-
-	private class Menu extends JPopupMenu {
-
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = -3988974235600538309L;
-
-		private JMenuItem load;
-
-		private void setLoad() {
-			this.load = new JMenuItem("Load from file");
-			this.load.setActionCommand("load");
-		}
-
-		private JMenuItem sortByName;
-
-		private void setSortByName() {
-			this.sortByName = new JMenuItem("Sort by name");
-			this.sortByName.setActionCommand("name");
-		}
-
-		private JMenuItem sortByFreq;
-
-		private void setSortByFreq() {
-			this.sortByFreq = new JMenuItem("Sort by frequency");
-			this.sortByFreq.setActionCommand("freq");
-		}
-
-		private JMenuItem sortBySpec;
-
-		private void setSortBySpec() {
-			this.sortBySpec = new JMenuItem("Sort by specificity");
-			this.sortBySpec.setActionCommand("spec");
-		}
-
-		public Menu(ActionListener listsner) {
-			this.setLoad();
-			this.setSortByName();
-			this.setSortByFreq();
-			this.setSortBySpec();
-			this.add(this.load);
-			this.addSeparator();
-			this.add(this.sortByName);
-			this.add(this.sortByFreq);
-			this.add(this.sortBySpec);
-			this.load.addActionListener(listsner);
-			this.sortByName.addActionListener(listsner);
-			this.sortByFreq.addActionListener(listsner);
-			this.sortBySpec.addActionListener(listsner);
 		}
 
 	}
