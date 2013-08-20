@@ -9,6 +9,7 @@ import java.net.URL;
 import javax.swing.*;
 
 import eu.project.ttc.tools.commons.ToolView;
+import org.apache.uima.jcas.JCas;
 
 /**
  * Main view of the Aligner tool.
@@ -101,292 +102,249 @@ public class AlignerView extends JTabbedPane implements ToolView, AlignerBinding
 
     @Override
     public void runStarts() {
-        // FIXME
-        //compResults.clearBanker();
-        //compResults.setEnabled(false);
+        compResults.clearMixer();
+        compResults.setEnabled(false);
     }
 
     @Override
     public void runEnds() {
-        // FIXME
-        //compResults.setEnabled(true);
+        compResults.setEnabled(true);
     }
 
     //////////////////////////////////////////////////////// ALIGNER BINDINGS
 
     @Override
     public void setSourceLanguage(String language) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        compBConfig.setSourceLanguage(language);
     }
-
     @Override
     public String getSourceLanguage() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return compBConfig.getSourceLanguage();
     }
-
     @Override
     public void addSourceLanguageChangeListener(PropertyChangeListener listener) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        addPropertyChangeListener(PRM.SRCLANGUAGE.getProperty(), listener);
     }
-
     @Override
     public void setSourceLanguageError(Throwable e) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        compBConfig.setSourceLanguageError(e);
     }
-
     @Override
     public void unsetSourceLanguageError() {
-        //To change body of implemented methods use File | Settings | File Templates.
+        compBConfig.unsetSourceLanguageError();
     }
 
     @Override
     public void setTargetLanguage(String language) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        compBConfig.setTargetLanguage(language);
     }
-
     @Override
     public String getTargetLanguage() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return compBConfig.getTargetLanguage();
     }
-
     @Override
     public void addTargetLanguageChangeListener(PropertyChangeListener listener) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        addPropertyChangeListener(PRM.TGTLANGUAGE.getProperty(), listener);
     }
-
     @Override
     public void setTargetLanguageError(Throwable e) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        compBConfig.setTargetLanguageError(e);
     }
-
     @Override
     public void unsetTargetLanguageError() {
-        //To change body of implemented methods use File | Settings | File Templates.
+        compBConfig.unsetTargetLanguageError();
     }
 
     @Override
     public void setOutputDirectory(String outputDirectory) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        compBConfig.setOutputDirectory(outputDirectory);
     }
-
     @Override
     public String getOutputDirectory() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return compBConfig.getOutputDirectory();
     }
-
     @Override
     public void addOutputDirectoryChangeListener(PropertyChangeListener listener) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        addPropertyChangeListener(PRM.OUTPUT.getProperty(), listener);
     }
-
     @Override
     public void setOutputDirectoryError(Throwable e) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        compBConfig.setOutputDirectoryError(e);
     }
-
     @Override
     public void unsetOutputDirectoryError() {
-        //To change body of implemented methods use File | Settings | File Templates.
+        compBConfig.unsetOutputDirectoryError();
     }
 
     @Override
     public void setSourceTerminology(String sourceTerminology) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        compBConfig.setSourceTerminology(sourceTerminology);
     }
-
     @Override
     public String getSourceTerminology() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return compBConfig.getSourceTerminology();
     }
-
     @Override
     public void addSourceTerminologyChangeListener(PropertyChangeListener listener) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        addPropertyChangeListener(PRM.SRCTERMINOLOGY.getProperty(), listener);
     }
-
     @Override
     public void setSourceTerminologyError(Throwable e) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        compBConfig.setSourceTerminologyError(e);
     }
-
     @Override
     public void unsetSourceTerminologyError() {
-        //To change body of implemented methods use File | Settings | File Templates.
+        compBConfig.unsetSourceTerminologyError();
     }
 
     @Override
     public void setTargetTerminology(String targetTerminology) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        compBConfig.setTargetTerminology(targetTerminology);
     }
-
     @Override
     public String getTargetTerminology() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return compBConfig.getTargetTerminology();
     }
-
     @Override
     public void addTargetTerminologyChangeListener(PropertyChangeListener listener) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        addPropertyChangeListener(PRM.TGTTERMINOLOGY.getProperty(), listener);
     }
-
     @Override
     public void setTargetTerminologyError(Throwable e) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        compBConfig.setTargetTerminologyError(e);
     }
-
     @Override
     public void unsetTargetTerminologyError() {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public void setBilingualDictionary(String bilingualDictionary) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public String getBilingualDictionary() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public void addBilingualDictionaryChangeListener(PropertyChangeListener listener) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public void setBilingualDictionaryError(Throwable e) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public void unsetBilingualDictionaryError() {
-        //To change body of implemented methods use File | Settings | File Templates.
+        compBConfig.unsetTargetTerminologyError();
     }
 
     @Override
     public void setEvaluationDirectory(String evaluationDirectory) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        compBConfig.setEvaluationDirectory(evaluationDirectory);
     }
-
     @Override
     public String getEvaluationDirectory() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return compBConfig.getEvaluationDirectory();
     }
-
     @Override
     public void addEvaluationDirectoryChangeListener(PropertyChangeListener listener) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        addPropertyChangeListener(PRM.EVALDIR.getProperty(), listener);
     }
-
     @Override
     public void setEvaluationDirectoryError(Throwable e) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        compBConfig.setEvaluationDirectoryError(e);
+    }
+    @Override
+    public void unsetEvaluationDirectoryError() {
+        compBConfig.unsetEvaluationDirectoryError();
     }
 
     @Override
-    public void unsetEvaluationDirectoryError() {
-        //To change body of implemented methods use File | Settings | File Templates.
+    public void setBilingualDictionary(String bilingualDictionary) {
+        compAConfig.setBilingualDictionary(bilingualDictionary);
+    }
+    @Override
+    public String getBilingualDictionary() {
+        return compAConfig.getBilingualDictionary();
+    }
+    @Override
+    public void addBilingualDictionaryChangeListener(PropertyChangeListener listener) {
+        addPropertyChangeListener(PRM.DICTIONARY.getProperty(), listener);
+    }
+    @Override
+    public void setBilingualDictionaryError(Throwable e) {
+        compAConfig.setBilingualDictionaryError(e);
+    }
+    @Override
+    public void unsetBilingualDictionaryError() {
+        compAConfig.unsetBilingualDictionaryError();
     }
 
     @Override
     public void setCompositionalMethod(boolean isCompositionalMethod) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        compAConfig.setCompositionalMethod(isCompositionalMethod);
     }
-
     @Override
     public Boolean isCompositionalMethod() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return compAConfig.isCompositionalMethod();
     }
-
     @Override
     public void addCompositionalMethodChangeListener(PropertyChangeListener listener) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        addPropertyChangeListener(PRM.COMPOSITIONAL.getProperty(), listener);
     }
-
     @Override
     public void setCompositionalMethodError(Throwable e) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        compAConfig.setCompositionalMethodError(e);
     }
-
     @Override
     public void unsetCompositionalMethodError() {
-        //To change body of implemented methods use File | Settings | File Templates.
+        compAConfig.unsetCompositionalMethodError();
     }
 
     @Override
     public void setDistributionalMethod(boolean isDistributionalMethod) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        compAConfig.setDistributionalMethod(isDistributionalMethod);
     }
-
     @Override
     public Boolean isDistributionalMethod() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return compAConfig.isDistributionalMethod();
     }
-
     @Override
     public void addDistributionalMethodChangeListener(PropertyChangeListener listener) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        addPropertyChangeListener(PRM.DISTRIBUTIONAL.getProperty(), listener);
     }
-
     @Override
     public void setDistributionalMethodError(Throwable e) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        compAConfig.setDistributionalMethodError(e);
     }
-
     @Override
     public void unsetDistributionalMethodError() {
-        //To change body of implemented methods use File | Settings | File Templates.
+        compAConfig.unsetDistributionalMethodError();
     }
 
     @Override
     public void setSimilarityDistanceClass(String similarityDistanceClass) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        compAConfig.setSimilarityDistanceClass(similarityDistanceClass);
     }
-
     @Override
     public String getSimilarityDistanceClass() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return compAConfig.getSimilarityDistanceClass();
     }
-
     @Override
     public void addSimilarityDistanceClassChangeListener(PropertyChangeListener listener) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        addPropertyChangeListener(PRM.SIMILARITY.getProperty(), listener);
     }
-
     @Override
     public void setSimilarityDistanceClassError(Throwable e) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        compAConfig.setSimilarityDistanceClassError(e);
     }
-
     @Override
     public void unsetSimilarityDistanceClassError() {
-        //To change body of implemented methods use File | Settings | File Templates.
+        compAConfig.unsetSimilarityDistanceClassError();
     }
 
     @Override
     public void setMaxCandidates(Integer maxCandidates) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        compAConfig.setMaxCandidates(maxCandidates);
     }
-
     @Override
     public Integer getMaxCandidates() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return compAConfig.getMaxCandidates();
     }
-
     @Override
     public void addMaxCandidatesChangeListener(PropertyChangeListener listener) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        addPropertyChangeListener(PRM.MAXCANDIDATES.getProperty(), listener);
     }
-
     @Override
     public void setMaxCandidatesError(Throwable e) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        compAConfig.setMaxCandidatesError(e);
     }
-
     @Override
     public void unsetMaxCandidatesError() {
-        //To change body of implemented methods use File | Settings | File Templates.
+        compAConfig.unsetMaxCandidatesError();
     }
-	
+
+    public void addCasToMixer(JCas jCas) {
+        compResults.addCasToMixer(jCas);
+    }
 }

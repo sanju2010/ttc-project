@@ -21,7 +21,7 @@ import java.util.*;
  * @author Fabien Poulard <fpoulard@dictanova.com>
  * @date 19/08/13
  */
-public class AlignerMixerViewer {
+public class AlignerMixerViewer extends JSplitPane {
 
     private static final NumberFormat FORMATTER = NumberFormat.getNumberInstance(Locale.US);
 
@@ -30,133 +30,70 @@ public class AlignerMixerViewer {
         FORMATTER.setMaximumFractionDigits(4);
     }
 
+    private DefaultMutableTreeNode root;
+    private DefaultTreeModel treeModel;
+    private JTree tree;
 
+    private TableModel tableModel;
+    private JTable table;
 
-    private AlignerMixerViewer mixer;
+    private CandidateComparator comparator;
 
-    private void setMixer() {
-        this.mixer = new AlignerMixerViewer();
+    public AlignerMixerViewer() {
+        super(JSplitPane.HORIZONTAL_SPLIT);
+
+        this.root = new DefaultMutableTreeNode("");
+        this.treeModel = new DefaultTreeModel(this.getRoot());
+
+        this.tree = new JTree(this.getTreeModel());
+        this.tree.setRootVisible(false);
+        this.tree.expandRow(1);
+
+        tableModel = new TableModel();
+        table = new JTable(this.getTableModel());
+
+        comparator = new CandidateComparator();
+
+        // Populate component
+        JScrollPane tableScroll = new JScrollPane();
+        tableScroll.getViewport().add(this.getTable());
+        tableScroll.setMinimumSize(this.getDimension());
+
+        JScrollPane treeScroll = new JScrollPane();
+        treeScroll.getViewport().add(this.getTree());
+        treeScroll.setMinimumSize(this.getDimension());
+
+        setTopComponent(tableScroll);
+        setBottomComponent(treeScroll);
+        setContinuousLayout(true);
     }
-
-    public AlignerMixerViewer getMixer() {
-        return this.mixer;
-    }
-
 
     private Dimension getDimension() {
         return new Dimension(600,400);
-    }
-
-    private DefaultMutableTreeNode root;
-
-    private void setRoot() {
-        this.root = new DefaultMutableTreeNode("");
     }
 
     private DefaultMutableTreeNode getRoot() {
         return this.root;
     }
 
-    private DefaultTreeModel treeModel;
-
-    private void setTreeModel() {
-        this.treeModel = new DefaultTreeModel(this.getRoot());
-    }
-
     public DefaultTreeModel getTreeModel() {
         return this.treeModel;
-    }
-
-    private JTree tree;
-
-    private void setTree() {
-        this.tree = new JTree(this.getTreeModel());
-        this.tree.setRootVisible(false);
-        this.tree.expandRow(1);
     }
 
     private JTree getTree() {
         return this.tree;
     }
 
-    private JScrollPane treeScroll;
-
-    private void setTreeScroll() {
-        this.treeScroll = new JScrollPane();
-        this.treeScroll.getViewport().add(this.getTree());
-        this.treeScroll.setMinimumSize(this.getDimension());
-    }
-
-    public JScrollPane getTreeScroll() {
-        return this.treeScroll;
-    }
-
-    private TableModel tableModel;
-
-    private void setTableModel() {
-        this.tableModel = new TableModel();
-    }
-
     private TableModel getTableModel() {
         return this.tableModel;
-    }
-
-    private JTable table;
-
-    private void setTable() {
-        this.table = new JTable(this.getTableModel());
-        // this.table.setDefaultRenderer(Object.class, new TableRenderer());
     }
 
     private JTable getTable() {
         return this.table;
     }
 
-    private JScrollPane tableScroll;
-
-    private void setTableScroll() {
-        this.tableScroll = new JScrollPane();
-        this.tableScroll.getViewport().add(this.getTable());
-        this.tableScroll.setMinimumSize(this.getDimension());
-    }
-
-    public JScrollPane getTableScroll() {
-        return this.tableScroll;
-    }
-
-    private JSplitPane split;
-
-    private void setSplit() {
-        this.split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-        this.split.setTopComponent(this.getTableScroll());
-        this.split.setBottomComponent(this.getTreeScroll());
-        this.split.setContinuousLayout(true);
-    }
-
-    public JSplitPane getComponent() {
-        return this.split;
-    }
-
-    private CandidateComparator comparator;
-
-    private void setComparator() {
-        this.comparator = new CandidateComparator();
-    }
-
     private CandidateComparator getComparator() {
         return this.comparator;
-    }
-
-    public AlignerMixerViewer() {
-        this.setRoot();
-        this.setTreeModel();
-        this.setTree();
-        this.setTreeScroll();
-        this.setTableModel();
-        this.setTable();
-        this.setTableScroll();
-        this.setSplit();
-        this.setComparator();
     }
 
     public synchronized void doLoad(JCas cas) {

@@ -366,12 +366,17 @@ public class AlignerController extends ToolController {
                     InputSource.InputSourceTypes.TXT);
     }
 
+    @Override
+    public InputSource.InputSourceTypes getInputSourceType() {
+        return InputSource.InputSourceTypes.TXT;
+    }
+
     /**
      * @see eu.project.ttc.tools.commons.ToolController#processingCallback(org.apache.uima.cas.CAS)
      */
     @Override
     public void processingCallback(CAS cas) throws Exception {
-        // FIXME this.getTool().getParent().getMixer().doLoad(cas.getJCas());
+        getView().addCasToMixer(cas.getJCas());
     }
 
     /**
@@ -432,11 +437,6 @@ public class AlignerController extends ToolController {
     @Override
     public String getAEDescriptor() {
         return "eu.project.ttc.all.engines.aligner.Aligner";
-    }
-
-    @Override
-    public InputSource.InputSourceTypes getInputSourceType() {
-        return InputSource.InputSourceTypes.XMI;
     }
 		
 }

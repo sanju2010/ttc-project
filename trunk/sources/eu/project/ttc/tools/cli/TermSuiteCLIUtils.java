@@ -48,7 +48,6 @@ import org.apache.uima.util.Level;
 import org.apache.uima.util.XMLInputSource;
 
 import eu.project.ttc.tools.TermSuiteRunner;
-import eu.project.ttc.tools.aligner.AlignerEngine;
 import eu.project.ttc.tools.spotter.SpotterEngine;
 
 /**
@@ -294,7 +293,7 @@ public final class TermSuiteCLIUtils {
 	}
 
 	/**
-	 * Returns the description of a {@link AlignerEngine} for the specified
+	 * Returns the description of a {@link eu.project.ttc.tools.aligner.AlignerController} for the specified
 	 * <code>lang</code>
 	 * 
 	 * @param lang

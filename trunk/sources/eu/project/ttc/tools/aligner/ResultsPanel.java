@@ -1,25 +1,19 @@
 // Copyright © 2013 Dictanova SAS
 package eu.project.ttc.tools.aligner;
 
-import eu.project.ttc.tools.indexer.TermsBankViewer;
-import org.apache.uima.UIMAFramework;
 import org.apache.uima.jcas.JCas;
-import org.apache.uima.util.Level;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
 
 /**
- * @author grdscarabe
- * @date 16/08/13
+ * @author Fabien Poulard <fpoulard@dictanova.com>
+ * @date 20/08/13
  */
 public class ResultsPanel extends JPanel {
 
     private JPanel toolbarGUI;
-    private TermsBankViewer bankerGUI;
+    private AlignerMixerViewer mixerGUI;
 
     private static final JFileChooser jfc;
     static {
@@ -47,121 +41,29 @@ public class ResultsPanel extends JPanel {
 
         // Prepare components
         createToolbar();
-        createBanker();
+        createMixer();
 
         // Assemble the GUI
         add(toolbarGUI);
         add(Box.createRigidArea(new Dimension(0,5)));
-        add( new JScrollPane(bankerGUI) );
+        add( new JScrollPane(mixerGUI) );
     }
 
-    private void createBanker() {
-        bankerGUI = new TermsBankViewer();
-
-        ActionListener listener = new Listener();
-        JPopupMenu menu = new Menu(listener);
-        setComponentPopupMenu(menu);
-        bankerGUI.setComponentPopupMenu(menu);
-        bankerGUI.setInheritsPopupMenu(true);
+    private void createMixer() {
+        mixerGUI = new AlignerMixerViewer();
     }
 
     private void createToolbar() {
         toolbarGUI = new JPanel();
         toolbarGUI.setLayout(new FlowLayout());
-
-        toolbarGUI.add(new Label("You can visualize the result of the processing below..."));
+        toolbarGUI.add(new JLabel("You can visualize the result of the processing below..."));
     }
 
-    public void addCasToBanker(JCas jCas) {
-        bankerGUI.doLoad(jCas);
+    public void addCasToMixer(JCas jCas) {
+        mixerGUI.doLoad(jCas);
     }
 
-    public void clearBanker() {
-        // FIXME
-    }
-
-    private class Menu extends JPopupMenu {
-
-        /**
-         *
-         */
-        private static final long serialVersionUID = -3988974235600538309L;
-
-        private JMenuItem load;
-
-        private void setLoad() {
-            this.load = new JMenuItem("Load from file");
-            this.load.setActionCommand("load");
-        }
-
-        private JMenuItem sortByName;
-
-        private void setSortByName() {
-            this.sortByName = new JMenuItem("Sort by name");
-            this.sortByName.setActionCommand("name");
-        }
-
-        private JMenuItem sortByFreq;
-
-        private void setSortByFreq() {
-            this.sortByFreq = new JMenuItem("Sort by frequency");
-            this.sortByFreq.setActionCommand("freq");
-        }
-
-        private JMenuItem sortBySpec;
-
-        private void setSortBySpec() {
-            this.sortBySpec = new JMenuItem("Sort by specificity");
-            this.sortBySpec.setActionCommand("spec");
-        }
-
-        public Menu(ActionListener listsner) {
-            this.setLoad();
-            this.setSortByName();
-            this.setSortByFreq();
-            this.setSortBySpec();
-            this.add(this.load);
-            this.addSeparator();
-            this.add(this.sortByName);
-            this.add(this.sortByFreq);
-            this.add(this.sortBySpec);
-            this.load.addActionListener(listsner);
-            this.sortByName.addActionListener(listsner);
-            this.sortByFreq.addActionListener(listsner);
-            this.sortBySpec.addActionListener(listsner);
-        }
-
-    }
-
-
-    private class Listener implements ActionListener {
-
-        public void actionPerformed(ActionEvent event) {
-            Object object = event.getSource();
-            if (object instanceof JMenuItem) {
-                JMenuItem source = (JMenuItem) object;
-                String action = source.getActionCommand();
-                if (action.equals("load")) {
-                    int rv = jfc.showOpenDialog(null);
-					if (rv == JFileChooser.APPROVE_OPTION) {
-                        File file = jfc.getSelectedFile();
-						try {
-							bankerGUI.doLoad(file);
-						} catch (Exception e) {
-							UIMAFramework.getLogger().log(Level.SEVERE,
-									e.getMessage());
-							e.printStackTrace();
-						}
-					}
-                } else if (action.equals("name")) {
-                    bankerGUI.sortByName();
-                } else if (action.equals("freq")) {
-                    bankerGUI.sortByFreq();
-                } else if (action.equals("spec")) {
-                    bankerGUI.sortBySpec();
-                }
-            }
-        }
-
+    public void clearMixer() {
+        // FIXME mixerGUI.getMixer().clear();
     }
 }

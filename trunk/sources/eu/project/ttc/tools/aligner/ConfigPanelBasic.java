@@ -432,63 +432,110 @@ public class ConfigPanelBasic extends JPanel {
 
     ////////////////////////////////////////////////////////////////////// ACCESSORS
 
-//    public void setLanguage(String language) {
-//        for(int i=0 ; i < cbLanguage.getItemCount() ; i++) {
-//            LanguageItem item = (LanguageItem) cbLanguage.getItemAt(i);
-//            if ( item.getValue().equals(language) ) {
-//                if (cbLanguage.getSelectedIndex() != i) {
-//                    cbLanguage.setSelectedItem( item );
-//                }
-//                return;
-//            }
-//        }
-//        // If reach here, we have a problem
-//        throw new IllegalArgumentException("I cannot reflect the change to value '"
-//                + language + "' as I do not handle this value.");
-//    }
-//
-//    public void setLanguageError(Throwable e) {
-//        lblLanguage.setText("<html><b>Language</b><br/><p style=\"color: red; font-size: small\">"
-//                + e.getMessage() + "</p></html>");
-//    }
-//    public void unsetLanguageError() {
-//        lblLanguage.setText("<html><b>Language</b></html>");
-//    }
-//
-//    public String getLanguage() {
-//        return ((LanguageItem) cbLanguage.getSelectedItem()).getValue();
-//    }
-//
-//    public void setInputDirectory(String inputDirectory) {
-//        fcInDirectory.setPath(inputDirectory);
-//    }
-//
-//    public void setInputDirectoryError(Throwable e) {
-//        lblInDirectory.setText("<html><b>Input Directory</b><br/><p style=\"color: red; font-size: small\">"
-//                + e.getMessage() + "</p></html>");
-//    }
-//    public void unsetInputDirectoryError() {
-//        lblInDirectory.setText("<html><b>Input Directory</b></html>");
-//    }
-//
-//    public String getInputDirectory() {
-//        return fcInDirectory.getPath();
-//    }
-//
-//    public void setOutputDirectory(String outputDirectory) {
-//        fcOutDirectory.setPath(outputDirectory);
-//    }
-//
-//    public void setOutputDirectoryError(Throwable e) {
-//        lblOutDirectory.setText("<html><b>Output Directory</b><br/><p style=\"color: red; font-size: small\">"
-//                + e.getMessage() + "</p></html>");
-//    }
-//    public void unsetOutputDirectoryError() {
-//        lblOutDirectory.setText("<html><b>Output Directory</b></html>");
-//    }
-//
-//    public String getOutputDirectory() {
-//        return fcOutDirectory.getPath();
-//    }
+    public void setEvaluationDirectory(String evaluationDirectory) {
+        fcEvalDirectory.setPath(evaluationDirectory);
+    }
+    public String getEvaluationDirectory() {
+        return fcEvalDirectory.getPath();
+    }
+    public void setEvaluationDirectoryError(Throwable e) {
+        lblEvalDir.setText("<html><b>" + LBL_EVALDIR + "</b><br/><p style=\"color: red; font-size: small\">"
+                + e.getMessage() + "</p></html>");
+    }
+    public void unsetEvaluationDirectoryError() {
+        lblEvalDir.setText("<html><b>" + LBL_EVALDIR + "</b></html>");
+    }
+
+    public void setSourceLanguage(String language) {
+        for(int i=0 ; i < cbSrcLanguage.getItemCount() ; i++) {
+            LanguageItem item = (LanguageItem) cbSrcLanguage.getItemAt(i);
+            if ( item.getValue().equals(language) ) {
+                if (cbSrcLanguage.getSelectedIndex() != i) {
+                    cbSrcLanguage.setSelectedItem( item );
+                }
+                return;
+            }
+        }
+        // If reach here, we have a problem
+        throw new IllegalArgumentException("I cannot reflect the change to value '"
+                + language + "' as I do not handle this value.");
+    }
+    public String getSourceLanguage() {
+        return ((LanguageItem) cbSrcLanguage.getSelectedItem()).getValue();
+    }
+    public void setSourceLanguageError(Throwable e) {
+        lblSrcLanguage.setText("<html><b>" + LBL_SRCLANGUAGE + "</b><br/><p style=\"color: red; font-size: small\">"
+                + e.getMessage() + "</p></html>");
+    }
+    public void unsetSourceLanguageError() {
+        lblSrcLanguage.setText("<html><b>" + LBL_SRCLANGUAGE + "</b></html>");
+    }
+
+    public void setTargetLanguage(String language) {
+        for(int i=0 ; i < cbTgtLanguage.getItemCount() ; i++) {
+            LanguageItem item = (LanguageItem) cbTgtLanguage.getItemAt(i);
+            if ( item.getValue().equals(language) ) {
+                if (cbTgtLanguage.getSelectedIndex() != i) {
+                    cbTgtLanguage.setSelectedItem( item );
+                }
+                return;
+            }
+        }
+        // If reach here, we have a problem
+        throw new IllegalArgumentException("I cannot reflect the change to value '"
+                + language + "' as I do not handle this value.");
+    }
+    public String getTargetLanguage() {
+        return ((LanguageItem) cbTgtLanguage.getSelectedItem()).getValue();
+    }
+    public void setTargetLanguageError(Throwable e) {
+        lblTgtLanguage.setText("<html><b>" + LBL_TGTLANGUAGE + "</b><br/><p style=\"color: red; font-size: small\">"
+                + e.getMessage() + "</p></html>");
+    }
+    public void unsetTargetLanguageError() {
+        lblTgtLanguage.setText("<html><b>" + LBL_TGTLANGUAGE + "</b></html>");
+    }
+
+    public void setOutputDirectory(String outputDirectory) {
+        fcOutput.setPath(outputDirectory);
+    }
+    public String getOutputDirectory() {
+        return fcOutput.getPath();
+    }
+    public void setOutputDirectoryError(Throwable e) {
+        lblOutput.setText("<html><b>" + LBL_OUTPUT + "</b><br/><p style=\"color: red; font-size: small\">"
+                + e.getMessage() + "</p></html>");
+    }
+    public void unsetOutputDirectoryError() {
+        lblOutput.setText("<html><b>" + LBL_OUTPUT + "</b></html>");
+    }
+
+    public void setSourceTerminology(String sourceTerminology) {
+        fcSrcTermino.setPath(sourceTerminology);
+    }
+    public String getSourceTerminology() {
+        return fcSrcTermino.getPath();
+    }
+    public void setSourceTerminologyError(Throwable e) {
+        lblSrcTermino.setText("<html><b>" + LBL_SRCTERMINO + "</b><br/><p style=\"color: red; font-size: small\">"
+                + e.getMessage() + "</p></html>");
+    }
+    public void unsetSourceTerminologyError() {
+        lblSrcTermino.setText("<html><b>" + LBL_SRCTERMINO + "</b></html>");
+    }
+
+    public void setTargetTerminology(String targetTerminology) {
+        fcTgtTermino.setPath(targetTerminology);
+    }
+    public String getTargetTerminology() {
+        return fcTgtTermino.getPath();
+    }
+    public void setTargetTerminologyError(Throwable e) {
+        lblTgtTermino.setText("<html><b>" + LBL_TGTTERMINO + "</b><br/><p style=\"color: red; font-size: small\">"
+                + e.getMessage() + "</p></html>");
+    }
+    public void unsetTargetTerminologyError() {
+        lblTgtTermino.setText("<html><b>" + LBL_TGTTERMINO + "</b></html>");
+    }
 
 }

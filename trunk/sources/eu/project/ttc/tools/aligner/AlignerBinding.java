@@ -20,13 +20,13 @@ public interface AlignerBinding {
         /** Source language parameter */
         SRCLANGUAGE            ("SourceLanguage", "aligner.srclanguage", "en"),
         /** Target language parameter */
-        TGTLANGUAGE("TargetLanguage", "aligner.trglanguage", "en"),
+        TGTLANGUAGE             ("TargetLanguage", "aligner.trglanguage", "en"),
         /** Output directory parameter */
         OUTPUT                  ("AlignerOutputDirectory", "aligner.output", null),
         /** Source terminology XMI file parameter */
         SRCTERMINOLOGY          ("SourceTerminologyFile", "aligner.srcterminology", null),
         /** Target terminology XMI file parameter */
-        TGTTERMINOLOGY("TargetTerminologyFile", "aligner.trgterminology", null),
+        TGTTERMINOLOGY          ("TargetTerminologyFile", "aligner.trgterminology", null),
         /** Bilingual dictionary parameter */
         DICTIONARY              ("DictionaryFile", "aligner.dictionary", null),
         /** Evaluation directory parameter */
