@@ -1,6 +1,7 @@
 // Copyright © 2013 Dictanova SAS
 package eu.project.ttc.tools.aligner;
 
+import eu.project.ttc.tools.commons.TTCDirectoryChooser;
 import eu.project.ttc.tools.commons.TTCFileChooser;
 import eu.project.ttc.tools.indexer.ClassItem;
 
@@ -202,7 +203,7 @@ public class ConfigPanelAdvanced extends JPanel {
                 preferredWidth ));
 
         // Input directory field
-        fcDictionary = new TTCFileChooser("Choose the evaluation directory");
+        fcDictionary = new TTCFileChooser("Choose the dictionary file", null);
         fcDictionary.setPreferredSize(new Dimension(
                 (int) fcDictionary.getPreferredSize().getHeight(),
                 preferredWidth ));

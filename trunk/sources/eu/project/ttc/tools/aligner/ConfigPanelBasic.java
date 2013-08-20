@@ -1,7 +1,9 @@
 // Copyright © 2013 Dictanova SAS
 package eu.project.ttc.tools.aligner;
 
+import eu.project.ttc.tools.commons.InputSource;
 import eu.project.ttc.tools.commons.LanguageItem;
+import eu.project.ttc.tools.commons.TTCDirectoryChooser;
 import eu.project.ttc.tools.commons.TTCFileChooser;
 
 import javax.swing.*;
@@ -31,7 +33,7 @@ public class ConfigPanelBasic extends JPanel {
 
     // Evaluation directory parameter
     private JLabel lblEvalDir;
-    private TTCFileChooser fcEvalDirectory;
+    private TTCDirectoryChooser fcEvalDirectory;
     private JEditorPane epEvalDir;
 
     // Source language parameter
@@ -56,7 +58,7 @@ public class ConfigPanelBasic extends JPanel {
 
     // Output directory
     private JLabel lblOutput;
-    private TTCFileChooser fcOutput;
+    private TTCDirectoryChooser fcOutput;
     private JEditorPane epOutput;
 
     private GroupLayout cfgLayout;
@@ -227,7 +229,7 @@ public class ConfigPanelBasic extends JPanel {
                 preferredWidth ));
 
         // Input directory field
-        fcEvalDirectory = new TTCFileChooser("Choose the evaluation directory");
+        fcEvalDirectory = new TTCDirectoryChooser("Choose the evaluation directory");
         fcEvalDirectory.setPreferredSize(new Dimension(
                 (int) fcEvalDirectory.getPreferredSize().getHeight(),
                 preferredWidth ));
@@ -298,7 +300,8 @@ public class ConfigPanelBasic extends JPanel {
                 preferredWidth ));
 
         // Source terminology file chooser
-        fcSrcTermino = new TTCFileChooser("Choose the source terminology file");
+        fcSrcTermino = new TTCFileChooser("Choose the source terminology file",
+                InputSource.InputSourceTypes.XMI);
         fcSrcTermino.setPreferredSize(new Dimension(
                 (int) fcSrcTermino.getPreferredSize().getHeight(),
                 preferredWidth ));
@@ -369,7 +372,8 @@ public class ConfigPanelBasic extends JPanel {
                 preferredWidth ));
 
         // Target terminology file chooser
-        fcTgtTermino = new TTCFileChooser("Choose the target terminology file");
+        fcTgtTermino = new TTCFileChooser("Choose the target terminology file",
+                InputSource.InputSourceTypes.XMI);
         fcTgtTermino.setPreferredSize(new Dimension(
                 (int) fcTgtTermino.getPreferredSize().getHeight(),
                 preferredWidth ));
@@ -405,7 +409,7 @@ public class ConfigPanelBasic extends JPanel {
                 preferredWidth ));
 
         // Output directory field
-        fcOutput = new TTCFileChooser("Choose the evaluation directory");
+        fcOutput = new TTCDirectoryChooser("Choose the evaluation directory");
         fcOutput.setPreferredSize(new Dimension(
                 (int) fcOutput.getPreferredSize().getHeight(),
                 preferredWidth ));

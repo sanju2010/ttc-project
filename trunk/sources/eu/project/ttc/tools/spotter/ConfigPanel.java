@@ -2,6 +2,7 @@
 package eu.project.ttc.tools.spotter;
 
 import eu.project.ttc.tools.commons.LanguageItem;
+import eu.project.ttc.tools.commons.TTCDirectoryChooser;
 import eu.project.ttc.tools.commons.TTCFileChooser;
 
 import javax.swing.*;
@@ -20,6 +21,12 @@ import java.net.URL;
  */
 public class ConfigPanel extends JPanel {
 
+    private static final String LBL_INPUT = "Input Directory";
+    private static final String LBL_LANGUAGE = "Language";
+    private static final String LBL_OUTPUT = "Output Directory";
+    private static final String LBL_TTG = "TreeTagger Home Directory";
+
+
     // Main title
     private JEditorPane epHelp;
 
@@ -31,17 +38,17 @@ public class ConfigPanel extends JPanel {
     // Input directory parameter
     private JLabel lblInDirectory;
     private JEditorPane epInDirectory;
-    private TTCFileChooser fcInDirectory;
+    private TTCDirectoryChooser fcInDirectory;
 
     // Output directory parameter
     private JLabel lblOutDirectory;
     private JEditorPane epOutDirectory;
-    private TTCFileChooser fcOutDirectory;
+    private TTCDirectoryChooser fcOutDirectory;
 
     // TreeTagger directory parameter
     private JLabel lblTtgDirectory;
     private JEditorPane epTtgDirectory;
-    private TTCFileChooser fcTtgDirectory;
+    private TTCDirectoryChooser fcTtgDirectory;
 
     private GroupLayout cfgLayout;
 
@@ -183,7 +190,7 @@ public class ConfigPanel extends JPanel {
      */
     public void createLanguageForm(int preferredWidth) {
         // Language label
-        lblLanguage = new JLabel("<html><b>Language</b></html>");
+        lblLanguage = new JLabel("<html><b>" + LBL_LANGUAGE + "</b></html>");
         lblLanguage.setPreferredSize(new Dimension(
                 (int) lblLanguage.getPreferredSize().getHeight(),
                 preferredWidth ));
@@ -200,8 +207,7 @@ public class ConfigPanel extends JPanel {
             public void itemStateChanged(ItemEvent e) {
                 if (e.getStateChange() == ItemEvent.SELECTED) {
                     LanguageItem item = (LanguageItem) e.getItem();;
-                    System.out.println("Detected a language change, fire spotter.language property change.");
-                    firePropertyChange(SpotterBinding.EVT_LANGUAGE, null, item.getValue());
+                    firePropertyChange(SpotterBinding.PRM.LANGUAGE.getProperty(), null, item.getValue());
                 }
             }
         });
@@ -225,21 +231,21 @@ public class ConfigPanel extends JPanel {
      */
     public void createInputDirectoryForm(int preferredWidth) {
         // Input directory label
-        lblInDirectory = new JLabel("<html><b>Input Directory</b></html>");
+        lblInDirectory = new JLabel("<html><b>" + LBL_INPUT + "</b></html>");
         lblInDirectory.setPreferredSize(new Dimension(
                 (int) lblInDirectory.getPreferredSize().getHeight(),
                 preferredWidth ));
 
         // Input directory field
-        fcInDirectory = new TTCFileChooser("Choose the input directory");
+        fcInDirectory = new TTCDirectoryChooser("Choose the input directory");
         fcInDirectory.setPreferredSize(new Dimension(
                 (int) fcInDirectory.getPreferredSize().getHeight(),
                 preferredWidth ));
-        //fcInDirectory.setBorder(BorderFactory.createLineBorder(Color.BLUE, 1));
         fcInDirectory.addPropertyChangeListener(new PropertyChangeListener() {
             public void propertyChange(PropertyChangeEvent evt) {
                 if ("path".equals(evt.getPropertyName()))
-                    firePropertyChange(SpotterBinding.EVT_INPUT, evt.getOldValue(), evt.getNewValue());
+                    firePropertyChange(SpotterBinding.PRM.INPUT.getProperty(),
+                            evt.getOldValue(), evt.getNewValue());
             }
         });
 
@@ -261,21 +267,21 @@ public class ConfigPanel extends JPanel {
      */
     public void createOutputDirectoryForm(int preferredWidth) {
         // Output directory label
-        lblOutDirectory = new JLabel("<html><b>Output Directory</b></html>");
+        lblOutDirectory = new JLabel("<html><b>" + LBL_OUTPUT + "</b></html>");
         lblOutDirectory.setPreferredSize(new Dimension(
                 (int) lblOutDirectory.getPreferredSize().getHeight(),
                 preferredWidth ));
 
         // Output directory field
-        fcOutDirectory = new TTCFileChooser("Choose the output directory");
+        fcOutDirectory = new TTCDirectoryChooser("Choose the output directory");
         fcOutDirectory.setPreferredSize(new Dimension(
                 (int) fcOutDirectory.getPreferredSize().getHeight(),
                 preferredWidth ));
-        //fcOutDirectory.setBorder(BorderFactory.createLineBorder(Color.BLUE, 1));
         fcOutDirectory.addPropertyChangeListener(new PropertyChangeListener() {
             public void propertyChange(PropertyChangeEvent evt) {
                 if ("path".equals(evt.getPropertyName()))
-                    firePropertyChange(SpotterBinding.EVT_OUTPUT, evt.getOldValue(), evt.getNewValue());
+                    firePropertyChange(SpotterBinding.PRM.OUTPUT.getProperty(),
+                            evt.getOldValue(), evt.getNewValue());
             }
         });
 
@@ -297,21 +303,21 @@ public class ConfigPanel extends JPanel {
      */
     public void createTtgDirectoryForm(int preferredWidth) {
         // TreeTagger directory label
-        lblTtgDirectory = new JLabel("<html><b>TreeTagger Home Directory</b></html>");
+        lblTtgDirectory = new JLabel("<html><b>" + LBL_TTG + "</b></html>");
         lblTtgDirectory.setPreferredSize(new Dimension(
                 (int) lblTtgDirectory.getPreferredSize().getHeight(),
                 preferredWidth ));
 
         // TreeTagger directory field
-        fcTtgDirectory = new TTCFileChooser("Choose the treetagger home directory");
+        fcTtgDirectory = new TTCDirectoryChooser("Choose the treetagger home directory");
         fcTtgDirectory.setPreferredSize(new Dimension(
                 (int) fcTtgDirectory.getPreferredSize().getHeight(),
                 preferredWidth ));
-        //fcTtgDirectory.setBorder(BorderFactory.createLineBorder(Color.BLUE, 1));
         fcTtgDirectory.addPropertyChangeListener(new PropertyChangeListener() {
             public void propertyChange(PropertyChangeEvent evt) {
                 if ("path".equals(evt.getPropertyName()))
-                    firePropertyChange(SpotterBinding.EVT_TTGHOME, evt.getOldValue(), evt.getNewValue());
+                    firePropertyChange(SpotterBinding.PRM.TTGHOME.getProperty(),
+                            evt.getOldValue(), evt.getNewValue());
             }
         });
 
@@ -346,11 +352,11 @@ public class ConfigPanel extends JPanel {
     }
 
     public void setLanguageError(IllegalArgumentException e) {
-        lblLanguage.setText("<html><b>Language</b><br/><p style=\"color: red; font-size: small\">"
+        lblLanguage.setText("<html><b>" + LBL_LANGUAGE + "</b><br/><p style=\"color: red; font-size: small\">"
                 + e.getMessage() + "</p></html>");
     }
     public void unsetLanguageError() {
-        lblLanguage.setText("<html><b>Language</b></html>");
+        lblLanguage.setText("<html><b>" + LBL_LANGUAGE + "</b></html>");
     }
 
     public String getLanguage() {
@@ -362,11 +368,11 @@ public class ConfigPanel extends JPanel {
     }
 
     public void setInputDirectoryError(IllegalArgumentException e) {
-        lblInDirectory.setText("<html><b>Input Directory</b><br/><p style=\"color: red; font-size: small\">"
+        lblInDirectory.setText("<html><b>" + LBL_INPUT + "</b><br/><p style=\"color: red; font-size: small\">"
                 + e.getMessage() + "</p></html>");
     }
     public void unsetInputDirectoryError() {
-        lblInDirectory.setText("<html><b>Input Directory</b></html>");
+        lblInDirectory.setText("<html><b>" + LBL_INPUT + "</b></html>");
     }
 
     public String getInputDirectory() {
@@ -378,11 +384,11 @@ public class ConfigPanel extends JPanel {
     }
 
     public void setOutputDirectoryError(IllegalArgumentException e) {
-        lblOutDirectory.setText("<html><b>Output Directory</b><br/><p style=\"color: red; font-size: small\">"
+        lblOutDirectory.setText("<html><b>" + LBL_OUTPUT + "</b><br/><p style=\"color: red; font-size: small\">"
                 + e.getMessage() + "</p></html>");
     }
     public void unsetOutputDirectoryError() {
-        lblOutDirectory.setText("<html><b>Output Directory</b></html>");
+        lblOutDirectory.setText("<html><b>" + LBL_OUTPUT + "</b></html>");
     }
 
     public String getOutputDirectory() {
@@ -394,11 +400,11 @@ public class ConfigPanel extends JPanel {
     }
 
     public void setTreetaggerHomeError(IllegalArgumentException e) {
-        lblTtgDirectory.setText("<html><b>TreeTagger Home Directory</b><br/><p style=\"color: red; font-size: small\">"
+        lblTtgDirectory.setText("<html><b>" + LBL_TTG + "</b><br/><p style=\"color: red; font-size: small\">"
                 + e.getMessage() + "</p></html>");
     }
     public void unsetTreetaggerHomeError() {
-        lblTtgDirectory.setText("<html><b>TreeTagger Home Directory</b></html>");
+        lblTtgDirectory.setText("<html><b>" + LBL_TTG + "</b></html>");
     }
 
     public String getTreetaggerHome() {

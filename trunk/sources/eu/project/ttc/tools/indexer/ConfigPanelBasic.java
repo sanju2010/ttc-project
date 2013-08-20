@@ -2,6 +2,7 @@
 package eu.project.ttc.tools.indexer;
 
 import eu.project.ttc.tools.commons.LanguageItem;
+import eu.project.ttc.tools.commons.TTCDirectoryChooser;
 import eu.project.ttc.tools.commons.TTCFileChooser;
 
 import javax.swing.*;
@@ -30,12 +31,12 @@ public class ConfigPanelBasic extends JPanel {
     // Input directory parameter
     private JLabel lblInDirectory;
     private JEditorPane epInDirectory;
-    private TTCFileChooser fcInDirectory;
+    private TTCDirectoryChooser fcInDirectory;
 
     // Output directory parameter
     private JLabel lblOutDirectory;
     private JEditorPane epOutDirectory;
-    private TTCFileChooser fcOutDirectory;
+    private TTCDirectoryChooser fcOutDirectory;
 
     private GroupLayout cfgLayout;
 
@@ -187,7 +188,7 @@ public class ConfigPanelBasic extends JPanel {
                 preferredWidth ));
 
         // Input directory field
-        fcInDirectory = new TTCFileChooser("Choose the input directory");
+        fcInDirectory = new TTCDirectoryChooser("Choose the input directory");
         fcInDirectory.setPreferredSize(new Dimension(
                 (int) fcInDirectory.getPreferredSize().getHeight(),
                 preferredWidth ));
@@ -223,7 +224,7 @@ public class ConfigPanelBasic extends JPanel {
                 preferredWidth ));
 
         // Output directory field
-        fcOutDirectory = new TTCFileChooser("Choose the output directory");
+        fcOutDirectory = new TTCDirectoryChooser("Choose the output directory");
         fcOutDirectory.setPreferredSize(new Dimension(
                 (int) fcOutDirectory.getPreferredSize().getHeight(),
                 preferredWidth ));

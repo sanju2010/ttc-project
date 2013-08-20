@@ -4,72 +4,36 @@ package eu.project.ttc.tools.commons;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.filechooser.FileFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
 /**
- * This class implements an easy way to choose a file from
+ * This class implements an easy way to choose a directory from
  * the file system, or simply write its path.
  *
  * @author Fabien Poulard <fpoulard@dictanova.com>
  * @date 15/08/13
  */
-public class TTCFileChooser extends JPanel {
+public class TTCDirectoryChooser extends JPanel {
 
     private static final JFileChooser jfc;
     static {
         jfc = new JFileChooser();
-        jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
     }
 
     private final JTextField tfPath;
     private final JButton btBrowse;
     private final String jfcTitle;
     private final Color defaultBgColor;
-    private FileFilter jfcFilter;
 
-    /**
-     *
-     * @param title
-     *      title of the window to choose a file from (JFileChooser)
-     * @param fileType
-     *      type of the files to be loaded
-     */
-    public TTCFileChooser(String title, InputSource.InputSourceTypes fileType) {
+    public TTCDirectoryChooser(String title) {
         super();
         setLayout(new FlowLayout(FlowLayout.LEADING, 0, 0));
 
         jfcTitle = title;
-        jfcFilter = jfc.getAcceptAllFileFilter();
-        if ( fileType != null ) {
-            switch(fileType) {
-                case TXT:
-                    jfcFilter = new FileFilter() {
-                        @Override
-                        public boolean accept(File f) {
-                            return (f.getName().endsWith(".txt") || f.getName().endsWith(".TXT"));
-                        }
-                        @Override
-                        public String getDescription() {
-                            return "Text files";
-                        }
-                    };
-                case XMI:
-                    jfcFilter = new FileFilter() {
-                        @Override
-                        public boolean accept(File f) {
-                            return (f.getName().endsWith(".xmi") || f.getName().endsWith(".XMI"));
-                        }
-                        @Override
-                        public String getDescription() {
-                            return "XMI files";
-                        }
-                    };
-            }
-        }
 
         // Field to display path
         tfPath = new JTextField(25);
@@ -146,7 +110,6 @@ public class TTCFileChooser extends JPanel {
                 // Operate browsing
 //                    if (e.getActionCommand().equals("browse")) {
                 jfc.setDialogTitle(jfcTitle);
-                jfc.setFileFilter(jfcFilter);
                 if (jfc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
                     // Some new path have been selected
                     String prev = tfPath.getText();
