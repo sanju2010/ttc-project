@@ -493,7 +493,7 @@ public class ConfigPanelExport extends JPanel {
 
         // Spinner as it is an incremental value
         spFilteringTld = new JSpinner(
-                new SpinnerNumberModel(0.5d, 0d, Short.MAX_VALUE, 0.05));
+                new SpinnerNumberModel(new Float(0.5f), new Float(0f), new Float(Float.MAX_VALUE), new Float(0.05f)));
         spFilteringTld.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
@@ -567,7 +567,7 @@ public class ConfigPanelExport extends JPanel {
 
         // Spinner as it is an incremental value
         spFrequencyTld = new JSpinner(
-                new SpinnerNumberModel(0.5d, 0d, Short.MAX_VALUE, 0.05));
+                new SpinnerNumberModel(1, 0, Integer.MAX_VALUE, 1));
         spFrequencyTld.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {

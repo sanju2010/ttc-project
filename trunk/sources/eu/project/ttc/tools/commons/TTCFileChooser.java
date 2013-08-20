@@ -22,7 +22,7 @@ public class TTCFileChooser extends JPanel {
     private static final JFileChooser jfc;
     static {
         jfc = new JFileChooser();
-        jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
     }
 
     private final JTextField tfPath;
@@ -50,7 +50,8 @@ public class TTCFileChooser extends JPanel {
                     jfcFilter = new FileFilter() {
                         @Override
                         public boolean accept(File f) {
-                            return (f.getName().endsWith(".txt") || f.getName().endsWith(".TXT"));
+                            return f.isDirectory() ||
+                                (f.getName().endsWith(".txt") || f.getName().endsWith(".TXT"));
                         }
                         @Override
                         public String getDescription() {
@@ -61,7 +62,8 @@ public class TTCFileChooser extends JPanel {
                     jfcFilter = new FileFilter() {
                         @Override
                         public boolean accept(File f) {
-                            return (f.getName().endsWith(".xmi") || f.getName().endsWith(".XMI"));
+                            return f.isDirectory() ||
+                                    (f.getName().endsWith(".xmi") || f.getName().endsWith(".XMI"));
                         }
                         @Override
                         public String getDescription() {

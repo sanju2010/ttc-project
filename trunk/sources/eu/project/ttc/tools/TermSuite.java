@@ -222,6 +222,12 @@ public class TermSuite implements Runnable {
         } catch (IOException e) {
             displayException("Unable to run: the TermSuite configuration cannot be written on disk.", e);
             e.printStackTrace();
+        } catch (RuntimeException e) {
+            displayException("An error occurred during the processing.", e);
+            e.printStackTrace();
+            getToolBar().setProgress(0, "The analysis failed!");
+            getToolBar().setRunMode(false);
+            getTermSuiteTool().runEnds();
         }
     }
 
@@ -366,6 +372,8 @@ public class TermSuite implements Runnable {
                 "If you have moved some directories, this is expected. Just fix the paths in parameters." +
                 "If you do not why, simply close the application and delete the configuration file '" +
                 spotter.getConfigurationFile() + "'.", e);
+        } finally {
+            spotter.synchronizeViewToModel();
         }
 	}
 	
@@ -400,6 +408,8 @@ public class TermSuite implements Runnable {
                 "If you have moved some directories, this is expected. Just fix the paths in parameters." +
                 "If you do not why, simply close the application and delete the configuration file '" +
                 indexer.getConfigurationFile() + "'.", e);
+        } finally {
+            indexer.synchronizeViewToModel();
         }
     }
 
@@ -434,6 +444,8 @@ public class TermSuite implements Runnable {
                 "If you have moved some directories, this is expected. Just fix the paths in parameters." +
                 "If you do not why, simply close the application and delete the configuration file '" +
                     aligner.getConfigurationFile() + "'.", e);
+        } finally {
+            aligner.synchronizeViewToModel();
         }
     }
 

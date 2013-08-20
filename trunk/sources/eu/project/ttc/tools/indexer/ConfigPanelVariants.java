@@ -339,7 +339,7 @@ public class ConfigPanelVariants extends JPanel {
 
         // Spinner as it is an incremental value
         spEditDistanceTld = new JSpinner(
-                new SpinnerNumberModel(0.5d, 0d, 1d, 0.05));
+                new SpinnerNumberModel(new Float(0.5f), new Float(0.f), new Float(1f), new Float(0.05f)));
         spEditDistanceTld.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {

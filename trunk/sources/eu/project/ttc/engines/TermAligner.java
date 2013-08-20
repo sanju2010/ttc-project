@@ -480,7 +480,8 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 				double score = similarityDistance.getValue(
 						termContext.getCoOccurrences(),
 						targetContext.getCoOccurrences());
-				if (!Double.isInfinite(score) && !Double.isNaN(score)) {
+                // FIXME is it normal that annot can be null here ?
+				if ((annot!=null) && !Double.isInfinite(score) && !Double.isNaN(score)) {
 					if (InMemoryMWTIndex
 							.isAcceptedCategory(annot.getCategory()))
 						candidates.put(targetTerm, new Double(score));

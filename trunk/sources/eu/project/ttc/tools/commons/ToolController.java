@@ -1,19 +1,12 @@
 package eu.project.ttc.tools.commons;
 
-import eu.project.ttc.tools.TermSuite;
-import eu.project.ttc.tools.spotter.SpotterModel;
-import eu.project.ttc.tools.spotter.SpotterView;
-import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.resource.ResourceConfigurationException;
 import org.apache.uima.resource.metadata.ConfigurationParameterSettings;
 
-import javax.swing.*;
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Method;
 
 /**
  * Controller part of the MVC paradigm used for the application.
@@ -28,7 +21,6 @@ import java.lang.reflect.Method;
  *
  * @author Fabien Poulard <fpoulard@dictanova.com>
  */
-//public abstract class ToolController implements PropertyChangeListener {
 public abstract class ToolController {
 
     // Default encoding for TermSuite analysis engines
@@ -46,9 +38,7 @@ public abstract class ToolController {
      */
     public ToolController(ToolModel model, ToolView view) {
         registeredView = view;
-
         registeredModel = model;
-//        registeredModel.addPropertyChangeListener(this);
     }
 
     /**
@@ -94,6 +84,30 @@ public abstract class ToolController {
      */
     public abstract void processingCallback(CAS cas) throws Exception;
 
+    /**
+     * Method called when a new run is about to start. If necessary some elements in the
+     * tool should be reset (some parts of the views like results, some stats too).
+     */
+    public void runStarts() {
+        getToolView().runStarts();
+        getToolModel().runStarts();
+    }
+
+    /**
+     * Method called when the run has ended. If necessary some elements in the tool
+     * should be displayed or computed (parts of the views like results, stats...).
+     */
+    public void runEnds() {
+        getToolView().runEnds();
+        getToolModel().runEnds();
+    }
+
+    /**
+     * Force the synchronization between view and model so that the values displayed
+     * in the view are applied to the model.
+     */
+    public abstract void synchronizeViewToModel();
+
     /** Getter for the language parameter */
     public abstract String getLanguage();
 
@@ -101,7 +115,6 @@ public abstract class ToolController {
     public String getEncoding() {
         return DEFAULT_ENCODING;
     }
-
 
     /**
      * Getter to the model
@@ -123,66 +136,5 @@ public abstract class ToolController {
     public File getConfigurationFile() {
         return registeredModel.getConfigurationFile();
     }
-
-    /**
-     * Method called when a new run is about to start. If necessary some elements in the
-     * tool should be reset (some parts of the views like results, some stats too).
-     */
-    public void runStarts() {
-        getToolView().runStarts();
-        getToolModel().runStarts();
-    }
-
-    /**
-     * Method called when the run has ended. If necessary some elements in the tool
-     * should be displayed or computed (parts of the views like results, stats...).
-     */
-    public void runEnds() {
-        getToolView().runEnds();
-        getToolModel().runEnds();
-    }
-
-    // FIXME remove all these
-//
-//
-//    /**
-//     * Use this to observe property changes from registered models
-//     * and propagate them on to the view.
-//     *
-//     * @param evt
-//     *      the PropertyChangeEvent to share with the view
-//     */
-//    public void propertyChange(PropertyChangeEvent evt) {
-////        registeredView.modelPropertyChange(evt);
-//    }
-//
-//    /**
-//     * This is a convenience method that subclasses can call upon
-//     * to fire property changes back to the models. This method
-//     * uses reflection to inspect each of the model classes
-//     * to determine whether it is the owner of the property
-//     * in question. If it isn't, a NoSuchMethodException is thrown,
-//     * which the method ignores.
-//     *
-//     * @param propertyName
-//     *      The name of the property.
-//     * @param newValue
-//     *      An object that represents the new value of the property.
-//     */
-//    protected void setModelProperty(String propertyName, Object newValue) {
-//        try {
-//            Method method = registeredModel.getClass().
-//                    getMethod("set" + propertyName, new Class[]{newValue.getClass()});
-//            method.invoke(registeredModel, newValue);
-//        } catch (Exception ex) {
-//            //  Handle exception.
-//        }
-//    }
-//
-//	public abstract void setParent(TermSuite parent);
-//
-//	public abstract TermSuite getParent();
-//
-//	public abstract ToolModel getSettings();
 
 }

@@ -343,6 +343,46 @@ public class AlignerController extends ToolController {
         });
     }
 
+
+    /**
+     * @see eu.project.ttc.tools.commons.ToolController#synchronizeViewToModel()
+     */
+    @Override
+    public void synchronizeViewToModel() {
+        try { getModel().setBilingualDictionary( getView().getBilingualDictionary() ); }
+        catch (IllegalArgumentException e) { getView().setBilingualDictionaryError(e); }
+
+        try { getModel().setCompositionalMethod( getView().isCompositionalMethod() );  }
+        catch (IllegalArgumentException e) { getView().setCompositionalMethodError(e); }
+
+        try { getModel().setDistributionalMethod( getView().isDistributionalMethod() );}
+        catch (IllegalArgumentException e) { getView().setDistributionalMethodError(e);}
+
+        try { getModel().setEvaluationDirectory( getView().getEvaluationDirectory() ); }
+        catch (IllegalArgumentException e) { getView().setEvaluationDirectoryError(e); }
+
+        try { getModel().setMaxCandidates( getView().getMaxCandidates() );             }
+        catch (IllegalArgumentException e) { getView().setMaxCandidatesError(e);       }
+
+        try { getModel().setOutputDirectory( getView().getOutputDirectory() );         }
+        catch (IllegalArgumentException e) { getView().setOutputDirectoryError(e);     }
+
+        try { getModel().setSimilarityDistanceClass( getView().getSimilarityDistanceClass() ); }
+        catch (IllegalArgumentException e) { getView().setSimilarityDistanceClassError(e); }
+
+        try { getModel().setSourceLanguage( getView().getSourceLanguage() );           }
+        catch (IllegalArgumentException e) { getView().setSourceLanguageError(e);      }
+
+        try { getModel().setSourceTerminology( getView().getSourceTerminology() );     }
+        catch (IllegalArgumentException e) { getView().setSourceTerminologyError(e);   }
+
+        try { getModel().setTargetLanguage( getView().getTargetLanguage() );           }
+        catch (IllegalArgumentException e) { getView().setTargetLanguageError(e);      }
+
+        try { getModel().setTargetTerminology( getView().getTargetTerminology() );     }
+        catch (IllegalArgumentException e) { getView().setTargetTerminologyError(e);   }
+    }
+
     /** Getter to the model with appropriate casting */
     protected AlignerModel getModel() {
         return (AlignerModel) getToolModel();

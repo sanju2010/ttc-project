@@ -160,6 +160,24 @@ public class SpotterController extends ToolController {
         });
     }
 
+    /**
+     * @see eu.project.ttc.tools.commons.ToolController#synchronizeViewToModel()
+     */
+    @Override
+    public void synchronizeViewToModel() {
+        try { getModel().setInputDirectory( getView().getInputDirectory() ); }
+        catch (IllegalArgumentException e) { getView().setInputDirectoryError(e); }
+
+        try { getModel().setLanguage( getView().getLanguage() ); }
+        catch (IllegalArgumentException e) { getView().setLanguageError(e); }
+
+        try { getModel().setOutputDirectory( getView().getOutputDirectory() ); }
+        catch (IllegalArgumentException e) { getView().setOutputDirectoryError(e); }
+
+        try { getModel().setTreetaggerHome( getView().getTreetaggerHome() ); }
+        catch (IllegalArgumentException e) { getView().setTreetaggerHomeError(e); }
+    }
+
     /** Getter to the model with appropriate casting */
     protected SpotterModel getModel() {
         return (SpotterModel) getToolModel();

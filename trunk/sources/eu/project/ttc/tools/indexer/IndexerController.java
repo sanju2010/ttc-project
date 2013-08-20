@@ -2,7 +2,6 @@ package eu.project.ttc.tools.indexer;
 
 import eu.project.ttc.tools.commons.InputSource;
 import eu.project.ttc.tools.commons.ToolController;
-import eu.project.ttc.tools.spotter.ProcessingResult;
 import org.apache.commons.lang3.text.WordUtils;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.cas.CAS;
@@ -50,7 +49,7 @@ public class IndexerController extends ToolController {
                 if ((getModel().getLanguage() == null) ||
                         !getModel().getLanguage().equals(evt.getNewValue())) {
                     try {
-                        System.out.println("Reflecting language change from view->" + evt.getNewValue());
+                        System.out.println("Indexer:view-model:language->" + evt.getNewValue());
                         getModel().setLanguage((String) evt.getNewValue());
                     } catch (IllegalArgumentException e) {
                         success = false;
@@ -67,7 +66,7 @@ public class IndexerController extends ToolController {
                 if ( (getModel().getInputDirectory()==null) ||
                         ! getModel().getInputDirectory().equals(evt.getNewValue()) ) {
                     try {
-                        System.out.println("Reflecting input directory change from view->" + evt.getNewValue());
+                        System.out.println("Indexer:view-model:input directory->" + evt.getNewValue());
                         getModel().setInputDirectory((String) evt.getNewValue());
                     } catch (IllegalArgumentException e) {
                         success = false;
@@ -84,7 +83,7 @@ public class IndexerController extends ToolController {
                 if ((getModel().getOutputDirectory() == null) ||
                         !getModel().getOutputDirectory().equals(evt.getNewValue())) {
                     try {
-                        System.out.println("Reflecting output directory change from view->" + evt.getNewValue());
+                        System.out.println("Indexer:view-model:output directory->" + evt.getNewValue());
                         getModel().setOutputDirectory((String) evt.getNewValue());
                     } catch (IllegalArgumentException e) {
                         success = false;
@@ -102,7 +101,7 @@ public class IndexerController extends ToolController {
                 if ((getModel().getAssociationMeasure() == null) ||
                         !getModel().getAssociationMeasure().equals(evt.getNewValue())) {
                     try {
-                        System.out.println("Reflecting association measure change from view->" + evt.getNewValue());
+                        System.out.println("Indexer:view-model:association measure->" + evt.getNewValue());
                         getModel().setAssociationMeasure((String) evt.getNewValue());
                     } catch (IllegalArgumentException e) {
                         success = false;
@@ -120,7 +119,7 @@ public class IndexerController extends ToolController {
                 if ((getModel().getEditDistanceClass() == null) ||
                         !getModel().getEditDistanceClass().equals(evt.getNewValue())) {
                     try {
-                        System.out.println("Reflecting edit distance class change from view->" + evt.getNewValue());
+                        System.out.println("Indexer:view-model:edit distance class->" + evt.getNewValue());
                         getModel().setEditDistanceClass((String) evt.getNewValue());
                     } catch (IllegalArgumentException e) {
                         success = false;
@@ -138,7 +137,7 @@ public class IndexerController extends ToolController {
                 if ((getModel().getEditDistanceNgrams() == null) ||
                         !getModel().getEditDistanceNgrams().equals(evt.getNewValue())) {
                     try {
-                        System.out.println("Reflecting edit distance ngrams change from view->" + evt.getNewValue());
+                        System.out.println("Indexer:view-model:edit distance ngrams->" + evt.getNewValue());
                         getModel().setEditDistanceNgrams((Integer) evt.getNewValue());
                     } catch (IllegalArgumentException e) {
                         success = false;
@@ -156,7 +155,7 @@ public class IndexerController extends ToolController {
                 if ((getModel().getEditDistanceThreshold() == null) ||
                         !getModel().getEditDistanceThreshold().equals(evt.getNewValue())) {
                     try {
-                        System.out.println("Reflecting edit distance threshold change from view->" + evt.getNewValue());
+                        System.out.println("Indexer:view-model:edit distance threshold->" + evt.getNewValue());
                         getModel().setEditDistanceThreshold((Float) evt.getNewValue());
                     } catch (IllegalArgumentException e) {
                         success = false;
@@ -174,7 +173,7 @@ public class IndexerController extends ToolController {
                 if ((getModel().getFilteringThreshold() == null) ||
                         !getModel().getFilteringThreshold().equals(evt.getNewValue())) {
                     try {
-                        System.out.println("Reflecting filtering threshold change from view->" + evt.getNewValue());
+                        System.out.println("Indexer:view-model:filtering threshold->" + evt.getNewValue());
                         getModel().setFilteringThreshold((Float) evt.getNewValue());
                     } catch (IllegalArgumentException e) {
                         success = false;
@@ -192,7 +191,7 @@ public class IndexerController extends ToolController {
                 if ((getModel().getFilterRule() == null) ||
                         !getModel().getFilterRule().equals(evt.getNewValue())) {
                     try {
-                        System.out.println("Reflecting filter rule change from view->" + evt.getNewValue());
+                        System.out.println("Indexer:view-model:filter rule->" + evt.getNewValue());
                         getModel().setFilterRule((String) evt.getNewValue());
                     } catch (IllegalArgumentException e) {
                         success = false;
@@ -210,7 +209,7 @@ public class IndexerController extends ToolController {
                 if ((getModel().getFrequencyThreshold() == null) ||
                         !getModel().getFrequencyThreshold().equals(evt.getNewValue())) {
                     try {
-                        System.out.println("Reflecting frequency threshold change from view->" + evt.getNewValue());
+                        System.out.println("Indexer:view-model:frequency threshold->" + evt.getNewValue());
                         getModel().setFrequencyThreshold((Integer) evt.getNewValue());
                     } catch (IllegalArgumentException e) {
                         success = false;
@@ -227,7 +226,7 @@ public class IndexerController extends ToolController {
                 boolean success = true;
                 if (getModel().isIgnoreDiacritics() == evt.getNewValue()) {
                     try {
-                        System.out.println("Reflecting ignore diacritics change from view->" + evt.getNewValue());
+                        System.out.println("Indexer:view-model:ignore diacritics->" + evt.getNewValue());
                         getModel().setIgnoreDiacritics((Boolean) evt.getNewValue());
                     } catch (IllegalArgumentException e) {
                         success = false;
@@ -244,7 +243,7 @@ public class IndexerController extends ToolController {
                 boolean success = true;
                 if (getModel().isKeepVerbs() == evt.getNewValue()) {
                     try {
-                        System.out.println("Reflecting keep verbs change from view->" + evt.getNewValue());
+                        System.out.println("Indexer:view-model:keep verbs->" + evt.getNewValue());
                         getModel().setKeepVerbs((Boolean) evt.getNewValue());
                     } catch (IllegalArgumentException e) {
                         success = false;
@@ -261,7 +260,7 @@ public class IndexerController extends ToolController {
                 boolean success = true;
                 if (getModel().isTSVExport() == evt.getNewValue()) {
                     try {
-                        System.out.println("Reflecting TSV export change from view->" + evt.getNewValue());
+                        System.out.println("Indexer:view-model:tsv export->" + evt.getNewValue());
                         getModel().setTSVExport((Boolean) evt.getNewValue());
                     } catch (IllegalArgumentException e) {
                         success = false;
@@ -278,7 +277,7 @@ public class IndexerController extends ToolController {
                 boolean success = true;
                 if (getModel().isVariantDetection() == evt.getNewValue()) {
                     try {
-                        System.out.println("Reflecting variant detection change from view->" + evt.getNewValue());
+                        System.out.println("Indexer:view-model:variant detection->" + evt.getNewValue());
                         getModel().setVariantDetection((Boolean) evt.getNewValue());
                     } catch (IllegalArgumentException e) {
                         success = false;
@@ -300,7 +299,7 @@ public class IndexerController extends ToolController {
             public void propertyChange(PropertyChangeEvent evt) {
                 if ( (getView().getLanguage()==null) ||
                         ! getView().getLanguage().equals(evt.getNewValue()) ) {
-                    System.out.println("Reflecting language change from model->" + evt.getNewValue());
+                    System.out.println("Indexer:model-view:language->" + evt.getNewValue());
                     getView().setLanguage((String) evt.getNewValue());
                 } // else, no need to reflect the change (and prevent looping)
             }
@@ -310,7 +309,7 @@ public class IndexerController extends ToolController {
             public void propertyChange(PropertyChangeEvent evt) {
                 if ( (getView().getInputDirectory()==null) ||
                         ! getView().getInputDirectory().equals(evt.getNewValue()) ) {
-                    System.out.println("Reflecting input directory change from model->" + evt.getNewValue());
+                    System.out.println("Indexer:model-view:input directory->" + evt.getNewValue());
                     getView().setInputDirectory((String) evt.getNewValue());
                 } // else, no need to reflect the change (and prevent looping)
             }
@@ -320,7 +319,7 @@ public class IndexerController extends ToolController {
             public void propertyChange(PropertyChangeEvent evt) {
                 if ((getView().getOutputDirectory() == null) ||
                         !getView().getOutputDirectory().equals(evt.getNewValue())) {
-                    System.out.println("Reflecting output directory change from model->" + evt.getNewValue());
+                    System.out.println("Indexer:model-view:output directory->" + evt.getNewValue());
                     getView().setOutputDirectory((String) evt.getNewValue());
                 } // else, no need to reflect the change (and prevent looping)
             }
@@ -342,7 +341,7 @@ public class IndexerController extends ToolController {
             public void propertyChange(PropertyChangeEvent evt) {
                 if ( (getView().getEditDistanceClass()==null) ||
                         ! getView().getEditDistanceClass().equals(evt.getNewValue()) ) {
-                    System.out.println("Reflecting edit distance class change from model->" + evt.getNewValue());
+                    System.out.println("Indexer:model-view:edit distance class->" + evt.getNewValue());
                     getView().setEditDistanceClass((String) evt.getNewValue());
                 } // else, no need to reflect the change (and prevent looping)
             }
@@ -353,7 +352,7 @@ public class IndexerController extends ToolController {
             public void propertyChange(PropertyChangeEvent evt) {
                 if ( (getView().getEditDistanceNgrams()==null) ||
                         ! getView().getEditDistanceNgrams().equals(evt.getNewValue()) ) {
-                    System.out.println("Reflecting edit distance ngrams change from model->" + evt.getNewValue());
+                    System.out.println("Indexer:model-view:edit distance ngrams->" + evt.getNewValue());
                     getView().setEditDistanceNgrams((Integer) evt.getNewValue());
                 } // else, no need to reflect the change (and prevent looping)
             }
@@ -364,7 +363,7 @@ public class IndexerController extends ToolController {
             public void propertyChange(PropertyChangeEvent evt) {
                 if ( (getView().getEditDistanceThreshold()==null) ||
                         ! getView().getEditDistanceThreshold().equals(evt.getNewValue()) ) {
-                    System.out.println("Reflecting edit distance threshold change from model->" + evt.getNewValue());
+                    System.out.println("Indexer:model-view:edit distance threshold->" + evt.getNewValue());
                     getView().setEditDistanceThreshold((Float) evt.getNewValue());
                 } // else, no need to reflect the change (and prevent looping)
             }
@@ -375,7 +374,7 @@ public class IndexerController extends ToolController {
             public void propertyChange(PropertyChangeEvent evt) {
                 if ( (getView().getFilteringThreshold()==null) ||
                         ! getView().getFilteringThreshold().equals(evt.getNewValue()) ) {
-                    System.out.println("Reflecting filtering threshold change from model->" + evt.getNewValue());
+                    System.out.println("Indexer:model-view:filtering threshold->" + evt.getNewValue());
                     getView().setFilteringThreshold((Float) evt.getNewValue());
                 } // else, no need to reflect the change (and prevent looping)
             }
@@ -386,7 +385,7 @@ public class IndexerController extends ToolController {
             public void propertyChange(PropertyChangeEvent evt) {
                 if ( (getView().getFilterRule()==null) ||
                         ! getView().getFilterRule().equals(evt.getNewValue()) ) {
-                    System.out.println("Reflecting filter rule change from model->" + evt.getNewValue());
+                    System.out.println("Indexer:model-view:filter rule->" + evt.getNewValue());
                     getView().setFilterRule((String) evt.getNewValue());
                 } // else, no need to reflect the change (and prevent looping)
             }
@@ -397,7 +396,7 @@ public class IndexerController extends ToolController {
             public void propertyChange(PropertyChangeEvent evt) {
                 if ( (getView().getFrequencyThreshold()==null) ||
                         ! getView().getFrequencyThreshold().equals(evt.getNewValue()) ) {
-                    System.out.println("Reflecting frequency threshold change from model->" + evt.getNewValue());
+                    System.out.println("Indexer:model-view:frequency threshold->" + evt.getNewValue());
                     getView().setFrequencyThreshold((Integer) evt.getNewValue());
                 } // else, no need to reflect the change (and prevent looping)
             }
@@ -407,7 +406,7 @@ public class IndexerController extends ToolController {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
                 if ( getView().isIgnoreDiacritics() == evt.getNewValue() ) {
-                    System.out.println("Reflecting ignore diacritics change from model->" + evt.getNewValue());
+                    System.out.println("Indexer:model-view:ignore diacritics->" + evt.getNewValue());
                     getView().setIgnoreDiacritics((Boolean) evt.getNewValue());
                 } // else, no need to reflect the change (and prevent looping)
             }
@@ -417,7 +416,7 @@ public class IndexerController extends ToolController {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
                 if ( getView().isKeepVerbs() == evt.getNewValue() ) {
-                    System.out.println("Reflecting keep verbs change from model->" + evt.getNewValue());
+                    System.out.println("Indexer:model-view:keep verbs->" + evt.getNewValue());
                     getView().setKeepVerbs((Boolean) evt.getNewValue());
                 } // else, no need to reflect the change (and prevent looping)
             }
@@ -427,7 +426,7 @@ public class IndexerController extends ToolController {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
                 if ( getView().isTSVExport() == evt.getNewValue() ) {
-                    System.out.println("Reflecting TSV export change from model->" + evt.getNewValue());
+                    System.out.println("Indexer:model-view:tsv export->" + evt.getNewValue());
                     getView().setTSVExport((Boolean) evt.getNewValue());
                 } // else, no need to reflect the change (and prevent looping)
             }
@@ -437,7 +436,7 @@ public class IndexerController extends ToolController {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
                 if ( getView().isVariantDetection() == evt.getNewValue() ) {
-                    System.out.println("Reflecting variant detection change from model->" + evt.getNewValue());
+                    System.out.println("Indexer:model-view:variant detection->" + evt.getNewValue());
                     getView().setVariantDetection((Boolean) evt.getNewValue());
                 } // else, no need to reflect the change (and prevent looping)
             }
@@ -474,6 +473,54 @@ public class IndexerController extends ToolController {
     }
 
     /**
+     * @see eu.project.ttc.tools.commons.ToolController#synchronizeViewToModel()
+     */
+    @Override
+    public void synchronizeViewToModel() {
+        try { getModel().setAssociationMeasure( getView().getAssociationMeasure() ); }
+        catch (IllegalArgumentException e) { getView().setAssociationMeasureError(e); }
+
+        try { getModel().setEditDistanceClass( getView().getEditDistanceClass() ); }
+        catch (IllegalArgumentException e) { getView().setEditDistanceThresholdError(e); }
+
+        try { getModel().setEditDistanceNgrams( getView().getEditDistanceNgrams() ); }
+        catch (IllegalArgumentException e) { getView().setEditDistanceNgramsError(e); }
+
+        try { getModel().setEditDistanceThreshold( getView().getEditDistanceThreshold() ); }
+        catch (IllegalArgumentException e) { getView().setEditDistanceThresholdError(e); }
+
+        try { getModel().setFilteringThreshold( getView().getFilteringThreshold() ); }
+        catch (IllegalArgumentException e) { getView().setFilteringThresholdError(e); }
+
+        try { getModel().setFilterRule( getView().getFilterRule() ); }
+        catch (IllegalArgumentException e) { getView().setFilterRuleError(e); }
+
+        try { getModel().setFrequencyThreshold( getView().getFrequencyThreshold() ); }
+        catch (IllegalArgumentException e) { getView().setFrequencyThresholdError(e); }
+
+        try { getModel().setIgnoreDiacritics( getView().isIgnoreDiacritics() ); }
+        catch (IllegalArgumentException e) { getView().setIgnoreDiacriticsError(e); }
+
+        try { getModel().setInputDirectory( getView().getInputDirectory() ); }
+        catch (IllegalArgumentException e) { getView().setInputDirectoryError(e); }
+
+        try { getModel().setKeepVerbs( getView().isKeepVerbs() ); }
+        catch (IllegalArgumentException e) { getView().setKeepVerbsError(e); }
+
+        try { getModel().setLanguage( getView().getLanguage() ); }
+        catch (IllegalArgumentException e) { getView().setLanguageError(e); }
+
+        try { getModel().setOutputDirectory( getView().getOutputDirectory() ); }
+        catch (IllegalArgumentException e) { getView().setOutputDirectoryError(e); }
+
+        try { getModel().setTSVExport( getView().isTSVExport() ); }
+        catch (IllegalArgumentException e) { getView().setTSVExportError(e); }
+
+        try { getModel().setVariantDetection( getView().isVariantDetection() ); }
+        catch (IllegalArgumentException e) { getView().setVariantDetectionError(e); }
+    }
+
+    /**
      * @see eu.project.ttc.tools.commons.ToolController#getLanguage()
      */
     @Override
@@ -498,8 +545,10 @@ public class IndexerController extends ToolController {
                 .getResourceSpecifierFactory().createConfigurationParameterSettings();
 
         // Common parameters settings
-        settings.setParameterValue("Language", getModel().getLanguage());
-        settings.setParameterValue("Directory", getModel().getOutputDirectory());
+        settings.setParameterValue(IndexerBinding.PRM.LANGUAGE.getParameter(),
+                getModel().getLanguage());
+        settings.setParameterValue(IndexerBinding.PRM.OUTPUT.getParameter(),
+                getModel().getOutputDirectory());
 		settings.setParameterValue("Action", "drop"); // What ?
 
 		// TBX settings
@@ -551,7 +600,7 @@ public class IndexerController extends ToolController {
             return String.format("eu.project.ttc.%s.engines.indexer.%sIndexer",
                     language.toLowerCase(), WordUtils.capitalizeFully(language));
         } else {
-            throw new IllegalStateException("Unable to generate descriptor name for Spotter as no " +
+            throw new IllegalStateException("Unable to generate descriptor name for Indexer as no " +
                     "language have been specified in the model.");
         }
     }

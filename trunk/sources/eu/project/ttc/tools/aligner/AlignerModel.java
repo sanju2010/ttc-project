@@ -512,16 +512,23 @@ public class AlignerModel extends ToolModel implements AlignerBinding {
      */
     @Override
     public void setBilingualDictionary(String bilingualDictionary) {
-        File output = new File(bilingualDictionary);
-        if ( output.exists() && output.isFile() ) {
-            String oldValue = (String) pSettings.getParameterValue(PRM.DICTIONARY.getParameter());
-            pSettings.setParameterValue(PRM.DICTIONARY.getParameter(), bilingualDictionary);
-            firePropertyChange(PRM.DICTIONARY.getProperty(), oldValue, bilingualDictionary);
+        String oldValue = (String) pSettings.getParameterValue(PRM.DICTIONARY.getParameter());
+
+        if ( bilingualDictionary == null ) {
+            // Restore to default value
+            pSettings.setParameterValue(PRM.DICTIONARY.getParameter(), null);
+            firePropertyChange(PRM.DICTIONARY.getProperty(), oldValue, null);
         } else {
-            String msg = "Bilingual dictionary parameter value '" + bilingualDictionary
-                    + "' is invalid. No change reflected in model.";
-            UIMAFramework.getLogger().log(Level.SEVERE, msg);
-            throw new IllegalArgumentException(msg);
+            File output = new File(bilingualDictionary);
+            if ( output.exists() && output.isFile() ) {
+                pSettings.setParameterValue(PRM.DICTIONARY.getParameter(), bilingualDictionary);
+                firePropertyChange(PRM.DICTIONARY.getProperty(), oldValue, bilingualDictionary);
+            } else {
+                String msg = "Bilingual dictionary parameter value '" + bilingualDictionary
+                        + "' is invalid. No change reflected in model.";
+                UIMAFramework.getLogger().log(Level.SEVERE, msg);
+                throw new IllegalArgumentException(msg);
+            }
         }
     }
     /** Getter for bilingual dictionary parameter */

@@ -295,7 +295,7 @@ public class ConfigPanelAdvanced extends JPanel {
 
         // Spinner as it is an incremental value
         spMaxCandidates = new JSpinner(
-                new SpinnerNumberModel(10, 1d, Short.MAX_VALUE, 5));
+                new SpinnerNumberModel(10, 1, Integer.MAX_VALUE, 5));
         spMaxCandidates.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
@@ -371,7 +371,11 @@ public class ConfigPanelAdvanced extends JPanel {
         fcDictionary.setPath(bilingualDictionary);
     }
     public String getBilingualDictionary() {
-        return fcDictionary.getPath();
+        if (( fcDictionary.getPath() == null ) || ( fcDictionary.getPath().trim().length() == 0) ) {
+            return null;
+        } else {
+            return fcDictionary.getPath().trim();
+        }
     }
     public void setBilingualDictionaryError(Throwable e) {
         lblDictionary.setText("<html><b>" + LBL_DICTIONARY + "</b><br/><p style=\"color: red; font-size: small\">"
