@@ -22,7 +22,7 @@ public interface IndexerBinding {
         /** Input directory parameter */
         INPUT               ("InputDirectory", "indexer.inputdirectory", null),
         /** Output directory parameter */
-        OUTPUT              ("OutputDirectory", "indexer.outputdirectory", null),
+        OUTPUT              ("Directory", "indexer.outputdirectory", null),
         /** Ignore diacritics parameter */
         IGNOREDIACRITICS    ("IgnoreDiacriticsInMultiwordTerms", "indexer.ignorediacritics", true),
         /** Variant detection parameter */
@@ -84,7 +84,7 @@ public interface IndexerBinding {
                     }
                 }
             }
-            return null;
+            throw new IllegalArgumentException("Unable to identify the parameter serialized as "+ parameter);
         }
     }
 

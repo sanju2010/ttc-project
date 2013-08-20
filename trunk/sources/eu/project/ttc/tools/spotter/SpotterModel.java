@@ -232,8 +232,7 @@ public class SpotterModel extends ToolModel implements SpotterBinding {
             pSettings.setParameterValue(pLang.getName(), language);
             firePropertyChange(PRM.LANGUAGE.getProperty(), oldValue, language);
         } else {
-            String msg = "Language parameter value '" + language
-                    + "' is invalid. No change reflected in model.";
+            String msg = "Language parameter value '" + language + "' is invalid.";
             UIMAFramework.getLogger().log(Level.SEVERE, msg);
             throw new IllegalArgumentException(msg);
         }
@@ -256,8 +255,7 @@ public class SpotterModel extends ToolModel implements SpotterBinding {
             pSettings.setParameterValue(pIDir.getName(), inputDirectory);
             firePropertyChange(PRM.INPUT.getProperty(), oldValue, inputDirectory);
         } else {
-            String msg = "Input directory parameter value '" + inputDirectory
-                    + "' is invalid. No change reflected in model.";
+            String msg = "Input directory parameter value '" + inputDirectory + "' is invalid.";
             UIMAFramework.getLogger().log(Level.SEVERE, msg);
             throw new IllegalArgumentException(msg);
         }
@@ -282,8 +280,7 @@ public class SpotterModel extends ToolModel implements SpotterBinding {
             pSettings.setParameterValue(pODir.getName(), outputDirectory);
             firePropertyChange(PRM.OUTPUT.getProperty(), oldValue, outputDirectory);
         } else {
-            String msg = "Output directory parameter value '" + outputDirectory
-                    + "' is invalid. No change reflected in model.";
+            String msg = "Output directory parameter value '" + outputDirectory + "' is invalid.";
             UIMAFramework.getLogger().log(Level.SEVERE, msg);
             throw new IllegalArgumentException(msg);
         }
@@ -306,8 +303,7 @@ public class SpotterModel extends ToolModel implements SpotterBinding {
             pSettings.setParameterValue(pTtg.getName(), treetaggerHome);
             firePropertyChange(PRM.TTGHOME.getProperty(), oldValue, treetaggerHome);
         } else {
-            String msg = "TreeTagger home parameter value '" + treetaggerHome
-                    + "' is invalid. No change reflected in model.";
+            String msg = "TreeTagger home parameter value '" + treetaggerHome + "' is invalid.";
             UIMAFramework.getLogger().log(Level.SEVERE, msg);
             throw new IllegalArgumentException(msg);
         }

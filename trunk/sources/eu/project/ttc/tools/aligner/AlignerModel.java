@@ -321,8 +321,7 @@ public class AlignerModel extends ToolModel implements AlignerBinding {
             pSettings.setParameterValue(PRM.SRCLANGUAGE.getParameter(), language);
             firePropertyChange(PRM.SRCLANGUAGE.getProperty(), oldValue, language);
         } else {
-            String msg = "Source language parameter value '" + language
-                    + "' is invalid. No change reflected in model.";
+            String msg = "Source language parameter value '" + language + "' is invalid.";
             UIMAFramework.getLogger().log(Level.SEVERE, msg);
             throw new IllegalArgumentException(msg);
         }
@@ -359,8 +358,7 @@ public class AlignerModel extends ToolModel implements AlignerBinding {
             pSettings.setParameterValue(PRM.TGTLANGUAGE.getParameter(), language);
             firePropertyChange(PRM.TGTLANGUAGE.getProperty(), oldValue, language);
         } else {
-            String msg = "Target language parameter value '" + language
-                    + "' is invalid. No change reflected in model.";
+            String msg = "Target language parameter value '" + language + "' is invalid.";
             UIMAFramework.getLogger().log(Level.SEVERE, msg);
             throw new IllegalArgumentException(msg);
         }
@@ -401,8 +399,7 @@ public class AlignerModel extends ToolModel implements AlignerBinding {
             pSettings.setParameterValue(PRM.OUTPUT.getParameter(), outputDirectory);
             firePropertyChange(PRM.OUTPUT.getProperty(), oldValue, outputDirectory);
         } else {
-            String msg = "Output directory parameter value '" + outputDirectory
-                    + "' is invalid. No change reflected in model.";
+            String msg = "Output directory parameter value '" + outputDirectory + "' is invalid.";
             UIMAFramework.getLogger().log(Level.SEVERE, msg);
             throw new IllegalArgumentException(msg);
         }
@@ -440,8 +437,7 @@ public class AlignerModel extends ToolModel implements AlignerBinding {
             pSettings.setParameterValue(PRM.SRCTERMINOLOGY.getParameter(), sourceTerminology);
             firePropertyChange(PRM.SRCTERMINOLOGY.getProperty(), oldValue, sourceTerminology);
         } else {
-            String msg = "Source terminology parameter value '" + sourceTerminology
-                    + "' is invalid. No change reflected in model.";
+            String msg = "Source terminology parameter value '" + sourceTerminology + "' is invalid.";
             UIMAFramework.getLogger().log(Level.SEVERE, msg);
             throw new IllegalArgumentException(msg);
         }
@@ -479,8 +475,7 @@ public class AlignerModel extends ToolModel implements AlignerBinding {
             pSettings.setParameterValue(PRM.TGTTERMINOLOGY.getParameter(), targetTerminology);
             firePropertyChange(PRM.TGTTERMINOLOGY.getProperty(), oldValue, targetTerminology);
         } else {
-            String msg = "Target terminology parameter value '" + targetTerminology
-                    + "' is invalid. No change reflected in model.";
+            String msg = "Target terminology parameter value '" + targetTerminology + "' is invalid.";
             UIMAFramework.getLogger().log(Level.SEVERE, msg);
             throw new IllegalArgumentException(msg);
         }
@@ -524,8 +519,7 @@ public class AlignerModel extends ToolModel implements AlignerBinding {
                 pSettings.setParameterValue(PRM.DICTIONARY.getParameter(), bilingualDictionary);
                 firePropertyChange(PRM.DICTIONARY.getProperty(), oldValue, bilingualDictionary);
             } else {
-                String msg = "Bilingual dictionary parameter value '" + bilingualDictionary
-                        + "' is invalid. No change reflected in model.";
+                String msg = "Bilingual dictionary parameter value '" + bilingualDictionary+ "' is invalid.";
                 UIMAFramework.getLogger().log(Level.SEVERE, msg);
                 throw new IllegalArgumentException(msg);
             }
@@ -567,8 +561,7 @@ public class AlignerModel extends ToolModel implements AlignerBinding {
             pSettings.setParameterValue(PRM.EVALDIR.getParameter(), evaluationDirectory);
             firePropertyChange(PRM.EVALDIR.getProperty(), oldValue, evaluationDirectory);
         } else {
-            String msg = "Evaluation directory parameter value '" + evaluationDirectory
-                    + "' is invalid. No change reflected in model.";
+            String msg = "Evaluation directory parameter value '" + evaluationDirectory + "' is invalid.";
             UIMAFramework.getLogger().log(Level.SEVERE, msg);
             throw new IllegalArgumentException(msg);
         }
@@ -670,8 +663,7 @@ public class AlignerModel extends ToolModel implements AlignerBinding {
             pSettings.setParameterValue(PRM.SIMILARITY.getParameter(), similarityClass);
             firePropertyChange(PRM.SIMILARITY.getProperty(), oldValue, similarityClass);
         } else {
-            String msg = "Similarity distance parameter value '" + similarityClass
-                    + "' is invalid. No change reflected in model.";
+            String msg = "Similarity distance parameter value '" + similarityClass + "' is invalid.";
             UIMAFramework.getLogger().log(Level.SEVERE, msg);
             throw new IllegalArgumentException(msg);
         }

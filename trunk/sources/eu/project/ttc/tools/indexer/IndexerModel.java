@@ -380,8 +380,7 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
             pSettings.setParameterValue(pLang.getName(), language);
             firePropertyChange(PRM.LANGUAGE.getProperty(), oldValue, language);
         } else {
-            String msg = "Language parameter value '" + language
-                    + "' is invalid. No change reflected in model.";
+            String msg = "Language parameter value '" + language + "' is invalid.";
             UIMAFramework.getLogger().log(Level.SEVERE, msg);
             throw new IllegalArgumentException(msg);
         }
@@ -419,8 +418,7 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
             pSettings.setParameterValue(pIDir.getName(), inputDirectory);
             firePropertyChange(PRM.INPUT.getProperty(), oldValue, inputDirectory);
         } else {
-            String msg = "Input directory parameter value '" + inputDirectory
-                    + "' is invalid. No change reflected in model.";
+            String msg = "Input directory parameter value '" + inputDirectory + "' is invalid.";
             UIMAFramework.getLogger().log(Level.SEVERE, msg);
             throw new IllegalArgumentException(msg);
         }
@@ -461,8 +459,7 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
             pSettings.setParameterValue(pODir.getName(), outputDirectory);
             firePropertyChange(PRM.OUTPUT.getProperty(), oldValue, outputDirectory);
         } else {
-            String msg = "Output directory parameter value '" + outputDirectory
-                    + "' is invalid. No change reflected in model.";
+            String msg = "Output directory parameter value '" + outputDirectory + "' is invalid.";
             UIMAFramework.getLogger().log(Level.SEVERE, msg);
             throw new IllegalArgumentException(msg);
         }
@@ -565,8 +562,7 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
             pSettings.setParameterValue(PRM.EDITDISTANCECLS.getParameter(), editDistanceClass);
             firePropertyChange(PRM.EDITDISTANCECLS.getProperty(), oldValue, editDistanceClass);
         } else {
-            String msg = "Edit distance class parameter value '" + editDistanceClass
-                    + "' is invalid. No change reflected in model.";
+            String msg = "Edit distance class parameter value '" + editDistanceClass + "' is invalid.";
             UIMAFramework.getLogger().log(Level.SEVERE, msg);
             throw new IllegalArgumentException(msg);
         }
@@ -604,8 +600,7 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
             pSettings.setParameterValue(PRM.EDITDISTANCETLD.getParameter(), editDistanceThreshold);
             firePropertyChange(PRM.EDITDISTANCETLD.getProperty(), oldValue, editDistanceThreshold);
         } else {
-            String msg = "Edit distance threshold parameter value '" + editDistanceThreshold
-                    + "' is invalid. No change reflected in model.";
+            String msg = "Edit distance threshold parameter value '" + editDistanceThreshold + "' is invalid.";
             UIMAFramework.getLogger().log(Level.SEVERE, msg);
             throw new IllegalArgumentException(msg);
         }
@@ -643,8 +638,7 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
             pSettings.setParameterValue(PRM.EDITDISTANCENGRAMS.getParameter(), editDistanceNgrams);
             firePropertyChange(PRM.EDITDISTANCENGRAMS.getProperty(), oldValue, editDistanceNgrams);
         } else {
-            String msg = "Edit distance ngrams parameter value '" + editDistanceNgrams
-                    + "' is invalid. No change reflected in model.";
+            String msg = "Edit distance ngrams parameter value '" + editDistanceNgrams + "' is invalid.";
             UIMAFramework.getLogger().log(Level.SEVERE, msg);
             throw new IllegalArgumentException(msg);
         }
@@ -682,8 +676,7 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
             pSettings.setParameterValue(PRM.FREQUENCYTLD.getParameter(), frequencyThreshold);
             firePropertyChange(PRM.FREQUENCYTLD.getProperty(), oldValue, frequencyThreshold);
         } else {
-            String msg = "Frequency threshold parameter value '" + frequencyThreshold
-                    + "' is invalid. No change reflected in model.";
+            String msg = "Frequency threshold parameter value '" + frequencyThreshold + "' is invalid.";
             UIMAFramework.getLogger().log(Level.SEVERE, msg);
             throw new IllegalArgumentException(msg);
         }
@@ -722,8 +715,7 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
             pSettings.setParameterValue(PRM.ASSOCIATIONMEASURE.getParameter(), associationMeasure);
             firePropertyChange(PRM.ASSOCIATIONMEASURE.getProperty(), oldValue, associationMeasure);
         } else {
-            String msg = "Association measure parameter value '" + associationMeasure
-                    + "' is invalid. No change reflected in model.";
+            String msg = "Association measure parameter value '" + associationMeasure + "' is invalid.";
             UIMAFramework.getLogger().log(Level.SEVERE, msg);
             throw new IllegalArgumentException(msg);
         }
@@ -761,8 +753,7 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
             pSettings.setParameterValue(PRM.FILTERINGTLD.getParameter(), filteringThreshold);
             firePropertyChange(PRM.FILTERINGTLD.getProperty(), oldValue, filteringThreshold);
         } else {
-            String msg = "Filtering threshold parameter value '" + filteringThreshold
-                    + "' is invalid. No change reflected in model.";
+            String msg = "Filtering threshold parameter value '" + filteringThreshold + "' is invalid.";
             UIMAFramework.getLogger().log(Level.SEVERE, msg);
             throw new IllegalArgumentException(msg);
         }
@@ -801,8 +792,7 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
             pSettings.setParameterValue(PRM.FILTERRULE.getParameter(), filterRule);
             firePropertyChange(PRM.FILTERRULE.getProperty(), oldValue, filterRule);
         } else {
-            String msg = "Filter rule parameter value '" + filterRule
-                    + "' is invalid. No change reflected in model.";
+            String msg = "Filter rule parameter value '" + filterRule + "' is invalid.";
             UIMAFramework.getLogger().log(Level.SEVERE, msg);
             throw new IllegalArgumentException(msg);
         }
