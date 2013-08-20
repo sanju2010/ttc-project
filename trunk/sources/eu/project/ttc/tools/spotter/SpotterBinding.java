@@ -15,14 +15,59 @@ public interface SpotterBinding {
 
     /** Prefix of the Spotter properties */
     public final static String EVT_PREFIX = "spotter.";
-    /** Name of the property linked to the language parameter */
-    public final static String EVT_LANGUAGE = "spotter.language";
-    /** Name of the property linked to the input directory parameter */
-    public final static String EVT_INPUT    = "spotter.inputdirectory";
-    /** Name of the property linked to the output directory parameter */
-    public final static String EVT_OUTPUT   = "spotter.outputdirectory";
-    /** Name of the property linked to the treetagger home parameter */
-    public final static String EVT_TTGHOME  = "spotter.ttgdirectory";
+
+    /** Enum of all the properties handled by the Spotter models and views */
+    public static enum PRM {
+        /** Language parameter */
+        LANGUAGE            ("Language", "spotter.language", "en"),
+        /** Input directory parameter */
+        INPUT               ("InputDirectory", "spotter.inputdirectory", null),
+        /** Output directory parameter */
+        OUTPUT              ("Directory", "spotter.outputdirectory", null),
+        /** TreeTagger directory parameter */
+        TTGHOME             ("TreeTaggerHomeDirectory", "spotter.ttgdirectory", null);
+
+        private final String property;
+        private final String parameter;
+        private final Object defaultValue;
+
+        PRM(String uimaParameter, String property, Object defaultValue) {
+            this.parameter = uimaParameter;
+            this.property = property;
+            this.defaultValue = defaultValue;
+        }
+
+        public String getProperty() {
+            return this.property;
+        }
+
+        public String getParameter() {
+            return this.parameter;
+        }
+
+        public Object getDefaultValue() {
+            return defaultValue;
+        }
+
+        /**
+         * Get a particular PRM from a parameter name.
+         *
+         * @param parameter
+         *      name of the parameter we want the corresponding PRM of
+         * @return
+         *      either the PRM if found, null otherwise
+         */
+        public static PRM fromParameter(String parameter) {
+            if (parameter != null) {
+                for (PRM c : PRM.values()) {
+                    if (parameter.equals(c.getParameter())) {
+                        return c;
+                    }
+                }
+            }
+            return null;
+        }
+    }
 
     ///////////////////////////////////////////////////////////// LANGUAGE
 

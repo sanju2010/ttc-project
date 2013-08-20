@@ -361,10 +361,11 @@ public class TermSuite implements Runnable {
             // Non lethal if no configuration
         } catch (InvalidTermSuiteConfiguration e) {
             // Problem
-            displayException("There was a problem loading the Spotter configuration.<br/>" +
-                    "I recommend deleting the configuration file '" + spotter.getConfigurationFile() +
-                    "' if it exists. If not, that may be the first time you run the program and " +
-                    "the default configuration does not apply to you.", e);
+            UIMAFramework.getLogger().log(Level.SEVERE,
+                "There was a problem loading the Spotter configuration.\n" +
+                "If you have moved some directories, this is expected. Just fix the paths in parameters." +
+                "If you do not why, simply close the application and delete the configuration file '" +
+                spotter.getConfigurationFile() + "'.", e);
         }
 	}
 	
@@ -394,10 +395,11 @@ public class TermSuite implements Runnable {
             // Non lethal if no configuration
         } catch (InvalidTermSuiteConfiguration e) {
             // Problem
-            displayException("There was a problem loading the Indexer configuration.<br/>" +
-                    "I recommend deleting the configuration file '" + indexer.getConfigurationFile() +
-                    "' if it exists. If not, that may be the first time you run the program and " +
-                    "the default configuration does not apply to you.", e);
+            UIMAFramework.getLogger().log(Level.SEVERE,
+                "There was a problem loading the Indexer configuration.\n" +
+                "If you have moved some directories, this is expected. Just fix the paths in parameters." +
+                "If you do not why, simply close the application and delete the configuration file '" +
+                indexer.getConfigurationFile() + "'.", e);
         }
     }
 
@@ -427,10 +429,11 @@ public class TermSuite implements Runnable {
             // Non lethal if no configuration
         } catch (InvalidTermSuiteConfiguration e) {
             // Problem
-            displayException("There was a problem loading the Aligner configuration.<br/>" +
-                    "I recommend deleting the configuration file '" + aligner.getConfigurationFile() +
-                    "' if it exists. If not, that may be the first time you run the program and " +
-                    "the default configuration does not apply to you.", e);
+            UIMAFramework.getLogger().log(Level.SEVERE,
+                "There was a problem loading the Aligner configuration.\n" +
+                "If you have moved some directories, this is expected. Just fix the paths in parameters." +
+                "If you do not why, simply close the application and delete the configuration file '" +
+                    aligner.getConfigurationFile() + "'.", e);
         }
     }
 

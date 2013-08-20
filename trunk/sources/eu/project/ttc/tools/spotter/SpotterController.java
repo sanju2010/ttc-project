@@ -216,8 +216,10 @@ public class SpotterController extends ToolController {
                 .getResourceSpecifierFactory().createConfigurationParameterSettings();
 
         // Only set parameters needed by the Spotter AE
-        settings.setParameterValue("Directory", getModel().getOutputDirectory());
-        settings.setParameterValue("TreeTaggerHomeDirectory", getModel().getTreetaggerHome());
+        settings.setParameterValue(SpotterBinding.PRM.OUTPUT.getParameter(),
+                getModel().getOutputDirectory());
+        settings.setParameterValue(SpotterBinding.PRM.TTGHOME.getParameter(),
+                getModel().getTreetaggerHome());
 
         return settings;
     }
@@ -237,11 +239,6 @@ public class SpotterController extends ToolController {
             throw new IllegalStateException("Unable to generate descriptor name for Spotter as no " +
                     "language have been specified in the model.");
         }
-    }
-
-    @Override
-    public InputSource.InputSourceTypes getInputSourceType() {
-        return InputSource.InputSourceTypes.TXT;
     }
 		
 }

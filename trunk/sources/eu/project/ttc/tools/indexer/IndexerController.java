@@ -556,9 +556,4 @@ public class IndexerController extends ToolController {
         }
     }
 
-    @Override
-    public InputSource.InputSourceTypes getInputSourceType() {
-        return InputSource.InputSourceTypes.XMI;
-    }
-		
 }

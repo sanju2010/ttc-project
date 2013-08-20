@@ -12,7 +12,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 
 /**
- * @author grdscarabe
+ * @author Fabien Poulard <fpoulard@dictanova.com>
  * @date 16/08/13
  */
 public class ResultsPanel extends JPanel {
@@ -68,7 +68,7 @@ public class ResultsPanel extends JPanel {
         toolbarGUI = new JPanel();
         toolbarGUI.setLayout(new FlowLayout());
 
-        toolbarGUI.add(new Label("You can visualize the result of the processing below..."));
+        toolbarGUI.add(new JLabel("You can visualize the result of the processing below..."));
     }
 
     public void addCasToBanker(JCas jCas) {

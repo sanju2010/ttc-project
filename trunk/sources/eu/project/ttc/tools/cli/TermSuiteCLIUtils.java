@@ -48,7 +48,6 @@ import org.apache.uima.util.Level;
 import org.apache.uima.util.XMLInputSource;
 
 import eu.project.ttc.tools.TermSuiteRunner;
-import eu.project.ttc.tools.spotter.SpotterEngine;
 
 /**
  * This class consists of static methods used by the CLI.
@@ -276,7 +275,7 @@ public final class TermSuiteCLIUtils {
 	}
 
 	/**
-	 * Returns the description of a {@link SpotterEngine} for the specified
+	 * Returns the description of a {@link eu.project.ttc.tools.spotter.SpotterController} for the specified
 	 * <code>lang</code>
 	 * 
 	 * @param lang

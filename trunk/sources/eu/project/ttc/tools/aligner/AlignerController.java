@@ -366,11 +366,6 @@ public class AlignerController extends ToolController {
                     InputSource.InputSourceTypes.TXT);
     }
 
-    @Override
-    public InputSource.InputSourceTypes getInputSourceType() {
-        return InputSource.InputSourceTypes.TXT;
-    }
-
     /**
      * @see eu.project.ttc.tools.commons.ToolController#processingCallback(org.apache.uima.cas.CAS)
      */

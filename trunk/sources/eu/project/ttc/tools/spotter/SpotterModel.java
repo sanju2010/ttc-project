@@ -202,22 +202,22 @@ public class SpotterModel extends ToolModel implements SpotterBinding {
 
     @Override
     public void addLanguageChangeListener(PropertyChangeListener listener) {
-        addPropertyChangeListener(EVT_LANGUAGE, listener);
+        addPropertyChangeListener(PRM.LANGUAGE.getProperty(), listener);
     }
 
     @Override
     public void addInputDirectoryChangeListener(PropertyChangeListener listener) {
-        addPropertyChangeListener(EVT_INPUT, listener);
+        addPropertyChangeListener(PRM.INPUT.getProperty(), listener);
     }
 
     @Override
     public void addOutputDirectoryChangeListener(PropertyChangeListener listener) {
-        addPropertyChangeListener(EVT_OUTPUT, listener);
+        addPropertyChangeListener(PRM.OUTPUT.getProperty(), listener);
     }
 
     @Override
     public void addTtgDirectoryChangeListener(PropertyChangeListener listener) {
-        addPropertyChangeListener(EVT_TTGHOME, listener);
+        addPropertyChangeListener(PRM.TTGHOME.getProperty(), listener);
     }
 
     /**
@@ -230,7 +230,7 @@ public class SpotterModel extends ToolModel implements SpotterBinding {
         if ( language.matches("en|fr|de|es|ru|da|lv|zh") ) {
             String oldValue = (String) pSettings.getParameterValue(pLang.getName());
             pSettings.setParameterValue(pLang.getName(), language);
-            firePropertyChange(EVT_LANGUAGE, oldValue, language);
+            firePropertyChange(PRM.LANGUAGE.getProperty(), oldValue, language);
         } else {
             String msg = "Language parameter value '" + language
                     + "' is invalid. No change reflected in model.";
@@ -254,7 +254,7 @@ public class SpotterModel extends ToolModel implements SpotterBinding {
         if ( input.exists() && input.isDirectory() ) {
             String oldValue = (String) pSettings.getParameterValue(pIDir.getName());
             pSettings.setParameterValue(pIDir.getName(), inputDirectory);
-            firePropertyChange(EVT_INPUT, oldValue, inputDirectory);
+            firePropertyChange(PRM.INPUT.getProperty(), oldValue, inputDirectory);
         } else {
             String msg = "Input directory parameter value '" + inputDirectory
                     + "' is invalid. No change reflected in model.";
@@ -280,7 +280,7 @@ public class SpotterModel extends ToolModel implements SpotterBinding {
         if ( output.exists() && output.isDirectory() ) {
             String oldValue = (String) pSettings.getParameterValue(pODir.getName());
             pSettings.setParameterValue(pODir.getName(), outputDirectory);
-            firePropertyChange(EVT_OUTPUT, oldValue, outputDirectory);
+            firePropertyChange(PRM.OUTPUT.getProperty(), oldValue, outputDirectory);
         } else {
             String msg = "Output directory parameter value '" + outputDirectory
                     + "' is invalid. No change reflected in model.";
@@ -304,7 +304,7 @@ public class SpotterModel extends ToolModel implements SpotterBinding {
         if ( output.exists() && output.isDirectory() ) {
             String oldValue = (String) pSettings.getParameterValue(pTtg.getName());
             pSettings.setParameterValue(pTtg.getName(), treetaggerHome);
-            firePropertyChange(EVT_TTGHOME, oldValue, treetaggerHome);
+            firePropertyChange(PRM.TTGHOME.getProperty(), oldValue, treetaggerHome);
         } else {
             String msg = "TreeTagger home parameter value '" + treetaggerHome
                     + "' is invalid. No change reflected in model.";

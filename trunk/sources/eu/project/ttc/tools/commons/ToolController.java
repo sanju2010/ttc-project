@@ -84,11 +84,6 @@ public abstract class ToolController {
     public abstract String getAEDescriptor();
 
     /**
-     * Specify the kind of files to be processed by the tool.
-     */
-    public abstract InputSource.InputSourceTypes getInputSourceType();
-
-    /**
      * Compute the description of where and what the files to be processed are.
      */
     public abstract InputSource getInputSource();

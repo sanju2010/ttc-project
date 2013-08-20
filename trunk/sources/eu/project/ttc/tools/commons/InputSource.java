@@ -60,6 +60,13 @@ public class InputSource {
     }
 
     /**
+     * Access to the kind of files to be processed.
+     */
+    public InputSourceTypes getType() {
+        return this.type;
+    }
+
+    /**
      * Compute the list of the files to be processed.
      */
     public Collection<File> getInputFiles() throws FileNotFoundException {

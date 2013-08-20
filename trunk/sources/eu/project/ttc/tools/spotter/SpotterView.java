@@ -73,22 +73,22 @@ public class SpotterView extends JTabbedPane implements ToolView, SpotterBinding
 
     @Override
     public void addLanguageChangeListener(PropertyChangeListener listener) {
-        addPropertyChangeListener(EVT_LANGUAGE, listener);
+        addPropertyChangeListener(PRM.LANGUAGE.getProperty(), listener);
     }
 
     @Override
     public void addInputDirectoryChangeListener(PropertyChangeListener listener) {
-        addPropertyChangeListener(EVT_INPUT, listener);
+        addPropertyChangeListener(PRM.INPUT.getProperty(), listener);
     }
 
     @Override
     public void addOutputDirectoryChangeListener(PropertyChangeListener listener) {
-        addPropertyChangeListener(EVT_OUTPUT, listener);
+        addPropertyChangeListener(PRM.OUTPUT.getProperty(), listener);
     }
 
     @Override
     public void addTtgDirectoryChangeListener(PropertyChangeListener listener) {
-        addPropertyChangeListener(EVT_TTGHOME, listener);
+        addPropertyChangeListener(PRM.TTGHOME.getProperty(), listener);
     }
 
     @Override

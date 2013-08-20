@@ -85,7 +85,7 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 	
 	private ArrayList<File> data = new ArrayList<File>();
 	
-	private InputSourceTypes input;
+	private InputSourceTypes inputSourceTypes;
 
 	private String language;
 
@@ -144,7 +144,7 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
                 boolean last = index == this.data.size() - 1;
                 // this.publish(file);
                 try {
-                    this.process(file, this.encoding, this.language, this.input, last);
+                    this.process(file, this.encoding, this.language, this.inputSourceTypes, last);
                 } catch (Throwable e) {
                     UIMAFramework.getLogger().log(Level.SEVERE, e.getMessage());
                     e.printStackTrace();
@@ -317,8 +317,8 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 	}
 
     @Deprecated
-	public TermSuiteRunner(AnalysisEngineDescription description, String directory,	InputSourceTypes input, String language, String encoding) throws Exception {
-		this.input = input;
+	public TermSuiteRunner(AnalysisEngineDescription description, String directory,	InputSourceTypes inputSourceTypes, String language, String encoding) throws Exception {
+		this.inputSourceTypes = inputSourceTypes;
 		this.language = language;
 		this.encoding = encoding;
 		this.setDescription(description, description.getAnalysisEngineMetaData().getConfigurationParameterSettings());
@@ -327,7 +327,7 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 
     public TermSuiteRunner(ToolController tool) throws InvalidTermSuiteConfiguration, FileNotFoundException {
         this.tool = tool;
-        this.input = tool.getInputSourceType();
+        this.inputSourceTypes = tool.getInputSource().getType();
         this.language = tool.getLanguage();
         this.encoding = tool.getEncoding();
         try {
