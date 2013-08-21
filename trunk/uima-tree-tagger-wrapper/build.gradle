@@ -1,0 +1,10 @@
+///////////////////////////////////////////////////////////////// CONFIGURATION
+ 
+archivesBaseName = 'uima-tree-tagger-wrapper'
+ 
+////////////////////////////////////////////////////////////////// DEPENDENCIES
+ 
+dependencies {
+    compile libraries.uimaj_core
+	compile 'org.annolab.tt4j:org.annolab.tt4j:1.1.1' // TT4J
+}

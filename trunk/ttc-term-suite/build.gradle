@@ -1,0 +1,39 @@
+///////////////////////////////////////////////////////////////// CONFIGURATION
+ 
+archivesBaseName = 'ttc-term-suite'
+ 
+////////////////////////////////////////////////////////////////// DEPENDENCIES
+ 
+dependencies {
+	// External
+	compile libraries.uimaj_core
+	compile libraries.uimaj_cpe
+	compile libraries.uimaj_doc
+    compile libraries.commons_lang
+    compile libraries.commons_cli
+    compile libraries.commons_io
+
+	// Projects
+	compile project(':uima-catcher')
+	compile project(':uima-tree-tagger-wrapper')
+	compile project(':uima-pattern-matcher')
+	compile project(':uima-tokenizer')
+	compile project(':uima-filter')
+	compile project(':uima-contextualizer')
+	compile project(':uima-mapper')
+	compile project(':uima-chinese-segmenter')
+	compile project(':uima-stemmer')
+    compile project(':uima-indexer')
+}
+
+jar {
+	// make it fat
+	from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+	// tune manifest
+    manifest {
+        attributes(
+			"Implementation-Title": project.ext.name,
+			"Implementation-Version": version,
+			"Main-Class": "eu.project.ttc.tools.TermSuite")
+    }
+}

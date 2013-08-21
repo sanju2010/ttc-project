@@ -1,0 +1,48 @@
+// Main app
+include 'ttc-term-suite'
+project(':ttc-term-suite').projectDir = new File(settingsDir, './ttc-term-suite')
+ 
+// Subproject uima-catcher
+include 'uima-catcher'
+project(':uima-catcher').projectDir = new File(settingsDir, './uima-catcher')
+ 
+// Subproject uima-chinese-segmenter
+include 'uima-chinese-segmenter'
+project(':uima-chinese-segmenter').projectDir = new File(settingsDir, './uima-chinese-segmenter')
+ 
+// Subproject uima-contextualizer
+include 'uima-contextualizer'
+project(':uima-contextualizer').projectDir = new File(settingsDir, './uima-contextualizer')
+ 
+// Subproject uima-filter
+include 'uima-filter'
+project(':uima-filter').projectDir = new File(settingsDir, './uima-filter')
+ 
+// Subproject uima-indexer
+include 'uima-indexer'
+project(':uima-indexer').projectDir = new File(settingsDir, './uima-indexer')
+ 
+// Subproject uima-mapper
+include 'uima-mapper'  
+project(':uima-mapper').projectDir = new File(settingsDir, './uima-mapper')
+
+// Subproject uima-pattern-matcher
+include 'uima-pattern-matcher'  
+project(':uima-pattern-matcher').projectDir = new File(settingsDir, './uima-pattern-matcher')
+
+// Subproject uima-stemmer
+include 'uima-stemmer'  
+project(':uima-stemmer').projectDir = new File(settingsDir, './uima-stemmer')
+
+// Subproject uima-term-aligner
+include 'uima-term-aligner'  
+project(':uima-term-aligner').projectDir = new File(settingsDir, './uima-term-aligner')
+
+// Subproject uima-tokenizer
+include 'uima-tokenizer'  
+project(':uima-tokenizer').projectDir = new File(settingsDir, './uima-tokenizer')
+
+// Subproject uima-tree-tagger-wrapper
+include 'uima-tree-tagger-wrapper'  
+project(':uima-tree-tagger-wrapper').projectDir = new File(settingsDir, './uima-tree-tagger-wrapper')
+
