@@ -27,7 +27,7 @@ public class AnnotationViewer {
 		}
 	}
 	
-	private DefaultStyledDocument getDocuemnt() {
+	private DefaultStyledDocument getDocument() {
 		return this.document;
 	}
 	
@@ -38,7 +38,7 @@ public class AnnotationViewer {
 		this.text.setEditable(false);
 		this.text.setPreferredSize(new Dimension(620, 400));
 	    this.text.setMinimumSize(new Dimension(200, 100));
-	    this.text.setDocument(this.getDocuemnt());
+	    this.text.setDocument(this.getDocument());
 	}
 	
 	private JTextPane getText() {
@@ -63,7 +63,7 @@ public class AnnotationViewer {
 	}
 	
 	public void doGo() {
-		this.getText().setCaretPosition(this.getDocuemnt().getLength());
+		this.getText().setCaretPosition(this.getDocument().getLength());
 	}
 	
 	public void doGo(int position) {
@@ -71,8 +71,8 @@ public class AnnotationViewer {
 	}
 	
 	public void doUpdate(String text) throws Exception {
-		this.getDocuemnt().remove(0, this.getDocuemnt().getLength());
-		this.getDocuemnt().insertString(0, text, this.getAttributes());
+		this.getDocument().remove(0, this.getDocument().getLength());
+		this.getDocument().insertString(0, text, this.getAttributes());
 	}
 	
 	public void doEnable(boolean enabled) {
@@ -81,9 +81,9 @@ public class AnnotationViewer {
 	}
 
 	public void doClear() throws Exception {
-		int length = this.getDocuemnt().getLength();
-		String text = this.getDocuemnt().getText(0, length);
-		this.getDocuemnt().replace(0,length,text, this.getAttributes());
+		int length = this.getDocument().getLength();
+		String text = this.getDocument().getText(0, length);
+		this.getDocument().replace(0, length, text, this.getAttributes());
 	}
 	
 	private Integer begin;
@@ -92,7 +92,7 @@ public class AnnotationViewer {
 	private void doHide() throws Exception {
 		MutableAttributeSet attributes = new SimpleAttributeSet();
 		StyleConstants.setBold(attributes, false);	
-		this.getDocuemnt().setCharacterAttributes(this.begin, this.end - this.begin, attributes,false);
+		this.getDocument().setCharacterAttributes(this.begin, this.end - this.begin, attributes, false);
 	}
 	
 	public void doShow(int begin, int end) throws Exception {
@@ -107,7 +107,7 @@ public class AnnotationViewer {
 	private void doSwitch(int begin, int end) throws Exception {
 		MutableAttributeSet attributes = new SimpleAttributeSet();
 		StyleConstants.setBold(attributes, true);	
-		this.getDocuemnt().setCharacterAttributes(begin, end - begin, attributes,false);
+		this.getDocument().setCharacterAttributes(begin, end - begin, attributes, false);
 	}
 	
 	public void doSelect(int begin, int end, Color color) throws Exception {
@@ -117,7 +117,7 @@ public class AnnotationViewer {
 	private void doSelect(int begin, int end,Color color,boolean replace) throws Exception {
 		MutableAttributeSet attributes = new SimpleAttributeSet();
 		StyleConstants.setBackground(attributes, color);	
-		this.getDocuemnt().setCharacterAttributes(begin, end - begin, attributes,replace);
+		this.getDocument().setCharacterAttributes(begin, end - begin, attributes, replace);
 	}
 
 }

@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-public class ProcessingResultViewer extends JSplitPane {
+public class ProcessingResultViewer {
 	
 	private static final float BRIGHT = 0.95f;
 	
@@ -214,22 +214,19 @@ public class ProcessingResultViewer extends JSplitPane {
 		this.tabs.addTab(" Index ", this.getIndexScroll());
 	}
 	
-	private JTabbedPane getTabs() {
+	JTabbedPane getTabs() {
 		return this.tabs;
 	}
 	
 	private AnnotationViewer viewer;
 	
-	private void setViewer() {
-		this.viewer = new AnnotationViewer();
-	}
-	
 	public AnnotationViewer getViewer() {
 		return this.viewer;
 	}
 	
-	public ProcessingResultViewer() {
-        super(JSplitPane.HORIZONTAL_SPLIT);
+	public ProcessingResultViewer(AnnotationViewer viewer) {
+        //super(JSplitPane.HORIZONTAL_SPLIT);
+        //setBorder(BorderFactory.createEmptyBorder());
 
 		this.setTypeSystem();
 		this.setTypeColors();
@@ -245,12 +242,13 @@ public class ProcessingResultViewer extends JSplitPane {
 		this.setResultList();
 		this.setResultScroll();
 		this.setTabs();
-		this.setViewer();
+		//this.setViewer();
+        this.viewer = viewer;
 
         // Add components together
-        setResizeWeight(0.3);
-        setLeftComponent(this.getTabs());
-        setRightComponent(this.getViewer().getComponent());
+        //setResizeWeight(0.3);
+        //setLeftComponent(this.getTabs());
+        //setRightComponent(this.getViewer().getComponent());
 
 		this.doEnable(false);
 	}
@@ -383,7 +381,7 @@ public class ProcessingResultViewer extends JSplitPane {
 		this.getResultList().setEnabled(enabled);
 		this.getResultScroll().setEnabled(enabled);
 		this.getViewer().doEnable(enabled);
-		setEnabled(enabled);
+		//setEnabled(enabled);
 	}
 	
 	private class TypeRenderer implements ListCellRenderer {

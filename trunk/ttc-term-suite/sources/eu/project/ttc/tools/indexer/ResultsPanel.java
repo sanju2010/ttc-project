@@ -26,19 +26,6 @@ public class ResultsPanel extends JPanel {
         jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
     }
 
-    /**
-     * Create the view.
-     * Instantiate both panels:
-     * <ul>
-     *     <li>the configuration panel, responsible for exposing the
-     *     tool parameters to the user, which is itself splitted in three
-     *     config panels (as tabs),</li>
-     *     <li>the result panel, responsible for exposing the results
-     *     of the processing (this one or another) to the user.</li>
-     * </ul>
-     *
-     * Most
-     */
     public ResultsPanel() {
         super();
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
