@@ -292,11 +292,11 @@ public class IndexerView extends JTabbedPane implements ToolView, IndexerBinding
     }
 
     @Override
-    public void setFrequencyThreshold(Integer frequencyThreshold) {
+    public void setFrequencyThreshold(Float frequencyThreshold) {
         compEConfig.setFrequencyThreshold(frequencyThreshold);
     }
     @Override
-    public Integer getFrequencyThreshold() {
+    public Float getFrequencyThreshold() {
         return compEConfig.getFrequencyThreshold();
     }
     @Override

@@ -567,7 +567,7 @@ public class ConfigPanelExport extends JPanel {
 
         // Spinner as it is an incremental value
         spFrequencyTld = new JSpinner(
-                new SpinnerNumberModel(1, 0, Integer.MAX_VALUE, 1));
+                new SpinnerNumberModel(new Float(1f), new Float(0f), new Float(1f), new Float(0.05)));
         spFrequencyTld.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
@@ -645,7 +645,7 @@ public class ConfigPanelExport extends JPanel {
         return (String) cbFilterRule.getSelectedItem();
     }
 
-    public void setFrequencyThreshold(Integer frequencyThreshold) {
+    public void setFrequencyThreshold(Float frequencyThreshold) {
         // FIXME check values
         spFrequencyTld.setValue(frequencyThreshold);
     }
@@ -656,8 +656,8 @@ public class ConfigPanelExport extends JPanel {
     public void unsetFrequencyThresholdError() {
         lblFrequencyTld.setText("<html><b>"+getFrequencyThresholdLbl()+"</b></html>");
     }
-    public Integer getFrequencyThreshold() {
-        return (Integer) spFrequencyTld.getValue();
+    public Float getFrequencyThreshold() {
+        return (Float) spFrequencyTld.getValue();
     }
     private String getFrequencyThresholdLbl() {
         if( "OccurrenceThreshold".equals(getFilterRule()) ) {

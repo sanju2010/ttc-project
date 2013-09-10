@@ -143,7 +143,7 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
         pFrequencyThreshold = UIMAFramework
                 .getResourceSpecifierFactory().createConfigurationParameter();
         pFrequencyThreshold.setName(PRM.FREQUENCYTLD.getParameter());
-        pFrequencyThreshold.setType(ConfigurationParameter.TYPE_INTEGER);
+        pFrequencyThreshold.setType(ConfigurationParameter.TYPE_FLOAT);
         pFrequencyThreshold.setMultiValued(false);
         pFrequencyThreshold.setMandatory(true);
 
@@ -257,7 +257,7 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
                         setEditDistanceNgrams((Integer) nvp.getValue());
                         break;
                     case FREQUENCYTLD:
-                        setFrequencyThreshold((Integer) nvp.getValue());
+                        setFrequencyThreshold((Float) nvp.getValue());
                         break;
                     case ASSOCIATIONMEASURE:
                         setAssociationMeasure((String) nvp.getValue());
@@ -280,6 +280,11 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
                                 new String[]{nvp.getName()});
                 }
             } catch (IllegalArgumentException e) {
+                String msg = "Unable to correctly load the configuration persisted in file '"
+                        + getConfigurationFile().getAbsolutePath() + "' as it contains invalid values.";
+                UIMAFramework.getLogger().log(Level.SEVERE, msg);
+                throw new InvalidTermSuiteConfiguration(msg, e);
+            } catch (ClassCastException e) {
                 String msg = "Unable to correctly load the configuration persisted in file '"
                         + getConfigurationFile().getAbsolutePath() + "' as it contains invalid values.";
                 UIMAFramework.getLogger().log(Level.SEVERE, msg);
@@ -592,6 +597,7 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
      * If the value is valid, then the parameter value is changed in the
      * model and an event is fired indicating that the property has
      * changed in the model.
+     * @param editDistanceThreshold
      */
     @Override
     public void setEditDistanceThreshold(Float editDistanceThreshold) {
@@ -609,7 +615,7 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
     @Override
     public Float getEditDistanceThreshold() {
         Float threshold = (Float) pSettings.getParameterValue(PRM.EDITDISTANCETLD.getParameter());
-        return threshold==null ? 0f : threshold;
+        return threshold==null ? (Float) PRM.EDITDISTANCETLD.getDefaultValue() : threshold;
     }
     /** Listener binder for edit distance threshold property */
     @Override
@@ -668,9 +674,10 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
      * If the value is valid, then the parameter value is changed in the
      * model and an event is fired indicating that the property has
      * changed in the model.
+     * @param frequencyThreshold
      */
     @Override
-    public void setFrequencyThreshold(Integer frequencyThreshold) {
+    public void setFrequencyThreshold(Float frequencyThreshold) {
         if ( (frequencyThreshold >= 0) && (frequencyThreshold <= 1.0) ) {
             Float oldValue = (Float) pSettings.getParameterValue(PRM.FREQUENCYTLD.getParameter());
             pSettings.setParameterValue(PRM.FREQUENCYTLD.getParameter(), frequencyThreshold);
@@ -683,9 +690,9 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
     }
     /** Getter for frequency threshold property */
     @Override
-    public Integer getFrequencyThreshold() {
-        Integer threshold = (Integer) pSettings.getParameterValue(PRM.FREQUENCYTLD.getParameter());
-        return threshold==null ? (Integer) PRM.FREQUENCYTLD.getDefaultValue() : threshold;
+    public Float getFrequencyThreshold() {
+        Float threshold = (Float) pSettings.getParameterValue(PRM.FREQUENCYTLD.getParameter());
+        return threshold==null ? (Float) PRM.FREQUENCYTLD.getDefaultValue() : threshold;
     }
     /** Listener binder for frequency threshold property */
     @Override
@@ -745,6 +752,7 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
      * If the value is valid, then the parameter value is changed in the
      * model and an event is fired indicating that the property has
      * changed in the model.
+     * @param filteringThreshold
      */
     @Override
     public void setFilteringThreshold(Float filteringThreshold) {
@@ -762,7 +770,7 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
     @Override
     public Float getFilteringThreshold() {
         Float threshold = (Float) pSettings.getParameterValue(PRM.FILTERINGTLD.getParameter());
-        return threshold == null ? 0.0f : threshold;
+        return threshold == null ? (Float) PRM.FILTERINGTLD.getDefaultValue() : threshold;
     }
     /** Listener binder for filtering threshold property */
     @Override

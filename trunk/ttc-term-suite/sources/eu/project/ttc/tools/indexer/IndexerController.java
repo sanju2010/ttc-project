@@ -210,7 +210,7 @@ public class IndexerController extends ToolController {
                         !getModel().getFrequencyThreshold().equals(evt.getNewValue())) {
                     try {
                         System.out.println("Indexer:view-model:frequency threshold->" + evt.getNewValue());
-                        getModel().setFrequencyThreshold((Integer) evt.getNewValue());
+                        getModel().setFrequencyThreshold((Float) evt.getNewValue());
                     } catch (IllegalArgumentException e) {
                         success = false;
                         getView().setFrequencyThresholdError(e);
@@ -397,7 +397,7 @@ public class IndexerController extends ToolController {
                 if ( (getView().getFrequencyThreshold()==null) ||
                         ! getView().getFrequencyThreshold().equals(evt.getNewValue()) ) {
                     System.out.println("Indexer:model-view:frequency threshold->" + evt.getNewValue());
-                    getView().setFrequencyThreshold((Integer) evt.getNewValue());
+                    getView().setFrequencyThreshold((Float) evt.getNewValue());
                 } // else, no need to reflect the change (and prevent looping)
             }
         });
@@ -497,6 +497,7 @@ public class IndexerController extends ToolController {
 
         try { getModel().setFrequencyThreshold( getView().getFrequencyThreshold() ); }
         catch (IllegalArgumentException e) { getView().setFrequencyThresholdError(e); }
+        catch (ClassCastException e) { getView().setFrequencyThresholdError(e); }
 
         try { getModel().setIgnoreDiacritics( getView().isIgnoreDiacritics() ); }
         catch (IllegalArgumentException e) { getView().setIgnoreDiacriticsError(e); }

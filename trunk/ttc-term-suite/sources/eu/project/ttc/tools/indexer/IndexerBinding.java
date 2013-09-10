@@ -34,7 +34,7 @@ public interface IndexerBinding {
         /** Edit distance ngrams parameter */
         EDITDISTANCENGRAMS  ("EditDistanceNgrams", "indexer.editdistancengrams", 3),
         /** Frequency threshold parameter */
-        FREQUENCYTLD        ("OccurrenceThreshold", "indexer.frequencythreshold", 10),
+        FREQUENCYTLD        ("OccurrenceThreshold", "indexer.frequencythreshold", 0.1),
         /** Association measure parameter */
         ASSOCIATIONMEASURE  ("AssociationRateClassName", "indexer.associationmeasure", "eu.project.ttc.metrics.LogLikelihood"),
         /** Filtering threshold parameter */
@@ -326,12 +326,12 @@ public interface IndexerBinding {
      * Setter for the frequency threshold parameter value.
      * @param frequencyThreshold    threshold for the frequency filtering
      */
-    void setFrequencyThreshold(Integer frequencyThreshold);
+    void setFrequencyThreshold(Float frequencyThreshold);
 
     /**
      * Accessor to the frequency threshold parameter value.
      */
-    Integer getFrequencyThreshold();
+    Float getFrequencyThreshold();
 
     /**
      * Listener to a change regarding the frequency threshold parameter.
