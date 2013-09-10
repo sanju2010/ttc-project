@@ -21,7 +21,7 @@ import java.net.URL;
 public class ConfigPanelExport extends JPanel {
 
     protected final static String LBL_TSV = "Export in TSV format";
-    protected final static String LBL_KEEPVERBS = "Filter out verbs and such";
+    protected final static String LBL_KEEPVERBS = "Add verbs and adverbs to terminology";
     protected final static String LBL_FILTERRULE = "Rule to filter terms";
     protected final static String LBL_FILTERINGTLD = "Number of terms to be exported";
     protected final static String LBL_FREQUENCYTLD_OCC = "Minimal number of occurrences";
@@ -35,9 +35,9 @@ public class ConfigPanelExport extends JPanel {
     private JEditorPane epTSV;
 
     // Keep verbs parameter
-    private JLabel lblFilterVerbs;
-    private JCheckBox cbFilterVerbs;
-    private JEditorPane epFilterVerbs;
+    private JLabel lblAddVerbs;
+    private JCheckBox cbAddVerbs;
+    private JEditorPane epAddVerbs;
 
     // Filter rule parameter
     private JLabel lblFilterRule;
@@ -107,10 +107,10 @@ public class ConfigPanelExport extends JPanel {
                                 .addComponent(epTSV))
                                 // Keep verbs parameter
                         .addGroup(cfgLayout.createSequentialGroup()
-                                .addComponent(cbFilterVerbs)
-                                .addComponent(lblFilterVerbs)
+                                .addComponent(cbAddVerbs)
+                                .addComponent(lblAddVerbs)
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(epFilterVerbs))
+                                .addComponent(epAddVerbs))
                                 // Filter rule parameter
                         .addGroup(cfgLayout.createSequentialGroup()
                                 .addGroup(cfgLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -155,12 +155,12 @@ public class ConfigPanelExport extends JPanel {
                         .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                                 // Keep verbs parameter
                         .addGroup(cfgLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
-                                .addComponent(cbFilterVerbs,
+                                .addComponent(cbAddVerbs,
                                         GroupLayout.DEFAULT_SIZE,
                                         GroupLayout.PREFERRED_SIZE,
                                         GroupLayout.PREFERRED_SIZE)
-                                .addComponent(lblFilterVerbs)
-                                .addComponent(epFilterVerbs))
+                                .addComponent(lblAddVerbs)
+                                .addComponent(epAddVerbs))
                         .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                                 // Filter rule parameter
                         .addGroup(cfgLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -250,32 +250,32 @@ public class ConfigPanelExport extends JPanel {
      */
     public void createKeepVerbsComponents(int preferredWidth) {
         // Label
-        lblFilterVerbs = new JLabel("<html><b>"+LBL_KEEPVERBS+"</b></html>");
-        lblFilterVerbs.setPreferredSize(new Dimension(
-                (int) lblFilterVerbs.getPreferredSize().getHeight(),
+        lblAddVerbs = new JLabel("<html><b>"+LBL_KEEPVERBS+"</b></html>");
+        lblAddVerbs.setPreferredSize(new Dimension(
+                (int) lblAddVerbs.getPreferredSize().getHeight(),
                 preferredWidth));
 
         // Checkbox as it is a boolean
-        cbFilterVerbs = new JCheckBox();
-        cbFilterVerbs.addActionListener(new ActionListener() {
-             @Override
-             public void actionPerformed(ActionEvent e) {
-                 System.out.println("Detected a keep verb change, fire property change.");
-                 firePropertyChange(IndexerBinding.PRM.KEEPVERBS.getProperty(),
-                        cbFilterVerbs.isSelected(), !cbFilterVerbs.isSelected());
-             }
-         });
+        cbAddVerbs = new JCheckBox();
+        cbAddVerbs.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Detected a keep verb change, fire property change.");
+                firePropertyChange(IndexerBinding.PRM.KEEPVERBS.getProperty(),
+                        cbAddVerbs.isSelected(), !cbAddVerbs.isSelected());
+            }
+        });
 
         // Editor pane to display help
-        epFilterVerbs = new JEditorPane();
-        epFilterVerbs.setEditable(false);
-        epFilterVerbs.setOpaque(false);
-        epFilterVerbs.setPreferredSize(new Dimension(
-                (int) epFilterVerbs.getPreferredSize().getHeight(),
+        epAddVerbs = new JEditorPane();
+        epAddVerbs.setEditable(false);
+        epAddVerbs.setOpaque(false);
+        epAddVerbs.setPreferredSize(new Dimension(
+                (int) epAddVerbs.getPreferredSize().getHeight(),
                 preferredWidth));
         try {
             URL res = getClass().getResource("/eu/project/ttc/gui/texts/indexer/param.filterverbs.html");
-            epFilterVerbs.setPage(res);
+            epAddVerbs.setPage(res);
         } catch (IOException e){} // No help
     }
 
@@ -607,17 +607,17 @@ public class ConfigPanelExport extends JPanel {
     }
 
     public void setKeepVerbs(Boolean keepVerbs) {
-        cbFilterVerbs.setSelected(!keepVerbs);
+        cbAddVerbs.setSelected(keepVerbs);
     }
     public void setKeepVerbsError(Throwable e) {
-        lblFilterVerbs.setText("<html><b>"+LBL_KEEPVERBS+"</b><br/><p style=\"color: red; font-size: small\">"
+        lblAddVerbs.setText("<html><b>" + LBL_KEEPVERBS + "</b><br/><p style=\"color: red; font-size: small\">"
                 + e.getMessage() + "</p></html>");
     }
     public void unsetKeepVerbsError() {
-        lblFilterVerbs.setText("<html><b>"+LBL_KEEPVERBS+"</b></html>");
+        lblAddVerbs.setText("<html><b>" + LBL_KEEPVERBS + "</b></html>");
     }
     public Boolean isKeepVerbs() {
-        return !cbFilterVerbs.isSelected();
+        return cbAddVerbs.isSelected();
     }
 
     public void setFilterRule(String filterRule) {
