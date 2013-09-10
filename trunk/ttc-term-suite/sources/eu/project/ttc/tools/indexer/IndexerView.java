@@ -20,8 +20,10 @@ public class IndexerView extends JTabbedPane implements ToolView, IndexerBinding
 
     private final ConfigPanelBasic compBConfig;
     private final ConfigPanelVariants compVConfig;
-    private final ResultsPanel compResults;
     private final ConfigPanelExport compEConfig;
+    private final ConfigPanelContextVectors compCVConfig;
+    private final ResultsPanel compResults;
+
 
     private JTabbedPane configTabs;
     private Box configGUI;
@@ -67,6 +69,14 @@ public class IndexerView extends JTabbedPane implements ToolView, IndexerBinding
             }
         });
         configTabs.addTab("Filtering and Export", new JScrollPane(compEConfig));
+        compCVConfig = new ConfigPanelContextVectors();
+        compCVConfig.addPropertyChangeListener(new PropertyChangeListener() {
+            public void propertyChange(PropertyChangeEvent evt) {
+                if (evt.getPropertyName().startsWith(EVT_PREFIX))
+                    firePropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
+            }
+        });
+        configTabs.addTab("Context vectors", new JScrollPane(compCVConfig));
 
 
         // Plug to main GUI part Config and results
@@ -314,11 +324,11 @@ public class IndexerView extends JTabbedPane implements ToolView, IndexerBinding
 
     @Override
     public void setAssociationMeasure(String associationMeasure) {
-        compEConfig.setAssociationMeasure(associationMeasure);
+        compCVConfig.setAssociationMeasure(associationMeasure);
     }
     @Override
     public String getAssociationMeasure() {
-        return compEConfig.getAssociationMeasure();
+        return compCVConfig.getAssociationMeasure();
     }
     @Override
     public void addAssociationMeasureChangeListener(PropertyChangeListener listener) {
@@ -326,11 +336,11 @@ public class IndexerView extends JTabbedPane implements ToolView, IndexerBinding
     }
     @Override
     public void setAssociationMeasureError(Throwable e) {
-        compEConfig.setAssociationMeasureError(e);
+        compCVConfig.setAssociationMeasureError(e);
     }
     @Override
     public void unsetAssociationMeasureError() {
-        compEConfig.unsetAssociationMeasureError();
+        compCVConfig.unsetAssociationMeasureError();
     }
 
     @Override

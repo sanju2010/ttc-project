@@ -27,7 +27,6 @@ public class ConfigPanelExport extends JPanel {
     protected final static String LBL_FREQUENCYTLD_OCC = "Minimal number of occurrences";
     protected static final String LBL_FREQUENCYTLD_FREQ = "Frequency threshold";
     protected static final String LBL_FREQUENCYTLD_SPEC = "Specificity threshold";
-    protected static final String LBL_ASSOCMEASURE = "Association measure";
 
     // TSV export parameter
     private JLabel lblTSV;
@@ -49,11 +48,6 @@ public class ConfigPanelExport extends JPanel {
     private JSpinner spFilteringTld;
     private JEditorPane epFilteringTld;
 
-    // Association measure parameter
-    private JLabel lblAssociationMeasure;
-    private JComboBox cbAssociationMeasure;
-    private JEditorPane epAssociationMeasure;
-
     // Frequency threshold parameter
     private JLabel lblFrequencyTld;
     private JSpinner spFrequencyTld;
@@ -70,7 +64,6 @@ public class ConfigPanelExport extends JPanel {
         createTSVComponents(pWidth);
         createKeepVerbsComponents(pWidth);
         createFilterRuleComponents(pWidth);
-        createAssociationMeasureComponents(pWidth);
         createFilteringTldComponents(pWidth);
         createFrequencyTldComponents(pWidth);
         updateFilterParameters((String) cbFilterRule.getSelectedItem());
@@ -118,13 +111,6 @@ public class ConfigPanelExport extends JPanel {
                                         .addComponent(cbFilterRule))
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(epFilterRule))
-                                // Association measure parameter
-                        .addGroup(cfgLayout.createSequentialGroup()
-                                .addGroup(cfgLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                        .addComponent(lblAssociationMeasure)
-                                        .addComponent(cbAssociationMeasure))
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(epAssociationMeasure))
                                 // Filtering threshold parameter
                         .addGroup(cfgLayout.createSequentialGroup()
                                 .addGroup(cfgLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -172,17 +158,6 @@ public class ConfigPanelExport extends JPanel {
                                                 GroupLayout.PREFERRED_SIZE,
                                                 GroupLayout.PREFERRED_SIZE))
                                 .addComponent(epFilterRule))
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                                // Association measure parameter
-                        .addGroup(cfgLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                .addGroup(cfgLayout.createSequentialGroup()
-                                        .addComponent(lblAssociationMeasure)
-                                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(cbAssociationMeasure,
-                                                GroupLayout.DEFAULT_SIZE,
-                                                GroupLayout.PREFERRED_SIZE,
-                                                GroupLayout.PREFERRED_SIZE))
-                                .addComponent(epAssociationMeasure))
                         .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                                 // Filtering threshold parameter
                         .addGroup(cfgLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -344,13 +319,10 @@ public class ConfigPanelExport extends JPanel {
             // Unknown filter rule... show everything...
             lblFilteringTld.setVisible(true);
             lblFrequencyTld.setVisible(true);
-            lblAssociationMeasure.setVisible(true);
             spFrequencyTld.setVisible(true);
             spFilteringTld.setVisible(true);
-            cbAssociationMeasure.setVisible(true);
             epFilteringTld.setVisible(true);
             epFrequencyTld.setVisible(true);
-            epAssociationMeasure.setVisible(true);
         }
     }
 
@@ -365,9 +337,6 @@ public class ConfigPanelExport extends JPanel {
         epFilteringTld.setVisible(true);
 
         // ... hide the rest
-        lblAssociationMeasure.setVisible(false);
-        cbAssociationMeasure.setVisible(false);
-        epAssociationMeasure.setVisible(false);
         lblFrequencyTld.setVisible(false);
         spFrequencyTld.setVisible(false);
         epFrequencyTld.setVisible(false);
@@ -384,9 +353,6 @@ public class ConfigPanelExport extends JPanel {
         epFilteringTld.setVisible(true);
 
         // ... hide the rest
-        lblAssociationMeasure.setVisible(false);
-        cbAssociationMeasure.setVisible(false);
-        epAssociationMeasure.setVisible(false);
         lblFrequencyTld.setVisible(false);
         spFrequencyTld.setVisible(false);
         epFrequencyTld.setVisible(false);
@@ -401,9 +367,6 @@ public class ConfigPanelExport extends JPanel {
         lblFilteringTld.setVisible(true);
         spFilteringTld.setVisible(true);
         epFilteringTld.setVisible(true);
-        lblAssociationMeasure.setVisible(true);
-        cbAssociationMeasure.setVisible(true);
-        epAssociationMeasure.setVisible(true);
 
         // ... hide the rest
         lblFrequencyTld.setVisible(false);
@@ -429,9 +392,6 @@ public class ConfigPanelExport extends JPanel {
         lblFilteringTld.setVisible(false);
         spFilteringTld.setVisible(false);
         epFilteringTld.setVisible(false);
-        lblAssociationMeasure.setVisible(false);
-        cbAssociationMeasure.setVisible(false);
-        epAssociationMeasure.setVisible(false);
     }
 
     /**
@@ -452,9 +412,6 @@ public class ConfigPanelExport extends JPanel {
         lblFilteringTld.setVisible(false);
         spFilteringTld.setVisible(false);
         epFilteringTld.setVisible(false);
-        lblAssociationMeasure.setVisible(false);
-        cbAssociationMeasure.setVisible(false);
-        epAssociationMeasure.setVisible(false);
     }
 
     /**
@@ -470,10 +427,6 @@ public class ConfigPanelExport extends JPanel {
             epFilteringTld.setPage(res);
         } catch (IOException e){} // No help
         epFrequencyTld.setVisible(true);
-
-        lblAssociationMeasure.setVisible(true);
-        cbAssociationMeasure.setVisible(true);
-        epAssociationMeasure.setVisible(true);
 
         // ... hide the rest
         lblFilteringTld.setVisible(false);
@@ -513,45 +466,6 @@ public class ConfigPanelExport extends JPanel {
         try {
             URL res = getClass().getResource("/eu/project/ttc/gui/texts/indexer/param.filteringtld.html");
             epFilteringTld.setPage(res);
-        } catch (IOException e){} // No help
-    }
-
-    /**
-     * Create the components related to the association measure parameter.
-     */
-    public void createAssociationMeasureComponents(int preferredWidth) {
-        // Label
-        lblAssociationMeasure = new JLabel("<html><b>"+LBL_ASSOCMEASURE+"</b></html>");
-        lblAssociationMeasure.setPreferredSize(new Dimension(
-                (int) lblAssociationMeasure.getPreferredSize().getHeight(),
-                preferredWidth ));
-
-        // Comboxbox as it is a limited list of choices
-        cbAssociationMeasure = new JComboBox();
-        cbAssociationMeasure.addItem(new ClassItem(
-                "eu.project.ttc.metrics.LogLikelihood", "Log likelyhood"));
-        cbAssociationMeasure.addItem(new ClassItem(
-                "eu.project.ttc.metrics.MutualInformation", "Mutual information"));
-        cbAssociationMeasure.addItemListener(new ItemListener() {
-            public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED) {
-                    System.out.println("Detected an association measurechange, fire property change.");
-                    firePropertyChange(IndexerBinding.PRM.ASSOCIATIONMEASURE.getProperty(), null,
-                            cbAssociationMeasure.getSelectedItem());
-                }
-            }
-        });
-
-        // Editor pane to display help
-        epAssociationMeasure = new JEditorPane();
-        epAssociationMeasure.setEditable(false);
-        epAssociationMeasure.setOpaque(false);
-        epAssociationMeasure.setPreferredSize(new Dimension(
-                (int) epAssociationMeasure.getPreferredSize().getHeight(),
-                preferredWidth));
-        try {
-            URL res = getClass().getResource("/eu/project/ttc/gui/texts/indexer/param.associationmeasure.html");
-            epAssociationMeasure.setPage(res);
         } catch (IOException e){} // No help
     }
 
@@ -670,32 +584,6 @@ public class ConfigPanelExport extends JPanel {
             return "NA";
         }
     }
-
-    public void setAssociationMeasure(String associationMeasure) {
-        for(int i=0 ; i < cbAssociationMeasure.getItemCount() ; i++) {
-            ClassItem item = (ClassItem) cbAssociationMeasure.getItemAt(i);
-            if ( item.getClassName().equals(associationMeasure) ) {
-                if (cbAssociationMeasure.getSelectedIndex() != i) {
-                    cbAssociationMeasure.setSelectedItem( item );
-                }
-                return;
-            }
-        }
-        // If reach here, we have a problem
-        throw new IllegalArgumentException("I cannot reflect the change to value '"
-                + associationMeasure + "' as I do not handle this value.");
-    }
-    public void setAssociationMeasureError(Throwable e) {
-        lblAssociationMeasure.setText("<html><b>"+LBL_ASSOCMEASURE+"</b><br/><p style=\"color: red; font-size: small\">"
-                + e.getMessage() + "</p></html>");
-    }
-    public void unsetAssociationMeasureError() {
-        lblAssociationMeasure.setText("<html><b>"+LBL_ASSOCMEASURE+"</b></html>");
-    }
-    public String getAssociationMeasure() {
-        return ((ClassItem) cbAssociationMeasure.getSelectedItem()).getClassName();
-    }
-
 
     public void setFilteringThreshold(Float filteringThreshold) {
         // FIXME check values
