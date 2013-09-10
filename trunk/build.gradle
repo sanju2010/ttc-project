@@ -16,6 +16,10 @@ allprojects {
 	targetCompatibility = 1.6
     [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
+    configurations {
+        prepare.extendsFrom(compile)
+    }
+
 	repositories {
 	        mavenLocal()
 	        mavenCentral()

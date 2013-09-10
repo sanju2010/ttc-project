@@ -1,0 +1,25 @@
+// Copyright (c) 2013 Dictanova. All rights reserved.
+
+//////////////////////////////////////////////////////////////////
+// JCASGEN
+// Author: Damien Raude-Morvan
+//
+// Generate UIMA type system
+//////////////////////////////////////////////////////////////////
+
+task jcasgen(type: JavaExec) {
+    description = 'Generate UIMA TS classes'
+    ext.srcFile = file("$projectDir/$project.jcasFile")
+    ext.outputDir = file("$projectDir/sources") // FIXME: convention src/main/java
+    inputs.file srcFile
+    outputs.dir outputDir
+    classpath configurations.prepare
+    // This ensures availability of type system imports
+    // however, assumes that files are in desc subfolder
+    systemProperty 'uima.datapath', "$projectDir/desc"
+    main = 'org.apache.uima.tools.jcasgen.Jg'
+    args = ['-jcasgeninput', srcFile, '-jcasgenoutput', outputDir]
+}
+
+// UIMA type system is needed for Java compile
+compileJava.source jcasgen.outputs, sourceSets.main.java

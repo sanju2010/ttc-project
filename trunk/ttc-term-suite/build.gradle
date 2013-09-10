@@ -3,9 +3,11 @@
 archivesBaseName = 'ttc-term-suite'
 
 ext.jcasFile = 'resources/eu/project/ttc/types/TermSuiteTypeSystem.xml'
+apply from: "../jcasgen.gradle"
 
-configurations {
-    prepare.extendsFrom(compile)
+clean.doLast {
+    project.delete (fileTree(dir: 'src/main/java/dictanova'))
+    println 'Cleaning typesystem generated sources.'
 }
 
 ////////////////////////////////////////////////////////////////// DEPENDENCIES
@@ -59,28 +61,3 @@ clean.doLast {
     project.delete (fileTree(dir: 'sources/org')) // org.apache.uima.examples
     println 'Cleaning typesystem generated sources.'
 }
-
-//////////////////////////////////////////////////////////////////
-// JCASGEN
-// Author: Damien Raude-Morvan
-// Copyright (c) 2013 Dictanova. All rights reserved.
-//
-// Generate UIMA type system
-//////////////////////////////////////////////////////////////////
-
-task jcasgen(type: JavaExec) {
-    description = 'Generate UIMA TS classes'
-    ext.srcFile = file("$projectDir/$project.jcasFile")
-    ext.outputDir = file("$projectDir/sources")
-    inputs.file srcFile
-    outputs.dir outputDir
-    classpath configurations.prepare
-    // This ensures availability of type system imports
-    // however, assumes that files are in desc subfolder
-    systemProperty 'uima.datapath', "$projectDir/desc"
-    main = 'org.apache.uima.tools.jcasgen.Jg'
-    args = ['-jcasgeninput', srcFile, '-jcasgenoutput', outputDir]
-}
-
-// UIMA type system is needed for Java compile
-compileJava.source jcasgen.outputs, sourceSets.main.java
