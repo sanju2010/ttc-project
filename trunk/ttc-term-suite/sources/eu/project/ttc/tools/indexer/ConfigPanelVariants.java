@@ -21,15 +21,19 @@ import java.net.URL;
  */
 public class ConfigPanelVariants extends JPanel {
 
+    protected final static String LBL_FLEXIONNALVARIANTS = "Detect flexionnal variants";
+    protected final static String LBL_GRAPHICALVARIANTS  = "Detect graphical variants";
+    protected final static String LBL_MISPELLINGVARIANTS = "Detect mispelling variants";
+
     // Ignore diacritics parameter
-    private JLabel lblIgnoreDiacritics;
-    private JCheckBox cbIgnoreDiacritics;
-    private JEditorPane epIgnoreDiacritics;
+    private JLabel lblGraphicalVariants;
+    private JCheckBox cbGraphicalVariants;
+    private JEditorPane epGraphicalVariants;
 
     // Variant detection parameter
-    private JLabel lblVariantDetection;
-    private JCheckBox cbVariantDetection;
-    private JEditorPane epVariantDetection;
+    private JLabel lblMispellingVariants;
+    private JCheckBox cbMispellingVariants;
+    private JEditorPane epMispellingVariants;
 
     // Edit distance class parameter
     private JLabel lblEditDistanceClass;
@@ -59,7 +63,7 @@ public class ConfigPanelVariants extends JPanel {
         createEditDistanceClassComponents(pWidth);
         createEditDistanceThresholdComponents(pWidth);
         createEditDistanceNgramsComponents(pWidth);
-        toggleVariantDetectionParameters(cbVariantDetection.isSelected());
+        toggleVariantDetectionParameters(cbMispellingVariants.isSelected());
 
         // Layout the components
         layoutComponents();
@@ -87,16 +91,16 @@ public class ConfigPanelVariants extends JPanel {
                 cfgLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
                         // Ignore diacritics parameter
                         .addGroup(cfgLayout.createSequentialGroup()
-                                .addComponent(cbIgnoreDiacritics)
-                                .addComponent(lblIgnoreDiacritics)
+                                .addComponent(cbGraphicalVariants)
+                                .addComponent(lblGraphicalVariants)
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(epIgnoreDiacritics))
+                                .addComponent(epGraphicalVariants))
                                 // Variant detection parameter
                         .addGroup(cfgLayout.createSequentialGroup()
-                                .addComponent(cbVariantDetection)
-                                .addComponent(lblVariantDetection)
+                                .addComponent(cbMispellingVariants)
+                                .addComponent(lblMispellingVariants)
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(epVariantDetection))
+                                .addComponent(epMispellingVariants))
                                 // Edit distance class parameter
                         .addGroup(cfgLayout.createSequentialGroup()
                                 .addGroup(cfgLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -125,21 +129,21 @@ public class ConfigPanelVariants extends JPanel {
                 cfgLayout.createSequentialGroup()
                         // Ignore diacritics parameter
                         .addGroup(cfgLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
-                                .addComponent(cbIgnoreDiacritics,
+                                .addComponent(cbGraphicalVariants,
                                         GroupLayout.DEFAULT_SIZE,
                                         GroupLayout.PREFERRED_SIZE,
                                         GroupLayout.PREFERRED_SIZE)
-                                .addComponent(lblIgnoreDiacritics)
-                                .addComponent(epIgnoreDiacritics))
+                                .addComponent(lblGraphicalVariants)
+                                .addComponent(epGraphicalVariants))
                         .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                         // Variant detection parameter
                         .addGroup(cfgLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
-                                .addComponent(cbVariantDetection,
+                                .addComponent(cbMispellingVariants,
                                         GroupLayout.DEFAULT_SIZE,
                                         GroupLayout.PREFERRED_SIZE,
                                         GroupLayout.PREFERRED_SIZE)
-                                .addComponent(lblVariantDetection)
-                                .addComponent(epVariantDetection))
+                                .addComponent(lblMispellingVariants)
+                                .addComponent(epMispellingVariants))
                         .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                         // Edit distance class parameter
                         .addGroup(cfgLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -184,32 +188,32 @@ public class ConfigPanelVariants extends JPanel {
      */
     public void createIgnoreDiacriticsComponents(int preferredWidth) {
         // Label
-        lblIgnoreDiacritics = new JLabel("<html><b>Group graphical variants</b></html>");
-        lblIgnoreDiacritics.setPreferredSize(new Dimension(
-                (int) lblIgnoreDiacritics.getPreferredSize().getHeight(),
+        lblGraphicalVariants = new JLabel("<html><b>Group graphical variants</b></html>");
+        lblGraphicalVariants.setPreferredSize(new Dimension(
+                (int) lblGraphicalVariants.getPreferredSize().getHeight(),
                 preferredWidth ));
 
         // Checkbox as it is a boolean
-        cbIgnoreDiacritics = new JCheckBox();
-        cbIgnoreDiacritics.addActionListener(new ActionListener() {
+        cbGraphicalVariants = new JCheckBox();
+        cbGraphicalVariants.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Detected a ignore diacritics change, fire property change.");
                 firePropertyChange(IndexerBinding.PRM.IGNOREDIACRITICS.getProperty(),
-                        !cbIgnoreDiacritics.isSelected(), cbIgnoreDiacritics.isSelected());
+                        !cbGraphicalVariants.isSelected(), cbGraphicalVariants.isSelected());
             }
         });
 
         // Editor pane to display help
-        epIgnoreDiacritics = new JEditorPane();
-        epIgnoreDiacritics .setEditable(false);
-        epIgnoreDiacritics .setOpaque(false);
-        epIgnoreDiacritics .setPreferredSize(new Dimension(
-                (int) epIgnoreDiacritics .getPreferredSize().getHeight(),
+        epGraphicalVariants = new JEditorPane();
+        epGraphicalVariants.setEditable(false);
+        epGraphicalVariants.setOpaque(false);
+        epGraphicalVariants.setPreferredSize(new Dimension(
+                (int) epGraphicalVariants.getPreferredSize().getHeight(),
                 preferredWidth));
         try {
             URL res = getClass().getResource("/eu/project/ttc/gui/texts/indexer/param.ignorediacritics.html");
-            epIgnoreDiacritics.setPage(res);
+            epGraphicalVariants.setPage(res);
         } catch (IOException e){} // No help
     }
 
@@ -218,33 +222,33 @@ public class ConfigPanelVariants extends JPanel {
      */
     public void createVariantDetectionComponents(int preferredWidth) {
         // Label
-        lblVariantDetection = new JLabel("<html><b>Variant detection</b></html>");
-        lblVariantDetection.setPreferredSize(new Dimension(
-                (int) lblVariantDetection.getPreferredSize().getHeight(),
+        lblMispellingVariants = new JLabel("<html><b>Variant detection</b></html>");
+        lblMispellingVariants.setPreferredSize(new Dimension(
+                (int) lblMispellingVariants.getPreferredSize().getHeight(),
                 preferredWidth ));
 
         // Checkbox as it is a boolean
-        cbVariantDetection = new JCheckBox();
-        cbVariantDetection.addActionListener(new ActionListener() {
+        cbMispellingVariants = new JCheckBox();
+        cbMispellingVariants.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Detected a variant detection change, fire property change.");
                 firePropertyChange(IndexerBinding.PRM.VARIANTDETECTION.getProperty(),
-                        !cbVariantDetection.isSelected(), cbVariantDetection.isSelected());
-                toggleVariantDetectionParameters(cbVariantDetection.isSelected());
+                        !cbMispellingVariants.isSelected(), cbMispellingVariants.isSelected());
+                toggleVariantDetectionParameters(cbMispellingVariants.isSelected());
             }
         });
 
         // Editor pane to display help
-        epVariantDetection = new JEditorPane();
-        epVariantDetection .setEditable(false);
-        epVariantDetection .setOpaque(false);
-        epVariantDetection .setPreferredSize(new Dimension(
-                (int) epVariantDetection .getPreferredSize().getHeight(),
+        epMispellingVariants = new JEditorPane();
+        epMispellingVariants.setEditable(false);
+        epMispellingVariants.setOpaque(false);
+        epMispellingVariants.setPreferredSize(new Dimension(
+                (int) epMispellingVariants.getPreferredSize().getHeight(),
                 preferredWidth));
         try {
             URL res = getClass().getResource("/eu/project/ttc/gui/texts/indexer/param.variantdetection.html");
-            epVariantDetection.setPage(res);
+            epMispellingVariants.setPage(res);
         } catch (IOException e){} // No help
     }
 
@@ -400,35 +404,35 @@ public class ConfigPanelVariants extends JPanel {
     ////////////////////////////////////////////////////////////////////// ACCESSORS
 
     public void setIgnoreDiacritics(boolean ignoreDiacritics) {
-        cbIgnoreDiacritics.setSelected(ignoreDiacritics);
+        cbGraphicalVariants.setSelected(ignoreDiacritics);
     }
 
     public void setIgnoreDiacriticsError(Throwable e) {
-        lblIgnoreDiacritics.setText("<html><b>Group graphical variants</b><br/><p style=\"color: red; font-size: small\">"
+        lblGraphicalVariants.setText("<html><b>"+LBL_GRAPHICALVARIANTS+"</b><br/><p style=\"color: red; font-size: small\">"
                 + e.getMessage() + "</p></html>");
     }
     public void unsetIgnoreDiacriticsError() {
-        lblIgnoreDiacritics.setText("<html><b>Group graphical variants</b></html>");
+        lblGraphicalVariants.setText("<html><b>"+LBL_GRAPHICALVARIANTS+"</b></html>");
     }
 
     public boolean isIgnoreDiacritics() {
-        return cbIgnoreDiacritics.isSelected();
+        return cbGraphicalVariants.isSelected();
     }
 
     public void setVariantDetection(boolean variantDetection) {
-        cbVariantDetection.setSelected(variantDetection);
+        cbMispellingVariants.setSelected(variantDetection);
     }
 
     public void setVariantDetectionError(Throwable e) {
-        lblVariantDetection.setText("<html><b>Variant detection</b><br/><p style=\"color: red; font-size: small\">"
+        lblMispellingVariants.setText("<html><b>"+LBL_MISPELLINGVARIANTS+"</b><br/><p style=\"color: red; font-size: small\">"
                 + e.getMessage() + "</p></html>");
     }
     public void unsetVariantDetectionError() {
-        lblVariantDetection.setText("<html><b>Variant detection</b></html>");
+        lblMispellingVariants.setText("<html><b>"+LBL_MISPELLINGVARIANTS+"</b></html>");
     }
 
     public boolean isVariantDetection() {
-        return cbVariantDetection.isSelected();
+        return cbMispellingVariants.isSelected();
     }
 
     public void setEditDistanceClass(String className) {
