@@ -224,7 +224,7 @@ public class IndexerController extends ToolController {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
                 boolean success = true;
-                if (getModel().isIgnoreDiacritics() == evt.getNewValue()) {
+                if (getModel().isIgnoreDiacritics() != evt.getNewValue()) {
                     try {
                         System.out.println("Indexer:view-model:ignore diacritics->" + evt.getNewValue());
                         getModel().setIgnoreDiacritics((Boolean) evt.getNewValue());
@@ -241,7 +241,7 @@ public class IndexerController extends ToolController {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
                 boolean success = true;
-                if (getModel().isKeepVerbs() == evt.getNewValue()) {
+                if (getModel().isKeepVerbs() != evt.getNewValue()) {
                     try {
                         System.out.println("Indexer:view-model:keep verbs->" + evt.getNewValue());
                         getModel().setKeepVerbs((Boolean) evt.getNewValue());
@@ -258,7 +258,7 @@ public class IndexerController extends ToolController {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
                 boolean success = true;
-                if (getModel().isTSVExport() == evt.getNewValue()) {
+                if (getModel().isTSVExport() != evt.getNewValue()) {
                     try {
                         System.out.println("Indexer:view-model:tsv export->" + evt.getNewValue());
                         getModel().setTSVExport((Boolean) evt.getNewValue());
@@ -275,7 +275,7 @@ public class IndexerController extends ToolController {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
                 boolean success = true;
-                if (getModel().isVariantDetection() == evt.getNewValue()) {
+                if (getModel().isVariantDetection() != evt.getNewValue()) {
                     try {
                         System.out.println("Indexer:view-model:variant detection->" + evt.getNewValue());
                         getModel().setVariantDetection((Boolean) evt.getNewValue());
@@ -405,7 +405,7 @@ public class IndexerController extends ToolController {
         getModel().addIgnoreDiacriticsChangeListener(new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
-                if ( getView().isIgnoreDiacritics() == evt.getNewValue() ) {
+                if ( getView().isIgnoreDiacritics() != evt.getNewValue() ) {
                     System.out.println("Indexer:model-view:ignore diacritics->" + evt.getNewValue());
                     getView().setIgnoreDiacritics((Boolean) evt.getNewValue());
                 } // else, no need to reflect the change (and prevent looping)
@@ -415,7 +415,7 @@ public class IndexerController extends ToolController {
         getModel().addKeepVerbsChangeListener(new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
-                if ( getView().isKeepVerbs() == evt.getNewValue() ) {
+                if ( getView().isKeepVerbs() != evt.getNewValue() ) {
                     System.out.println("Indexer:model-view:keep verbs->" + evt.getNewValue());
                     getView().setKeepVerbs((Boolean) evt.getNewValue());
                 } // else, no need to reflect the change (and prevent looping)
@@ -425,7 +425,7 @@ public class IndexerController extends ToolController {
         getModel().addTSVExportChangeListener(new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
-                if ( getView().isTSVExport() == evt.getNewValue() ) {
+                if ( getView().isTSVExport() != evt.getNewValue() ) {
                     System.out.println("Indexer:model-view:tsv export->" + evt.getNewValue());
                     getView().setTSVExport((Boolean) evt.getNewValue());
                 } // else, no need to reflect the change (and prevent looping)
@@ -435,7 +435,7 @@ public class IndexerController extends ToolController {
         getModel().addVariantDetectionChangeListener(new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
-                if ( getView().isVariantDetection() == evt.getNewValue() ) {
+                if ( getView().isVariantDetection() != evt.getNewValue() ) {
                     System.out.println("Indexer:model-view:variant detection->" + evt.getNewValue());
                     getView().setVariantDetection((Boolean) evt.getNewValue());
                 } // else, no need to reflect the change (and prevent looping)

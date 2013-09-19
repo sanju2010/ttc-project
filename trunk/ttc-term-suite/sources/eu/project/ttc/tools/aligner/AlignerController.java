@@ -246,7 +246,7 @@ public class AlignerController extends ToolController {
         // Compositional method
         getModel().addCompositionalMethodChangeListener(new PropertyChangeListener() {
             public void propertyChange(PropertyChangeEvent evt) {
-                if ( getView().isCompositionalMethod() ) {
+                if ( getView().isCompositionalMethod() != evt.getNewValue() ) {
                     System.out.println("Aligner:model-view:compositional method->" + evt.getNewValue());
                     getView().setCompositionalMethod((Boolean) evt.getNewValue());
                 } // else, no need to reflect the change (and prevent looping)
@@ -255,7 +255,7 @@ public class AlignerController extends ToolController {
         // Distributional method
         getModel().addDistributionalMethodChangeListener(new PropertyChangeListener() {
             public void propertyChange(PropertyChangeEvent evt) {
-                if ( getView().isDistributionalMethod() ) {
+                if ( getView().isDistributionalMethod() != evt.getNewValue()  ) {
                     System.out.println("Aligner:model-view:distributional method->" + evt.getNewValue());
                     getView().setDistributionalMethod((Boolean) evt.getNewValue());
                 } // else, no need to reflect the change (and prevent looping)

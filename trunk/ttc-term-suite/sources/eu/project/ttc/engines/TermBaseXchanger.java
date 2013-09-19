@@ -98,7 +98,7 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 		try {
 			if (this.getDirectory() == null) {
 				String path = (String) context
-						.getConfigParameterValue("Directory");
+                        .getConfigParameterValue(IndexerBinding.PRM.OUTPUT.getParameter());
 				this.setDirectory(path);
 
 				// Set up TBX filtering
@@ -115,8 +115,7 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 						(Float) context
 								.getConfigParameterValue(IndexerBinding.PRM.FILTERINGTLD.getParameter()));
 
-				predicate = TermPredicates.createAndPredicate(predicate,
-						filterRule);
+				predicate = TermPredicates.createAndPredicate(predicate, filterRule);
 				tsvEnabled = Boolean.TRUE.equals(context
 						.getConfigParameterValue(IndexerBinding.PRM.TSV.getParameter()));
 
