@@ -127,7 +127,6 @@ public class TermPredicates {
 	 */
 	public static TermPredicate createVerbAdverbPredicate() {
 		return new TermPredicate() {
-
 			@Override
 			public boolean accept(TermAnnotation term) {
 				String cat = term.getCategory();

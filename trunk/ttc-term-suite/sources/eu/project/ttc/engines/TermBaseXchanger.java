@@ -101,11 +101,15 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
                         .getConfigParameterValue(IndexerBinding.PRM.OUTPUT.getParameter());
 				this.setDirectory(path);
 
-				// Set up TBX filtering
+                tsvEnabled = Boolean.TRUE.equals(context
+                        .getConfigParameterValue(IndexerBinding.PRM.TSV.getParameter()));
+
+                // Set up TBX filtering
 				if (Boolean.TRUE.equals(context
-						.getConfigParameterValue(IndexerBinding.PRM.KEEPVERBS.getParameter())))
+						.getConfigParameterValue(IndexerBinding.PRM.KEEPVERBS.getParameter()))) {
 					predicate = TermPredicates.createOrPredicate(predicate,
 							TermPredicates.createVerbAdverbPredicate());
+                }
 
 				initial = predicate;
 
@@ -116,9 +120,6 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 								.getConfigParameterValue(IndexerBinding.PRM.FILTERINGTLD.getParameter()));
 
 				predicate = TermPredicates.createAndPredicate(predicate, filterRule);
-				tsvEnabled = Boolean.TRUE.equals(context
-						.getConfigParameterValue(IndexerBinding.PRM.TSV.getParameter()));
-
 			}
 			if (this.variants == null) {
 				this.setVariants();
@@ -187,10 +188,11 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 				name = uri.substring(first, last) + ".tbx";
 			}
 			File file = new File(this.getDirectory(), name);
-			if (tsvEnabled)
+			if (tsvEnabled) {
 				tsv = new IndexerTSVBuilder(new FileWriter(new File(
 						this.getDirectory(), name.replace(".tbx", ".tsv")),
 						false));
+            }
 
 			this.getContext().getLogger()
 					.log(Level.INFO, "Exporting " + file.getAbsolutePath());

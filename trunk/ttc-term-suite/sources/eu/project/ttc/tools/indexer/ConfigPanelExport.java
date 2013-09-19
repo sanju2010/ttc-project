@@ -37,9 +37,9 @@ public class ConfigPanelExport extends JPanel {
     private JEditorPane epTSV;
 
     // Keep verbs parameter
-    private JLabel lblAddVerbs;
-    private JCheckBox cbAddVerbs;
-    private JEditorPane epAddVerbs;
+    private JLabel lblKeepVerbs;
+    private JCheckBox cbKeepVerbs;
+    private JEditorPane epKeepVerbs;
 
     // Filter rule parameter
     private JLabel lblFilterRule;
@@ -112,10 +112,10 @@ public class ConfigPanelExport extends JPanel {
                                 .addComponent(epTSV))
                                 // Keep verbs parameter
                         .addGroup(cfgLayout.createSequentialGroup()
-                                .addComponent(cbAddVerbs)
-                                .addComponent(lblAddVerbs)
+                                .addComponent(cbKeepVerbs)
+                                .addComponent(lblKeepVerbs)
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(epAddVerbs))
+                                .addComponent(epKeepVerbs))
                                 // Occurrence threshold parameter
                         .addGroup(cfgLayout.createSequentialGroup()
                                 .addGroup(cfgLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -153,12 +153,12 @@ public class ConfigPanelExport extends JPanel {
                         .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                                 // Keep verbs parameter
                         .addGroup(cfgLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
-                                .addComponent(cbAddVerbs,
+                                .addComponent(cbKeepVerbs,
                                         GroupLayout.DEFAULT_SIZE,
                                         GroupLayout.PREFERRED_SIZE,
                                         GroupLayout.PREFERRED_SIZE)
-                                .addComponent(lblAddVerbs)
-                                .addComponent(epAddVerbs))
+                                .addComponent(lblKeepVerbs)
+                                .addComponent(epKeepVerbs))
                         .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                                 // Occurrence threshold parameter
                         .addGroup(cfgLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -237,32 +237,32 @@ public class ConfigPanelExport extends JPanel {
      */
     public void createKeepVerbsComponents(int preferredWidth) {
         // Label
-        lblAddVerbs = new JLabel("<html><b>"+LBL_KEEPVERBS+"</b></html>");
-        lblAddVerbs.setPreferredSize(new Dimension(
-                (int) lblAddVerbs.getPreferredSize().getHeight(),
+        lblKeepVerbs = new JLabel("<html><b>"+LBL_KEEPVERBS+"</b></html>");
+        lblKeepVerbs.setPreferredSize(new Dimension(
+                (int) lblKeepVerbs.getPreferredSize().getHeight(),
                 preferredWidth));
 
         // Checkbox as it is a boolean
-        cbAddVerbs = new JCheckBox();
-        cbAddVerbs.addActionListener(new ActionListener() {
+        cbKeepVerbs = new JCheckBox();
+        cbKeepVerbs.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Detected a keep verb change, fire property change.");
                 firePropertyChange(IndexerBinding.PRM.KEEPVERBS.getProperty(),
-                        cbAddVerbs.isSelected(), !cbAddVerbs.isSelected());
+                        !cbKeepVerbs.isSelected(), cbKeepVerbs.isSelected());
             }
         });
 
         // Editor pane to display help
-        epAddVerbs = new JEditorPane();
-        epAddVerbs.setEditable(false);
-        epAddVerbs.setOpaque(false);
-        epAddVerbs.setPreferredSize(new Dimension(
-                (int) epAddVerbs.getPreferredSize().getHeight(),
+        epKeepVerbs = new JEditorPane();
+        epKeepVerbs.setEditable(false);
+        epKeepVerbs.setOpaque(false);
+        epKeepVerbs.setPreferredSize(new Dimension(
+                (int) epKeepVerbs.getPreferredSize().getHeight(),
                 preferredWidth));
         try {
             URL res = getClass().getResource("/eu/project/ttc/gui/texts/indexer/param.filterverbs.html");
-            epAddVerbs.setPage(res);
+            epKeepVerbs.setPage(res);
         } catch (IOException e){} // No help
     }
 
@@ -360,7 +360,7 @@ public class ConfigPanelExport extends JPanel {
                 } catch (IOException e){} // No help
                 return;
             case TopNByFrequency:
-                lblFilteringTld.setText("<html><b>"+getFilteringThresholdLbl()+"</b></html>");
+                lblFilteringTld.setText("<html><b>" + getFilteringThresholdLbl() + "</b></html>");
                 lblFilteringTld.setVisible(true);
                 spFilteringTld.setModel(snmTopN);
                 spFilteringTld.setVisible(true);
@@ -477,17 +477,17 @@ public class ConfigPanelExport extends JPanel {
     }
 
     public void setKeepVerbs(Boolean keepVerbs) {
-        cbAddVerbs.setSelected(keepVerbs);
+        cbKeepVerbs.setSelected(keepVerbs);
     }
     public void setKeepVerbsError(Throwable e) {
-        lblAddVerbs.setText("<html><b>" + LBL_KEEPVERBS + "</b><br/><p style=\"color: red; font-size: small\">"
+        lblKeepVerbs.setText("<html><b>" + LBL_KEEPVERBS + "</b><br/><p style=\"color: red; font-size: small\">"
                 + e.getMessage() + "</p></html>");
     }
     public void unsetKeepVerbsError() {
-        lblAddVerbs.setText("<html><b>" + LBL_KEEPVERBS + "</b></html>");
+        lblKeepVerbs.setText("<html><b>" + LBL_KEEPVERBS + "</b></html>");
     }
     public Boolean isKeepVerbs() {
-        return cbAddVerbs.isSelected();
+        return cbKeepVerbs.isSelected();
     }
 
     public void setFilterRule(String filterRule) {
