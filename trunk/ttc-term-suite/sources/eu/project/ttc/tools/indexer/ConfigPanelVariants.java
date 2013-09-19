@@ -25,6 +25,11 @@ public class ConfigPanelVariants extends JPanel {
     protected final static String LBL_GRAPHICALVARIANTS  = "Detect graphical variants";
     protected final static String LBL_MISPELLINGVARIANTS = "Detect mispelling variants";
 
+    // Flexional variants parameter
+    private JLabel lblFlexionnalVariants;
+    private JCheckBox cbFlexionnalVariants;
+    private JEditorPane epFlexionnalVariants;
+
     // Ignore diacritics parameter
     private JLabel lblGraphicalVariants;
     private JCheckBox cbGraphicalVariants;
@@ -58,6 +63,7 @@ public class ConfigPanelVariants extends JPanel {
 
         // Prepare components
         int pWidth = (int) getPreferredSize().getWidth() / 2;
+        createFlexionnalVariantsComponents(pWidth);
         createIgnoreDiacriticsComponents(pWidth);
         createVariantDetectionComponents(pWidth);
         createEditDistanceClassComponents(pWidth);
@@ -89,6 +95,12 @@ public class ConfigPanelVariants extends JPanel {
         // Configure the horizontal layout
         cfgLayout.setHorizontalGroup(
                 cfgLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
+                        // Flexionnal variants parameter
+                        .addGroup(cfgLayout.createSequentialGroup()
+                                .addComponent(cbFlexionnalVariants)
+                                .addComponent(lblFlexionnalVariants)
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(epFlexionnalVariants))
                         // Ignore diacritics parameter
                         .addGroup(cfgLayout.createSequentialGroup()
                                 .addComponent(cbGraphicalVariants)
@@ -127,6 +139,15 @@ public class ConfigPanelVariants extends JPanel {
         // Configure the vertical layout
         cfgLayout.setVerticalGroup(
                 cfgLayout.createSequentialGroup()
+                        // Flexionnal variants parameter
+                        .addGroup(cfgLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
+                                .addComponent(cbFlexionnalVariants,
+                                        GroupLayout.DEFAULT_SIZE,
+                                        GroupLayout.PREFERRED_SIZE,
+                                        GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblFlexionnalVariants)
+                                .addComponent(epFlexionnalVariants))
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                         // Ignore diacritics parameter
                         .addGroup(cfgLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
                                 .addComponent(cbGraphicalVariants,
@@ -186,9 +207,37 @@ public class ConfigPanelVariants extends JPanel {
     /**
      * Create the components related to the ignore diacritics parameter.
      */
+    public void createFlexionnalVariantsComponents(int preferredWidth) {
+        // Label
+        lblFlexionnalVariants = new JLabel("<html><b>"+LBL_FLEXIONNALVARIANTS+"</b></html>");
+        lblFlexionnalVariants.setPreferredSize(new Dimension(
+                (int) lblFlexionnalVariants.getPreferredSize().getHeight(),
+                preferredWidth ));
+
+        // Checkbox as it is a boolean
+        cbFlexionnalVariants = new JCheckBox();
+        cbFlexionnalVariants.setSelected(true);
+        cbFlexionnalVariants.setEnabled(false); // no binding, it is by default
+
+        // Editor pane to display help
+        epFlexionnalVariants = new JEditorPane();
+        epFlexionnalVariants.setEditable(false);
+        epFlexionnalVariants.setOpaque(false);
+        epFlexionnalVariants.setPreferredSize(new Dimension(
+                (int) epFlexionnalVariants.getPreferredSize().getHeight(),
+                preferredWidth));
+        try {
+            URL res = getClass().getResource("/eu/project/ttc/gui/texts/indexer/param.flexionnalvariants.html");
+            epFlexionnalVariants.setPage(res);
+        } catch (IOException e){} // No help
+    }
+
+    /**
+     * Create the components related to the ignore diacritics parameter.
+     */
     public void createIgnoreDiacriticsComponents(int preferredWidth) {
         // Label
-        lblGraphicalVariants = new JLabel("<html><b>Group graphical variants</b></html>");
+        lblGraphicalVariants = new JLabel("<html><b>"+LBL_GRAPHICALVARIANTS+"</b></html>");
         lblGraphicalVariants.setPreferredSize(new Dimension(
                 (int) lblGraphicalVariants.getPreferredSize().getHeight(),
                 preferredWidth ));
@@ -212,7 +261,7 @@ public class ConfigPanelVariants extends JPanel {
                 (int) epGraphicalVariants.getPreferredSize().getHeight(),
                 preferredWidth));
         try {
-            URL res = getClass().getResource("/eu/project/ttc/gui/texts/indexer/param.ignorediacritics.html");
+            URL res = getClass().getResource("/eu/project/ttc/gui/texts/indexer/param.graphicalvariants.html");
             epGraphicalVariants.setPage(res);
         } catch (IOException e){} // No help
     }
@@ -222,7 +271,7 @@ public class ConfigPanelVariants extends JPanel {
      */
     public void createVariantDetectionComponents(int preferredWidth) {
         // Label
-        lblMispellingVariants = new JLabel("<html><b>Variant detection</b></html>");
+        lblMispellingVariants = new JLabel("<html><b>"+LBL_MISPELLINGVARIANTS+"</b></html>");
         lblMispellingVariants.setPreferredSize(new Dimension(
                 (int) lblMispellingVariants.getPreferredSize().getHeight(),
                 preferredWidth ));
@@ -247,7 +296,7 @@ public class ConfigPanelVariants extends JPanel {
                 (int) epMispellingVariants.getPreferredSize().getHeight(),
                 preferredWidth));
         try {
-            URL res = getClass().getResource("/eu/project/ttc/gui/texts/indexer/param.variantdetection.html");
+            URL res = getClass().getResource("/eu/project/ttc/gui/texts/indexer/param.mispellingvariants.html");
             epMispellingVariants.setPage(res);
         } catch (IOException e){} // No help
     }
