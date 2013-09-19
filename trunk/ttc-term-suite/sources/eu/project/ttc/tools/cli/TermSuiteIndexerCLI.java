@@ -140,7 +140,7 @@ public class TermSuiteIndexerCLI {
 					"edit distance ngrams");
 			options.addOption(null, IndexerBinding.PRM.IGNOREDIACRITICS.getParameter(), false,
 					"ignore diacritics in multiword terms");
-			options.addOption(null, IndexerBinding.PRM.FREQUENCYTLD.getParameter(), true,
+			options.addOption(null, IndexerBinding.PRM.OCCURRENCETLD.getParameter(), true,
 					"occurence threshold");
 			options.addOption(null, IndexerBinding.PRM.ASSOCIATIONMEASURE.getParameter(), true,
 					"association rate class name");

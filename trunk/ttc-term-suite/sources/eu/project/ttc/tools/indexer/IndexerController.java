@@ -202,21 +202,21 @@ public class IndexerController extends ToolController {
             }
         });
         // Frequency threshold
-        getView().addFrequencyThresholdChangeListener(new PropertyChangeListener() {
+        getView().addOccurrenceThresholdChangeListener(new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
                 boolean success = true;
-                if ((getModel().getFrequencyThreshold() == null) ||
-                        !getModel().getFrequencyThreshold().equals(evt.getNewValue())) {
+                if ((getModel().getOccurrenceThreshold() == null) ||
+                        !getModel().getOccurrenceThreshold().equals(evt.getNewValue())) {
                     try {
-                        System.out.println("Indexer:view-model:frequency threshold->" + evt.getNewValue());
-                        getModel().setFrequencyThreshold((Float) evt.getNewValue());
+                        System.out.println("Indexer:view-model:occurrence threshold->" + evt.getNewValue());
+                        getModel().setOccurrenceThreshold((Integer) evt.getNewValue());
                     } catch (IllegalArgumentException e) {
                         success = false;
-                        getView().setFrequencyThresholdError(e);
+                        getView().setOccurrenceThresholdError(e);
                     }
                 } // else, no need to reflect the change (and prevent looping)
-                if (success) getView().unsetFrequencyThresholdError();
+                if (success) getView().unsetOccurrenceThresholdError();
             }
         });
         // Ignore diacritics
@@ -391,13 +391,13 @@ public class IndexerController extends ToolController {
             }
         });
         // Frequency threshold
-        getModel().addFrequencyThresholdChangeListener(new PropertyChangeListener() {
+        getModel().addOccurrenceThresholdChangeListener(new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
-                if ( (getView().getFrequencyThreshold()==null) ||
-                        ! getView().getFrequencyThreshold().equals(evt.getNewValue()) ) {
-                    System.out.println("Indexer:model-view:frequency threshold->" + evt.getNewValue());
-                    getView().setFrequencyThreshold((Float) evt.getNewValue());
+                if ((getView().getOccurrenceThreshold() == null) ||
+                        !getView().getOccurrenceThreshold().equals(evt.getNewValue())) {
+                    System.out.println("Indexer:model-view:occurrence threshold->" + evt.getNewValue());
+                    getView().setOccurrenceThreshold((Integer) evt.getNewValue());
                 } // else, no need to reflect the change (and prevent looping)
             }
         });
@@ -495,9 +495,9 @@ public class IndexerController extends ToolController {
         try { getModel().setFilterRule( getView().getFilterRule() ); }
         catch (IllegalArgumentException e) { getView().setFilterRuleError(e); }
 
-        try { getModel().setFrequencyThreshold( getView().getFrequencyThreshold() ); }
-        catch (IllegalArgumentException e) { getView().setFrequencyThresholdError(e); }
-        catch (ClassCastException e) { getView().setFrequencyThresholdError(e); }
+        try { getModel().setOccurrenceThreshold(getView().getOccurrenceThreshold()); }
+        catch (IllegalArgumentException e) { getView().setOccurrenceThresholdError(e); }
+        catch (ClassCastException e) { getView().setOccurrenceThresholdError(e); }
 
         try { getModel().setIgnoreDiacritics( getView().isIgnoreDiacritics() ); }
         catch (IllegalArgumentException e) { getView().setIgnoreDiacriticsError(e); }
@@ -563,8 +563,8 @@ public class IndexerController extends ToolController {
                 getModel().isTSVExport());
 
         // Context vector settings
-        settings.setParameterValue(IndexerBinding.PRM.FREQUENCYTLD.getParameter(),
-                getModel().getFrequencyThreshold());
+        settings.setParameterValue(IndexerBinding.PRM.OCCURRENCETLD.getParameter(),
+                getModel().getOccurrenceThreshold());
         settings.setParameterValue(IndexerBinding.PRM.ASSOCIATIONMEASURE.getParameter(),
                 getModel().getAssociationMeasure());
 

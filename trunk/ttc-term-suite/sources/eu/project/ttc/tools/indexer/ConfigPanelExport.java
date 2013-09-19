@@ -22,11 +22,14 @@ public class ConfigPanelExport extends JPanel {
 
     protected final static String LBL_TSV = "Export in TSV format";
     protected final static String LBL_KEEPVERBS = "Add verbs and adverbs to terminology";
-    protected final static String LBL_FILTERRULE = "Rule to filter terms";
-    protected final static String LBL_FILTERINGTLD = "Number of terms to be exported";
+    protected final static String LBL_OCCURRENCETLD = "Occurrence threshold";
+    protected final static String LBL_FILTERRULE = "Filter and Sort terms by";
     protected final static String LBL_FREQUENCYTLD_OCC = "Minimal number of occurrences";
     protected static final String LBL_FREQUENCYTLD_FREQ = "Frequency threshold";
     protected static final String LBL_FREQUENCYTLD_SPEC = "Specificity threshold";
+    protected final static String LBL_FILTERINGTLD_TOPOCC = "Number of terms to be exported";
+    protected final static String LBL_FILTERINGTLD_TOPFREQ = "Number of terms to be exported";
+    protected final static String LBL_FILTERINGTLD_TOPSPEC = "Number of terms to be exported";
 
     // TSV export parameter
     private JLabel lblTSV;
@@ -48,12 +51,21 @@ public class ConfigPanelExport extends JPanel {
     private JSpinner spFilteringTld;
     private JEditorPane epFilteringTld;
 
-    // Frequency threshold parameter
-    private JLabel lblFrequencyTld;
-    private JSpinner spFrequencyTld;
-    private JEditorPane epFrequencyTld;
+    // Occurrence threshold parameter
+    private JLabel lblOccurrenceTld;
+    private JSpinner spOccurrenceTld;
+    private JEditorPane epOccurrenceTld;
 
     private GroupLayout cfgLayout;
+
+    private static SpinnerNumberModel snmOccurrence = new SpinnerNumberModel(
+            new Integer(3), new Integer(1), new Integer(Integer.MAX_VALUE), new Integer(1));
+    private static SpinnerNumberModel snmFrequency = new SpinnerNumberModel(
+            new Float(0.5f), new Float(0f), new Float(Float.MAX_VALUE), new Float(0.05f));
+    private static SpinnerNumberModel snmSpecificity = new SpinnerNumberModel(
+            new Float(0.5f), new Float(0f), new Float(Float.MAX_VALUE), new Float(0.05f));
+    private static SpinnerNumberModel snmTopN = new SpinnerNumberModel(
+            new Integer(50), new Integer(1), new Integer(Integer.MAX_VALUE), new Integer(5));
 
     public ConfigPanelExport() {
         super(new BorderLayout());
@@ -65,8 +77,8 @@ public class ConfigPanelExport extends JPanel {
         createKeepVerbsComponents(pWidth);
         createFilterRuleComponents(pWidth);
         createFilteringTldComponents(pWidth);
-        createFrequencyTldComponents(pWidth);
-        updateFilterParameters((String) cbFilterRule.getSelectedItem());
+        createOccurrenceTldComponents(pWidth);
+        updateFilterParameters();
 
         // Layout the components
         layoutComponents();
@@ -104,6 +116,13 @@ public class ConfigPanelExport extends JPanel {
                                 .addComponent(lblAddVerbs)
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(epAddVerbs))
+                                // Occurrence threshold parameter
+                        .addGroup(cfgLayout.createSequentialGroup()
+                                .addGroup(cfgLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                        .addComponent(lblOccurrenceTld)
+                                        .addComponent(spOccurrenceTld))
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(epOccurrenceTld))
                                 // Filter rule parameter
                         .addGroup(cfgLayout.createSequentialGroup()
                                 .addGroup(cfgLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -118,13 +137,6 @@ public class ConfigPanelExport extends JPanel {
                                         .addComponent(spFilteringTld))
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(epFilteringTld))
-                                // Frequency threshold parameter
-                        .addGroup(cfgLayout.createSequentialGroup()
-                                .addGroup(cfgLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                        .addComponent(lblFrequencyTld)
-                                        .addComponent(spFrequencyTld))
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(epFrequencyTld))
         );
 
         // Configure the vertical layout
@@ -148,6 +160,17 @@ public class ConfigPanelExport extends JPanel {
                                 .addComponent(lblAddVerbs)
                                 .addComponent(epAddVerbs))
                         .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                                // Occurrence threshold parameter
+                        .addGroup(cfgLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                .addGroup(cfgLayout.createSequentialGroup()
+                                        .addComponent(lblOccurrenceTld)
+                                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(spOccurrenceTld,
+                                                GroupLayout.DEFAULT_SIZE,
+                                                GroupLayout.PREFERRED_SIZE,
+                                                GroupLayout.PREFERRED_SIZE))
+                                .addComponent(epOccurrenceTld))
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                                 // Filter rule parameter
                         .addGroup(cfgLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                 .addGroup(cfgLayout.createSequentialGroup()
@@ -169,17 +192,6 @@ public class ConfigPanelExport extends JPanel {
                                                 GroupLayout.PREFERRED_SIZE,
                                                 GroupLayout.PREFERRED_SIZE))
                                 .addComponent(epFilteringTld))
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                                // Frequency threshold parameter
-                        .addGroup(cfgLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                .addGroup(cfgLayout.createSequentialGroup()
-                                        .addComponent(lblFrequencyTld)
-                                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(spFrequencyTld,
-                                                GroupLayout.DEFAULT_SIZE,
-                                                GroupLayout.PREFERRED_SIZE,
-                                                GroupLayout.PREFERRED_SIZE))
-                                .addComponent(epFrequencyTld))
                         .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
         );
 
@@ -266,6 +278,7 @@ public class ConfigPanelExport extends JPanel {
 
         // Comboxbox as it is a limited list of choices
         cbFilterRule = new JComboBox();
+        cbFilterRule.addItem("None");
         cbFilterRule.addItem("OccurrenceThreshold");
         cbFilterRule.addItem("FrequencyThreshold");
         cbFilterRule.addItem("SpecificityThreshold");
@@ -278,7 +291,7 @@ public class ConfigPanelExport extends JPanel {
                     System.out.println("Detected a filter rule change, fire property change.");
                     firePropertyChange(IndexerBinding.PRM.FILTERRULE.getProperty(), null,
                             cbFilterRule.getSelectedItem());
-                    updateFilterParameters((String) cbFilterRule.getSelectedItem());
+                    updateFilterParameters();
                 }
             }
         });
@@ -298,140 +311,83 @@ public class ConfigPanelExport extends JPanel {
 
     /**
      * Reflect the change of filter rule to the configuration parameters.
-     *
-     * @param selectedRule
-     *      the currently selected rule
      */
-    private void updateFilterParameters(String selectedRule) {
-        if ( "OccurrenceThreshold".equals(selectedRule) ) {
-            setOccurenceThresholdMode();
-        } else if ( "FrequencyThreshold".equals(selectedRule) ) {
-            setFrequencyThresholdMode();
-        } else if ( "SpecificityThreshold".equals(selectedRule) ) {
-            setSpecificityThresholdMode();
-        } else if ( "TopNByOccurrence".equals(selectedRule) ) {
-            setTopNByOccurrenceMode();
-        } else if ( "TopNByFrequency".equals(selectedRule) ) {
-            setTopNByFrequencyMode();
-        } else if ( "TopNBySpecificity".equals(selectedRule) ) {
-            setTopNBySpecificityMode();
-        } else {
-            // Unknown filter rule... show everything...
-            lblFilteringTld.setVisible(true);
-            lblFrequencyTld.setVisible(true);
-            spFrequencyTld.setVisible(true);
-            spFilteringTld.setVisible(true);
-            epFilteringTld.setVisible(true);
-            epFrequencyTld.setVisible(true);
+    private void updateFilterParameters() {
+        IndexerBinding.FilterRules filterRule = IndexerBinding.FilterRules.valueOf(getFilterRule());
+        switch(filterRule) {
+            case OccurrenceThreshold:
+                lblFilteringTld.setText("<html><b>"+getFilteringThresholdLbl()+"</b></html>");
+                lblFilteringTld.setVisible(true);
+                spFilteringTld.setModel(snmOccurrence);
+                spFilteringTld.setVisible(true);
+                try {
+                    URL res = getClass().getResource("/eu/project/ttc/gui/texts/indexer/param.filteringtld.occurrence.html");
+                    epFilteringTld.setPage(res);
+                    epFilteringTld.setVisible(true);
+                } catch (IOException e){} // No help
+                return;
+            case FrequencyThreshold:
+                lblFilteringTld.setText("<html><b>"+getFilteringThresholdLbl()+"</b></html>");
+                lblFilteringTld.setVisible(true);
+                spFilteringTld.setModel(snmFrequency);
+                spFilteringTld.setVisible(true);
+                try {
+                    URL res = getClass().getResource("/eu/project/ttc/gui/texts/indexer/param.filteringtld.frequency.html");
+                    epFilteringTld.setPage(res);
+                    epFilteringTld.setVisible(true);
+                } catch (IOException e){} // No help
+                return;
+            case SpecificityThreshold:
+                lblFilteringTld.setText("<html><b>"+getFilteringThresholdLbl()+"</b></html>");
+                lblFilteringTld.setVisible(true);
+                spFilteringTld.setModel(snmSpecificity);
+                spFilteringTld.setVisible(true);
+                try {
+                    URL res = getClass().getResource("/eu/project/ttc/gui/texts/indexer/param.filteringtld.specificity.html");
+                    epFilteringTld.setPage(res);
+                    epFilteringTld.setVisible(true);
+                } catch (IOException e){} // No help
+                return;
+            case TopNByOccurrence:
+                lblFilteringTld.setText("<html><b>"+getFilteringThresholdLbl()+"</b></html>");
+                lblFilteringTld.setVisible(true);
+                spFilteringTld.setModel(snmTopN);
+                spFilteringTld.setVisible(true);
+                try {
+                    URL res = getClass().getResource("/eu/project/ttc/gui/texts/indexer/param.filteringtld.topoccurrence.html");
+                    epFilteringTld.setPage(res);
+                    epFilteringTld.setVisible(true);
+                } catch (IOException e){} // No help
+                return;
+            case TopNByFrequency:
+                lblFilteringTld.setText("<html><b>"+getFilteringThresholdLbl()+"</b></html>");
+                lblFilteringTld.setVisible(true);
+                spFilteringTld.setModel(snmTopN);
+                spFilteringTld.setVisible(true);
+                try {
+                    URL res = getClass().getResource("/eu/project/ttc/gui/texts/indexer/param.filteringtld.topfrequency.html");
+                    epFilteringTld.setPage(res);
+                    epFilteringTld.setVisible(true);
+                } catch (IOException e){} // No help
+                return;
+            case TopNBySpecificity:
+                lblFilteringTld.setText("<html><b>"+getFilteringThresholdLbl()+"</b></html>");
+                lblFilteringTld.setVisible(true);
+                spFilteringTld.setModel(snmTopN);
+                spFilteringTld.setVisible(true);
+                try {
+                    URL res = getClass().getResource("/eu/project/ttc/gui/texts/indexer/param.filteringtld.topspecificity.html");
+                    epFilteringTld.setPage(res);
+                    epFilteringTld.setVisible(true);
+                } catch (IOException e){} // No help
+                return;
+            case None:
+            default:
+                lblFilteringTld.setVisible(false);
+                spFilteringTld.setVisible(false);
+                epFilteringTld.setVisible(false);
+                return;
         }
-    }
-
-    /**
-     * Mode when the TopNByOccurrence filter is chosen.
-     */
-    private void setTopNByOccurrenceMode() {
-        // Only display filtering threshold
-        lblFilteringTld.setText("<html><b>"+LBL_FILTERINGTLD+"</b></html>");
-        lblFilteringTld.setVisible(true);
-        spFilteringTld.setVisible(true);
-        epFilteringTld.setVisible(true);
-
-        // ... hide the rest
-        lblFrequencyTld.setVisible(false);
-        spFrequencyTld.setVisible(false);
-        epFrequencyTld.setVisible(false);
-    }
-
-    /**
-     * Mode when the TopNByFrequency filter is chosen.
-     */
-    private void setTopNByFrequencyMode() {
-        // Only display filtering threshold
-        lblFilteringTld.setText("<html><b>"+LBL_FILTERINGTLD+"</b></html>");
-        lblFilteringTld.setVisible(true);
-        spFilteringTld.setVisible(true);
-        epFilteringTld.setVisible(true);
-
-        // ... hide the rest
-        lblFrequencyTld.setVisible(false);
-        spFrequencyTld.setVisible(false);
-        epFrequencyTld.setVisible(false);
-    }
-
-    /**
-     * Mode when the TopNBySpecificity filter is chosen.
-     */
-    private void setTopNBySpecificityMode() {
-        // Only display filtering threshold and association measure
-        lblFilteringTld.setText("<html><b>"+LBL_FILTERINGTLD+"</b></html>");
-        lblFilteringTld.setVisible(true);
-        spFilteringTld.setVisible(true);
-        epFilteringTld.setVisible(true);
-
-        // ... hide the rest
-        lblFrequencyTld.setVisible(false);
-        spFrequencyTld.setVisible(false);
-        epFrequencyTld.setVisible(false);
-    }
-
-    /**
-     * Mode when the OccurrenceThreshold filter is chosen.
-     */
-    private void setOccurenceThresholdMode() {
-        // Only display frequency threshold
-        lblFrequencyTld.setText("<html><b>"+LBL_FREQUENCYTLD_OCC+"</b></html>");
-        lblFrequencyTld.setVisible(true);
-        spFrequencyTld.setVisible(true);
-        try {
-            URL res = getClass().getResource("/eu/project/ttc/gui/texts/indexer/param.frequencytld.occurrence.html");
-            epFrequencyTld.setPage(res);
-        } catch (IOException e){} // No help
-        epFrequencyTld.setVisible(true);
-
-        // ... hide the rest
-        lblFilteringTld.setVisible(false);
-        spFilteringTld.setVisible(false);
-        epFilteringTld.setVisible(false);
-    }
-
-    /**
-     * Mode when the FrequencyThreshold filter is chosen.
-     */
-    private void setFrequencyThresholdMode() {
-        // Only display frequency threshold
-        lblFrequencyTld.setText("<html><b>"+LBL_FREQUENCYTLD_FREQ+"</b></html>");
-        lblFrequencyTld.setVisible(true);
-        spFrequencyTld.setVisible(true);
-        try {
-            URL res = getClass().getResource("/eu/project/ttc/gui/texts/indexer/param.frequencytld.frequency.html");
-            epFrequencyTld.setPage(res);
-        } catch (IOException e){} // No help
-        epFrequencyTld.setVisible(true);
-
-        // ... hide the rest
-        lblFilteringTld.setVisible(false);
-        spFilteringTld.setVisible(false);
-        epFilteringTld.setVisible(false);
-    }
-
-    /**
-     * Mode when the SpecificityThreshold filter is chosen.
-     */
-    private void setSpecificityThresholdMode() {
-        // Only display frequency threshold and association measure
-        lblFrequencyTld.setText("<html><b>"+LBL_FREQUENCYTLD_SPEC+"</b></html>");
-        lblFrequencyTld.setVisible(true);
-        spFrequencyTld.setVisible(true);
-        try {
-            URL res = getClass().getResource("/eu/project/ttc/gui/texts/indexer/param.frequencytld.specificity.html");
-            epFilteringTld.setPage(res);
-        } catch (IOException e){} // No help
-        epFrequencyTld.setVisible(true);
-
-        // ... hide the rest
-        lblFilteringTld.setVisible(false);
-        spFilteringTld.setVisible(false);
-        epFilteringTld.setVisible(false);
     }
 
     /**
@@ -439,7 +395,7 @@ public class ConfigPanelExport extends JPanel {
      */
     public void createFilteringTldComponents(int preferredWidth) {
         // Label
-        lblFilteringTld = new JLabel("<html><b>"+LBL_FILTERINGTLD+"</b></html>");
+        lblFilteringTld = new JLabel("<html><b>No filtering rule specified</b></html>");
         lblFilteringTld.setPreferredSize(new Dimension(
                 (int) lblFilteringTld.getPreferredSize().getHeight(),
                 preferredWidth ));
@@ -470,37 +426,37 @@ public class ConfigPanelExport extends JPanel {
     }
 
     /**
-     * Create the components related to the frequency threshold parameter.
+     * Create the components related to the occurrence threshold parameter.
      */
-    public void createFrequencyTldComponents(int preferredWidth) {
+    public void createOccurrenceTldComponents(int preferredWidth) {
         // Label
-        lblFrequencyTld = new JLabel("<html><b>"+LBL_FREQUENCYTLD_OCC+"</b></html>");
-        lblFrequencyTld.setPreferredSize(new Dimension(
-                (int) lblFrequencyTld.getPreferredSize().getHeight(),
+        lblOccurrenceTld = new JLabel("<html><b>"+LBL_OCCURRENCETLD+"</b></html>");
+        lblOccurrenceTld.setPreferredSize(new Dimension(
+                (int) lblOccurrenceTld.getPreferredSize().getHeight(),
                 preferredWidth ));
 
         // Spinner as it is an incremental value
-        spFrequencyTld = new JSpinner(
-                new SpinnerNumberModel(new Float(1f), new Float(0f), new Float(1f), new Float(0.05)));
-        spFrequencyTld.addChangeListener(new ChangeListener() {
+        spOccurrenceTld = new JSpinner(
+                new SpinnerNumberModel(new Integer(3), new Integer(1), new Integer(Integer.MAX_VALUE), new Integer(1)));
+        spOccurrenceTld.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-                System.out.println("Detected a frequency threshold change, fire property change.");
-                firePropertyChange(IndexerBinding.PRM.FREQUENCYTLD.getProperty(), null,
-                        spFrequencyTld.getValue());
+                System.out.println("Detected an occurrence threshold change, fire property change.");
+                firePropertyChange(IndexerBinding.PRM.OCCURRENCETLD.getProperty(), null,
+                        spOccurrenceTld.getValue());
             }
         });
 
         // Editor pane to display help
-        epFrequencyTld = new JEditorPane();
-        epFrequencyTld.setEditable(false);
-        epFrequencyTld.setOpaque(false);
-        epFrequencyTld.setPreferredSize(new Dimension(
-                (int) epFrequencyTld.getPreferredSize().getHeight(),
+        epOccurrenceTld = new JEditorPane();
+        epOccurrenceTld.setEditable(false);
+        epOccurrenceTld.setOpaque(false);
+        epOccurrenceTld.setPreferredSize(new Dimension(
+                (int) epOccurrenceTld.getPreferredSize().getHeight(),
                 preferredWidth));
         try {
-            URL res = getClass().getResource("/eu/project/ttc/gui/texts/indexer/param.frequencytld.html");
-            epFrequencyTld.setPage(res);
+            URL res = getClass().getResource("/eu/project/ttc/gui/texts/indexer/param.occurrencetld.html");
+            epOccurrenceTld.setPage(res);
         } catch (IOException e){} // No help
     }
 
@@ -559,30 +515,19 @@ public class ConfigPanelExport extends JPanel {
         return (String) cbFilterRule.getSelectedItem();
     }
 
-    public void setFrequencyThreshold(Float frequencyThreshold) {
+    public void setOccurrenceThreshold(Integer frequencyThreshold) {
         // FIXME check values
-        spFrequencyTld.setValue(frequencyThreshold);
+        spOccurrenceTld.setValue(frequencyThreshold);
     }
-    public void setFrequencyThresholdError(Throwable e) {
-        lblFrequencyTld.setText("<html><b>"+getFrequencyThresholdLbl()+"</b><br/><p style=\"color: red; font-size: small\">"
+    public void setOccurrenceThresholdError(Throwable e) {
+        lblOccurrenceTld.setText("<html><b>" + LBL_OCCURRENCETLD + "</b><br/><p style=\"color: red; font-size: small\">"
                 + e.getMessage() + "</p></html>");
     }
-    public void unsetFrequencyThresholdError() {
-        lblFrequencyTld.setText("<html><b>"+getFrequencyThresholdLbl()+"</b></html>");
+    public void unsetOccurrenceThresholdError() {
+        lblOccurrenceTld.setText("<html><b>" + LBL_OCCURRENCETLD + "</b></html>");
     }
-    public Float getFrequencyThreshold() {
-        return (Float) spFrequencyTld.getValue();
-    }
-    private String getFrequencyThresholdLbl() {
-        if( "OccurrenceThreshold".equals(getFilterRule()) ) {
-            return LBL_FREQUENCYTLD_OCC;
-        } else if ( "FrequencyThreshold".equals(getFilterRule()) ) {
-            return LBL_FREQUENCYTLD_FREQ;
-        } else if ( "SpecificityThreshold".equals(getFilterRule()) ) {
-            return LBL_FREQUENCYTLD_SPEC;
-        } else  {
-            return "NA";
-        }
+    public Integer getOccurrenceThreshold() {
+        return (Integer) spOccurrenceTld.getValue();
     }
 
     public void setFilteringThreshold(Float filteringThreshold) {
@@ -590,13 +535,35 @@ public class ConfigPanelExport extends JPanel {
         spFilteringTld.setValue(filteringThreshold);
     }
     public void setFilteringThresholdError(Throwable e) {
-        lblFilteringTld.setText("<html><b>"+LBL_FILTERINGTLD+"</b><br/><p style=\"color: red; font-size: small\">"
+        lblFilteringTld.setText("<html><b>"+getFilteringThresholdLbl()+"</b><br/><p style=\"color: red; font-size: small\">"
                 + e.getMessage() + "</p></html>");
     }
     public void unsetFilteringThresholdError() {
-        lblFilteringTld.setText("<html><b>"+LBL_FILTERINGTLD+"</b></html>");
+        lblFilteringTld.setText("<html><b>"+getFilteringThresholdLbl()+"</b></html>");
     }
     public Float getFilteringThreshold() {
-        return (Float) spFilteringTld.getValue();
+        if ( spFilteringTld.getValue() instanceof Integer )
+            return new Float((Integer) spFilteringTld.getValue());
+        else
+            return (Float) spFilteringTld.getValue();
+    }
+    private String getFilteringThresholdLbl() {
+        IndexerBinding.FilterRules filterRule = IndexerBinding.FilterRules.valueOf(getFilterRule());
+        switch (filterRule) {
+            case OccurrenceThreshold:
+                return LBL_FREQUENCYTLD_OCC;
+            case FrequencyThreshold:
+                return LBL_FREQUENCYTLD_FREQ;
+            case SpecificityThreshold:
+                return LBL_FREQUENCYTLD_SPEC;
+            case TopNByFrequency:
+                return LBL_FILTERINGTLD_TOPFREQ;
+            case TopNByOccurrence:
+                return LBL_FILTERINGTLD_TOPOCC;
+            case TopNBySpecificity:
+                return LBL_FILTERINGTLD_TOPSPEC;
+            default:
+                return "NA";
+        }
     }
 }

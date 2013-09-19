@@ -135,58 +135,41 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 		}
 	}
 
-	private TermPredicate getFilterRulePredicate(String filterRule,
-			Float filteringThreshold) throws Exception {
-		try {
-			IndexerBinding.FilterRules rule = IndexerBinding.FilterRules.valueOf(filterRule);
-			TermPredicate pred = null;
-			int cutoff = (int) Math.floor(filteringThreshold.doubleValue());
-			switch (rule) {
-			case None:
-				pred = TermPredicates.TRIVIAL_ACCEPTOR;
-				outputComparator = TermPredicates.ASCENDING_TEXT_ORDER;
-				break;
+	private TermPredicate getFilterRulePredicate(String filterRule, Float filteringThreshold) {
+        IndexerBinding.FilterRules rule = IndexerBinding.FilterRules.valueOf(filterRule);
+        int cutoff = (int) Math.floor(filteringThreshold.doubleValue());
+        switch (rule) {
+        case None:
+            outputComparator = TermPredicates.ASCENDING_TEXT_ORDER;
+            return TermPredicates.TRIVIAL_ACCEPTOR;
 
-			case OccurrenceThreshold:
-				pred = TermPredicates.createOccurrencesPredicate(cutoff);
-				outputComparator = TermPredicates.DESCENDING_OCCURRENCE_ORDER;
-				break;
-			case FrequencyThreshold:
-				pred = TermPredicates
-						.createFrequencyPredicate(filteringThreshold);
-				outputComparator = TermPredicates.DESCENDING_FREQUENCY_ORDER;
-				break;
+        case OccurrenceThreshold:
+            outputComparator = TermPredicates.DESCENDING_OCCURRENCE_ORDER;
+            return TermPredicates.createOccurrencesPredicate(cutoff);
 
-			case SpecificityThreshold:
-				pred = TermPredicates
-						.createSpecificityPredicate(filteringThreshold);
-				outputComparator = TermPredicates.DESCENDING_SPECIFICITY_ORDER;
-				break;
+        case FrequencyThreshold:
+            outputComparator = TermPredicates.DESCENDING_FREQUENCY_ORDER;
+            return TermPredicates.createFrequencyPredicate(filteringThreshold);
 
-			case TopNByOccurrence:
-				pred = TermPredicates.createTopNByOccurrencesPredicate(cutoff);
-				outputComparator = TermPredicates.DESCENDING_OCCURRENCE_ORDER;
-				break;
+        case SpecificityThreshold:
+            outputComparator = TermPredicates.DESCENDING_SPECIFICITY_ORDER;
+            return TermPredicates.createSpecificityPredicate(filteringThreshold);
 
-			case TopNByFrequency:
-				pred = TermPredicates.createTopNByFrequencyPredicate(cutoff);
-				outputComparator = TermPredicates.DESCENDING_FREQUENCY_ORDER;
-				break;
+        case TopNByOccurrence:
+            outputComparator = TermPredicates.DESCENDING_OCCURRENCE_ORDER;
+            return TermPredicates.createTopNByOccurrencesPredicate(cutoff);
 
-			case TopNBySpecificity:
-				pred = TermPredicates.createTopNBySpecificityPredicate(cutoff);
-				outputComparator = TermPredicates.DESCENDING_SPECIFICITY_ORDER;
-				break;
+        case TopNByFrequency:
+            outputComparator = TermPredicates.DESCENDING_FREQUENCY_ORDER;
+            return TermPredicates.createTopNByFrequencyPredicate(cutoff);
 
-			default:
-				throw new Exception(filterRule);
-			}
+        case TopNBySpecificity:
+            outputComparator = TermPredicates.DESCENDING_SPECIFICITY_ORDER;
+            return TermPredicates.createTopNBySpecificityPredicate(cutoff);
 
-			return pred;
-
-		} catch (Exception e) {
-			throw new Exception("Invalid filter rule : " + e.getMessage(), null);
-		}
+        default:
+            throw new IllegalArgumentException("Unknown filtering rule " + filterRule);
+        }
 	}
 
 	@Override

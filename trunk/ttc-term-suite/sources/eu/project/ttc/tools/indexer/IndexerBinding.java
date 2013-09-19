@@ -33,13 +33,13 @@ public interface IndexerBinding {
         EDITDISTANCETLD     ("EditDistanceThreshold", "indexer.editdistancethreshold", 0f),
         /** Edit distance ngrams parameter */
         EDITDISTANCENGRAMS  ("EditDistanceNgrams", "indexer.editdistancengrams", 3),
-        /** Frequency threshold parameter */
-        FREQUENCYTLD        ("OccurrenceThreshold", "indexer.frequencythreshold", 0.1),
+        /** Occurrence threshold parameter */
+        OCCURRENCETLD       ("OccurrenceThreshold", "indexer.occurrencethreshold", 1),
         /** Association measure parameter */
         ASSOCIATIONMEASURE  ("AssociationRateClassName", "indexer.associationmeasure", "eu.project.ttc.metrics.LogLikelihood"),
         /** Filtering threshold parameter */
         FILTERINGTLD        ("FilterRuleThreshold", "indexer.filteringthreshold", 1),
-        /** Filter rule parameter */
+        /** Filter rule parameter -> actually used for sorting ? */
         FILTERRULE          ("FilterRule", "indexer.filterrule", "None"),
         /** Keep verbs parameter */
         KEEPVERBS           ("KeepVerbsAndOthers", "indexer.keepverbs", false),
@@ -324,29 +324,29 @@ public interface IndexerBinding {
 
     /**
      * Setter for the frequency threshold parameter value.
-     * @param frequencyThreshold    threshold for the frequency filtering
+     * @param occurrenceThreshold    threshold for the frequency filtering
      */
-    void setFrequencyThreshold(Float frequencyThreshold);
+    void setOccurrenceThreshold(Integer occurrenceThreshold);
 
     /**
      * Accessor to the frequency threshold parameter value.
      */
-    Float getFrequencyThreshold();
+    Integer getOccurrenceThreshold();
 
     /**
      * Listener to a change regarding the frequency threshold parameter.
      */
-    void addFrequencyThresholdChangeListener(PropertyChangeListener listener);
+    void addOccurrenceThresholdChangeListener(PropertyChangeListener listener);
 
     /**
      * Mark the parameter as in error.
      */
-    void setFrequencyThresholdError(Throwable e);
+    void setOccurrenceThresholdError(Throwable e);
 
     /**
      * Unmark the parameter as in error.
      */
-    void unsetFrequencyThresholdError();
+    void unsetOccurrenceThresholdError();
 
     ///////////////////////////////////////////////////////////// ASSOCIATION MEASURE
 

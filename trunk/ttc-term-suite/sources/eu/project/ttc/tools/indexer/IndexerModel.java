@@ -40,7 +40,7 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
     /** Parameter for the distance ngrams */
     private ConfigurationParameter pEditDistanceNgrams;
     /** Parameter to filter terms by frequency */
-    private ConfigurationParameter pFrequencyThreshold;
+    private ConfigurationParameter pOccurrenceThreshold;
     /** Parameter for the association measure class name */
     private ConfigurationParameter pAssociationMeasure;
     /** Parameter to filter terms by frequency */
@@ -139,13 +139,13 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
         pIgnoreDiacritics.setMultiValued(false);
         pIgnoreDiacritics.setMandatory(false);
 
-        // Frequency threshold
-        pFrequencyThreshold = UIMAFramework
+        // Occurrence threshold
+        pOccurrenceThreshold = UIMAFramework
                 .getResourceSpecifierFactory().createConfigurationParameter();
-        pFrequencyThreshold.setName(PRM.FREQUENCYTLD.getParameter());
-        pFrequencyThreshold.setType(ConfigurationParameter.TYPE_FLOAT);
-        pFrequencyThreshold.setMultiValued(false);
-        pFrequencyThreshold.setMandatory(true);
+        pOccurrenceThreshold.setName(PRM.OCCURRENCETLD.getParameter());
+        pOccurrenceThreshold.setType(ConfigurationParameter.TYPE_INTEGER);
+        pOccurrenceThreshold.setMultiValued(false);
+        pOccurrenceThreshold.setMandatory(true);
 
         // Association measure
         pAssociationMeasure = UIMAFramework
@@ -256,8 +256,8 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
                     case EDITDISTANCENGRAMS:
                         setEditDistanceNgrams((Integer) nvp.getValue());
                         break;
-                    case FREQUENCYTLD:
-                        setFrequencyThreshold((Float) nvp.getValue());
+                    case OCCURRENCETLD:
+                        setOccurrenceThreshold((Integer) nvp.getValue());
                         break;
                     case ASSOCIATIONMEASURE:
                         setAssociationMeasure((String) nvp.getValue());
@@ -313,7 +313,7 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
         uimaParamDeclarations.addConfigurationParameter(pEditDistanceClass);
         uimaParamDeclarations.addConfigurationParameter(pEditDistanceThreshold);
         uimaParamDeclarations.addConfigurationParameter(pEditDistanceNgrams);
-        uimaParamDeclarations.addConfigurationParameter(pFrequencyThreshold);
+        uimaParamDeclarations.addConfigurationParameter(pOccurrenceThreshold);
         uimaParamDeclarations.addConfigurationParameter(pAssociationMeasure);
         uimaParamDeclarations.addConfigurationParameter(pFilteringThreshold);
         uimaParamDeclarations.addConfigurationParameter(pFilterRule);
@@ -353,7 +353,7 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
         uimaParamDeclarations.addConfigurationParameter(pEditDistanceClass);
         uimaParamDeclarations.addConfigurationParameter(pEditDistanceThreshold);
         uimaParamDeclarations.addConfigurationParameter(pEditDistanceNgrams);
-        uimaParamDeclarations.addConfigurationParameter(pFrequencyThreshold);
+        uimaParamDeclarations.addConfigurationParameter(pOccurrenceThreshold);
         uimaParamDeclarations.addConfigurationParameter(pAssociationMeasure);
         uimaParamDeclarations.addConfigurationParameter(pFilteringThreshold);
         uimaParamDeclarations.addConfigurationParameter(pFilterRule);
@@ -674,37 +674,37 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
      * If the value is valid, then the parameter value is changed in the
      * model and an event is fired indicating that the property has
      * changed in the model.
-     * @param frequencyThreshold
+     * @param occurrenceThreshold
      */
     @Override
-    public void setFrequencyThreshold(Float frequencyThreshold) {
-        if ( (frequencyThreshold >= 0) && (frequencyThreshold <= 1.0) ) {
-            Float oldValue = (Float) pSettings.getParameterValue(PRM.FREQUENCYTLD.getParameter());
-            pSettings.setParameterValue(PRM.FREQUENCYTLD.getParameter(), frequencyThreshold);
-            firePropertyChange(PRM.FREQUENCYTLD.getProperty(), oldValue, frequencyThreshold);
+    public void setOccurrenceThreshold(Integer occurrenceThreshold) {
+        if (occurrenceThreshold > 0) {
+            Integer oldValue = (Integer) pSettings.getParameterValue(PRM.OCCURRENCETLD.getParameter());
+            pSettings.setParameterValue(PRM.OCCURRENCETLD.getParameter(), occurrenceThreshold);
+            firePropertyChange(PRM.OCCURRENCETLD.getProperty(), oldValue, occurrenceThreshold);
         } else {
-            String msg = "Frequency threshold parameter value '" + frequencyThreshold + "' is invalid.";
+            String msg = "Occurrence threshold parameter value '" + occurrenceThreshold + "' is invalid.";
             UIMAFramework.getLogger().log(Level.SEVERE, msg);
             throw new IllegalArgumentException(msg);
         }
     }
     /** Getter for frequency threshold property */
     @Override
-    public Float getFrequencyThreshold() {
-        Float threshold = (Float) pSettings.getParameterValue(PRM.FREQUENCYTLD.getParameter());
-        return threshold==null ? (Float) PRM.FREQUENCYTLD.getDefaultValue() : threshold;
+    public Integer getOccurrenceThreshold() {
+        Integer threshold = (Integer) pSettings.getParameterValue(PRM.OCCURRENCETLD.getParameter());
+        return threshold==null ? (Integer) PRM.OCCURRENCETLD.getDefaultValue() : threshold;
     }
     /** Listener binder for frequency threshold property */
     @Override
-    public void addFrequencyThresholdChangeListener(PropertyChangeListener listener) {
-        addPropertyChangeListener(PRM.FREQUENCYTLD.getProperty(), listener);
+    public void addOccurrenceThresholdChangeListener(PropertyChangeListener listener) {
+        addPropertyChangeListener(PRM.OCCURRENCETLD.getProperty(), listener);
     }
     @Override
-    public void setFrequencyThresholdError(Throwable e) {
+    public void setOccurrenceThresholdError(Throwable e) {
         // TODO how to handle errors in the model ?
     }
     @Override
-    public void unsetFrequencyThresholdError() {
+    public void unsetOccurrenceThresholdError() {
         // TODO how to handle errors in the model ?
     }
 

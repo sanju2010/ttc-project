@@ -19,11 +19,31 @@ import eu.project.ttc.types.SingleWordTermAnnotation;
 import eu.project.ttc.types.TermAnnotation;
 import eu.project.ttc.types.TermComponentAnnotation;
 
+/**
+ * This Analysis Engine is responsible for removing annotations of terms
+ * based on a threshold parameter.
+ */
 public class TermCleaner extends JCasAnnotator_ImplBase {
 
-	private Integer threshold;
+    private static String PRM_THRESHOLD = "Threshold";
+
+    // Threshold value for the filtering
+    private Integer threshold;
+    // Set of annotations
+    private Set<Annotation> annotations;
+
+    private void setAnnotations() {
+        this.annotations = new HashSet<Annotation>();
+    }
+
+    private Set<Annotation> getAnnotations() {
+        return this.annotations;
+    }
 
 	private void setThreshold(Integer threshold) {
+        if (threshold <= 0) {
+            throw new IllegalArgumentException("The threshold must be greater than 0!");
+        }
 		this.threshold = threshold;
 	}
 
@@ -34,29 +54,19 @@ public class TermCleaner extends JCasAnnotator_ImplBase {
 	@Override
 	public void initialize(UimaContext context)
 			throws ResourceInitializationException {
-		super.initialize(context);
 		try {
+            super.initialize(context);
 			if (this.getAnnotations() == null) {
 				this.setAnnotations();
 			}
 			if (this.getThreshold() == null) {
 				Integer threshold = (Integer) context
-						.getConfigParameterValue("Threshold");
+						.getConfigParameterValue(PRM_THRESHOLD);
 				this.setThreshold(threshold);
 			}
 		} catch (Exception e) {
 			throw new ResourceInitializationException(e);
 		}
-	}
-
-	private Set<Annotation> annotations;
-
-	private void setAnnotations() {
-		this.annotations = new HashSet<Annotation>();
-	}
-
-	private Set<Annotation> getAnnotations() {
-		return this.annotations;
 	}
 
 	private void display(JCas cas) {
@@ -109,6 +119,10 @@ public class TermCleaner extends JCasAnnotator_ImplBase {
 		}
 	}
 
+    /**
+     * Collect the term annotations that should be removed from the CAS
+     * as their number of occurrences is strictly lesser than the threshold.
+     */
 	private void select(JCas cas) {
 		TermAnnotation annotation;
 		AnnotationIndex<Annotation> index = cas
@@ -123,7 +137,7 @@ public class TermCleaner extends JCasAnnotator_ImplBase {
 			}
 		}
 
-		// Substract variants of accepted terms
+		// Keep variants that may be removable but which term is accepted
 		iterator = index.iterator();
 		TermAnnotation variant;
 		while (iterator.hasNext()) {
