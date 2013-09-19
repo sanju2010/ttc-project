@@ -61,9 +61,9 @@ public class ConfigPanelExport extends JPanel {
     private static SpinnerNumberModel snmOccurrence = new SpinnerNumberModel(
             new Integer(3), new Integer(1), new Integer(Integer.MAX_VALUE), new Integer(1));
     private static SpinnerNumberModel snmFrequency = new SpinnerNumberModel(
-            new Float(0.5f), new Float(0f), new Float(Float.MAX_VALUE), new Float(0.05f));
+            new Float(0.5f), new Float(0f), new Float(1f), new Float(0.05f));
     private static SpinnerNumberModel snmSpecificity = new SpinnerNumberModel(
-            new Float(0.5f), new Float(0f), new Float(Float.MAX_VALUE), new Float(0.05f));
+            new Float(0.5f), new Float(0f), new Float(1f), new Float(0.05f));
     private static SpinnerNumberModel snmTopN = new SpinnerNumberModel(
             new Integer(50), new Integer(1), new Integer(Integer.MAX_VALUE), new Integer(5));
 
