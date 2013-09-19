@@ -17,12 +17,16 @@ import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
 
+import com.sun.org.apache.xpath.internal.NodeSet;
 import eu.project.ttc.tools.indexer.IndexerBinding;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
@@ -46,6 +50,8 @@ import eu.project.ttc.types.FormAnnotation;
 import eu.project.ttc.types.MultiWordTermAnnotation;
 import eu.project.ttc.types.SingleWordTermAnnotation;
 import eu.project.ttc.types.TermAnnotation;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 
@@ -62,119 +68,162 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 	/** Prefix used in langset ids */
 	public static final String TIG_ID_PREFIX = "term-";
 
+    /** Initial predicate */
+    private TermPredicate initial;
+    /** Filtering predicate */
+    private TermPredicate filteringPredicate;
 	/** Global filter for tbx output */
-	private TermPredicate predicate = TermPredicates
-			.createNounAdjectivePredicate();
+	private TermPredicate completePredicate;
 
-	/** Initial predicate */
-	private TermPredicate initial;
-
-	/** TBX filter rule as specified by the parameters */
-	private TermPredicate filterRule;
-
-	private File file;
+	private File workingDir;
 
 	/** Term sorter in TBX output */
 	private Comparator<TermAnnotation> outputComparator;
-
-	/** TSV output */
-	private IndexerTSVBuilder tsv;
 
 	/** TSV output flag */
 	private boolean tsvEnabled = false;
 
 	private void setDirectory(String path) throws IOException {
-		this.file = new File(path);
+		this.workingDir = new File(path);
 	}
 
 	private File getDirectory() {
-		return this.file;
+		return this.workingDir;
 	}
 
+    private Set<TermAnnotation> variants;
+
+    private Map<String, Set<TermAnnotation>> variantsOf;
+
+    private Map<TermAnnotation, Set<String>> basesOf;
+
+    private void setVariants() {
+        this.variants = new HashSet<TermAnnotation>();
+        this.variantsOf = new HashMap<String, Set<TermAnnotation>>();
+        this.basesOf = new HashMap<TermAnnotation, Set<String>>();
+    }
+
+    private int getVariantCount(FSArray vars) {
+        return vars == null ? 0 : vars.size();
+    }
+
+
+    /**
+     * Initialize the engine: configure the various parameters and prepare the filtering.
+     */
 	@Override
-	public void initialize(UimaContext context)
-			throws ResourceInitializationException {
-		super.initialize(context);
+	public void initialize(UimaContext context) throws ResourceInitializationException {
 		try {
+            super.initialize(context);
+
+            // FIXME why ?
 			if (this.getDirectory() == null) {
+                // Compute directory
 				String path = (String) context
                         .getConfigParameterValue(IndexerBinding.PRM.OUTPUT.getParameter());
 				this.setDirectory(path);
-
+                // Save TSV export flag
                 tsvEnabled = Boolean.TRUE.equals(context
                         .getConfigParameterValue(IndexerBinding.PRM.TSV.getParameter()));
-
-                // Set up TBX filtering
-				if (Boolean.TRUE.equals(context
-						.getConfigParameterValue(IndexerBinding.PRM.KEEPVERBS.getParameter()))) {
-					predicate = TermPredicates.createOrPredicate(predicate,
-							TermPredicates.createVerbAdverbPredicate());
-                }
-
-				initial = predicate;
-
-				filterRule = getFilterRulePredicate(
-						(String) context
-								.getConfigParameterValue(IndexerBinding.PRM.FILTERRULE.getParameter()),
-						(Float) context
-								.getConfigParameterValue(IndexerBinding.PRM.FILTERINGTLD.getParameter()));
-
-				predicate = TermPredicates.createAndPredicate(predicate, filterRule);
-			}
-			if (this.variants == null) {
-				this.setVariants();
+                // Set up filtering
+                initFiltering(
+                        (String) context.getConfigParameterValue(IndexerBinding.PRM.FILTERRULE.getParameter()),
+                        (Float) context.getConfigParameterValue(IndexerBinding.PRM.FILTERINGTLD.getParameter()),
+                        Boolean.TRUE.equals(context
+                                .getConfigParameterValue(IndexerBinding.PRM.KEEPVERBS.getParameter())) );
+                // Set up variants
+                this.setVariants();
 			}
 
 			NUMBER_FORMATTER.setMaximumFractionDigits(4);
 			NUMBER_FORMATTER.setMinimumFractionDigits(4);
 			NUMBER_FORMATTER.setRoundingMode(RoundingMode.UP);
 			NUMBER_FORMATTER.setGroupingUsed(false);
-
 		} catch (Exception e) {
 			throw new ResourceInitializationException(e);
 		}
 	}
 
-	private TermPredicate getFilterRulePredicate(String filterRule, Float filteringThreshold) {
+    /**
+     * Initialize the terms filtering based on the parameters.
+     * The initialization is done as a side effect of the method on the class instance.
+     *
+     * @param filterRule
+     *      name of the filter rule to be applied
+     * @param filteringThreshold
+     *      value of the threshold for the filtering
+     * @param isKeepVerbs
+     *      do we keep verbs and adverbs or do we filter them out
+     */
+	private void initFiltering(String filterRule, Float filteringThreshold, boolean isKeepVerbs) {
+        // Compute the initial predicate
+        if (isKeepVerbs) {
+            initial = TermPredicates.createOrPredicate(
+                    TermPredicates.createNounAdjectivePredicate(),
+                    TermPredicates.createVerbAdverbPredicate());
+        } else {
+            initial = TermPredicates.createNounAdjectivePredicate();
+        }
+
+        // Add the filtering rule
         IndexerBinding.FilterRules rule = IndexerBinding.FilterRules.valueOf(filterRule);
         int cutoff = (int) Math.floor(filteringThreshold.doubleValue());
         switch (rule) {
         case None:
             outputComparator = TermPredicates.ASCENDING_TEXT_ORDER;
-            return TermPredicates.TRIVIAL_ACCEPTOR;
+            filteringPredicate = TermPredicates.TRIVIAL_ACCEPTOR;
+            completePredicate = TermPredicates.createAndPredicate(initial, filteringPredicate);
+            return;
 
         case OccurrenceThreshold:
             outputComparator = TermPredicates.DESCENDING_OCCURRENCE_ORDER;
-            return TermPredicates.createOccurrencesPredicate(cutoff);
+            filteringPredicate = TermPredicates.createOccurrencesPredicate(cutoff);
+            completePredicate = TermPredicates.createAndPredicate(initial, filteringPredicate);
+            return;
 
         case FrequencyThreshold:
             outputComparator = TermPredicates.DESCENDING_FREQUENCY_ORDER;
-            return TermPredicates.createFrequencyPredicate(filteringThreshold);
+            filteringPredicate = TermPredicates.createFrequencyPredicate(filteringThreshold);
+            completePredicate = TermPredicates.createAndPredicate(initial, filteringPredicate);
+            return;
 
         case SpecificityThreshold:
             outputComparator = TermPredicates.DESCENDING_SPECIFICITY_ORDER;
-            return TermPredicates.createSpecificityPredicate(filteringThreshold);
+            filteringPredicate = TermPredicates.createSpecificityPredicate(filteringThreshold);
+            completePredicate = TermPredicates.createAndPredicate(initial, filteringPredicate);
+            return;
 
         case TopNByOccurrence:
             outputComparator = TermPredicates.DESCENDING_OCCURRENCE_ORDER;
-            return TermPredicates.createTopNByOccurrencesPredicate(cutoff);
+            filteringPredicate = TermPredicates.createTopNByOccurrencesPredicate(cutoff);
+            completePredicate = TermPredicates.createAndPredicate(initial, filteringPredicate);
+            return;
 
         case TopNByFrequency:
             outputComparator = TermPredicates.DESCENDING_FREQUENCY_ORDER;
-            return TermPredicates.createTopNByFrequencyPredicate(cutoff);
+            filteringPredicate = TermPredicates.createTopNByFrequencyPredicate(cutoff);
+            completePredicate = TermPredicates.createAndPredicate(initial, filteringPredicate);
+            return;
 
         case TopNBySpecificity:
             outputComparator = TermPredicates.DESCENDING_SPECIFICITY_ORDER;
-            return TermPredicates.createTopNBySpecificityPredicate(cutoff);
+            filteringPredicate = TermPredicates.createTopNBySpecificityPredicate(cutoff);
+            completePredicate = TermPredicates.createAndPredicate(initial, filteringPredicate);
+            return;
 
         default:
             throw new IllegalArgumentException("Unknown filtering rule " + filterRule);
         }
 	}
 
+    /**
+     * Extracts all the term annotations in the JCas in parameter in order to
+     * export them applying the filtering rules defined in parameter.
+     */
 	@Override
 	public void process(JCas cas) throws AnalysisEngineProcessException {
 		try {
+            // Compute TBX and TSV file paths
 			AnnotationIndex<Annotation> index = cas
 					.getAnnotationIndex(SourceDocumentInformation.type);
 			FSIterator<Annotation> iterator = index.iterator();
@@ -187,29 +236,39 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 				int last = uri.lastIndexOf('.');
 				name = uri.substring(first, last) + ".tbx";
 			}
-			File file = new File(this.getDirectory(), name);
-			if (tsvEnabled) {
-				tsv = new IndexerTSVBuilder(new FileWriter(new File(
-						this.getDirectory(), name.replace(".tbx", ".tsv")),
-						false));
+			File tbxFile = new File(this.getDirectory(), name);
+            File tsvFile = new File(this.getDirectory(), name.replace(".tbx", ".tsv"));
+            this.getContext().getLogger().log(Level.INFO, "TBX path: " + tbxFile.getAbsolutePath());
+            if (tsvEnabled) {
+                this.getContext().getLogger().log(Level.INFO, "TSV path: " + tsvFile.getAbsolutePath());
             }
 
-			this.getContext().getLogger()
-					.log(Level.INFO, "Exporting " + file.getAbsolutePath());
-			List<TermAnnotation> annots = this.index(cas);
-			this.create(cas, annots, file);
+            // Sorting terms
+            List<TermAnnotation> terms = extractAndSortTermAnnotations(cas);
 
-			if (tsvEnabled) {
-				tsv.close();
-				tsv = null;
-			}
+            // Build TBX
+            Document tbxDoc = prepareTBXDocument();
+            populateTBX(cas.getDocumentLanguage(), terms, tbxDoc);
+            exportTBXDocument(tbxDoc, tbxFile);
+
+            // Build TSV
+            if (tsvEnabled) {
+                exportTSV(tbxDoc, tsvFile);
+            }
 		} catch (Exception e) {
 			throw new AnalysisEngineProcessException(e);
 		}
-
 	}
 
-	private List<TermAnnotation> index(JCas cas) {
+    /**
+     * Extract and sort term annotations based on the filtering parametered.
+     *
+     * @param cas
+     *      JCas from which the annotations are extracted
+     * @return
+     *      sorted list of the annotations
+     */
+	private List<TermAnnotation> extractAndSortTermAnnotations(JCas cas) {
 		AnnotationIndex<Annotation> index = cas
 				.getAnnotationIndex(TermAnnotation.type);
 		ArrayList<TermAnnotation> termList = new ArrayList<TermAnnotation>();
@@ -252,48 +311,66 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 				accepted.add(annotation);
 			}
 
-		if (filterRule instanceof ListBasedTermPredicate)
-			((ListBasedTermPredicate) filterRule).initialize(accepted);
+		if (filteringPredicate instanceof ListBasedTermPredicate)
+			((ListBasedTermPredicate) filteringPredicate).initialize(accepted);
 
 		Collections.sort(termList, outputComparator);
 		System.out.println("Terms in sorted term list : " + termList.size());
 		return termList;
 	}
 
-	private int getVariantCount(FSArray vars) {
-		return vars == null ? 0 : vars.size();
-	}
-
-	private void create(JCas cas, List<TermAnnotation> termList, File file)
-			throws Exception {
+    /**
+     * Prepare the TBX document that will contain the terms.
+     */
+	private Document prepareTBXDocument() throws ParserConfigurationException {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder = factory.newDocumentBuilder();
 		Document document = builder.newDocument();
+
 		Element martif = document.createElement("martif");
 		martif.setAttribute("type", "TBX");
 		document.appendChild(martif);
+
 		Element header = document.createElement("martifHeader");
 		martif.appendChild(header);
+
 		Element fileDesc = document.createElement("fileDesc");
 		header.appendChild(fileDesc);
+
 		Element encodingDesc = document.createElement("encodingDesc");
 		header.appendChild(encodingDesc);
+
 		Element encodingP = document.createElement("p");
 		encodingP.setAttribute("type", "XCSURI");
-		encodingP
-				.setTextContent("http://ttc-project.googlecode.com/files/ttctbx.xcs");
+		encodingP.setTextContent("http://ttc-project.googlecode.com/files/ttctbx.xcs");
 		encodingDesc.appendChild(encodingP);
+
 		Element sourceDesc = document.createElement("sourceDesc");
 		Element p = document.createElement("p");
-		p.setTextContent(file.getAbsolutePath());
+		p.setTextContent(workingDir.getAbsolutePath());
 		sourceDesc.appendChild(p);
 		fileDesc.appendChild(sourceDesc);
+
 		Element text = document.createElement("text");
 		martif.appendChild(text);
-		Element body = document.createElement("body");
-		text.appendChild(body);
-		this.process(cas, termList, document, body);
 
+        Element body = document.createElement("body");
+		text.appendChild(body);
+
+        return document;
+    }
+
+    /**
+     * Export the TBX document to a file specified in parameter.
+     *
+     * @param tbxDoc
+     *      TBX document containing the terms
+     * @param tbxFile
+     *      File where to persist the TBX tree
+     * @throws TransformerException
+     */
+    private void exportTBXDocument(Document tbxDoc, File tbxFile) throws TransformerException {
+        // Prepare the transformer to persist the file
 		TransformerFactory transformerFactory = TransformerFactory
 				.newInstance();
 		Transformer transformer = transformerFactory.newTransformer();
@@ -303,63 +380,96 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 		transformer.setOutputProperty(OutputKeys.STANDALONE, "yes");
 		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 		try {
-			transformer.setOutputProperty(
-					"{http://xml.apache.org/xslt}indent-amount", "2");
-		} catch (IllegalArgumentException e) {
-			// Ignore
-		}
+			transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+		} catch (IllegalArgumentException e) {} // Ignore
 
-		DOMSource source = new DOMSource(document);
-		StreamResult result = new StreamResult(file);
+        // Actually persist the file
+		DOMSource source = new DOMSource(tbxDoc);
+		StreamResult result = new StreamResult(tbxFile);
 		transformer.transform(source, result);
 	}
 
-	private Set<TermAnnotation> variants;
+    /**
+     * Populate the TBX tree with the filtered terms found in the document.
+     *
+     * @param lang
+     *      language of the document (ISO two letters)
+     * @param termList
+     *      list of the terms sorted in the order of the export
+     * @param document
+     * @throws IOException
+     */
+    private void populateTBX(String lang, List<TermAnnotation> termList, Document document) throws IOException {
+        int count = 0;
+        for (TermAnnotation annotation : termList) {
+            // If term matches the filtering rules, the we add it to output
+            // FIXME: why not done in the extraction ?
+            if (completePredicate.accept(annotation)) {
+                count++;
+                // Add main term entry
+                addTermEntry(document, annotation.getLangset(), annotation, lang, false);
+                // Add term variants
+                Set<TermAnnotation> tVars = variantsOf.get( annotation.getLangset() );
+                if (tVars != null) {
+                    for (TermAnnotation tVariant : tVars) {
+                        addTermEntry(document, tVariant.getLangset(),
+                                tVariant, lang, true);
+                    }
+                }
+            }
+        }
+        getContext().getLogger().log(Level.INFO, "Terms added to TBX: " + count);
+    }
 
-	private Map<String, Set<TermAnnotation>> variantsOf;
 
-	private Map<TermAnnotation, Set<String>> basesOf;
+    /**
+     * Build a TSV of the list of term annotations based on the TBX tree.
+     *
+     * @param tbxDoc
+     *      sorted list of the annotations according to the filtering rules
+     * @param tsvFile
+     *      file where the content will be exported
+     */
+    private void exportTSV(Document tbxDoc, File tsvFile) throws IOException, XPathExpressionException {
+        IndexerTSVBuilder tsv = new IndexerTSVBuilder(new FileWriter(tsvFile, false));
 
-	private void setVariants() {
-		this.variants = new HashSet<TermAnnotation>();
-		this.variantsOf = new HashMap<String, Set<TermAnnotation>>();
-		this.basesOf = new HashMap<TermAnnotation, Set<String>>();
-	}
+        XPathFactory factory = XPathFactory.newInstance();
+        XPath xpathTerms = factory.newXPath();
+        NodeSet tEntries = (NodeSet) xpathTerms.evaluate("//termEntry", tbxDoc, XPathConstants.NODESET);
+        for(int i=0 ; i<tEntries.getLength() ; i++) {
+            Node tNode = tEntries.item(i);
+            // Add the term
+            XPath xpathTerm = factory.newXPath();
+            Node pilotNode = (Node) xpathTerm.evaluate("//termNote[@type='termPilot']", tNode, XPathConstants.NODE);
+            tsv.startTerm( pilotNode.getTextContent() );
+            // ... its variants
+            NodeSet variantNodes = (NodeSet) xpathTerm.evaluate("//descrip[@type='termVariant']", tNode, XPathConstants.NODESET);
+            for(int j=0 ; j<variantNodes.getLength() ; j++) {
+                Element variant = (Element) variantNodes.item(j);
+                tsv.addVariant( variant.getTextContent() );
+            }
+            // done with this term
+            tsv.endTerm();
+        }
 
-	private void process(JCas cas, List<TermAnnotation> termList,
-			Document document, Element body) throws IOException {
-		String lang = cas.getDocumentLanguage();
-		int count = 0;
-		for (TermAnnotation annotation : termList) {
-			String id = annotation.getLangset();
+        tsv.close();
+    }
 
-			// If term matches the filtering rules, the we add it to output
-			if (predicate.accept(annotation)) {
-				// Add main term entry
-				addTermEntry(document, body, id, annotation, lang, false);
-
-				// Add term variants
-				Set<TermAnnotation> tVars = variantsOf.get(id);
-				if (tVars != null) {
-					for (TermAnnotation tVariant : tVars) {
-						addTermEntry(document, body, tVariant.getLangset(),
-								tVariant, lang, true);
-					}
-				}
-
-				count++;
-				// finish TSV entry if needed
-				if (tsvEnabled) {
-					tsv.endTerm();
-				}
-			}
-		}
-		System.out.println("Terms saved : " + count);
-	}
-
-	private void addTermEntry(Document doc, Element body, String langsetId,
+    /**
+     * Add a term to the TBX document.
+     *
+     * @param doc
+     * @param langsetId
+     * @param term
+     * @param language
+     * @param isVariant
+     * @throws IOException
+     */
+	private void addTermEntry(Document doc, String langsetId,
 			TermAnnotation term, String language, boolean isVariant)
 			throws IOException {
+        Node body = doc.getElementsByTagName("body").item(0);
+
 		Element termEntry = doc.createElement("termEntry");
 		termEntry.setAttribute("xml:id",
 				TERMENTRY_ID_PREFIX + term.getAddress());
@@ -402,8 +512,7 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 			addNote(doc, langSet, tig, "termPilot", pilot);
 		}
 
-		this.addNote(doc, langSet, tig, "termType", isVariant ? "variant"
-				: "termEntry");
+		this.addNote(doc, langSet, tig, "termType", isVariant ? "variant" : "termEntry");
 		this.addNote(
 				doc,
 				langSet,
@@ -425,13 +534,6 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 					buildFormListJSON(term, forms.size()));
 		// this.addDescrip(document, langSet, tig, "domainSpecificity",
 		// annotation.getSpecificity());
-
-		if (tsvEnabled) {
-			if (!isVariant)
-				tsv.startTerm(pilot);
-			else
-				tsv.addVariant(pilot);
-		}
 	}
 
 	private String buildFormListJSON(TermAnnotation term, int size) {
