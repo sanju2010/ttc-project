@@ -102,7 +102,7 @@ public class IndexerController extends ToolController {
                         !getModel().getAssociationMeasure().equals(evt.getNewValue())) {
                     try {
                         System.out.println("Indexer:view-model:association measure->" + evt.getNewValue());
-                        getModel().setAssociationMeasure((String) evt.getNewValue());
+                        getModel().setAssociationMeasure(((ClassItem) evt.getNewValue()).getClassName());
                     } catch (IllegalArgumentException e) {
                         success = false;
                         getView().setAssociationMeasureError(e);
