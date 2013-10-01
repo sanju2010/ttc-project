@@ -3,8 +3,12 @@
 *.iml
 *.iws
 
+# eclipse
+.settings/
+
 # Maven
 target/
 
 # ?
 out/
+bin/
