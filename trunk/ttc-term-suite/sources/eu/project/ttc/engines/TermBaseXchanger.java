@@ -18,7 +18,10 @@ import java.util.Set;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.*;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.xpath.XPath;
@@ -26,8 +29,6 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
-import com.sun.org.apache.xpath.internal.NodeSet;
-import eu.project.ttc.tools.indexer.IndexerBinding;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
@@ -41,8 +42,12 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Level;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
+import eu.project.ttc.tools.indexer.IndexerBinding;
 import eu.project.ttc.tools.utils.IndexerTSVBuilder;
+import eu.project.ttc.tools.utils.IterableNodeList;
 import eu.project.ttc.tools.utils.TermPredicate;
 import eu.project.ttc.tools.utils.TermPredicates;
 import eu.project.ttc.tools.utils.TermPredicates.ListBasedTermPredicate;
@@ -50,8 +55,6 @@ import eu.project.ttc.types.FormAnnotation;
 import eu.project.ttc.types.MultiWordTermAnnotation;
 import eu.project.ttc.types.SingleWordTermAnnotation;
 import eu.project.ttc.types.TermAnnotation;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 
@@ -403,7 +406,8 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
         int count = 0;
         for (TermAnnotation annotation : termList) {
             // If term matches the filtering rules, the we add it to output
-            // FIXME: why not done in the extraction ?
+            // FIXED: why not done in the extraction ?
+        	// FIXME: Because top n by predicates are based in the whole list.
             if (completePredicate.accept(annotation)) {
                 count++;
                 // Add main term entry
@@ -431,29 +435,28 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
      *      file where the content will be exported
      */
     private void exportTSV(Document tbxDoc, File tsvFile) throws IOException, XPathExpressionException {
-        IndexerTSVBuilder tsv = new IndexerTSVBuilder(new FileWriter(tsvFile, false));
+		IndexerTSVBuilder tsv = new IndexerTSVBuilder(new FileWriter(tsvFile,
+				false));
 
-        XPathFactory factory = XPathFactory.newInstance();
-        XPath xpathTerms = factory.newXPath();
-        NodeSet tEntries = (NodeSet) xpathTerms.evaluate("//termEntry", tbxDoc, XPathConstants.NODESET);
-        for(int i=0 ; i<tEntries.getLength() ; i++) {
-            Node tNode = tEntries.item(i);
-            // Add the term
-            XPath xpathTerm = factory.newXPath();
-            Node pilotNode = (Node) xpathTerm.evaluate("//termNote[@type='termPilot']", tNode, XPathConstants.NODE);
-            tsv.startTerm( pilotNode.getTextContent() );
-            // ... its variants
-            NodeSet variantNodes = (NodeSet) xpathTerm.evaluate("//descrip[@type='termVariant']", tNode, XPathConstants.NODESET);
-            for(int j=0 ; j<variantNodes.getLength() ; j++) {
-                Element variant = (Element) variantNodes.item(j);
-                tsv.addVariant( variant.getTextContent() );
-            }
-            // done with this term
-            tsv.endTerm();
-        }
+		XPathFactory factory = XPathFactory.newInstance();
+		XPath xpathTerms = factory.newXPath();
+		NodeList tEntries = (NodeList) xpathTerms.evaluate("/martif/text/body/termEntry/langSet/tig", tbxDoc, XPathConstants.NODESET);
+		for (Node tNode : IterableNodeList.fromNodeList(tEntries)) {
+			// Add the term
+			XPath xpathTerm = factory.newXPath();
+			String termPilot = (String) xpathTerm.evaluate("termNote[@type='termPilot']/text()", tNode, XPathConstants.STRING);
+			tsv.startTerm(termPilot);
+			// ... its variants
+			NodeList variantNodes = (NodeList) xpathTerm.evaluate("descrip[@type='termVariant']", tNode, XPathConstants.NODESET);
+			for (Node vNode : IterableNodeList.fromNodeList(variantNodes)) {
+				tsv.addVariant(((Element) vNode).getTextContent());
+			}
+			// done with this term
+			tsv.endTerm();
+		}
 
-        tsv.close();
-    }
+		tsv.close();
+	}
 
     /**
      * Add a term to the TBX document.

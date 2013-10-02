@@ -174,7 +174,7 @@ public class IndexerController extends ToolController {
                         !getModel().getFilteringThreshold().equals(evt.getNewValue())) {
                     try {
                         System.out.println("Indexer:view-model:filtering threshold->" + evt.getNewValue());
-                        getModel().setFilteringThreshold((Float) evt.getNewValue());
+                        getModel().setFilteringThreshold(new Float(((Number) evt.getNewValue()).floatValue()));
                     } catch (IllegalArgumentException e) {
                         success = false;
                         getView().setFilteringThresholdError(e);

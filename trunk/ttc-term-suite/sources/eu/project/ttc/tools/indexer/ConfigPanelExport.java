@@ -43,7 +43,7 @@ public class ConfigPanelExport extends JPanel {
 
     // Filter rule parameter
     private JLabel lblFilterRule;
-    private JComboBox cbFilterRule;
+    private JComboBox<String> cbFilterRule;
     private JEditorPane epFilterRule;
 
     // Filtering threshold parameter
@@ -277,7 +277,7 @@ public class ConfigPanelExport extends JPanel {
                 preferredWidth ));
 
         // Comboxbox as it is a limited list of choices
-        cbFilterRule = new JComboBox();
+        cbFilterRule = new JComboBox<String>();
         cbFilterRule.addItem("None");
         cbFilterRule.addItem("OccurrenceThreshold");
         cbFilterRule.addItem("FrequencyThreshold");
@@ -492,7 +492,7 @@ public class ConfigPanelExport extends JPanel {
 
     public void setFilterRule(String filterRule) {
         for(int i=0 ; i < cbFilterRule.getItemCount() ; i++) {
-            String item = (String) cbFilterRule.getItemAt(i);
+            String item = cbFilterRule.getItemAt(i);
             if ( item.equals(filterRule) ) {
                 if (cbFilterRule.getSelectedIndex() != i) {
                     cbFilterRule.setSelectedItem( item );
