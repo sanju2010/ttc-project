@@ -21,6 +21,7 @@ import java.util.*;
  * @author Fabien Poulard <fpoulard@dictanova.com>
  * @date 19/08/13
  */
+@SuppressWarnings("serial")
 public class AlignerMixerViewer extends JSplitPane {
 
     private static final NumberFormat FORMATTER = NumberFormat.getNumberInstance(Locale.US);

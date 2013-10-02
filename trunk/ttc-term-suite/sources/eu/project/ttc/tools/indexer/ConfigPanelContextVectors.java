@@ -1,16 +1,20 @@
 // Copyright © 2013 Dictanova SAS
 package eu.project.ttc.tools.indexer;
 
-import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.IOException;
 import java.net.URL;
+
+import javax.swing.BorderFactory;
+import javax.swing.GroupLayout;
+import javax.swing.JComboBox;
+import javax.swing.JEditorPane;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.LayoutStyle;
 
 /**
  * This JPanel exposes the configuration of the Indexer tool regarding the
@@ -18,13 +22,14 @@ import java.net.URL;
  *
  * @author Fabien Poulard <fpoulard@dictanova.com>
  */
+@SuppressWarnings("serial")
 public class ConfigPanelContextVectors extends JPanel {
 
     protected static final String LBL_ASSOCMEASURE = "Association measure";
 
     // Association measure parameter
     private JLabel lblAssociationMeasure;
-    private JComboBox cbAssociationMeasure;
+    private JComboBox<ClassItem> cbAssociationMeasure;
     private JEditorPane epAssociationMeasure;
 
     private GroupLayout cfgLayout;
@@ -100,7 +105,7 @@ public class ConfigPanelContextVectors extends JPanel {
                 preferredWidth ));
 
         // Comboxbox as it is a limited list of choices
-        cbAssociationMeasure = new JComboBox();
+        cbAssociationMeasure = new JComboBox<ClassItem>();
         cbAssociationMeasure.addItem(new ClassItem(
                 "eu.project.ttc.metrics.LogLikelihood", "Log likelyhood"));
         cbAssociationMeasure.addItem(new ClassItem(

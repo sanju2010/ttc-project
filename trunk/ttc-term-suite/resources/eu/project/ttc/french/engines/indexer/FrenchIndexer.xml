@@ -256,8 +256,8 @@
         <node>FrenchTermFrequencyComputer</node>
         <node>FrenchCompoundIndexer</node>
         <node>FrenchTermGatherer</node>
-        <node>TermCleaner</node>
         <node>TermBaseXchanger</node>
+        <node>TermCleaner</node>
         <node>Writer</node>
       </fixedFlow>
     </flowConstraints>

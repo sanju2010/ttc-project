@@ -1,18 +1,25 @@
 // Copyright © 2013 Dictanova SAS
 package eu.project.ttc.tools.indexer;
 
-import eu.project.ttc.tools.commons.LanguageItem;
-import eu.project.ttc.tools.commons.TTCDirectoryChooser;
-import eu.project.ttc.tools.commons.TTCFileChooser;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.net.URL;
+
+import javax.swing.BorderFactory;
+import javax.swing.GroupLayout;
+import javax.swing.JComboBox;
+import javax.swing.JEditorPane;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.LayoutStyle;
+
+import eu.project.ttc.tools.commons.LanguageItem;
+import eu.project.ttc.tools.commons.TTCDirectoryChooser;
 
 /**
  * This JPanel exposes the basic configuration part of the Indexer tool.
@@ -21,11 +28,12 @@ import java.net.URL;
  *
  * @author Fabien Poulard <fpoulard@dictanova.com>
  */
+@SuppressWarnings("serial")
 public class ConfigPanelBasic extends JPanel {
 
     // Language parameter
     private JLabel lblLanguage;
-    private JComboBox cbLanguage;
+    private JComboBox<LanguageItem> cbLanguage;
     private JEditorPane epLanguage;
 
     // Input directory parameter
@@ -146,7 +154,7 @@ public class ConfigPanelBasic extends JPanel {
                 preferredWidth ));
 
         // Language combobox
-        cbLanguage = new JComboBox();
+        cbLanguage = new JComboBox<LanguageItem>();
         for(String code: new String[]{"en","fr","de","es","ru","da","lv","zh"}) {
             cbLanguage.addItem( new LanguageItem(code) );
         }

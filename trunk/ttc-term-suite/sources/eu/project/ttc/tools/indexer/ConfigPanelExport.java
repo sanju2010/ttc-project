@@ -18,6 +18,7 @@ import java.net.URL;
  *
  * @author Fabien Poulard <fpoulard@dictanova.com>
  */
+@SuppressWarnings("serial")
 public class ConfigPanelExport extends JPanel {
 
     protected final static String LBL_TSV = "Export in TSV format";
@@ -58,14 +59,15 @@ public class ConfigPanelExport extends JPanel {
 
     private GroupLayout cfgLayout;
 
-    private static SpinnerNumberModel snmOccurrence = new SpinnerNumberModel(
-            new Integer(3), new Integer(1), new Integer(Integer.MAX_VALUE), new Integer(1));
-    private static SpinnerNumberModel snmFrequency = new SpinnerNumberModel(
-            new Float(0.5f), new Float(0f), new Float(1f), new Float(0.05f));
-    private static SpinnerNumberModel snmSpecificity = new SpinnerNumberModel(
-            new Float(0.5f), new Float(0f), new Float(1f), new Float(0.05f));
-    private static SpinnerNumberModel snmTopN = new SpinnerNumberModel(
-            new Integer(50), new Integer(1), new Integer(Integer.MAX_VALUE), new Integer(5));
+    /** A model for frequency and or specificity, not bound. Although frequency is [0, 1], specificity might not. */
+    // FIXME Check specificity boundaries
+    private final SpinnerNumberModel floatSpinnerModel = new SpinnerNumberModel(new Float(0.5f), new Float(0f), new Float(Math.log(Float.MAX_VALUE)), new Float(0.05f));
+    
+    /** A model for step by 1 integer values */
+    private final SpinnerNumberModel integerSpinnerModel = new SpinnerNumberModel(new Integer(3), new Integer(1), new Integer(Integer.MAX_VALUE), new Integer(1));
+    
+    /** A model for step by 5 integer values */
+    private final SpinnerNumberModel topNSpinnerModel = new SpinnerNumberModel(new Integer(50), new Integer(1), new Integer(Integer.MAX_VALUE), new Integer(5));
 
     public ConfigPanelExport() {
         super(new BorderLayout());
@@ -314,72 +316,31 @@ public class ConfigPanelExport extends JPanel {
      */
     private void updateFilterParameters() {
         IndexerBinding.FilterRules filterRule = IndexerBinding.FilterRules.valueOf(getFilterRule());
+        final Number oldValue = (Number) spFilteringTld.getModel().getValue();
         switch(filterRule) {
             case OccurrenceThreshold:
-                lblFilteringTld.setText("<html><b>"+getFilteringThresholdLbl()+"</b></html>");
-                lblFilteringTld.setVisible(true);
-                spFilteringTld.setModel(snmOccurrence);
-                spFilteringTld.setVisible(true);
-                try {
-                    URL res = getClass().getResource("/eu/project/ttc/gui/texts/indexer/param.filteringtld.occurrence.html");
-                    epFilteringTld.setPage(res);
-                    epFilteringTld.setVisible(true);
-                } catch (IOException e){} // No help
+			updateFilterModel(integerSpinnerModel, new Integer(oldValue.intValue()),
+					"/eu/project/ttc/gui/texts/indexer/param.filteringtld.occurrence.html");
                 return;
             case FrequencyThreshold:
-                lblFilteringTld.setText("<html><b>"+getFilteringThresholdLbl()+"</b></html>");
-                lblFilteringTld.setVisible(true);
-                spFilteringTld.setModel(snmFrequency);
-                spFilteringTld.setVisible(true);
-                try {
-                    URL res = getClass().getResource("/eu/project/ttc/gui/texts/indexer/param.filteringtld.frequency.html");
-                    epFilteringTld.setPage(res);
-                    epFilteringTld.setVisible(true);
-                } catch (IOException e){} // No help
+            	updateFilterModel(floatSpinnerModel, new Float(oldValue.floatValue()),
+    					"/eu/project/ttc/gui/texts/indexer/param.filteringtld.frequency.html");
                 return;
             case SpecificityThreshold:
-                lblFilteringTld.setText("<html><b>"+getFilteringThresholdLbl()+"</b></html>");
-                lblFilteringTld.setVisible(true);
-                spFilteringTld.setModel(snmSpecificity);
-                spFilteringTld.setVisible(true);
-                try {
-                    URL res = getClass().getResource("/eu/project/ttc/gui/texts/indexer/param.filteringtld.specificity.html");
-                    epFilteringTld.setPage(res);
-                    epFilteringTld.setVisible(true);
-                } catch (IOException e){} // No help
+            	updateFilterModel(floatSpinnerModel, new Float(oldValue.floatValue()),
+    					"/eu/project/ttc/gui/texts/indexer/param.filteringtld.specificity.html");
                 return;
             case TopNByOccurrence:
-                lblFilteringTld.setText("<html><b>"+getFilteringThresholdLbl()+"</b></html>");
-                lblFilteringTld.setVisible(true);
-                spFilteringTld.setModel(snmTopN);
-                spFilteringTld.setVisible(true);
-                try {
-                    URL res = getClass().getResource("/eu/project/ttc/gui/texts/indexer/param.filteringtld.topoccurrence.html");
-                    epFilteringTld.setPage(res);
-                    epFilteringTld.setVisible(true);
-                } catch (IOException e){} // No help
+            	updateFilterModel(topNSpinnerModel, new Integer(oldValue.intValue()),
+    					"/eu/project/ttc/gui/texts/indexer/param.filteringtld.topoccurrence.html");
                 return;
             case TopNByFrequency:
-                lblFilteringTld.setText("<html><b>" + getFilteringThresholdLbl() + "</b></html>");
-                lblFilteringTld.setVisible(true);
-                spFilteringTld.setModel(snmTopN);
-                spFilteringTld.setVisible(true);
-                try {
-                    URL res = getClass().getResource("/eu/project/ttc/gui/texts/indexer/param.filteringtld.topfrequency.html");
-                    epFilteringTld.setPage(res);
-                    epFilteringTld.setVisible(true);
-                } catch (IOException e){} // No help
+            	updateFilterModel(topNSpinnerModel, new Integer(oldValue.intValue()),
+    					"/eu/project/ttc/gui/texts/indexer/param.filteringtld.topfrequency.html");
                 return;
             case TopNBySpecificity:
-                lblFilteringTld.setText("<html><b>"+getFilteringThresholdLbl()+"</b></html>");
-                lblFilteringTld.setVisible(true);
-                spFilteringTld.setModel(snmTopN);
-                spFilteringTld.setVisible(true);
-                try {
-                    URL res = getClass().getResource("/eu/project/ttc/gui/texts/indexer/param.filteringtld.topspecificity.html");
-                    epFilteringTld.setPage(res);
-                    epFilteringTld.setVisible(true);
-                } catch (IOException e){} // No help
+            	updateFilterModel(topNSpinnerModel, new Integer(oldValue.intValue()),
+    					"/eu/project/ttc/gui/texts/indexer/param.filteringtld.topspecificity.html");
                 return;
             case None:
             default:
@@ -565,5 +526,20 @@ public class ConfigPanelExport extends JPanel {
             default:
                 return "NA";
         }
+    }
+    
+    //////////////////////////////////////////////////////////////////// Helpers
+    
+    private void updateFilterModel(SpinnerNumberModel newModel, Number oldValue, String labelResource) {
+    	lblFilteringTld.setText("<html><b>"+getFilteringThresholdLbl()+"</b></html>");
+        lblFilteringTld.setVisible(true);
+        newModel.setValue(oldValue);
+        spFilteringTld.setModel(newModel);
+        spFilteringTld.setVisible(true);
+        try {
+            URL res = getClass().getResource(labelResource);
+            epFilteringTld.setPage(res);
+            epFilteringTld.setVisible(true);
+        } catch (IOException e){} // No help
     }
 }

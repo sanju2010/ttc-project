@@ -10,6 +10,7 @@ import java.awt.*;
  * @author Fabien Poulard <fpoulard@dictanova.com>
  * @date 20/08/13
  */
+@SuppressWarnings("serial")
 public class ResultsPanel extends JPanel {
 
     private JPanel toolbarGUI;

@@ -284,7 +284,6 @@ public class TermSuite implements Runnable {
         this.mainWindow.setPreferredSize(preferredDimension);
         this.mainWindow.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         this.mainWindow.setJMenuBar(null);
-        this.mainWindow.pack();
         this.mainWindow.setLocationRelativeTo(null);
         this.mainWindow.setResizable(true);
 
@@ -295,6 +294,8 @@ public class TermSuite implements Runnable {
         mainPane.setDividerSize(0);
         mainPane.setEnabled(false);
         this.mainWindow.getContentPane().add(mainPane);
+        
+        this.mainWindow.pack();
     }
 
     private JTabbedPane mainTabs;

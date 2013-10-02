@@ -1,21 +1,30 @@
 package eu.project.ttc.tools.aligner;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.net.URL;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.ImageIcon;
+import javax.swing.JEditorPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+
+import org.apache.uima.jcas.JCas;
 
 import eu.project.ttc.tools.commons.ToolView;
-import org.apache.uima.jcas.JCas;
 
 /**
  * Main view of the Aligner tool.
  *
  * @author Fabien Poulard <fpoulard@dictanova.com>
  */
+@SuppressWarnings("serial")
 public class AlignerView extends JTabbedPane implements ToolView, AlignerBinding {
 
 

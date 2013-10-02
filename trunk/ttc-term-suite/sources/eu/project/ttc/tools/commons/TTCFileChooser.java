@@ -17,6 +17,7 @@ import java.io.File;
  * @author Fabien Poulard <fpoulard@dictanova.com>
  * @date 15/08/13
  */
+@SuppressWarnings("serial")
 public class TTCFileChooser extends JPanel {
 
     private static final JFileChooser jfc;

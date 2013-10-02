@@ -1,16 +1,9 @@
 // Copyright © 2013 Dictanova SAS
 package eu.project.ttc.tools.aligner;
 
-import eu.project.ttc.tools.commons.TTCDirectoryChooser;
-import eu.project.ttc.tools.commons.TTCFileChooser;
-import eu.project.ttc.tools.indexer.ClassItem;
-
-import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.HyperlinkEvent;
-import javax.swing.event.HyperlinkListener;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Desktop;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -18,8 +11,25 @@ import java.awt.event.ItemListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.net.URL;
+
+import javax.swing.BorderFactory;
+import javax.swing.GroupLayout;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JEditorPane;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSpinner;
+import javax.swing.LayoutStyle;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
+
+import eu.project.ttc.tools.commons.TTCFileChooser;
+import eu.project.ttc.tools.indexer.ClassItem;
 
 /**
  * This JPanel exposes the basic configuration part of the Indexer tool.
@@ -28,6 +38,7 @@ import java.net.URL;
  *
  * @author Fabien Poulard <fpoulard@dictanova.com>
  */
+@SuppressWarnings("serial")
 public class ConfigPanelAdvanced extends JPanel {
 
     private static final String LBL_DICTIONARY = "Bilingual dictionary";
@@ -58,7 +69,7 @@ public class ConfigPanelAdvanced extends JPanel {
 
     // Similarity distance parameter
     private JLabel lblSimilarity;
-    private JComboBox cbSimilarity;
+    private JComboBox<ClassItem> cbSimilarity;
     private JEditorPane epSimilarity;
 
     private GroupLayout cfgLayout;
@@ -328,7 +339,7 @@ public class ConfigPanelAdvanced extends JPanel {
                 preferredWidth ));
 
         // Comboxbox as it is a limited list of choices
-        cbSimilarity = new JComboBox();
+        cbSimilarity = new JComboBox<ClassItem>();
         cbSimilarity.addItem(new ClassItem(
                 "eu.project.ttc.metrics.Jaccard", "Jaccard"));
         cbSimilarity.addItem(new ClassItem(

@@ -22,6 +22,7 @@ import java.net.URL;
  *
  * @author Fabien Poulard <fpoulard@dictanova.com>
  */
+@SuppressWarnings("serial")
 public class ConfigPanelBasic extends JPanel {
 
     private static final String LBL_EVALDIR = "Evaluation Directory";
@@ -38,7 +39,7 @@ public class ConfigPanelBasic extends JPanel {
 
     // Source language parameter
     private JLabel lblSrcLanguage;
-    private JComboBox cbSrcLanguage;
+    private JComboBox<LanguageItem> cbSrcLanguage;
     private JEditorPane epSrcLanguage;
 
     // Source terminology file parameter
@@ -48,7 +49,7 @@ public class ConfigPanelBasic extends JPanel {
 
     // Target language parameter
     private JLabel lblTgtLanguage;
-    private JComboBox cbTgtLanguage;
+    private JComboBox<LanguageItem> cbTgtLanguage;
     private JEditorPane epTgtLanguage;
 
     // Target terminology file parameter
@@ -265,7 +266,7 @@ public class ConfigPanelBasic extends JPanel {
                 preferredWidth ));
 
         // Language combobox
-        cbSrcLanguage = new JComboBox();
+        cbSrcLanguage = new JComboBox<LanguageItem>();
         for(String code: new String[]{"en","fr","de","es","ru","da","lv","zh"}) {
             cbSrcLanguage.addItem( new LanguageItem(code) );
         }
@@ -337,7 +338,7 @@ public class ConfigPanelBasic extends JPanel {
                 preferredWidth ));
 
         // Target language combobox
-        cbTgtLanguage = new JComboBox();
+        cbTgtLanguage = new JComboBox<LanguageItem>();
         for(String code: new String[]{"en","fr","de","es","ru","da","lv","zh"}) {
             cbTgtLanguage.addItem( new LanguageItem(code) );
         }
