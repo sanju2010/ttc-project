@@ -1,22 +1,68 @@
 package eu.project.ttc.tools.spotter;
 
-import org.apache.uima.cas.*;
-import org.apache.uima.cas.impl.TypeSystemImpl;
-import org.apache.uima.cas.text.AnnotationFS;
-import org.apache.uima.cas.text.AnnotationIndex;
-
-import javax.swing.*;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeCellRenderer;
-import javax.swing.tree.TreeSelectionModel;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FilenameFilter;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import javax.swing.AbstractAction;
+import javax.swing.BorderFactory;
+import javax.swing.DefaultListModel;
+import javax.swing.JCheckBox;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPopupMenu;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTree;
+import javax.swing.ListCellRenderer;
+import javax.swing.ListSelectionModel;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeCellRenderer;
+import javax.swing.tree.TreeSelectionModel;
+
+import org.apache.uima.cas.CAS;
+import org.apache.uima.cas.CASRuntimeException;
+import org.apache.uima.cas.FSIterator;
+import org.apache.uima.cas.Feature;
+import org.apache.uima.cas.Type;
+import org.apache.uima.cas.TypeSystem;
+import org.apache.uima.cas.admin.CASFactory;
+import org.apache.uima.cas.impl.TypeSystemImpl;
+import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.cas.text.AnnotationIndex;
+import org.apache.uima.fit.factory.JCasFactory;
+import org.apache.uima.fit.factory.TypeSystemDescriptionFactory;
+import org.apache.uima.fit.util.CasIOUtil;
+import org.apache.uima.fit.util.CasUtil;
+import org.apache.uima.resource.metadata.FsIndexDescription;
+import org.apache.uima.resource.metadata.TypeSystemDescription;
+import org.apache.uima.util.CasCreationUtils;
+import org.apache.uima.util.XmlCasDeserializer;
+
 public class ProcessingResultViewer {
 	
+    private final JFileChooser fileChooser = new JFileChooser();
+    
+    private final TypeSystemDescription typeSystemDesc = TypeSystemDescriptionFactory.createTypeSystemDescription("eu.project.ttc.types.TermSuiteTypeSystem");
+    
+    private static final FilenameFilter XMI_FILTER = new FilenameFilter() {
+        
+        @Override
+        public boolean accept(File dir, String name) {
+            return name.endsWith(".xmi");
+        }
+    };
+    
 	private static final float BRIGHT = 0.95f;
 	
 	private static final Color[] COLORS = new Color[] {
@@ -207,11 +253,36 @@ public class ProcessingResultViewer {
 	
 	private JTabbedPane tabs;
 	
-	private void setTabs() {
+	@SuppressWarnings("serial")
+    private void setTabs() {
+	    fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		this.tabs = new JTabbedPane();
 		this.tabs.addTab("Results", this.getResultScroll());
 		this.tabs.addTab(" Types ", this.getTypeScroll());
 		this.tabs.addTab(" Index ", this.getIndexScroll());
+        JPopupMenu menu = new JPopupMenu("Load");
+        menu.add(new AbstractAction("Load results from directory...") {
+            
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (JFileChooser.APPROVE_OPTION == fileChooser.showOpenDialog(tabs)) {
+                    resultModel.clear();
+                    File dir = fileChooser.getSelectedFile();
+                    File[] listed = dir.listFiles(XMI_FILTER);
+                    for (File xmi : listed) {
+                        try {
+                            ProcessingResult res = new ExtendedProcessingResult(xmi, typeSystemDesc);
+                            resultModel.addElement(res);
+                        } catch (Exception e2) {
+                            // TODO: handle exception
+                            e2.printStackTrace();
+                        }
+                    }
+                }
+            }
+        });
+        tabs.setComponentPopupMenu(menu);
+        tabs.setInheritsPopupMenu(true);
 	}
 	
 	JTabbedPane getTabs() {
