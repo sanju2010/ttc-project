@@ -217,12 +217,12 @@ public class SingleWordGatherer extends JCasAnnotator_ImplBase {
 							+ "' term class of size " + list.size());
 			for (int i = 0; i < list.size(); i++) {
 				SingleWordTermAnnotation sourceAnnotation = list.get(i);
-				if (sourceAnnotation.getNeoclassical())
+				if (sourceAnnotation.getNeoclassical() || sourceAnnotation.getCompound())
 					continue;
 				String source = sourceAnnotation.getCoveredText();
 				for (int j = i + 1; j < list.size(); j++) {
 					SingleWordTermAnnotation targetAnnotation = list.get(j);
-					if (targetAnnotation.getNeoclassical())
+					if (sourceAnnotation.getNeoclassical() || sourceAnnotation.getCompound())
 						continue;
 					String target = targetAnnotation.getCoveredText();
 					int distance = editDistance.compute(source, target);
