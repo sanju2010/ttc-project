@@ -163,15 +163,15 @@ public class TermSuiteAlignerCLI {
 					TermSuiteCLIUtils.isNull(storedProps, P_EVALUATION_DIRECTORY)));
 			
 			options.addOption(TermSuiteCLIUtils.createOption(null,
-					P_METHOD_COMPOSITIONAL, true, "CompositionalMethod",
+					P_METHOD_COMPOSITIONAL, false, "CompositionalMethod",
 					TermSuiteCLIUtils.isNull(storedProps, P_METHOD_COMPOSITIONAL)));
 			
 			options.addOption(TermSuiteCLIUtils.createOption(null,
-					P_METHOD_DISTRIBUTIONAL, true, "DistributionalMethod",
+					P_METHOD_DISTRIBUTIONAL, false, "DistributionalMethod",
 					TermSuiteCLIUtils.isNull(storedProps, P_METHOD_DISTRIBUTIONAL)));
 			
 			options.addOption(TermSuiteCLIUtils.createOption(null,
-                    P_METHOD_SEMIDISTRIBUTIONAL, true, "SemidistributionalMethod",
+                    P_METHOD_SEMIDISTRIBUTIONAL, false, "SemidistributionalMethod",
                     TermSuiteCLIUtils.isNull(storedProps, P_METHOD_SEMIDISTRIBUTIONAL)));
 
 			options.addOption(TermSuiteCLIUtils.createOption(null,
