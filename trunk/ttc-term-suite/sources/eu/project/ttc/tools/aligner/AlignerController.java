@@ -90,6 +90,23 @@ public class AlignerController extends ToolController {
                 if (success) getView().unsetDistributionalMethodError();
             }
         });
+        // Semidistributional method
+        getView().addSemidistributionalMethodChangeListener(new PropertyChangeListener() {
+            public void propertyChange(PropertyChangeEvent evt) {
+                boolean success = true;
+                if ((getModel().isSemidistributionalMethod() == null) ||
+                        !getModel().isSemidistributionalMethod().equals(evt.getNewValue())) {
+                    try {
+                        System.out.println("Aligner:view-model:semidistributional method->" + evt.getNewValue());
+                        getModel().setSemidistributionalMethod((Boolean) evt.getNewValue());
+                    } catch (IllegalArgumentException e) {
+                        success = false;
+                        getView().setSemidistributionalMethodError(e);
+                    }
+                } // else, no need to reflect the change (and prevent looping)
+                if (success) getView().unsetSemidistributionalMethodError();
+            }
+        });
         // Evaluation directory
         getView().addEvaluationDirectoryChangeListener(new PropertyChangeListener() {
             public void propertyChange(PropertyChangeEvent evt) {

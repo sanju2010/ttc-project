@@ -35,6 +35,8 @@ public interface AlignerBinding {
         COMPOSITIONAL           ("CompositionalMethod", "aligner.compositional", false),
         /** Distributional method */
         DISTRIBUTIONAL          ("DistributionalMethod", "aligner.distributional", true),
+        /** Distributional method */
+        SEMIDISTRIBUTIONAL          ("SemiDistributionalMethod", "aligner.semidistributional", false),
         /** Similarity distance parameter */
         SIMILARITY              ("SimilarityDistanceClassName", "aligner.similarity", "eu.project.ttc.metrics.Jaccard"),
         /** Max candidates parameter */
@@ -334,6 +336,34 @@ public interface AlignerBinding {
      */
     void unsetDistributionalMethodError();
 
+    //////////////////////////////////////////////////////////// SEMIDISTRIBUTIONAL METHOD
+
+    /**
+     * Setter for the semi distributional method parameter value.
+     * @param isDistributionalMethod  flag for enabling semidistributional method
+     */
+    void setSemidistributionalMethod(boolean isSemidistributionalMethod);
+
+    /**
+     * Accessor to the distributional method parameter value.
+     */
+    Boolean isSemidistributionalMethod();
+
+    /**
+     * Listener to a change regarding the distributional method parameter.
+     */
+    void addSemidistributionalMethodChangeListener(PropertyChangeListener listener);
+
+    /**
+     * Mark the parameter as in error.
+     */
+    void setSemidistributionalMethodError(Throwable e);
+
+    /**
+     * Unmark the parameter as in error.
+     */
+    void unsetSemidistributionalMethodError();
+    
     //////////////////////////////////////////////////////////// SIMILARITY DISTANCE
 
     /**

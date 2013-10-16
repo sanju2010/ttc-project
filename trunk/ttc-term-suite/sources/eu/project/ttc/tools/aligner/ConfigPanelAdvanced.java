@@ -44,6 +44,7 @@ public class ConfigPanelAdvanced extends JPanel {
     private static final String LBL_DICTIONARY = "Bilingual dictionary";
     private static final String LBL_COMPOSITIONAL = "Compositional method";
     private static final String LBL_DISTRIBUTIONAL = "Distributional method";
+    private static final String LBL_SEMIDISTRIBUTIONAL = "Semidistributional method";
     private static final String LBL_MAXCANDIDATES = "Max number of translation candidates";
     private static final String LBL_SIMILARITY = "Similarity distance";
 
@@ -62,6 +63,11 @@ public class ConfigPanelAdvanced extends JPanel {
     private JCheckBox cbDistributional;
     private JEditorPane epDistributional;
 
+    // Semidistributional method parameter
+    private JLabel lblSemidistributional;
+    private JCheckBox cbSemidistributional;
+    private JEditorPane epSemidistributional;
+    
     // Max candidates parameter
     private JLabel lblMaxCandidates;
     private JSpinner spMaxCandidates;
@@ -128,6 +134,12 @@ public class ConfigPanelAdvanced extends JPanel {
                                 .addComponent(lblDistributional)
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(epDistributional))
+                        // Semidistributional parameter
+                        .addGroup(cfgLayout.createSequentialGroup()
+                                .addComponent(cbSemidistributional)
+                                .addComponent(lblSemidistributional)
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(epSemidistributional))
                         // Dictionary parameter
                         .addGroup(cfgLayout.createSequentialGroup()
                                 .addGroup(cfgLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -175,6 +187,15 @@ public class ConfigPanelAdvanced extends JPanel {
                                         GroupLayout.PREFERRED_SIZE)
                                 .addComponent(lblDistributional)
                                 .addComponent(epDistributional))
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                        // Semidistributional parameter
+                        .addGroup(cfgLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
+                                .addComponent(cbSemidistributional,
+                                        GroupLayout.DEFAULT_SIZE,
+                                        GroupLayout.PREFERRED_SIZE,
+                                        GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblSemidistributional)
+                                .addComponent(epSemidistributional))
                         .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                         // Dictionary parameter
                         .addGroup(cfgLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -227,16 +248,7 @@ public class ConfigPanelAdvanced extends JPanel {
         });
 
         // Help panel
-        epDictionary = new JEditorPane();
-        epDictionary.setEditable(false);
-        epDictionary.setOpaque(false);
-        epDictionary.setPreferredSize( new Dimension(
-                (int) epDictionary.getPreferredSize().getHeight(),
-                preferredWidth ));
-        try {
-            URL res = getClass().getResource("/eu/project/ttc/gui/texts/aligner/param.dictionary.html");
-            epDictionary.setPage(res);
-        } catch (IOException e) {} // No help
+        epDictionary = initHelpPanel("/eu/project/ttc/gui/texts/aligner/param.dictionary.html", preferredWidth);
     }
 
     /**
@@ -251,6 +263,10 @@ public class ConfigPanelAdvanced extends JPanel {
         lblDistributional = new JLabel("<html><b>" + LBL_DISTRIBUTIONAL + "</b></html>");
         lblDistributional.setPreferredSize(new Dimension(
                 (int) lblDistributional.getPreferredSize().getHeight(),
+                preferredWidth ));
+        lblSemidistributional = new JLabel("<html><b>" + LBL_SEMIDISTRIBUTIONAL + "</b></html>");
+        lblSemidistributional.setPreferredSize(new Dimension(
+                (int) lblSemidistributional.getPreferredSize().getHeight(),
                 preferredWidth ));
 
         // Value field
@@ -270,28 +286,19 @@ public class ConfigPanelAdvanced extends JPanel {
                         !cbDistributional.isSelected(), cbDistributional.isSelected());
             }
         });
+        cbSemidistributional = new JCheckBox();
+        cbSemidistributional.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                firePropertyChange(AlignerBinding.PRM.SEMIDISTRIBUTIONAL.getProperty(),
+                        !cbSemidistributional.isSelected(), cbSemidistributional.isSelected());
+            }
+        });
 
         // Help panel
-        epCompositional = new JEditorPane();
-        epCompositional.setEditable(false);
-        epCompositional.setOpaque(false);
-        epCompositional.setPreferredSize( new Dimension(
-                (int) epCompositional.getPreferredSize().getHeight(),
-                preferredWidth ));
-        try {
-            URL res = getClass().getResource("/eu/project/ttc/gui/texts/aligner/param.compositional.html");
-            epCompositional.setPage(res);
-        } catch (IOException e) {} // No help
-        epDistributional = new JEditorPane();
-        epDistributional.setEditable(false);
-        epDistributional.setOpaque(false);
-        epDistributional.setPreferredSize( new Dimension(
-                (int) epDistributional.getPreferredSize().getHeight(),
-                preferredWidth ));
-        try {
-            URL res = getClass().getResource("/eu/project/ttc/gui/texts/aligner/param.distributional.html");
-            epDistributional.setPage(res);
-        } catch (IOException e) {} // No help
+        epCompositional = initHelpPanel("/eu/project/ttc/gui/texts/aligner/param.compositional.html", preferredWidth);
+        epDistributional = initHelpPanel("/eu/project/ttc/gui/texts/aligner/param.distributional.html", preferredWidth);
+        epSemidistributional = initHelpPanel("/eu/project/ttc/gui/texts/aligner/param.semidistributional.html", preferredWidth);
     }
 
     /**
@@ -316,16 +323,7 @@ public class ConfigPanelAdvanced extends JPanel {
         });
 
         // Editor pane to display help
-        epMaxCandidates = new JEditorPane();
-        epMaxCandidates.setEditable(false);
-        epMaxCandidates.setOpaque(false);
-        epMaxCandidates.setPreferredSize(new Dimension(
-                (int) epMaxCandidates.getPreferredSize().getHeight(),
-                preferredWidth));
-        try {
-            URL res = getClass().getResource("/eu/project/ttc/gui/texts/aligner/param.maxcandidates.html");
-            epMaxCandidates.setPage(res);
-        } catch (IOException e){} // No help
+        epMaxCandidates = initHelpPanel("/eu/project/ttc/gui/texts/aligner/param.maxcandidates.html", preferredWidth);
     }
 
     /**
@@ -354,26 +352,18 @@ public class ConfigPanelAdvanced extends JPanel {
         });
 
         // Editor pane to display help
-        epSimilarity = new JEditorPane();
-        epSimilarity.setEditable(false);
-        epSimilarity.setOpaque(false);
-        epSimilarity.setPreferredSize(new Dimension(
-                (int) epSimilarity.getPreferredSize().getHeight(),
-                preferredWidth));
-        try {
-            URL res = getClass().getResource("/eu/project/ttc/gui/texts/aligner/param.similarity.html");
-            epSimilarity.setPage(res);
-            epSimilarity.addHyperlinkListener(new HyperlinkListener() {
-                @Override
-                public void hyperlinkUpdate(HyperlinkEvent e) {
-                    try {
-                        if ( e.getEventType() == HyperlinkEvent.EventType.ACTIVATED ) {
-                            Desktop.getDesktop().browse(e.getURL().toURI());
-                        }
-                    } catch (Exception exc) {} // ignore
-                }
-            });
-        } catch (IOException e) {} // No help
+        epSimilarity = initHelpPanel("/eu/project/ttc/gui/texts/aligner/param.similarity.html", preferredWidth);
+        epSimilarity.addHyperlinkListener(new HyperlinkListener() {
+            @Override
+            public void hyperlinkUpdate(HyperlinkEvent e) {
+                try {
+                    if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                        Desktop.getDesktop().browse(e.getURL().toURI());
+                    }
+                } catch (Exception exc) {
+                } // ignore
+            }
+        });
     }
 
     ////////////////////////////////////////////////////////////////////// ACCESSORS
@@ -424,6 +414,20 @@ public class ConfigPanelAdvanced extends JPanel {
         lblDistributional.setText("<html><b>" + LBL_DISTRIBUTIONAL + "</b></html>");
     }
 
+    public void setSemidistributionalMethod(boolean isSemidistributionalMethod) {
+        cbSemidistributional.setSelected(isSemidistributionalMethod);
+    }
+    public Boolean isSemidistributionalMethod() {
+        return cbSemidistributional.isSelected();
+    }
+    public void setSemidistributionalMethodError(Throwable e) {
+        lblSemidistributional.setText("<html><b>" + LBL_SEMIDISTRIBUTIONAL + "</b><br/><p style=\"color: red; font-size: small\">"
+                + e.getMessage() + "</p></html>");
+    }
+    public void unsetSemidistributionalMethodError() {
+        lblSemidistributional.setText("<html><b>" + LBL_SEMIDISTRIBUTIONAL + "</b></html>");
+    }
+    
     public void setMaxCandidates(Integer maxCandidates) {
         spMaxCandidates.setValue(maxCandidates);
     }
@@ -463,4 +467,20 @@ public class ConfigPanelAdvanced extends JPanel {
         lblSimilarity.setText("<html><b>" + LBL_SIMILARITY + "</b></html>");
     }
 
+    //////////////////////////////// Helpers
+    
+    private JEditorPane initHelpPanel(String resourceName, int preferredWidth) {
+        JEditorPane pane = new JEditorPane();
+        pane.setEditable(false);
+        pane.setOpaque(false);
+        pane.setPreferredSize(new Dimension((int) pane
+                .getPreferredSize().getHeight(), preferredWidth));
+        try {
+            URL res = getClass().getResource(resourceName);
+            pane.setPage(res);
+        } catch (IOException e) {
+        } // No help
+
+        return pane;
+    }
 }

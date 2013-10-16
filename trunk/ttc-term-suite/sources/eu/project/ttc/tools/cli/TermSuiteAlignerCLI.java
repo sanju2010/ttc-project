@@ -75,6 +75,9 @@ public class TermSuiteAlignerCLI {
 	/** Name of the parameter that must be set to enable the compositional method */
 	public static final String P_METHOD_COMPOSITIONAL = AlignerBinding.PRM.COMPOSITIONAL.getParameter();
 
+	/** Name of the parameter that must be set to enable the semicompositional method */
+    public static final String P_METHOD_SEMIDISTRIBUTIONAL = AlignerBinding.PRM.SEMIDISTRIBUTIONAL.getParameter();
+    
 	/** Name of the parameter that must be set to enable the distributional method */
 	public static final String P_METHOD_DISTRIBUTIONAL = AlignerBinding.PRM.DISTRIBUTIONAL.getParameter();
 
@@ -166,6 +169,10 @@ public class TermSuiteAlignerCLI {
 			options.addOption(TermSuiteCLIUtils.createOption(null,
 					P_METHOD_DISTRIBUTIONAL, true, "DistributionalMethod",
 					TermSuiteCLIUtils.isNull(storedProps, P_METHOD_DISTRIBUTIONAL)));
+			
+			options.addOption(TermSuiteCLIUtils.createOption(null,
+                    P_METHOD_SEMIDISTRIBUTIONAL, true, "SemidistributionalMethod",
+                    TermSuiteCLIUtils.isNull(storedProps, P_METHOD_SEMIDISTRIBUTIONAL)));
 
 			options.addOption(TermSuiteCLIUtils.createOption(null,
 					P_SIMILARITY_DISTANCE, true, "SimilarityDistanceClassName",

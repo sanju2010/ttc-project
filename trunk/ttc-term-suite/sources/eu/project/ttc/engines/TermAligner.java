@@ -15,8 +15,6 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import eu.project.ttc.tools.aligner.AlignerBinding;
-import eu.project.ttc.tools.aligner.AlignerModel;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
@@ -33,6 +31,7 @@ import eu.project.ttc.metrics.SimilarityDistance;
 import eu.project.ttc.models.Context;
 import eu.project.ttc.resources.Dictionary;
 import eu.project.ttc.resources.Terminology;
+import eu.project.ttc.tools.aligner.AlignerBinding;
 import eu.project.ttc.tools.utils.InMemoryMWTIndex;
 import eu.project.ttc.tools.utils.PermutationTree;
 import eu.project.ttc.tools.utils.TranslationList;
@@ -73,6 +72,8 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 	private boolean distributional;
 
 	private boolean isCompositional;
+	
+	private boolean semiDistributional;
 
 	private File outputFile;
 
@@ -90,6 +91,8 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 					.getConfigParameterValue(AlignerBinding.PRM.DISTRIBUTIONAL.getParameter())));
 			this.setCompositional(Boolean.TRUE.equals(context
 					.getConfigParameterValue(AlignerBinding.PRM.COMPOSITIONAL.getParameter())));
+			semiDistributional = Boolean.TRUE.equals(context
+                    .getConfigParameterValue(AlignerBinding.PRM.SEMIDISTRIBUTIONAL.getParameter()));
 
 			if (sourceTerminology == null) {
 				sourceTerminology = (Terminology) context
@@ -127,8 +130,7 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 			result = TranslationList.getList(sourceTerminology.getJCas()
 					.getDocumentLanguage(), // Source language
 					targetTerminology, // Target terminology
-					name.substring(name.lastIndexOf('.') + 1).toLowerCase()); // Score
-																				// type
+					name.substring(name.lastIndexOf('.') + 1).toLowerCase()); // Score type
 			tbxWriter = new TranslationListTBXWriter();
 			tsvWriter = new TranslationListTSVWriter();
 			outputFile = createOutputFile(context);
@@ -256,24 +258,36 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 
 	private void align(JCas cas, JCas terminology, TermAnnotation annotation,
 			String term) throws Exception {
-		// Single word terms
-		if (annotation instanceof SingleWordTermAnnotation) {
 
-			// is neo classical compound ?
-			SingleWordTermAnnotation swt = (SingleWordTermAnnotation) annotation;
-			if (swt.getCompound() && isCompositional) {
-				this.alignCompound(cas, terminology, swt, term);
-			}
+	    boolean applyAllSingle = isDistributional() && isCompositional;
+	    boolean applyAll = applyAllSingle && semiDistributional;
+	    
+        // Single word terms
+        if (annotation instanceof SingleWordTermAnnotation) {
+            SingleWordTermAnnotation swt = (SingleWordTermAnnotation) annotation;
+            final boolean isNeoclassical = swt.getCompound();
+            if (applyAllSingle) {
+                // is neo classical compound ?
+                if (isNeoclassical) {
+                    this.alignCompound(cas, terminology, swt, term);
+                }
+                this.alignSingleWord(cas, swt, term);
+            } else if (isCompositional && isNeoclassical) {
+                this.alignCompound(cas, terminology, swt, term);
+            } else if (isDistributional()) {
+                this.alignSingleWord(cas, swt, term);
+            }
+        } else if (annotation instanceof MultiWordTermAnnotation) {
 
-			this.alignSingleWord(cas, swt, term);
-		} else if (annotation instanceof MultiWordTermAnnotation) {
-
-			if (isCompositional) {
-				// Multi word terms
-				MultiWordTermAnnotation mwt = (MultiWordTermAnnotation) annotation;
-				this.alignMultiWord(cas, terminology, mwt, term);
-			}
-		}
+            MultiWordTermAnnotation mwt = (MultiWordTermAnnotation) annotation;
+            if (applyAll || semiDistributional) {
+                // Multi word terms
+                this.alignMultiWord(cas, terminology, mwt, term);
+            } else if (isCompositional) {
+                // Multi word terms
+                this.alignSimpleCompositionalMultiWord(cas, terminology, mwt, term);
+            }
+        }
 	}
 
 	private void initIndex(InMemoryMWTIndex index, Terminology terminology)
@@ -374,7 +388,7 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 				terminology, entry, null);
 
 		// Transfer only noun, name and adjectives
-		List<List<String>> candidates = this.transfer(cas, components);
+		List<List<String>> candidates = this.semiDistributionalTransfer(cas, components);
 
 		// Get source pattern
 		String[] pattern = getPattern(components);
@@ -388,6 +402,26 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 		this.annotate(cas, entry, mwtTransferred, pattern);
 	}
 
+	private void alignSimpleCompositionalMultiWord(JCas cas, JCas terminology,
+            MultiWordTermAnnotation entry, String term) throws CASException {
+        ArrayList<TermComponentAnnotation> components = this.extract(
+                terminology, entry, null);
+
+        // Transfer only noun, name and adjectives
+        List<List<String>> candidates = this.directTransfer(cas, components);
+
+        // Get source pattern
+        String[] pattern = getPattern(components);
+
+        List<String> transferred;
+        List<MultiWordTermAnnotation> mwtTransferred;
+        candidates = this.combine(candidates);
+        candidates = this.generate(candidates);
+        transferred = this.flatten(candidates, " ");
+        mwtTransferred = this.selectMultiwordCandidates(transferred);
+        this.annotate(cas, entry, mwtTransferred, pattern);
+    }
+	
 	private void alignCompound(JCas cas, JCas terminology,
 			SingleWordTermAnnotation entry, String term) throws CASException {
 		List<List<String>> componentLists = this.extract(terminology, entry);
@@ -654,7 +688,7 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 		return candidates;
 	}
 
-	private List<List<String>> transfer(JCas cas,
+	private List<List<String>> directTransfer(JCas cas,
 			ArrayList<TermComponentAnnotation> components) {
 		List<List<String>> candidates = new ArrayList<List<String>>();
 		TermComponentAnnotation component;
@@ -671,25 +705,47 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 				candidate = dictionary.get().get(component.getLemma());
 			}
 
-			boolean alignComponent = false;
-			if (candidate == null) {
-				candidate = new HashSet<String>();
-				alignComponent = true;
-			}
-
-			if (alignComponent && isDistributional()) {
-				this.alignComponent(cas, compoTerm, candidate);
-			}
-
-			if (alignComponent) {
-				if ("noun".equals(component.getCategory()))
-					candidate.add(compoTerm);
-			}
 			candidates.add(new ArrayList<String>(candidate));
 		}
 		return candidates;
 	}
+	
+	private List<List<String>> semiDistributionalTransfer(JCas cas,
+            ArrayList<TermComponentAnnotation> components) {
+        List<List<String>> candidates = new ArrayList<List<String>>();
+        TermComponentAnnotation component;
+        for (int index = 0; index < components.size(); index++) {
+            component = components.get(index);
 
+            // Filter bad categories
+            if (!InMemoryMWTIndex.isAcceptedCategory(component.getCategory()))
+                continue;
+
+            String compoTerm = component.getCoveredText();
+            Set<String> candidate = dictionary.get().get(compoTerm);
+            if (candidate == null) {
+                candidate = dictionary.get().get(component.getLemma());
+            }
+
+            boolean alignComponent = false;
+            if (candidate == null) {
+                candidate = new HashSet<String>();
+                alignComponent = true;
+            }
+
+            if (alignComponent && isDistributional()) {
+                this.alignComponent(cas, compoTerm, candidate);
+            }
+
+            if (alignComponent) {
+                if ("noun".equals(component.getCategory()))
+                    candidate.add(compoTerm);
+            }
+            candidates.add(new ArrayList<String>(candidate));
+        }
+        return candidates;
+    }
+	
 	/**
 	 * provides the permutation list
 	 * 

@@ -41,6 +41,8 @@ public class AlignerModel extends ToolModel implements AlignerBinding {
     private ConfigurationParameter pCompoMthd;
     /** Distributional method */
     private ConfigurationParameter pDistrMthd;
+    /** Semidistributional method */
+    private ConfigurationParameter pSemidistrMthd;
     /** Similarity distance parameter */
     private ConfigurationParameter pSim;
     /** Max candidates parameter */
@@ -138,6 +140,14 @@ public class AlignerModel extends ToolModel implements AlignerBinding {
         pDistrMthd.setMultiValued(false);
         pDistrMthd.setMandatory(false);
 
+        // Distributional method
+        pSemidistrMthd = UIMAFramework
+                .getResourceSpecifierFactory().createConfigurationParameter();
+        pSemidistrMthd.setName(PRM.SEMIDISTRIBUTIONAL.getParameter());
+        pSemidistrMthd.setType(ConfigurationParameter.TYPE_BOOLEAN);
+        pSemidistrMthd.setMultiValued(false);
+        pSemidistrMthd.setMandatory(false);
+        
         // Similarity distance parameter
         pSim = UIMAFramework
                 .getResourceSpecifierFactory().createConfigurationParameter();
@@ -216,6 +226,9 @@ public class AlignerModel extends ToolModel implements AlignerBinding {
                     case DISTRIBUTIONAL:
                         setDistributionalMethod((Boolean) nvp.getValue());
                         break;
+                    case SEMIDISTRIBUTIONAL:
+                        setSemidistributionalMethod((Boolean) nvp.getValue());
+                        break;
                     case SIMILARITY:
                         setSimilarityDistanceClass((String) nvp.getValue());
                         break;
@@ -257,6 +270,7 @@ public class AlignerModel extends ToolModel implements AlignerBinding {
         uimaParamDeclarations.addConfigurationParameter(pEvalDir);
         uimaParamDeclarations.addConfigurationParameter(pCompoMthd);
         uimaParamDeclarations.addConfigurationParameter(pDistrMthd);
+        uimaParamDeclarations.addConfigurationParameter(pSemidistrMthd);
         uimaParamDeclarations.addConfigurationParameter(pSim);
         uimaParamDeclarations.addConfigurationParameter(pMxCdt);
 
@@ -294,6 +308,7 @@ public class AlignerModel extends ToolModel implements AlignerBinding {
         uimaParamDeclarations.addConfigurationParameter(pEvalDir);
         uimaParamDeclarations.addConfigurationParameter(pCompoMthd);
         uimaParamDeclarations.addConfigurationParameter(pDistrMthd);
+        uimaParamDeclarations.addConfigurationParameter(pSemidistrMthd);
         uimaParamDeclarations.addConfigurationParameter(pSim);
         uimaParamDeclarations.addConfigurationParameter(pMxCdt);
 
@@ -649,6 +664,38 @@ public class AlignerModel extends ToolModel implements AlignerBinding {
         // TODO how to handle errors in the model ?
     }
 
+    /**
+     * Setter for semidistributional method parameter value.
+     * If the value is valid, then the parameter value is changed in the
+     * model and an event is fired indicating that the property has
+     * changed in the model.
+     */
+    @Override
+    public void setSemidistributionalMethod(boolean semidistributionalMethod) {
+        Boolean oldValue = (Boolean) pSettings.getParameterValue(PRM.SEMIDISTRIBUTIONAL.getParameter());
+        pSettings.setParameterValue(PRM.SEMIDISTRIBUTIONAL.getParameter(), semidistributionalMethod);
+        firePropertyChange(PRM.SEMIDISTRIBUTIONAL.getProperty(), oldValue, semidistributionalMethod);
+    }
+    /** Getter for compositional method parameter */
+    @Override
+    public Boolean isSemidistributionalMethod() {
+        Boolean isDistrib = (Boolean) pSettings.getParameterValue(PRM.SEMIDISTRIBUTIONAL.getParameter());
+        return isDistrib==null ? (Boolean) PRM.SEMIDISTRIBUTIONAL.getDefaultValue() : isDistrib;
+    }
+    /** Listener binder for compositional method parameter */
+    @Override
+    public void addSemidistributionalMethodChangeListener(PropertyChangeListener listener) {
+        addPropertyChangeListener(PRM.SEMIDISTRIBUTIONAL.getProperty(), listener);
+    }
+    @Override
+    public void setSemidistributionalMethodError(Throwable e) {
+        // TODO how to handle errors in the model ?
+    }
+    @Override
+    public void unsetSemidistributionalMethodError() {
+        // TODO how to handle errors in the model ?
+    }
+    
     /**
      * Setter for similarity distance parameter value.
      * If the value is valid, then the parameter value is changed in the

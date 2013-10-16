@@ -312,6 +312,27 @@ public class AlignerView extends JTabbedPane implements ToolView, AlignerBinding
     }
 
     @Override
+    public void setSemidistributionalMethod(boolean isSemidistributionalMethod) {
+        compAConfig.setSemidistributionalMethod(isSemidistributionalMethod);
+    }
+    @Override
+    public Boolean isSemidistributionalMethod() {
+        return compAConfig.isSemidistributionalMethod();
+    }
+    @Override
+    public void addSemidistributionalMethodChangeListener(PropertyChangeListener listener) {
+        addPropertyChangeListener(PRM.SEMIDISTRIBUTIONAL.getProperty(), listener);
+    }
+    @Override
+    public void setSemidistributionalMethodError(Throwable e) {
+        compAConfig.setDistributionalMethodError(e);
+    }
+    @Override
+    public void unsetSemidistributionalMethodError() {
+        compAConfig.unsetDistributionalMethodError();
+    }
+    
+    @Override
     public void setSimilarityDistanceClass(String similarityDistanceClass) {
         compAConfig.setSimilarityDistanceClass(similarityDistanceClass);
     }
