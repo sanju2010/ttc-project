@@ -216,9 +216,15 @@ public class SingleWordGatherer extends JCasAnnotator_ImplBase {
 					"Edit-distance gathering over the '" + key
 							+ "' term class of size " + list.size());
 			for (int i = 0; i < list.size(); i++) {
-				String source = list.get(i).getCoveredText();
+				SingleWordTermAnnotation sourceAnnotation = list.get(i);
+				if (sourceAnnotation.getNeoclassical())
+					continue;
+				String source = sourceAnnotation.getCoveredText();
 				for (int j = i + 1; j < list.size(); j++) {
-					String target = list.get(j).getCoveredText();
+					SingleWordTermAnnotation targetAnnotation = list.get(j);
+					if (targetAnnotation.getNeoclassical())
+						continue;
+					String target = targetAnnotation.getCoveredText();
 					int distance = editDistance.compute(source, target);
 					double norm = editDistance.normalize(distance, source,
 							target);
