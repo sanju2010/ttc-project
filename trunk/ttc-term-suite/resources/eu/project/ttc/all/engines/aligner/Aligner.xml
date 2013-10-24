@@ -139,6 +139,16 @@
           <parameter>TermAligner/MaxTranslationCandidates</parameter>
         </overrides>
       </configurationParameter>
+    <configurationParameter>
+        <name>SemiDistributionalMethod</name>
+        <description>Activates semidistributional method for complex terms.</description>
+        <type>Boolean</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+        <overrides>
+          <parameter>TermAligner/SemiDistributionalMethod</parameter>
+        </overrides>
+      </configurationParameter>
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>

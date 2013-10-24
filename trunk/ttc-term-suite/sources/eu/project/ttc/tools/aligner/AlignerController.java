@@ -2,6 +2,8 @@ package eu.project.ttc.tools.aligner;
 
 import eu.project.ttc.tools.commons.InputSource;
 import eu.project.ttc.tools.commons.ToolController;
+import eu.project.ttc.tools.indexer.ClassItem;
+
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.resource.ResourceConfigurationException;
@@ -166,7 +168,7 @@ public class AlignerController extends ToolController {
                         !getModel().getSimilarityDistanceClass().equals(evt.getNewValue())) {
                     try {
                         System.out.println("Aligner:view-model:similarity distance->" + evt.getNewValue());
-                        getModel().setSimilarityDistanceClass((String) evt.getNewValue());
+                        getModel().setSimilarityDistanceClass(((ClassItem) evt.getNewValue()).getClassName());
                     } catch (IllegalArgumentException e) {
                         success = false;
                         getView().setSimilarityDistanceClassError(e);
@@ -375,6 +377,9 @@ public class AlignerController extends ToolController {
         try { getModel().setDistributionalMethod( getView().isDistributionalMethod() );}
         catch (IllegalArgumentException e) { getView().setDistributionalMethodError(e);}
 
+        try { getModel().setSemidistributionalMethod( getView().isSemidistributionalMethod() );}
+        catch (IllegalArgumentException e) { getView().setSemidistributionalMethodError(e);}
+        
         try { getModel().setEvaluationDirectory( getView().getEvaluationDirectory() ); }
         catch (IllegalArgumentException e) { getView().setEvaluationDirectoryError(e); }
 
@@ -475,6 +480,8 @@ public class AlignerController extends ToolController {
                 getModel().getSimilarityDistanceClass());
         settings.setParameterValue(AlignerBinding.PRM.DISTRIBUTIONAL.getParameter(),
                 getModel().isDistributionalMethod());
+        settings.setParameterValue(AlignerBinding.PRM.SEMIDISTRIBUTIONAL.getParameter(),
+                getModel().isSemidistributionalMethod());
         settings.setParameterValue(AlignerBinding.PRM.COMPOSITIONAL.getParameter(),
                 getModel().isCompositionalMethod());
         settings.setParameterValue(AlignerBinding.PRM.MAXCANDIDATES.getParameter(),

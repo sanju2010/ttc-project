@@ -63,6 +63,17 @@ public class ConfigPanelContextVectors extends JPanel {
         cfgLayout = new GroupLayout(config);
         config.setLayout(cfgLayout);
 
+        // Create the title panel
+        JEditorPane epConfigTitle = new JEditorPane();
+        epConfigTitle.setEditable(false);
+        epConfigTitle.setOpaque(false);
+        try {
+            URL resHelp = getClass().getResource("/eu/project/ttc/gui/texts/indexer/contextvectorhelp.html");
+            epConfigTitle.setPage(resHelp);
+        } catch (IOException ignored) {} // No help available
+        
+        add(epConfigTitle, BorderLayout.PAGE_START);
+        
         // Configure the horizontal layout
         cfgLayout.setHorizontalGroup(
                 cfgLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
@@ -74,7 +85,7 @@ public class ConfigPanelContextVectors extends JPanel {
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(epAssociationMeasure))
         );
-
+        
         // Configure the vertical layout
         cfgLayout.setVerticalGroup(
                 cfgLayout.createSequentialGroup()
@@ -91,7 +102,7 @@ public class ConfigPanelContextVectors extends JPanel {
                         .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
         );
 
-        add(config, BorderLayout.NORTH);
+        add(config, BorderLayout.CENTER);
     }
 
     /**

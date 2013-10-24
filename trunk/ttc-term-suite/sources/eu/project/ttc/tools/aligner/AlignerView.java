@@ -250,11 +250,11 @@ public class AlignerView extends JTabbedPane implements ToolView, AlignerBinding
 
     @Override
     public void setBilingualDictionary(String bilingualDictionary) {
-        compAConfig.setBilingualDictionary(bilingualDictionary);
+        compBConfig.setBilingualDictionary(bilingualDictionary);
     }
     @Override
     public String getBilingualDictionary() {
-        return compAConfig.getBilingualDictionary();
+        return compBConfig.getBilingualDictionary();
     }
     @Override
     public void addBilingualDictionaryChangeListener(PropertyChangeListener listener) {
@@ -262,11 +262,11 @@ public class AlignerView extends JTabbedPane implements ToolView, AlignerBinding
     }
     @Override
     public void setBilingualDictionaryError(Throwable e) {
-        compAConfig.setBilingualDictionaryError(e);
+        compBConfig.setBilingualDictionaryError(e);
     }
     @Override
     public void unsetBilingualDictionaryError() {
-        compAConfig.unsetBilingualDictionaryError();
+        compBConfig.unsetBilingualDictionaryError();
     }
 
     @Override

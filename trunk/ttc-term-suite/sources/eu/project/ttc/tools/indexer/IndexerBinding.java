@@ -24,17 +24,17 @@ public interface IndexerBinding {
         /** Output directory parameter */
         OUTPUT              ("Directory", "indexer.outputdirectory", null),
         /** Ignore diacritics parameter */
-        IGNOREDIACRITICS    ("IgnoreDiacriticsInMultiwordTerms", "indexer.ignorediacritics", true),
+        IGNOREDIACRITICS    ("IgnoreDiacriticsInMultiwordTerms", "indexer.ignorediacritics", false),
         /** Variant detection parameter */
         VARIANTDETECTION    ("EnableTermGathering", "indexer.variantdetection", true),
         /** Edit distance class parameter */
         EDITDISTANCECLS     ("EditDistanceClassName", "indexer.editdistanceclass", "eu.project.ttc.metrics.Levenshtein"),
         /** Edit distance threshold parameter */
-        EDITDISTANCETLD     ("EditDistanceThreshold", "indexer.editdistancethreshold", 0f),
+        EDITDISTANCETLD     ("EditDistanceThreshold", "indexer.editdistancethreshold", 0.9f),
         /** Edit distance ngrams parameter */
-        EDITDISTANCENGRAMS  ("EditDistanceNgrams", "indexer.editdistancengrams", 3),
+        EDITDISTANCENGRAMS  ("EditDistanceNgrams", "indexer.editdistancengrams", 1),
         /** Occurrence threshold parameter */
-        OCCURRENCETLD       ("OccurrenceThreshold", "indexer.occurrencethreshold", 1),
+        OCCURRENCETLD       ("OccurrenceThreshold", "indexer.occurrencethreshold", 2),
         /** Association measure parameter */
         ASSOCIATIONMEASURE  ("AssociationRateClassName", "indexer.associationmeasure", "eu.project.ttc.metrics.LogLikelihood"),
         /** Filtering threshold parameter */

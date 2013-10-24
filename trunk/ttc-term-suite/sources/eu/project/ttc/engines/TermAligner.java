@@ -733,7 +733,7 @@ public class TermAligner extends JCasAnnotator_ImplBase {
                 alignComponent = true;
             }
 
-            if (alignComponent && isDistributional()) {
+            if (alignComponent) {
                 this.alignComponent(cas, compoTerm, candidate);
             }
 

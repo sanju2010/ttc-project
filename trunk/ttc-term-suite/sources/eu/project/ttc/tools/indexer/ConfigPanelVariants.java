@@ -33,8 +33,8 @@ import javax.swing.event.ChangeListener;
 public class ConfigPanelVariants extends JPanel {
 
     protected final static String LBL_FLEXIONNALVARIANTS = "Detect flexionnal variants";
-    protected final static String LBL_GRAPHICALVARIANTS  = "Detect graphical variants";
-    protected final static String LBL_MISPELLINGVARIANTS = "Detect mispelling variants";
+    protected final static String LBL_GRAPHICALVARIANTS  = "Detect complex term mispellings";
+    protected final static String LBL_MISPELLINGVARIANTS = "Extended variant detection";
 
     // Flexional variants parameter
     private JLabel lblFlexionnalVariants;
@@ -81,7 +81,7 @@ public class ConfigPanelVariants extends JPanel {
         createEditDistanceThresholdComponents(pWidth);
         createEditDistanceNgramsComponents(pWidth);
         toggleVariantDetectionParameters(cbMispellingVariants.isSelected());
-
+        
         // Layout the components
         layoutComponents();
     }
@@ -145,6 +145,13 @@ public class ConfigPanelVariants extends JPanel {
                                         .addComponent(spEditDistanceNgrams))
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(epEditDistanceNgrams))
+                        // Ignore diacritics parameter
+                        .addGroup(cfgLayout.createSequentialGroup()
+                                  .addComponent(cbGraphicalVariants)
+                                  .addComponent(lblGraphicalVariants)
+                                  .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                  .addComponent(epGraphicalVariants))
+
         );
 
         // Configure the vertical layout
@@ -158,15 +165,6 @@ public class ConfigPanelVariants extends JPanel {
                                         GroupLayout.PREFERRED_SIZE)
                                 .addComponent(lblFlexionnalVariants)
                                 .addComponent(epFlexionnalVariants))
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                        // Ignore diacritics parameter
-                        .addGroup(cfgLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
-                                .addComponent(cbGraphicalVariants,
-                                        GroupLayout.DEFAULT_SIZE,
-                                        GroupLayout.PREFERRED_SIZE,
-                                        GroupLayout.PREFERRED_SIZE)
-                                .addComponent(lblGraphicalVariants)
-                                .addComponent(epGraphicalVariants))
                         .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                         // Variant detection parameter
                         .addGroup(cfgLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
@@ -209,6 +207,15 @@ public class ConfigPanelVariants extends JPanel {
                                                 GroupLayout.PREFERRED_SIZE,
                                                 GroupLayout.PREFERRED_SIZE))
                                 .addComponent(epEditDistanceNgrams))
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                        // Ignore diacritics parameter
+                        .addGroup(cfgLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
+                                .addComponent(cbGraphicalVariants,
+                                        GroupLayout.DEFAULT_SIZE,
+                                        GroupLayout.PREFERRED_SIZE,
+                                        GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblGraphicalVariants)
+                                .addComponent(epGraphicalVariants))
                         .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
         );
 
@@ -298,7 +305,7 @@ public class ConfigPanelVariants extends JPanel {
                 toggleVariantDetectionParameters(cbMispellingVariants.isSelected());
             }
         });
-
+        
         // Editor pane to display help
         epMispellingVariants = new JEditorPane();
         epMispellingVariants.setEditable(false);
@@ -342,6 +349,13 @@ public class ConfigPanelVariants extends JPanel {
         spEditDistanceNgrams.setVisible(variantDetectionEnabled);
         epEditDistanceNgrams.setEnabled(variantDetectionEnabled);
         epEditDistanceNgrams.setVisible(variantDetectionEnabled);
+        // Toggle ignore diactritics
+        lblGraphicalVariants.setEnabled(variantDetectionEnabled);
+        lblGraphicalVariants.setVisible(variantDetectionEnabled);
+        cbGraphicalVariants.setEnabled(variantDetectionEnabled);
+        cbGraphicalVariants.setVisible(variantDetectionEnabled);
+        epGraphicalVariants.setEnabled(variantDetectionEnabled);
+        epGraphicalVariants.setVisible(variantDetectionEnabled);
     }
 
     /**
@@ -480,7 +494,10 @@ public class ConfigPanelVariants extends JPanel {
     }
 
     public void setVariantDetection(boolean variantDetection) {
-        cbMispellingVariants.setSelected(variantDetection);
+        if (variantDetection != cbMispellingVariants.isSelected()) {
+            cbMispellingVariants.setSelected(variantDetection);
+            toggleVariantDetectionParameters(variantDetection);
+        }
     }
 
     public void setVariantDetectionError(Throwable e) {

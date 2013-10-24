@@ -59,6 +59,13 @@
         <multiValued>false</multiValued>
         <mandatory>false</mandatory>
       </configurationParameter>
+    <configurationParameter>
+        <name>SemiDistributionalMethod</name>
+        <description>Activates semidistributional method for complex terms.</description>
+        <type>Boolean</type>
+        <multiValued>false</multiValued>
+        <mandatory>false</mandatory>
+      </configurationParameter>
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>

@@ -331,7 +331,9 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
         this.language = tool.getLanguage();
         this.encoding = tool.getEncoding();
         try {
-            setDescription(description(tool.getAEDescriptor()), tool.getAESettings());
+            String engineDescriptor = tool.getAEDescriptor();
+            System.out.println("Ready to run: " + engineDescriptor);
+            setDescription(description(engineDescriptor), tool.getAESettings());
         } catch (ResourceConfigurationException e) {
             throw new InvalidTermSuiteConfiguration(
                     "Unable to validate the configuration then unable to launch the processing.", e);

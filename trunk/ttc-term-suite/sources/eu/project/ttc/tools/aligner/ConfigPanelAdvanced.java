@@ -8,8 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.net.URL;
 
@@ -28,7 +26,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
-import eu.project.ttc.tools.commons.TTCFileChooser;
+import eu.project.ttc.tools.TermSuite;
 import eu.project.ttc.tools.indexer.ClassItem;
 
 /**
@@ -41,17 +39,11 @@ import eu.project.ttc.tools.indexer.ClassItem;
 @SuppressWarnings("serial")
 public class ConfigPanelAdvanced extends JPanel {
 
-    private static final String LBL_DICTIONARY = "Bilingual dictionary";
     private static final String LBL_COMPOSITIONAL = "Compositional method";
     private static final String LBL_DISTRIBUTIONAL = "Distributional method";
     private static final String LBL_SEMIDISTRIBUTIONAL = "Semidistributional method";
     private static final String LBL_MAXCANDIDATES = "Max number of translation candidates";
     private static final String LBL_SIMILARITY = "Similarity distance";
-
-    // Bilingual dictionary parameter
-    private JLabel lblDictionary;
-    private JEditorPane epDictionary;
-    private TTCFileChooser fcDictionary;
 
     // Compositional method parameter
     private JLabel lblCompositional;
@@ -87,7 +79,6 @@ public class ConfigPanelAdvanced extends JPanel {
         // Prepare components
         int pWidth = (int) getPreferredSize().getWidth() / 2;
         createMaxCandidatesComponents(pWidth);
-        createDictionaryComponents(pWidth);
         createMethodComponents(pWidth);
         createSimilarityComponents(pWidth);
 
@@ -134,19 +125,6 @@ public class ConfigPanelAdvanced extends JPanel {
                                 .addComponent(lblDistributional)
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(epDistributional))
-                        // Semidistributional parameter
-                        .addGroup(cfgLayout.createSequentialGroup()
-                                .addComponent(cbSemidistributional)
-                                .addComponent(lblSemidistributional)
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(epSemidistributional))
-                        // Dictionary parameter
-                        .addGroup(cfgLayout.createSequentialGroup()
-                                .addGroup(cfgLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                        .addComponent(lblDictionary)
-                                        .addComponent(fcDictionary))
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(epDictionary))
                         // Similarity parameter
                         .addGroup(cfgLayout.createSequentialGroup()
                                 .addGroup(cfgLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -154,6 +132,12 @@ public class ConfigPanelAdvanced extends JPanel {
                                         .addComponent(cbSimilarity))
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(epSimilarity))
+                        // Semidistributional parameter
+                        .addGroup(cfgLayout.createSequentialGroup()
+                                .addComponent(cbSemidistributional)
+                                .addComponent(lblSemidistributional)
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(epSemidistributional))
         );
 
         // Configure the vertical layout
@@ -188,26 +172,6 @@ public class ConfigPanelAdvanced extends JPanel {
                                 .addComponent(lblDistributional)
                                 .addComponent(epDistributional))
                         .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                        // Semidistributional parameter
-                        .addGroup(cfgLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
-                                .addComponent(cbSemidistributional,
-                                        GroupLayout.DEFAULT_SIZE,
-                                        GroupLayout.PREFERRED_SIZE,
-                                        GroupLayout.PREFERRED_SIZE)
-                                .addComponent(lblSemidistributional)
-                                .addComponent(epSemidistributional))
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                        // Dictionary parameter
-                        .addGroup(cfgLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                .addGroup(cfgLayout.createSequentialGroup()
-                                        .addComponent(lblDictionary)
-                                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(fcDictionary,
-                                                GroupLayout.DEFAULT_SIZE,
-                                                GroupLayout.PREFERRED_SIZE,
-                                                GroupLayout.PREFERRED_SIZE))
-                                .addComponent(epDictionary))
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                         // Similarity parameter
                         .addGroup(cfgLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                 .addGroup(cfgLayout.createSequentialGroup()
@@ -219,36 +183,18 @@ public class ConfigPanelAdvanced extends JPanel {
                                                 GroupLayout.PREFERRED_SIZE))
                                 .addComponent(epSimilarity))
                         .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                        // Semidistributional parameter
+                        .addGroup(cfgLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
+                                .addComponent(cbSemidistributional,
+                                        GroupLayout.DEFAULT_SIZE,
+                                        GroupLayout.PREFERRED_SIZE,
+                                        GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblSemidistributional)
+                                .addComponent(epSemidistributional))
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
         );
 
         add(config, BorderLayout.NORTH);
-    }
-
-    /**
-     * Create the components related to the bilingual dictionary parameter.
-     */
-    public void createDictionaryComponents(int preferredWidth) {
-        // Dictionary label
-        lblDictionary = new JLabel("<html><b>" + LBL_DICTIONARY + "</b></html>");
-        lblDictionary.setPreferredSize(new Dimension(
-                (int) lblDictionary.getPreferredSize().getHeight(),
-                preferredWidth ));
-
-        // Input directory field
-        fcDictionary = new TTCFileChooser("Choose the dictionary file", null);
-        fcDictionary.setPreferredSize(new Dimension(
-                (int) fcDictionary.getPreferredSize().getHeight(),
-                preferredWidth ));
-        fcDictionary.addPropertyChangeListener(new PropertyChangeListener() {
-            public void propertyChange(PropertyChangeEvent evt) {
-                if ("path".equals(evt.getPropertyName()))
-                    firePropertyChange(AlignerBinding.PRM.DICTIONARY.getProperty(),
-                            evt.getOldValue(), evt.getNewValue());
-            }
-        });
-
-        // Help panel
-        epDictionary = initHelpPanel("/eu/project/ttc/gui/texts/aligner/param.dictionary.html", preferredWidth);
     }
 
     /**
@@ -368,24 +314,6 @@ public class ConfigPanelAdvanced extends JPanel {
 
     ////////////////////////////////////////////////////////////////////// ACCESSORS
 
-    public void setBilingualDictionary(String bilingualDictionary) {
-        fcDictionary.setPath(bilingualDictionary);
-    }
-    public String getBilingualDictionary() {
-        if (( fcDictionary.getPath() == null ) || ( fcDictionary.getPath().trim().length() == 0) ) {
-            return null;
-        } else {
-            return fcDictionary.getPath().trim();
-        }
-    }
-    public void setBilingualDictionaryError(Throwable e) {
-        lblDictionary.setText("<html><b>" + LBL_DICTIONARY + "</b><br/><p style=\"color: red; font-size: small\">"
-                + e.getMessage() + "</p></html>");
-    }
-    public void unsetBilingualDictionaryError() {
-        lblDictionary.setText("<html><b>" + LBL_DICTIONARY + "</b></html>");
-    }
-
     public void setCompositionalMethod(boolean isCompositionalMethod) {
         cbCompositional.setSelected(isCompositionalMethod);
     }
@@ -469,14 +397,14 @@ public class ConfigPanelAdvanced extends JPanel {
 
     //////////////////////////////// Helpers
     
-    private JEditorPane initHelpPanel(String resourceName, int preferredWidth) {
+    protected static JEditorPane initHelpPanel(String resourceName, int preferredWidth) {
         JEditorPane pane = new JEditorPane();
         pane.setEditable(false);
         pane.setOpaque(false);
         pane.setPreferredSize(new Dimension((int) pane
                 .getPreferredSize().getHeight(), preferredWidth));
         try {
-            URL res = getClass().getResource(resourceName);
+            URL res = TermSuite.class.getResource(resourceName);
             pane.setPage(res);
         } catch (IOException e) {
         } // No help

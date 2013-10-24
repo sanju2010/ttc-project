@@ -1,19 +1,27 @@
 // Copyright © 2013 Dictanova SAS
 package eu.project.ttc.tools.aligner;
 
-import eu.project.ttc.tools.commons.InputSource;
-import eu.project.ttc.tools.commons.LanguageItem;
-import eu.project.ttc.tools.commons.TTCDirectoryChooser;
-import eu.project.ttc.tools.commons.TTCFileChooser;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.net.URL;
+
+import javax.swing.BorderFactory;
+import javax.swing.GroupLayout;
+import javax.swing.JComboBox;
+import javax.swing.JEditorPane;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.LayoutStyle;
+
+import eu.project.ttc.tools.commons.InputSource;
+import eu.project.ttc.tools.commons.LanguageItem;
+import eu.project.ttc.tools.commons.TTCDirectoryChooser;
+import eu.project.ttc.tools.commons.TTCFileChooser;
 
 /**
  * This JPanel exposes the basic configuration part of the Aligner tool.
@@ -31,7 +39,8 @@ public class ConfigPanelBasic extends JPanel {
     private static final String LBL_TGTLANGUAGE = "Target language";
     private static final String LBL_TGTTERMINO = "Target terminology";
     private static final String LBL_OUTPUT = "Output directory";
-
+    private static final String LBL_DICTIONARY = "Bilingual dictionary";
+    
     // Evaluation directory parameter
     private JLabel lblEvalDir;
     private TTCDirectoryChooser fcEvalDirectory;
@@ -57,6 +66,11 @@ public class ConfigPanelBasic extends JPanel {
     private TTCFileChooser fcTgtTermino;
     private JEditorPane epTgtTermino;
 
+    // Bilingual dictionary parameter
+    private JLabel lblDictionary;
+    private JEditorPane epDictionary;
+    private TTCFileChooser fcDictionary;
+    
     // Output directory
     private JLabel lblOutput;
     private TTCDirectoryChooser fcOutput;
@@ -70,6 +84,7 @@ public class ConfigPanelBasic extends JPanel {
 
         // Prepare components
         int pWidth = (int) getPreferredSize().getWidth() / 2;
+        createDictionaryComponents(pWidth);
         createEvalDirComponents(pWidth);
         createSrcForm(pWidth);
         createTgtComponents(pWidth);
@@ -137,6 +152,13 @@ public class ConfigPanelBasic extends JPanel {
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(epTgtTermino)
                         )
+                        // Dictionary parameter
+                        .addGroup(cfgLayout.createSequentialGroup()
+                                .addGroup(cfgLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                        .addComponent(lblDictionary)
+                                        .addComponent(fcDictionary))
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(epDictionary))
                         // Output dir parameter
                         .addGroup(cfgLayout.createSequentialGroup()
                                 .addGroup(cfgLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -203,6 +225,17 @@ public class ConfigPanelBasic extends JPanel {
                                                 GroupLayout.PREFERRED_SIZE))
                                 .addComponent(epTgtTermino))
                         .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                        // Dictionary parameter
+                        .addGroup(cfgLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                .addGroup(cfgLayout.createSequentialGroup()
+                                        .addComponent(lblDictionary)
+                                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(fcDictionary,
+                                                GroupLayout.DEFAULT_SIZE,
+                                                GroupLayout.PREFERRED_SIZE,
+                                                GroupLayout.PREFERRED_SIZE))
+                                .addComponent(epDictionary))
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                         // Output dir parameter
                         .addGroup(cfgLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                 .addGroup(cfgLayout.createSequentialGroup()
@@ -219,6 +252,33 @@ public class ConfigPanelBasic extends JPanel {
         add(config, BorderLayout.NORTH);
     }
 
+    /**
+     * Create the components related to the bilingual dictionary parameter.
+     */
+    public void createDictionaryComponents(int preferredWidth) {
+        // Dictionary label
+        lblDictionary = new JLabel("<html><b>" + LBL_DICTIONARY + "</b></html>");
+        lblDictionary.setPreferredSize(new Dimension(
+                (int) lblDictionary.getPreferredSize().getHeight(),
+                preferredWidth ));
+
+        // Input directory field
+        fcDictionary = new TTCFileChooser("Choose the dictionary file", null);
+        fcDictionary.setPreferredSize(new Dimension(
+                (int) fcDictionary.getPreferredSize().getHeight(),
+                preferredWidth ));
+        fcDictionary.addPropertyChangeListener(new PropertyChangeListener() {
+            public void propertyChange(PropertyChangeEvent evt) {
+                if ("path".equals(evt.getPropertyName()))
+                    firePropertyChange(AlignerBinding.PRM.DICTIONARY.getProperty(),
+                            evt.getOldValue(), evt.getNewValue());
+            }
+        });
+
+        // Help panel
+        epDictionary = ConfigPanelAdvanced.initHelpPanel("/eu/project/ttc/gui/texts/aligner/param.dictionary.html", preferredWidth);
+    }
+    
     /**
      * Create the components related to the evaluation dir parameter.
      */
@@ -437,6 +497,23 @@ public class ConfigPanelBasic extends JPanel {
 
     ////////////////////////////////////////////////////////////////////// ACCESSORS
 
+    public void setBilingualDictionary(String bilingualDictionary) {
+        fcDictionary.setPath(bilingualDictionary);
+    }
+    public String getBilingualDictionary() {
+        if (( fcDictionary.getPath() == null ) || ( fcDictionary.getPath().trim().length() == 0) ) {
+            return null;
+        } else {
+            return fcDictionary.getPath().trim();
+        }
+    }
+    public void setBilingualDictionaryError(Throwable e) {
+        lblDictionary.setText("<html><b>" + LBL_DICTIONARY + "</b><br/><p style=\"color: red; font-size: small\">"
+                + e.getMessage() + "</p></html>");
+    }
+    public void unsetBilingualDictionaryError() {
+        lblDictionary.setText("<html><b>" + LBL_DICTIONARY + "</b></html>");
+    }
     public void setEvaluationDirectory(String evaluationDirectory) {
         fcEvalDirectory.setPath(evaluationDirectory);
     }
