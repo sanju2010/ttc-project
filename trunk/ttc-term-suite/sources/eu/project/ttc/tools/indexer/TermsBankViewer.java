@@ -35,7 +35,9 @@ import eu.project.ttc.types.TermComponentAnnotation;
 
 public class TermsBankViewer extends JTree {
 
-	private DefaultMutableTreeNode root;
+    private static final long serialVersionUID = 5416915274690180641L;
+    
+    private DefaultMutableTreeNode root;
 
 	private DefaultMutableTreeNode getRoot() {
 		return this.root;
@@ -65,7 +67,7 @@ public class TermsBankViewer extends JTree {
 	}
 
 	public void doLoad(InputStream inputStream) throws Exception {
-		URL url = this
+	    URL url = this
 				.getClass()
 				.getClassLoader()
 				.getResource(
@@ -122,20 +124,6 @@ public class TermsBankViewer extends JTree {
 					this.addNote(node, annotation.getForms(i).getForm());
 				}
 			}
-		} catch (Exception e) {
-			// ignore
-		}
-	}
-
-	private void addContext(DefaultMutableTreeNode root, JCas cas,
-			TermAnnotation annotation) {
-		try {
-			JCas jcas = cas.getView(annotation.getCoveredText());
-			String context = jcas.getDocumentText();
-			DefaultMutableTreeNode node = new DefaultMutableTreeNode();
-			node.setUserObject("context");
-			root.add(node);
-			this.addContext(node, context);
 		} catch (Exception e) {
 			// ignore
 		}
@@ -347,5 +335,12 @@ public class TermsBankViewer extends JTree {
 		}
 
 	}
+
+    public void clearData() {
+        root = new DefaultMutableTreeNode("Terminology");
+        setModel( new DefaultTreeModel(getRoot()) );
+        setRootVisible(false);
+        expandRow(1);        
+    }
 
 }

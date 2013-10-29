@@ -63,7 +63,7 @@ public class ResultsPanel extends JPanel {
     }
 
     public void clearBanker() {
-        // FIXME
+        bankerGUI.clearData();
     }
 
     private class Menu extends JPopupMenu {
