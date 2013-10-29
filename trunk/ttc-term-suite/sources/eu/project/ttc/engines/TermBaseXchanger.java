@@ -256,12 +256,40 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 
             // Build TSV
             if (tsvEnabled) {
-                exportTSV(tbxDoc, tsvFile);
+                //exportTSV(tbxDoc, tsvFile);
+                exportTSV(terms, tsvFile);
             }
 		} catch (Exception e) {
 			throw new AnalysisEngineProcessException(e);
 		}
 	}
+
+    private void exportTSV(List<TermAnnotation> terms, File tsvFile) throws IOException {
+        int count = 0;
+        IndexerTSVBuilder tsv = new IndexerTSVBuilder(new FileWriter(tsvFile, false));
+        for (TermAnnotation term : terms) {
+            if (completePredicate.accept(term)) {
+                count++;
+                FSArray forms = term.getForms();
+                String pilot = term.getCoveredText();
+                if (forms != null) {
+                    pilot = term.getForms(0).getForm();
+                }
+                tsv.startTerm(pilot);
+                Set<TermAnnotation> tVars = variantsOf.get( term.getLangset() );
+                if (tVars != null) {
+                    for (TermAnnotation tVariant : tVars) {
+                        tsv.addVariant(tVariant.getCoveredText());
+                    }
+                }
+
+                // done with this term
+                tsv.endTerm();
+            }
+        }
+        tsv.close();
+        getContext().getLogger().log(Level.INFO, "Terms added to TSV: " + count);
+    }
 
     /**
      * Extract and sort term annotations based on the filtering parametered.
