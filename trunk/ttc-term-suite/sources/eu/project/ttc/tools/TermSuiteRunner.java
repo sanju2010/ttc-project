@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -47,6 +48,8 @@ import org.apache.uima.util.XMLInputSource;
 import org.apache.commons.cli.OptionGroup;
 import org.apache.commons.cli.OptionBuilder;
 import eu.project.ttc.tools.commons.InputSource.InputSourceTypes;
+import eu.project.ttc.tools.utils.FileComparator;
+import eu.project.ttc.tools.utils.InputSourceFilter;
 
 
 public class TermSuiteRunner extends SwingWorker<Void, Void> {
@@ -108,24 +111,24 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 		this.description = description;
 	}
 
-//	private void setData(String path, InputSourceTypes mode) throws Exception {
-//		InputSourceFilter filter = new InputSourceFilter(mode);
-//		File file = new File(path);
-//		if (file.isDirectory()) {
-//			File[] files = file.listFiles(filter);
-//			for (File f : files) {
-//				this.data.add(f);
-//			}
-//		} else if (file.isFile()
-//				&& filter.accept(file.getParentFile(), file.getName())) {
-//			this.data.add(file);
-//		} else {
-//			throw new FileNotFoundException(path
-//					+ " is not a directory, or it cannot be found.");
-//		}
-//		Collections.sort(this.data, new FileComparator());
-//		// System.out.println("Number of documents to process: " + this.data.size());
-//	}
+	private void setData(String path, InputSourceTypes mode) throws Exception {
+		InputSourceFilter filter = new InputSourceFilter(mode);
+		File file = new File(path);
+		if (file.isDirectory()) {
+			File[] files = file.listFiles(filter);
+			for (File f : files) {
+				this.data.add(f);
+			}
+		} else if (file.isFile()
+				&& filter.accept(file.getParentFile(), file.getName())) {
+			this.data.add(file);
+		} else {
+			throw new FileNotFoundException(path
+					+ " is not a directory, or it cannot be found.");
+		}
+		Collections.sort(this.data, new FileComparator());
+		// System.out.println("Number of documents to process: " + this.data.size());
+	}
 
 	@Override
 	protected Void doInBackground() throws Exception {
@@ -322,7 +325,7 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 		this.language = language;
 		this.encoding = encoding;
 		this.setDescription(description, description.getAnalysisEngineMetaData().getConfigurationParameterSettings());
-//		this.setData(directory, this.input);
+		this.setData(directory, this.inputSourceTypes);
 	}
 
     public TermSuiteRunner(ToolController tool) throws InvalidTermSuiteConfiguration, FileNotFoundException {

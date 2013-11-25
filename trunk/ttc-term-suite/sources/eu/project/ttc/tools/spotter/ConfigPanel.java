@@ -1,18 +1,32 @@
 // Copyright © 2013 Dictanova SAS
 package eu.project.ttc.tools.spotter;
 
-import eu.project.ttc.tools.commons.LanguageItem;
-import eu.project.ttc.tools.commons.TTCDirectoryChooser;
-import eu.project.ttc.tools.commons.TTCFileChooser;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.net.URL;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.GroupLayout;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JEditorPane;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSeparator;
+import javax.swing.LayoutStyle;
+import javax.swing.SwingConstants;
+
+import eu.project.ttc.tools.commons.LanguageItem;
+import eu.project.ttc.tools.commons.TTCDirectoryChooser;
+import eu.project.ttc.tools.indexer.IndexerBinding;
 
 /**
  * This JPanel exposes the configuration part of the Spotter tool.
@@ -25,6 +39,7 @@ public class ConfigPanel extends JPanel {
     private static final String LBL_LANGUAGE = "Language";
     private static final String LBL_OUTPUT = "Output Directory";
     private static final String LBL_TTG = "TreeTagger Home Directory";
+    private final static String LBL_TSV = "Export in TSV format";
 
 
     // Main title
@@ -32,7 +47,7 @@ public class ConfigPanel extends JPanel {
 
     // Language parameter
     private JLabel lblLanguage;
-    private JComboBox cbLanguage;
+    private JComboBox<LanguageItem> cbLanguage;
     private JEditorPane epLanguage;
 
     // Input directory parameter
@@ -50,6 +65,11 @@ public class ConfigPanel extends JPanel {
     private JEditorPane epTtgDirectory;
     private TTCDirectoryChooser fcTtgDirectory;
 
+    // TSV export parameter
+    private JLabel lblTSV;
+    private JCheckBox cbTSV;
+    private JEditorPane epTSV;
+    
     private GroupLayout cfgLayout;
 
     public ConfigPanel() {
@@ -62,6 +82,7 @@ public class ConfigPanel extends JPanel {
         createLanguageForm(pWidth);
         createInputDirectoryForm(pWidth);
         createOutputDirectoryForm(pWidth);
+        createEnableTsvForm(pWidth);
         createTtgDirectoryForm(pWidth);
 
         // Layout components together
@@ -111,6 +132,14 @@ public class ConfigPanel extends JPanel {
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(epOutDirectory)
                         )
+                        // Enable TSV parameter
+                        .addGroup(cfgLayout.createSequentialGroup()
+                                .addGroup(cfgLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                        .addComponent(lblTSV)
+                                        .addComponent(cbTSV))
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(epTSV)
+                        )
                         // TreeTagger directory parameter
                         .addGroup(cfgLayout.createSequentialGroup()
                                 .addGroup(cfgLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -151,6 +180,14 @@ public class ConfigPanel extends JPanel {
                                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(fcOutDirectory))
                                 .addComponent(epOutDirectory)
+                        )
+                        // Enable tsv
+                        .addGroup(cfgLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                .addGroup(cfgLayout.createSequentialGroup()
+                                        .addComponent(lblTSV)
+                                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(cbTSV))
+                                .addComponent(epTSV)
                         )
                                 // TreeTagger directory parameter
                         .addGroup(cfgLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -196,7 +233,7 @@ public class ConfigPanel extends JPanel {
                 preferredWidth ));
 
         // Language combobox
-        cbLanguage = new JComboBox();
+        cbLanguage = new JComboBox<LanguageItem>();
         for(String code: new String[]{"en","fr","de","es","ru","da","lv","zh"}) {
             cbLanguage.addItem( new LanguageItem(code) );
         }
@@ -298,6 +335,41 @@ public class ConfigPanel extends JPanel {
         } catch (IOException e) {} // No various
     }
 
+    /**
+     * Create the ParameterGroup dedicated to enable/disable the TSV output.
+     */
+    private void createEnableTsvForm(int pWidth) {
+        // Label
+        lblTSV = new JLabel("<html><b>" + LBL_TSV + "</b></html>");
+        lblTSV.setPreferredSize(new Dimension((int) lblTSV.getPreferredSize()
+                .getHeight(), pWidth));
+
+        // Checkbox as it is a boolean
+        cbTSV = new JCheckBox();
+        cbTSV.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out
+                        .println("Detected a TSV change, fire property change.");
+                firePropertyChange(IndexerBinding.PRM.TSV.getProperty(),
+                        !cbTSV.isSelected(), cbTSV.isSelected());
+            }
+        });
+
+        // Editor pane to display help
+        epTSV = new JEditorPane();
+        epTSV.setEditable(false);
+        epTSV.setOpaque(false);
+        epTSV.setPreferredSize(new Dimension((int) epTSV.getPreferredSize()
+                .getHeight(), pWidth));
+        try {
+            URL res = getClass().getResource(
+                    "/eu/project/ttc/gui/texts/spotter/param.enabletsv.html");
+            epTSV.setPage(res);
+        } catch (IOException e) {
+        } // No help
+    }
+    
     /**
      * Create the ParameterGroup dedicated to configure the tree tagger directory.
      */
@@ -409,5 +481,22 @@ public class ConfigPanel extends JPanel {
 
     public String getTreetaggerHome() {
         return fcTtgDirectory.getPath();
+    }
+
+    public void setEnableTsvOutput(boolean enableTsv) {
+        cbTSV.setSelected(enableTsv);        
+    }
+
+    public Boolean isEnableTsvOutput() {
+        return cbTSV.isSelected();
+    }
+
+    public void setEnableTsvOutputError(Exception e) {
+        lblTSV.setText("<html><b>"+LBL_TSV+"</b><br/><p style=\"color: red; font-size: small\">"
+                + e.getMessage() + "</p></html>");        
+    }
+    
+    public void unsetEnableTsvOutputError() {
+        lblTSV.setText("<html><b>"+LBL_TSV+"</b></html>");
     }
 }

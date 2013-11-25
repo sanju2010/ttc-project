@@ -1,4 +1,3 @@
-// Copyright © 2013 Dictanova SAS
 package eu.project.ttc.tools.spotter;
 
 import eu.project.ttc.tools.commons.ToolView;
@@ -92,6 +91,11 @@ public class SpotterView extends JTabbedPane implements ToolView, SpotterBinding
     }
 
     @Override
+    public void addEnableTsvOutputChangeListener(PropertyChangeListener listener) {
+        addPropertyChangeListener(PRM.ENABLETSV.getProperty(), listener);
+    }
+    
+    @Override
     public void setLanguage(String language) {
         compConfig.setLanguage(language);
     }
@@ -163,6 +167,24 @@ public class SpotterView extends JTabbedPane implements ToolView, SpotterBinding
         compConfig.unsetTreetaggerHomeError();
     }
 
+    @Override
+    public void setEnableTsvOutput(boolean enableTsv) {
+        compConfig.setEnableTsvOutput(enableTsv);
+    }
+
+    @Override
+    public Boolean isEnableTsvOutput() {
+        return compConfig.isEnableTsvOutput();
+    }
+    
+    public void setEnableTsvOutputError(Exception e) {
+        compConfig.setEnableTsvOutputError(e);        
+    }
+    
+    public void unsetEnableTsvOutputError() {
+        compConfig.unsetEnableTsvOutputError();
+    }
+    
     /**
      * Add a processing result into the ResultsPanel.
      * @param result

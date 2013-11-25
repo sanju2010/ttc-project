@@ -1,7 +1,6 @@
 package eu.project.ttc.tools.spotter;
 
 import java.beans.PropertyChangeListener;
-import java.io.FileNotFoundException;
 
 /**
  * This interface declares the parameters as well as the associated methods
@@ -25,7 +24,9 @@ public interface SpotterBinding {
         /** Output directory parameter */
         OUTPUT              ("Directory", "spotter.outputdirectory", null),
         /** TreeTagger directory parameter */
-        TTGHOME             ("TreeTaggerHomeDirectory", "spotter.ttgdirectory", null);
+        TTGHOME             ("TreeTaggerHomeDirectory", "spotter.ttgdirectory", null),
+        /** Enable TSV output parameter */
+        ENABLETSV           ("EnableTSVOutput", "spotter.enabletsv", Boolean.FALSE);
 
         private final String property;
         private final String parameter;
@@ -141,4 +142,21 @@ public interface SpotterBinding {
      */
     void addTtgDirectoryChangeListener(PropertyChangeListener listener);
 
+    ///////////////////////////////////////////////////////////// Enable TSV output
+
+    /**
+     * Enables/disables tsv output property
+     * @param enableTsv if <code>true</code> tsv output is enabled, or disable otherwise
+     */
+    void setEnableTsvOutput(boolean enableTsv);
+
+    /**
+     * Returns whether tsv output is enabled or not.
+     */
+    Boolean isEnableTsvOutput();
+
+    /**
+     * Listener to a change regarding the enable tsv parameter.
+     */
+    void addEnableTsvOutputChangeListener(PropertyChangeListener listener);
 }

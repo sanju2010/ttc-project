@@ -1,19 +1,25 @@
 package eu.project.ttc.tools.spotter;
 
-import eu.project.ttc.tools.commons.InvalidTermSuiteConfiguration;
-import eu.project.ttc.tools.commons.ToolModel;
+import java.beans.PropertyChangeListener;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.resource.ResourceConfigurationException;
-import org.apache.uima.resource.metadata.*;
+import org.apache.uima.resource.metadata.ConfigurationParameter;
+import org.apache.uima.resource.metadata.ConfigurationParameterDeclarations;
+import org.apache.uima.resource.metadata.ConfigurationParameterSettings;
+import org.apache.uima.resource.metadata.NameValuePair;
+import org.apache.uima.resource.metadata.ResourceMetaData;
 import org.apache.uima.util.InvalidXMLException;
 import org.apache.uima.util.Level;
 import org.apache.uima.util.XMLInputSource;
 import org.xml.sax.SAXException;
 
-import javax.management.InvalidAttributeValueException;
-import java.beans.PropertyChangeListener;
-import java.io.*;
-import java.util.ArrayList;
+import eu.project.ttc.tools.commons.InvalidTermSuiteConfiguration;
+import eu.project.ttc.tools.commons.ToolModel;
 
 /**
  * Model of the Spotter tool.
@@ -27,6 +33,7 @@ public class SpotterModel extends ToolModel implements SpotterBinding {
     public static final String P_INPUT_DIRECTORY = "InputDirectory";
     public static final String P_OUTPUT_DIRECTORY = "OutputDirectory";
     public static final String P_TREETAGGER_HOME_DIRECTORY = "TreeTaggerHomeDirectory";
+    public static final String P_ENABLE_TSV_OUTPUT = "EnableTSVOutput";
 
     /** Language configuration parameter */
     private ConfigurationParameter pLang;
@@ -36,7 +43,9 @@ public class SpotterModel extends ToolModel implements SpotterBinding {
     private ConfigurationParameter pODir;
     /** Home of TreeTagger */
     private ConfigurationParameter pTtg;
-
+    /** Enable tsv output */
+    private ConfigurationParameter pTsv;
+    
     // Where the parameter value are stored
     ConfigurationParameterSettings pSettings;
 
@@ -88,6 +97,14 @@ public class SpotterModel extends ToolModel implements SpotterBinding {
         pTtg.setMultiValued(false);
         pTtg.setMandatory(true);
 
+        // TSV output
+        pTsv = UIMAFramework
+                .getResourceSpecifierFactory().createConfigurationParameter();
+        pTsv.setName(P_ENABLE_TSV_OUTPUT);
+        pTsv.setType(ConfigurationParameter.TYPE_BOOLEAN);
+        pTsv.setMultiValued(false);
+        pTsv.setMandatory(false);
+        
         // Bundle everything in a ConfigurationParameterSettings to add values
         pSettings = UIMAFramework.getResourceSpecifierFactory()
                         .createConfigurationParameterSettings();
@@ -128,6 +145,8 @@ public class SpotterModel extends ToolModel implements SpotterBinding {
                     setOutputDirectory((String) nvp.getValue());
                 } else if ( pTtg.getName().equals(nvp.getName()) ) {
                     setTreetaggerHome((String) nvp.getValue());
+                }else if ( pTsv.getName().equals(nvp.getName()) ) {
+                    setEnableTsvOutput((Boolean) nvp.getValue());
                 } else {
                     UIMAFramework.getLogger().log(Level.WARNING,
                             "Ignoring parameter {} as it is not supported by the model.",
@@ -158,6 +177,7 @@ public class SpotterModel extends ToolModel implements SpotterBinding {
         uimaParamDeclarations.addConfigurationParameter(pIDir);
         uimaParamDeclarations.addConfigurationParameter(pODir);
         uimaParamDeclarations.addConfigurationParameter(pTtg);
+        uimaParamDeclarations.addConfigurationParameter(pTsv);
 
         // Create and populate the metadata
         ResourceMetaData uimaMetadata = UIMAFramework
@@ -188,6 +208,7 @@ public class SpotterModel extends ToolModel implements SpotterBinding {
         uimaParamDeclarations.addConfigurationParameter(pIDir);
         uimaParamDeclarations.addConfigurationParameter(pODir);
         uimaParamDeclarations.addConfigurationParameter(pTtg);
+        uimaParamDeclarations.addConfigurationParameter(pTsv);
 
         // Create and populate the metadata
         ResourceMetaData uimaMetadata = UIMAFramework
@@ -220,6 +241,11 @@ public class SpotterModel extends ToolModel implements SpotterBinding {
         addPropertyChangeListener(PRM.TTGHOME.getProperty(), listener);
     }
 
+    @Override
+    public void addEnableTsvOutputChangeListener(PropertyChangeListener listener) {
+        addPropertyChangeListener(PRM.ENABLETSV.getProperty(), listener);
+    }
+    
     /**
      * Setter for language parameter value.
      * If the value is valid, then the parameter value is changed in the
@@ -313,4 +339,19 @@ public class SpotterModel extends ToolModel implements SpotterBinding {
         return (String) pSettings.getParameterValue(pTtg.getName());
     }
 
+    /**
+     * Enables/disables tsv output property
+     * @param enableTsv
+     */
+    public void setEnableTsvOutput(boolean enableTsv) {
+        Boolean oldValue = isEnableTsvOutput();
+        Boolean newValue = Boolean.valueOf(enableTsv);
+        pSettings.setParameterValue(pTsv.getName(), Boolean.valueOf(enableTsv));
+        firePropertyChange(PRM.ENABLETSV.getProperty(), oldValue, newValue);
+    }
+    
+    /** Getter for tsv output property. */
+    public Boolean isEnableTsvOutput() {
+        return Boolean.TRUE.equals(pSettings.getParameterValue(pTsv.getName()));
+    }
 }

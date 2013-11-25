@@ -111,6 +111,22 @@ public class SpotterController extends ToolController {
                 if (success) getView().unsetTreetaggerHomeError();
             }
         });
+        // TSV output
+        getView().addEnableTsvOutputChangeListener(new PropertyChangeListener() {
+            public void propertyChange(PropertyChangeEvent evt) {
+                boolean success = true;
+                if (!getModel().isEnableTsvOutput().equals(evt.getNewValue())) {
+                    try {
+                        System.out.println("Reflecting tsv output change from view->" + evt.getNewValue());
+                        getModel().setEnableTsvOutput((Boolean) evt.getNewValue());
+                    } catch (Exception e) {
+                        success = false;
+                        getView().setEnableTsvOutputError(e);
+                    }
+                } // else, no need to reflect the change (and prevent looping)
+                if (success) getView().unsetEnableTsvOutputError();
+            }
+        });
     }
 
     /**
@@ -158,6 +174,16 @@ public class SpotterController extends ToolController {
                 } // else, no need to reflect the change (and prevent looping)
             }
         });
+        
+        // TSV output
+        getModel().addEnableTsvOutputChangeListener(new PropertyChangeListener() {
+            public void propertyChange(PropertyChangeEvent evt) {
+                if (!getView().isEnableTsvOutput().equals(evt.getNewValue())) {
+                        System.out.println("Reflecting tsv output change from model->" + evt.getNewValue());
+                        getView().setEnableTsvOutput((Boolean) evt.getNewValue());
+                } // else, no need to reflect the change (and prevent looping)
+            }
+        });
     }
 
     /**
@@ -176,6 +202,9 @@ public class SpotterController extends ToolController {
 
         try { getModel().setTreetaggerHome( getView().getTreetaggerHome() ); }
         catch (IllegalArgumentException e) { getView().setTreetaggerHomeError(e); }
+        
+        try { getModel().setEnableTsvOutput( getView().isEnableTsvOutput() ); }
+        catch (IllegalArgumentException e) { getView().setEnableTsvOutputError(e); }
     }
 
     /** Getter to the model with appropriate casting */
@@ -238,6 +267,8 @@ public class SpotterController extends ToolController {
                 getModel().getOutputDirectory());
         settings.setParameterValue(SpotterBinding.PRM.TTGHOME.getParameter(),
                 getModel().getTreetaggerHome());
+        settings.setParameterValue(SpotterBinding.PRM.ENABLETSV.getParameter(),
+                getModel().isEnableTsvOutput());
 
         return settings;
     }

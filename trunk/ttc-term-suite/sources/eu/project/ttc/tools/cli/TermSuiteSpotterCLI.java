@@ -142,11 +142,13 @@ public class TermSuiteSpotterCLI {
 				if (!SwingUtilities.isEventDispatchThread())
 					runner.get();
 
+				UIMAFramework.getLogger().log(Level.INFO, "Termspotter running finished");
 			} catch (ParseException e) {
 				TermSuiteCLIUtils.printUsage(e, USAGE, options); 
 			}
 
 		} catch (Exception e) {
+		    e.printStackTrace();
             UIMAFramework.getLogger().log(Level.SEVERE, e.getMessage());
 		}
 	}

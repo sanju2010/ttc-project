@@ -1,8 +1,5 @@
-// Copyright © 2013 Dictanova SAS
 package eu.project.ttc.tools.commons;
 
-import javax.swing.*;
-import java.beans.PropertyChangeEvent;
 
 /**
  * @author grdscarabe
