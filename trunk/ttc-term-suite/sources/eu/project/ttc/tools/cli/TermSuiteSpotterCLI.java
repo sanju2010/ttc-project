@@ -21,10 +21,6 @@ package eu.project.ttc.tools.cli;
 import java.io.File;
 import java.util.Properties;
 
-import javax.swing.SwingUtilities;
-
-import eu.project.ttc.tools.commons.InputSource;
-import eu.project.ttc.tools.spotter.SpotterModel;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
@@ -32,9 +28,11 @@ import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
-
-import eu.project.ttc.tools.TermSuiteRunner;
 import org.apache.uima.util.Level;
+
+import eu.project.ttc.tools.TermSuiteCLIRunner;
+import eu.project.ttc.tools.commons.InputSource;
+import eu.project.ttc.tools.spotter.SpotterModel;
 
 /**
  * Command line interface for the SpotterController engines.
@@ -47,7 +45,7 @@ public class TermSuiteSpotterCLI {
 	private static final String PREFERENCES_FILE_NAME = "SpotterCLI.properties";
 
 	/** Short usage description of the CLI */
-	private static final String USAGE = "java [-DconfigFile=<file>] -Xms1g -Xmx2g -cp ttc-term-suite-1.3.jar eu.project.ttc.tools.cli.TermSuiteSpotterCLI";
+	private static final String USAGE = "java [-DconfigFile=<file>] -Xms1g -Xmx2g -cp ttc-term-suite-1.5.jar eu.project.ttc.tools.cli.TermSuiteSpotterCLI";
 
 	/// Parameter names
 	
@@ -108,6 +106,9 @@ public class TermSuiteSpotterCLI {
 					P_TREETAGGER_HOME_DIRECTORY, true, "TreeTagger home directory", 
 					TermSuiteCLIUtils.isNull(storedProps, P_TREETAGGER_HOME_DIRECTORY)));
 			options.addOption(TermSuiteCLIUtils.createOption(null, P_ENABLE_TSV, false, "Enable tsv output", false));
+			
+            TermSuiteCLIUtils.setToValueIfNotExists(storedProps, P_ENABLE_TSV,
+                    "false");
 
 			try {
 				// Parse and set CL options
@@ -135,16 +136,14 @@ public class TermSuiteSpotterCLI {
 				TermSuiteCLIUtils.setConfigurationParameters(description, storedProps);
 
                 // FIXME
-				TermSuiteRunner runner = new TermSuiteRunner(description,
+				TermSuiteCLIRunner runner = new TermSuiteCLIRunner(description,
 						storedProps.getProperty(TermSuiteCLIUtils.P_INPUT_DIR),
 						InputSource.InputSourceTypes.TXT,
 						storedProps.getProperty(TermSuiteCLIUtils.P_LANGUAGE),
 						storedProps.getProperty(TermSuiteCLIUtils.P_ENCODING));
 
 				// Run
-				runner.execute();
-				if (!SwingUtilities.isEventDispatchThread())
-					runner.get();
+				runner.run();
 
 				UIMAFramework.getLogger().log(Level.INFO, "Termspotter running finished");
 			} catch (ParseException e) {

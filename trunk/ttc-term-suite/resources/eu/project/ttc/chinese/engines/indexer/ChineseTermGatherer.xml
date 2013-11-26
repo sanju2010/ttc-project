@@ -26,16 +26,6 @@
         </overrides>
       </configurationParameter>
       <configurationParameter>
-        <name>Enable</name>
-        <type>Boolean</type>
-        <multiValued>false</multiValued>
-        <mandatory>true</mandatory>
-        <overrides>
-          <parameter>SingleWordTermGatherer/Enable</parameter>
-          <parameter>ChineseMultiWordTermGatherer/Enable</parameter>
-        </overrides>
-      </configurationParameter>
-      <configurationParameter>
         <name>Threshold</name>
         <type>Float</type>
         <multiValued>false</multiValued>
@@ -62,18 +52,30 @@
           <parameter>SingleWordTermGatherer/IgnoreDiacriticsInMultiwordTerms</parameter>
         </overrides>
       </configurationParameter>
+      <configurationParameter>
+        <name>EnableSyntacticVariantDetection</name>
+        <type>Boolean</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>ChineseMultiWordTermGatherer/Enable</parameter>
+        </overrides>
+      </configurationParameter>
+    <configurationParameter>
+        <name>EnableGraphicalVariantDetection</name>
+        <type>Boolean</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>SingleWordTermGatherer/Enable</parameter>
+        </overrides>
+      </configurationParameter>
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
         <name>EditDistanceClassName</name>
         <value>
           <string>eu.project.ttc.metrics.LevenshteinDistance</string>
-        </value>
-      </nameValuePair>
-      <nameValuePair>
-        <name>Enable</name>
-        <value>
-          <boolean>false</boolean>
         </value>
       </nameValuePair>
       <nameValuePair>
@@ -86,6 +88,18 @@
         <name>Ngrams</name>
         <value>
           <integer>1</integer>
+        </value>
+      </nameValuePair>
+    <nameValuePair>
+        <name>EnableSyntacticVariantDetection</name>
+        <value>
+          <boolean>false</boolean>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>EnableGraphicalVariantDetection</name>
+        <value>
+          <boolean>false</boolean>
         </value>
       </nameValuePair>
     </configurationParameterSettings>

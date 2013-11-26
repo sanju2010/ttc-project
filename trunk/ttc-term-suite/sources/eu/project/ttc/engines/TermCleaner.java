@@ -1,3 +1,21 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ * 
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 package eu.project.ttc.engines;
 
 import java.util.HashSet;
@@ -15,9 +33,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Level;
 
-import eu.project.ttc.types.SingleWordTermAnnotation;
 import eu.project.ttc.types.TermAnnotation;
-import eu.project.ttc.types.TermComponentAnnotation;
 
 /**
  * This Analysis Engine is responsible for removing annotations of terms
@@ -90,34 +106,34 @@ public class TermCleaner extends JCasAnnotator_ImplBase {
 		this.adjust(cas);
 	}
 
-	private void clean(JCas cas) {
-		AnnotationIndex<Annotation> index = cas
-				.getAnnotationIndex(SingleWordTermAnnotation.type);
-		FSIterator<Annotation> iterator = index.iterator();
-		while (iterator.hasNext()) {
-			SingleWordTermAnnotation annotation = (SingleWordTermAnnotation) iterator
-					.next();
-			this.clean(cas, annotation);
-		}
-	}
+//	private void clean(JCas cas) {
+//		AnnotationIndex<Annotation> index = cas
+//				.getAnnotationIndex(SingleWordTermAnnotation.type);
+//		FSIterator<Annotation> iterator = index.iterator();
+//		while (iterator.hasNext()) {
+//			SingleWordTermAnnotation annotation = (SingleWordTermAnnotation) iterator
+//					.next();
+//			this.clean(cas, annotation);
+//		}
+//	}
 
-	private void clean(JCas cas, SingleWordTermAnnotation annotation) {
-		Set<TermComponentAnnotation> delete = new HashSet<TermComponentAnnotation>();
-		AnnotationIndex<Annotation> index = cas
-				.getAnnotationIndex(TermComponentAnnotation.type);
-		FSIterator<Annotation> iterator = index.subiterator(annotation);
-		while (iterator.hasNext()) {
-			TermComponentAnnotation component = (TermComponentAnnotation) iterator
-					.next();
-			FSIterator<Annotation> subiterator = index.subiterator(component);
-			while (subiterator.hasNext()) {
-				delete.add((TermComponentAnnotation) subiterator.next());
-			}
-		}
-		for (TermComponentAnnotation del : delete) {
-			del.removeFromIndexes();
-		}
-	}
+//	private void clean(JCas cas, SingleWordTermAnnotation annotation) {
+//		Set<TermComponentAnnotation> delete = new HashSet<TermComponentAnnotation>();
+//		AnnotationIndex<Annotation> index = cas
+//				.getAnnotationIndex(TermComponentAnnotation.type);
+//		FSIterator<Annotation> iterator = index.subiterator(annotation);
+//		while (iterator.hasNext()) {
+//			TermComponentAnnotation component = (TermComponentAnnotation) iterator
+//					.next();
+//			FSIterator<Annotation> subiterator = index.subiterator(component);
+//			while (subiterator.hasNext()) {
+//				delete.add((TermComponentAnnotation) subiterator.next());
+//			}
+//		}
+//		for (TermComponentAnnotation del : delete) {
+//			del.removeFromIndexes();
+//		}
+//	}
 
     /**
      * Collect the term annotations that should be removed from the CAS

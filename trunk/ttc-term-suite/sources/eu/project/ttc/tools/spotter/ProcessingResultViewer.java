@@ -1,3 +1,21 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ * 
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 package eu.project.ttc.tools.spotter;
 
 import java.awt.Color;
@@ -5,7 +23,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FilenameFilter;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -36,19 +53,13 @@ import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.TypeSystem;
-import org.apache.uima.cas.admin.CASFactory;
 import org.apache.uima.cas.impl.TypeSystemImpl;
 import org.apache.uima.cas.text.AnnotationFS;
 import org.apache.uima.cas.text.AnnotationIndex;
-import org.apache.uima.fit.factory.JCasFactory;
 import org.apache.uima.fit.factory.TypeSystemDescriptionFactory;
-import org.apache.uima.fit.util.CasIOUtil;
-import org.apache.uima.fit.util.CasUtil;
-import org.apache.uima.resource.metadata.FsIndexDescription;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
-import org.apache.uima.util.CasCreationUtils;
-import org.apache.uima.util.XmlCasDeserializer;
 
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class ProcessingResultViewer {
 	
     private final JFileChooser fileChooser = new JFileChooser();
@@ -131,7 +142,8 @@ public class ProcessingResultViewer {
 		return this.typeSelection;
 	}
 	
-	private DefaultListModel typeModel;
+	
+    private DefaultListModel typeModel;
 	
 	private void setTypeModel() {
 		this.typeModel = new DefaultListModel();
@@ -143,7 +155,8 @@ public class ProcessingResultViewer {
 		
 	private JList typeList;
 	
-	private void setTypeList() {
+	
+    private void setTypeList() {
 		this.typeList = new JList();
 		this.typeList.setModel(this.getTypeModel());
 		this.typeList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);

@@ -1,3 +1,21 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ * 
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 package eu.project.ttc.resources;
 
 import java.io.IOException;
@@ -12,6 +30,7 @@ import java.util.Scanner;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.resource.DataResource;
 import org.apache.uima.resource.ResourceInitializationException;
@@ -72,26 +91,31 @@ public class DictionaryResource implements Dictionary {
 		targetEntries.add(target);
 	}
 	
-	private Set<Entry<String, String>> parse(InputStream inputStream) throws IOException {
-		Set<Entry<String, String>> entries = new HashSet<Entry<String, String>>();
-		Scanner scanner = new Scanner(inputStream);
-//		scanner.useDelimiter(System.getProperty("line.separator"));
-// 		for Linux / Windows compatibility
-		scanner.useDelimiter("\\r?\\n");;
-		while (scanner.hasNext()) {
-			String line = scanner.next();
-			String[] items = line.split("\t");
-			String source = items[0];
-			if (source != null) {
-				String target = items[1];
-				if (target != null) {
-					Entry<String, String> entry = new SimpleEntry<String, String>(source, target);
-					entries.add(entry);
-				}
-			}
-		}
-		return entries;
-	}
+    private Set<Entry<String, String>> parse(InputStream inputStream)
+            throws IOException {
+        Scanner scanner = null;
+        try {
+            Set<Entry<String, String>> entries = new HashSet<Entry<String, String>>();
+            scanner = new Scanner(inputStream);
+            scanner.useDelimiter("\\r?\\n");
+            while (scanner.hasNext()) {
+                String line = scanner.next();
+                String[] items = line.split("\t");
+                String source = items[0];
+                if (source != null) {
+                    String target = items[1];
+                    if (target != null) {
+                        Entry<String, String> entry = new SimpleEntry<String, String>(
+                                source, target);
+                        entries.add(entry);
+                    }
+                }
+            }
+            return entries;
+        } finally {
+            IOUtils.closeQuietly(scanner);
+        }
+    }
 
 	
 	@Override

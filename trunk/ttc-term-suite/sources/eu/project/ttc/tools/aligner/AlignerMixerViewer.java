@@ -1,4 +1,21 @@
-// Copyright © 2013 Dictanova SAS
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ * 
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 package eu.project.ttc.tools.aligner;
 
 import eu.project.ttc.types.TermAnnotation;
@@ -33,26 +50,23 @@ public class AlignerMixerViewer extends JSplitPane {
 
     private DefaultMutableTreeNode root;
     private DefaultTreeModel treeModel;
-    private JTree tree;
+    private final JTree tree;
 
     private TableModel tableModel;
-    private JTable table;
+    private final JTable table;
 
     private CandidateComparator comparator;
 
     public AlignerMixerViewer() {
         super(JSplitPane.HORIZONTAL_SPLIT);
 
-        this.root = new DefaultMutableTreeNode("");
-        this.treeModel = new DefaultTreeModel(this.getRoot());
+        
 
-        this.tree = new JTree(this.getTreeModel());
-        this.tree.setRootVisible(false);
-        this.tree.expandRow(1);
-
-        tableModel = new TableModel();
-        table = new JTable(this.getTableModel());
-
+        tree = new JTree();
+        table = new JTable();
+        
+        emptyMixerView();
+        
         comparator = new CandidateComparator();
 
         // Populate component
@@ -69,6 +83,22 @@ public class AlignerMixerViewer extends JSplitPane {
         setContinuousLayout(true);
     }
 
+    private void emptyMixerView() {
+        this.root = new DefaultMutableTreeNode("");
+        this.treeModel = new DefaultTreeModel(this.getRoot());
+
+        this.tree.setModel(this.getTreeModel());
+        this.tree.setRootVisible(false);
+        this.tree.expandRow(1);
+
+        tableModel = new TableModel();
+        table.setModel(this.getTableModel());
+    }
+
+    public void clear() {
+        emptyMixerView();
+    }
+    
     private Dimension getDimension() {
         return new Dimension(600,400);
     }

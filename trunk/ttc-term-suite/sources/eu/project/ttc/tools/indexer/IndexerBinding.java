@@ -1,3 +1,21 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ * 
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 package eu.project.ttc.tools.indexer;
 
 import java.beans.PropertyChangeListener;
@@ -26,7 +44,9 @@ public interface IndexerBinding {
         /** Ignore diacritics parameter */
         IGNOREDIACRITICS    ("IgnoreDiacriticsInMultiwordTerms", "indexer.ignorediacritics", false),
         /** Variant detection parameter */
-        VARIANTDETECTION    ("EnableTermGathering", "indexer.variantdetection", true),
+        SYNTVARIANTDETECTION("EnableSyntacticVariantDetection", "indexer.syntacticvariant", true),
+        /** Variant detection parameter */
+        GRPHVARIANTDETECTION("EnableGraphicalVariantDetection", "indexer.graphicalvariant", false),
         /** Edit distance class parameter */
         EDITDISTANCECLS     ("EditDistanceClassName", "indexer.editdistanceclass", "eu.project.ttc.metrics.Levenshtein"),
         /** Edit distance threshold parameter */
@@ -208,34 +228,62 @@ public interface IndexerBinding {
      */
     void unsetIgnoreDiacriticsError();
 
-    ///////////////////////////////////////////////////////////// VARIANT DETECTIONS
+    ///////////////////////////////////////////////////////////// GRAPHICAL VARIANT DETECTIONS
 
     /**
-     * Setter for the variant detection parameter value.
+     * Setter for the graphical variant detection parameter value.
      * @param variantDetection  flag for variant detection or not
      */
-    void setVariantDetection(boolean variantDetection);
+    void setGraphicalVariantDetection(boolean variantDetection);
 
     /**
-     * Accessor to the variant detection parameter value.
+     * Accessor to the graphical variant detection parameter value.
      */
-    Boolean isVariantDetection();
+    Boolean isGraphicalVariantDetection();
 
     /**
-     * Listener to a change regarding the variant detection parameter.
+     * Listener to a change regarding the graphical variant detection parameter.
      */
-    void addVariantDetectionChangeListener(PropertyChangeListener listener);
+    void addGraphicalVariantDetectionChangeListener(PropertyChangeListener listener);
 
     /**
      * Mark the parameter as in error.
      */
-    void setVariantDetectionError(Throwable e);
+    void setGraphicalVariantDetectionError(Throwable e);
 
     /**
      * Unmark the parameter as in error.
      */
-    void unsetVariantDetectionError();
+    void unsetGraphicalVariantDetectionError();
 
+    ///////////////////////////////////////////////////////////// SYNTACTIC VARIANT DETECTIONS
+
+    /**
+     * Setter for the Syntactic variant detection parameter value.
+     * @param variantDetection  flag for variant detection or not
+     */
+    void setSyntacticVariantDetection(boolean variantDetection);
+
+    /**
+     * Accessor to the Syntactic variant detection parameter value.
+     */
+    Boolean isSyntacticVariantDetection();
+
+    /**
+     * Listener to a change regarding the Syntactic variant detection parameter.
+     */
+    void addSyntacticVariantDetectionChangeListener(PropertyChangeListener listener);
+
+    /**
+     * Mark the parameter as in error.
+     */
+    void setSyntacticVariantDetectionError(Throwable e);
+
+    /**
+     * Unmark the parameter as in error.
+     */
+    void unsetSyntacticVariantDetectionError();
+    
     ///////////////////////////////////////////////////////////// EDIT DISTANCE CLASS
 
     /**

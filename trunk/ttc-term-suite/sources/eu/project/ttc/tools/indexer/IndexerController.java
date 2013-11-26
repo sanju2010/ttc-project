@@ -1,3 +1,21 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ * 
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 package eu.project.ttc.tools.indexer;
 
 import eu.project.ttc.tools.commons.InputSource;
@@ -270,21 +288,38 @@ public class IndexerController extends ToolController {
                 if (success) getView().unsetTSVExportError();
             }
         });
-        // Variant detection
-        getView().addVariantDetectionChangeListener(new PropertyChangeListener() {
+        // Syntactic Variant detection
+        getView().addSyntacticVariantDetectionChangeListener(new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
                 boolean success = true;
-                if (getModel().isVariantDetection() != evt.getNewValue()) {
+                if (getModel().isSyntacticVariantDetection() != evt.getNewValue()) {
                     try {
-                        System.out.println("Indexer:view-model:variant detection->" + evt.getNewValue());
-                        getModel().setVariantDetection((Boolean) evt.getNewValue());
+                        System.out.println("Indexer:view-model:syntactic variant detection->" + evt.getNewValue());
+                        getModel().setSyntacticVariantDetection((Boolean) evt.getNewValue());
                     } catch (IllegalArgumentException e) {
                         success = false;
-                        getView().setVariantDetectionError(e);
+                        getView().setSyntacticVariantDetectionError(e);
                     }
                 } // else, no need to reflect the change (and prevent looping)
-                if (success) getView().unsetVariantDetectionError();
+                if (success) getView().unsetSyntacticVariantDetectionError();
+            }
+        });
+        // Graphical Variant detection
+        getView().addGraphicalVariantDetectionChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                boolean success = true;
+                if (getModel().isGraphicalVariantDetection() != evt.getNewValue()) {
+                    try {
+                        System.out.println("Indexer:view-model:graphical variant detection->" + evt.getNewValue());
+                        getModel().setGraphicalVariantDetection((Boolean) evt.getNewValue());
+                    } catch (IllegalArgumentException e) {
+                        success = false;
+                        getView().setGraphicalVariantDetectionError(e);
+                    }
+                } // else, no need to reflect the change (and prevent looping)
+                if (success) getView().unsetGraphicalVariantDetectionError();
             }
         });
     }
@@ -431,13 +466,23 @@ public class IndexerController extends ToolController {
                 } // else, no need to reflect the change (and prevent looping)
             }
         });
-        // Variant detection
-        getModel().addVariantDetectionChangeListener(new PropertyChangeListener() {
+        // Graphical Variant detection
+        getModel().addGraphicalVariantDetectionChangeListener(new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
-                if ( getView().isVariantDetection() != evt.getNewValue() ) {
-                    System.out.println("Indexer:model-view:variant detection->" + evt.getNewValue());
-                    getView().setVariantDetection((Boolean) evt.getNewValue());
+                if ( getView().isGraphicalVariantDetection() != evt.getNewValue() ) {
+                    System.out.println("Indexer:model-view:graphical variant detection->" + evt.getNewValue());
+                    getView().setGraphicalVariantDetection((Boolean) evt.getNewValue());
+                } // else, no need to reflect the change (and prevent looping)
+            }
+        });
+        // Syntactic Variant detection
+        getModel().addSyntacticVariantDetectionChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                if ( getView().isSyntacticVariantDetection() != evt.getNewValue() ) {
+                    System.out.println("Indexer:model-view:syntactic variant detection->" + evt.getNewValue());
+                    getView().setSyntacticVariantDetection((Boolean) evt.getNewValue());
                 } // else, no need to reflect the change (and prevent looping)
             }
         });
@@ -517,8 +562,11 @@ public class IndexerController extends ToolController {
         try { getModel().setTSVExport( getView().isTSVExport() ); }
         catch (IllegalArgumentException e) { getView().setTSVExportError(e); }
 
-        try { getModel().setVariantDetection( getView().isVariantDetection() ); }
-        catch (IllegalArgumentException e) { getView().setVariantDetectionError(e); }
+        try { getModel().setSyntacticVariantDetection( getView().isSyntacticVariantDetection() ); }
+        catch (IllegalArgumentException e) { getView().setSyntacticVariantDetectionError(e); }
+        
+        try { getModel().setGraphicalVariantDetection( getView().isGraphicalVariantDetection() ); }
+        catch (IllegalArgumentException e) { getView().setGraphicalVariantDetectionError(e); }
     }
 
     /**
@@ -569,8 +617,10 @@ public class IndexerController extends ToolController {
                 getModel().getAssociationMeasure());
 
         // Conflation settings
-        settings.setParameterValue(IndexerBinding.PRM.VARIANTDETECTION.getParameter(),
-                getModel().isVariantDetection());
+        settings.setParameterValue(IndexerBinding.PRM.GRPHVARIANTDETECTION.getParameter(),
+                getModel().isGraphicalVariantDetection());
+        settings.setParameterValue(IndexerBinding.PRM.SYNTVARIANTDETECTION.getParameter(),
+                getModel().isSyntacticVariantDetection());
         settings.setParameterValue(IndexerBinding.PRM.EDITDISTANCECLS.getParameter(),
                 getModel().getEditDistanceClass());
         settings.setParameterValue(IndexerBinding.PRM.EDITDISTANCETLD.getParameter(),

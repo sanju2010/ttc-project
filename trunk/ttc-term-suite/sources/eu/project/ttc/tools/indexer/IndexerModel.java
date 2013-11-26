@@ -1,3 +1,21 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ * 
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 package eu.project.ttc.tools.indexer;
 
 import eu.project.ttc.tools.commons.InvalidTermSuiteConfiguration;
@@ -31,8 +49,10 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
     private ConfigurationParameter pODir;
     /** Parameter to ignore diacritics in multiword term conflating */
     private ConfigurationParameter pIgnoreDiacritics;
-    /** Parameter to enable variant detection */
-    private ConfigurationParameter pVariantDetection;
+    /** Parameter to enable graphical variant detection */
+    private ConfigurationParameter pGraphicalVariantDetection;
+    /** Parameter to enable syntatci variant detection */
+    private ConfigurationParameter pSyntacticVariantDetection;
     /** Parameter for the edit distance classname */
     private ConfigurationParameter pEditDistanceClass;
     /** Parameter for the distance threshold */
@@ -95,14 +115,22 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
         pODir.setMultiValued(false);
         pODir.setMandatory(true);
 
-        // Variants detection
-        pVariantDetection = UIMAFramework
+        // Graphical Variants detection
+        pGraphicalVariantDetection = UIMAFramework
                 .getResourceSpecifierFactory().createConfigurationParameter();
-        pVariantDetection.setName(PRM.VARIANTDETECTION.getParameter());
-        pVariantDetection.setType(ConfigurationParameter.TYPE_BOOLEAN);
-        pVariantDetection.setMultiValued(false);
-        pVariantDetection.setMandatory(true);
+        pGraphicalVariantDetection.setName(PRM.GRPHVARIANTDETECTION.getParameter());
+        pGraphicalVariantDetection.setType(ConfigurationParameter.TYPE_BOOLEAN);
+        pGraphicalVariantDetection.setMultiValued(false);
+        pGraphicalVariantDetection.setMandatory(true);
 
+        // Graphical Variants detection
+        pSyntacticVariantDetection = UIMAFramework
+                .getResourceSpecifierFactory().createConfigurationParameter();
+        pSyntacticVariantDetection.setName(PRM.SYNTVARIANTDETECTION.getParameter());
+        pSyntacticVariantDetection.setType(ConfigurationParameter.TYPE_BOOLEAN);
+        pSyntacticVariantDetection.setMultiValued(false);
+        pSyntacticVariantDetection.setMandatory(true);
+        
         // Edit distance class
         pEditDistanceClass = UIMAFramework
                 .getResourceSpecifierFactory().createConfigurationParameter();
@@ -244,8 +272,11 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
                     case IGNOREDIACRITICS:
                         setIgnoreDiacritics((Boolean) nvp.getValue());
                         break;
-                    case VARIANTDETECTION:
-                        setVariantDetection((Boolean) nvp.getValue());
+                    case GRPHVARIANTDETECTION:
+                        setGraphicalVariantDetection((Boolean) nvp.getValue());
+                        break;
+                    case SYNTVARIANTDETECTION:
+                        setSyntacticVariantDetection((Boolean) nvp.getValue());
                         break;
                     case EDITDISTANCECLS:
                         setEditDistanceClass((String) nvp.getValue());
@@ -309,7 +340,8 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
         uimaParamDeclarations.addConfigurationParameter(pIDir);
         uimaParamDeclarations.addConfigurationParameter(pODir);
         uimaParamDeclarations.addConfigurationParameter(pIgnoreDiacritics);
-        uimaParamDeclarations.addConfigurationParameter(pVariantDetection);
+        uimaParamDeclarations.addConfigurationParameter(pSyntacticVariantDetection);
+        uimaParamDeclarations.addConfigurationParameter(pGraphicalVariantDetection);
         uimaParamDeclarations.addConfigurationParameter(pEditDistanceClass);
         uimaParamDeclarations.addConfigurationParameter(pEditDistanceThreshold);
         uimaParamDeclarations.addConfigurationParameter(pEditDistanceNgrams);
@@ -349,7 +381,8 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
         uimaParamDeclarations.addConfigurationParameter(pIDir);
         uimaParamDeclarations.addConfigurationParameter(pODir);
         uimaParamDeclarations.addConfigurationParameter(pIgnoreDiacritics);
-        uimaParamDeclarations.addConfigurationParameter(pVariantDetection);
+        uimaParamDeclarations.addConfigurationParameter(pGraphicalVariantDetection);
+        uimaParamDeclarations.addConfigurationParameter(pSyntacticVariantDetection);
         uimaParamDeclarations.addConfigurationParameter(pEditDistanceClass);
         uimaParamDeclarations.addConfigurationParameter(pEditDistanceThreshold);
         uimaParamDeclarations.addConfigurationParameter(pEditDistanceNgrams);
@@ -521,37 +554,67 @@ public class IndexerModel extends ToolModel implements IndexerBinding {
     }
 
     /**
-     * Setter for variant detection parameter value.
+     * Setter for graphical variant detection parameter value.
      * If the value is valid, then the parameter value is changed in the
      * model and an event is fired indicating that the property has
      * changed in the model.
      */
     @Override
-    public void setVariantDetection(boolean variantDetection) {
-        Boolean oldValue = (Boolean) pSettings.getParameterValue(PRM.VARIANTDETECTION.getParameter());
-        pSettings.setParameterValue(PRM.VARIANTDETECTION.getParameter(), variantDetection);
-        firePropertyChange(PRM.VARIANTDETECTION.getProperty(), oldValue, variantDetection);
+    public void setGraphicalVariantDetection(boolean variantDetection) {
+        Boolean oldValue = (Boolean) pSettings.getParameterValue(PRM.GRPHVARIANTDETECTION.getParameter());
+        pSettings.setParameterValue(PRM.GRPHVARIANTDETECTION.getParameter(), variantDetection);
+        firePropertyChange(PRM.GRPHVARIANTDETECTION.getProperty(), oldValue, variantDetection);
     }
-    /** Getter for variant detection property */
+    /** Getter for graphical variant detection property */
     @Override
-    public Boolean isVariantDetection() {
-        Boolean isVariantDetection = (Boolean) pSettings.getParameterValue(PRM.VARIANTDETECTION.getParameter());
-        return isVariantDetection==null ? false : isVariantDetection;
+    public Boolean isGraphicalVariantDetection() {
+        return Boolean.TRUE.equals(pSettings.getParameterValue(PRM.GRPHVARIANTDETECTION.getParameter()));
     }
     /** Listener binder for variant detection property */
     @Override
-    public void addVariantDetectionChangeListener(PropertyChangeListener listener) {
-        addPropertyChangeListener(PRM.VARIANTDETECTION.getProperty(), listener);
+    public void addGraphicalVariantDetectionChangeListener(PropertyChangeListener listener) {
+        addPropertyChangeListener(PRM.GRPHVARIANTDETECTION.getProperty(), listener);
     }
     @Override
-    public void setVariantDetectionError(Throwable e) {
+    public void setGraphicalVariantDetectionError(Throwable e) {
         // TODO how to handle errors in the model ?
     }
     @Override
-    public void unsetVariantDetectionError() {
+    public void unsetGraphicalVariantDetectionError() {
         // TODO how to handle errors in the model ?
     }
 
+    /**
+     * Setter for syntactic variant detection parameter value.
+     * If the value is valid, then the parameter value is changed in the
+     * model and an event is fired indicating that the property has
+     * changed in the model.
+     */
+    @Override
+    public void setSyntacticVariantDetection(boolean variantDetection) {
+        Boolean oldValue = (Boolean) pSettings.getParameterValue(PRM.SYNTVARIANTDETECTION.getParameter());
+        pSettings.setParameterValue(PRM.SYNTVARIANTDETECTION.getParameter(), variantDetection);
+        firePropertyChange(PRM.SYNTVARIANTDETECTION.getProperty(), oldValue, variantDetection);
+    }
+    /** Getter for syntactic detection property */
+    @Override
+    public Boolean isSyntacticVariantDetection() {
+        return Boolean.TRUE.equals(pSettings.getParameterValue(PRM.SYNTVARIANTDETECTION.getParameter()));
+    }
+    /** Listener binder for variant detection property */
+    @Override
+    public void addSyntacticVariantDetectionChangeListener(PropertyChangeListener listener) {
+        addPropertyChangeListener(PRM.SYNTVARIANTDETECTION.getProperty(), listener);
+    }
+    @Override
+    public void setSyntacticVariantDetectionError(Throwable e) {
+        // TODO how to handle errors in the model ?
+    }
+    @Override
+    public void unsetSyntacticVariantDetectionError() {
+        // TODO how to handle errors in the model ?
+    }
+    
     /**
      * Setter for edit distance class parameter value.
      * If the value is valid, then the parameter value is changed in the

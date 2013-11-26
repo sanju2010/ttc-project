@@ -1,6 +1,27 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ * 
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 package eu.project.ttc.tools;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Desktop;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -12,7 +33,19 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+
+import org.apache.uima.UIMAFramework;
+import org.apache.uima.util.Level;
 
 import eu.project.ttc.tools.aligner.AlignerController;
 import eu.project.ttc.tools.aligner.AlignerModel;
@@ -27,8 +60,6 @@ import eu.project.ttc.tools.spotter.SpotterController;
 import eu.project.ttc.tools.spotter.SpotterModel;
 import eu.project.ttc.tools.spotter.SpotterView;
 import eu.project.ttc.tools.various.MainToolBar;
-import org.apache.uima.UIMAFramework;
-import org.apache.uima.util.Level;
 
 /**
  * Main class of the GUI version of TermSuite.
@@ -311,7 +342,7 @@ public class TermSuite implements Runnable {
     private void initCommonGUIComponents() {
         // Check for Desktop support
         if (Desktop.isDesktopSupported()) {
-            this.desktop = Desktop.getDesktop();
+            desktop = Desktop.getDesktop();
         }
 
         // Toolbar
@@ -464,5 +495,8 @@ public class TermSuite implements Runnable {
 		TermSuite termSuite = new TermSuite();
 		SwingUtilities.invokeLater(termSuite);	
     }
-	
+
+    public Desktop getDesktop() {
+        return desktop;
+    }	
 }

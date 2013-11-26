@@ -21,11 +21,6 @@ package eu.project.ttc.tools.cli;
 import java.io.File;
 import java.util.Properties;
 
-import javax.swing.SwingUtilities;
-
-import eu.project.ttc.tools.commons.InputSource;
-import eu.project.ttc.tools.indexer.IndexerBinding;
-import eu.project.ttc.tools.indexer.IndexerModel;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
@@ -33,9 +28,12 @@ import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
-
-import eu.project.ttc.tools.TermSuiteRunner;
 import org.apache.uima.util.Level;
+
+import eu.project.ttc.tools.TermSuiteCLIRunner;
+import eu.project.ttc.tools.commons.InputSource;
+import eu.project.ttc.tools.indexer.IndexerBinding;
+import eu.project.ttc.tools.indexer.IndexerModel;
 
 /**
  * Command line interface for the Indexer engines.
@@ -48,7 +46,7 @@ public class TermSuiteIndexerCLI {
 	private static final String PREFERENCES_FILE_NAME = "IndexerCLI.properties";
 
 	/** Short usage description of the CLI */
-	private static final String USAGE = "java [-DconfigFile=<file>]  -Xms1g -Xmx2g -cp ttc-term-suite-1.3.jar eu.project.ttc.tools.cli.TermSuiteIndexerCLI";
+	private static final String USAGE = "java [-DconfigFile=<file>]  -Xms1g -Xmx2g -cp ttc-term-suite-1.5.jar eu.project.ttc.tools.cli.TermSuiteIndexerCLI";
 	
 //	/// Parameter names
 //
@@ -130,8 +128,10 @@ public class TermSuiteIndexerCLI {
 			options.addOption(TermSuiteCLIUtils.createOption(null,
                     IndexerBinding.PRM.OUTPUT.getParameter(), true, "output directory",
 					TermSuiteCLIUtils.isNull(storedProps, IndexerBinding.PRM.OUTPUT.getParameter())));
-			options.addOption(null, IndexerBinding.PRM.VARIANTDETECTION.getParameter(), false,
-					"enable term gathering");
+			options.addOption(null, IndexerBinding.PRM.SYNTVARIANTDETECTION.getParameter(), false,
+					"syntactic variant detection");
+			options.addOption(null, IndexerBinding.PRM.GRPHVARIANTDETECTION.getParameter(), false,
+                    "simple term mispellings");
 			options.addOption(null, IndexerBinding.PRM.EDITDISTANCECLS.getParameter(), true,
 					"edit distance classname");
 			options.addOption(null, IndexerBinding.PRM.EDITDISTANCETLD.getParameter(), true,
@@ -152,7 +152,9 @@ public class TermSuiteIndexerCLI {
 
 			// Default values if necessary
 			TermSuiteCLIUtils.setToValueIfNotExists(storedProps,
-                    IndexerBinding.PRM.VARIANTDETECTION.getParameter(), "false");
+                    IndexerBinding.PRM.GRPHVARIANTDETECTION.getParameter(), "false");
+			TermSuiteCLIUtils.setToValueIfNotExists(storedProps,
+                    IndexerBinding.PRM.SYNTVARIANTDETECTION.getParameter(), "false");
 			TermSuiteCLIUtils.setToValueIfNotExists(storedProps,
                     IndexerBinding.PRM.IGNOREDIACRITICS.getParameter(), "false");
 			TermSuiteCLIUtils.setToValueIfNotExists(storedProps,
@@ -178,7 +180,7 @@ public class TermSuiteIndexerCLI {
 							+ " for the specified filter '"
 							+ storedProps.getProperty(IndexerBinding.PRM.FILTERRULE.getParameter()) + "'.");
 
-				if ("true".equals(storedProps.getProperty(IndexerBinding.PRM.VARIANTDETECTION.getParameter()))
+				if ("true".equals(storedProps.getProperty(IndexerBinding.PRM.GRPHVARIANTDETECTION.getParameter()))
 						&& !TermSuiteCLIUtils.isNull(storedProps, IndexerBinding.PRM.EDITDISTANCECLS.getParameter())) {
 					
 					if (TermSuiteCLIUtils.isNull(storedProps,
@@ -206,17 +208,14 @@ public class TermSuiteIndexerCLI {
 						.getIndexerAEDescription(storedProps.getProperty(TermSuiteCLIUtils.P_LANGUAGE));
 				TermSuiteCLIUtils.setConfigurationParameters(description, storedProps);
 
-                // FIXME
-				TermSuiteRunner runner = new TermSuiteRunner(description,
+				TermSuiteCLIRunner runner = new TermSuiteCLIRunner(description,
 						storedProps.getProperty(TermSuiteCLIUtils.P_INPUT_DIR),
 						InputSource.InputSourceTypes.XMI,
 						storedProps.getProperty(TermSuiteCLIUtils.P_LANGUAGE),
 						storedProps.getProperty(TermSuiteCLIUtils.P_ENCODING));
 
 				// Run
-				runner.execute();
-				if (!SwingUtilities.isEventDispatchThread())
-					runner.get();
+				runner.run();
 
 			} catch (ParseException e) {
 				TermSuiteCLIUtils.printUsage(e, USAGE, options); 

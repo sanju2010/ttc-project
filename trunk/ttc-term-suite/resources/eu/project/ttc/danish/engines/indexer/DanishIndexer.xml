@@ -54,15 +54,6 @@
         </overrides>
       </configurationParameter>
       <configurationParameter>
-        <name>EnableTermGathering</name>
-        <type>Boolean</type>
-        <multiValued>false</multiValued>
-        <mandatory>true</mandatory>
-        <overrides>
-          <parameter>DanishTermGatherer/Enable</parameter>
-        </overrides>
-      </configurationParameter>
-      <configurationParameter>
         <name>EditDistanceThreshold</name>
         <type>Float</type>
         <multiValued>false</multiValued>
@@ -169,6 +160,24 @@
           <parameter>TermBaseXchanger/EnableTsvOutput</parameter>
         </overrides>
       </configurationParameter>
+    <configurationParameter>
+        <name>EnableSyntacticVariantDetection</name>
+        <type>Boolean</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>DanishTermGatherer/EnableSyntacticVariantDetection</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>EnableGraphicalVariantDetection</name>
+        <type>Boolean</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>DanishTermGatherer/EnableGraphicalVariantDetection</parameter>
+        </overrides>
+      </configurationParameter>
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
@@ -181,12 +190,6 @@
         <name>EditDistanceClassName</name>
         <value>
           <string>eu.project.ttc.metrics.LevenshteinDistance</string>
-        </value>
-      </nameValuePair>
-      <nameValuePair>
-        <name>EnableTermGathering</name>
-        <value>
-          <boolean>false</boolean>
         </value>
       </nameValuePair>
       <nameValuePair>
@@ -247,6 +250,18 @@
         <name>EnableTsvOutput</name>
         <value>
           <boolean>true</boolean>
+        </value>
+      </nameValuePair>
+    <nameValuePair>
+        <name>EnableSyntacticVariantDetection</name>
+        <value>
+          <boolean>false</boolean>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>EnableGraphicalVariantDetection</name>
+        <value>
+          <boolean>false</boolean>
         </value>
       </nameValuePair>
     </configurationParameterSettings>

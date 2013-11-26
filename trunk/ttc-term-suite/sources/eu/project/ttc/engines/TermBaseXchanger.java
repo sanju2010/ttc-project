@@ -1,3 +1,21 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ * 
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 package eu.project.ttc.engines;
 
 import java.io.File;
@@ -24,10 +42,6 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
@@ -43,11 +57,9 @@ import org.apache.uima.util.Level;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 import eu.project.ttc.tools.indexer.IndexerBinding;
 import eu.project.ttc.tools.utils.IndexerTSVBuilder;
-import eu.project.ttc.tools.utils.IterableNodeList;
 import eu.project.ttc.tools.utils.TermPredicate;
 import eu.project.ttc.tools.utils.TermPredicates;
 import eu.project.ttc.tools.utils.TermPredicates.ListBasedTermPredicate;
@@ -454,37 +466,37 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
     }
 
 
-    /**
-     * Build a TSV of the list of term annotations based on the TBX tree.
-     *
-     * @param tbxDoc
-     *      sorted list of the annotations according to the filtering rules
-     * @param tsvFile
-     *      file where the content will be exported
-     */
-    private void exportTSV(Document tbxDoc, File tsvFile) throws IOException, XPathExpressionException {
-		IndexerTSVBuilder tsv = new IndexerTSVBuilder(new FileWriter(tsvFile,
-				false));
-
-		XPathFactory factory = XPathFactory.newInstance();
-		XPath xpathTerms = factory.newXPath();
-		NodeList tEntries = (NodeList) xpathTerms.evaluate("/martif/text/body/termEntry/langSet/tig", tbxDoc, XPathConstants.NODESET);
-		for (Node tNode : IterableNodeList.fromNodeList(tEntries)) {
-			// Add the term
-			XPath xpathTerm = factory.newXPath();
-			String termPilot = (String) xpathTerm.evaluate("termNote[@type='termPilot']/text()", tNode, XPathConstants.STRING);
-			tsv.startTerm(termPilot);
-			// ... its variants
-			NodeList variantNodes = (NodeList) xpathTerm.evaluate("descrip[@type='termVariant']", tNode, XPathConstants.NODESET);
-			for (Node vNode : IterableNodeList.fromNodeList(variantNodes)) {
-				tsv.addVariant(((Element) vNode).getTextContent());
-			}
-			// done with this term
-			tsv.endTerm();
-		}
-
-		tsv.close();
-	}
+//    /**
+//     * Build a TSV of the list of term annotations based on the TBX tree.
+//     *
+//     * @param tbxDoc
+//     *      sorted list of the annotations according to the filtering rules
+//     * @param tsvFile
+//     *      file where the content will be exported
+//     */
+//    private void exportTSV(Document tbxDoc, File tsvFile) throws IOException, XPathExpressionException {
+//		IndexerTSVBuilder tsv = new IndexerTSVBuilder(new FileWriter(tsvFile,
+//				false));
+//
+//		XPathFactory factory = XPathFactory.newInstance();
+//		XPath xpathTerms = factory.newXPath();
+//		NodeList tEntries = (NodeList) xpathTerms.evaluate("/martif/text/body/termEntry/langSet/tig", tbxDoc, XPathConstants.NODESET);
+//		for (Node tNode : IterableNodeList.fromNodeList(tEntries)) {
+//			// Add the term
+//			XPath xpathTerm = factory.newXPath();
+//			String termPilot = (String) xpathTerm.evaluate("termNote[@type='termPilot']/text()", tNode, XPathConstants.STRING);
+//			tsv.startTerm(termPilot);
+//			// ... its variants
+//			NodeList variantNodes = (NodeList) xpathTerm.evaluate("descrip[@type='termVariant']", tNode, XPathConstants.NODESET);
+//			for (Node vNode : IterableNodeList.fromNodeList(variantNodes)) {
+//				tsv.addVariant(((Element) vNode).getTextContent());
+//			}
+//			// done with this term
+//			tsv.endTerm();
+//		}
+//
+//		tsv.close();
+//	}
 
     /**
      * Add a term to the TBX document.

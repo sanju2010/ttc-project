@@ -1,11 +1,39 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ * 
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 package eu.project.ttc.tools.spotter;
+
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
+import javax.swing.JTabbedPane;
+import javax.swing.JTree;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.apache.uima.cas.Type;
 import org.apache.uima.cas.text.AnnotationFS;
-
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.DefaultMutableTreeNode;
 
 public class ProcessingResultListener implements ListSelectionListener, ListDataListener, ChangeListener, TreeSelectionListener {
 	
@@ -19,7 +47,8 @@ public class ProcessingResultListener implements ListSelectionListener, ListData
 		return this.viewer;
 	}
 		
-	@Override
+	@SuppressWarnings("rawtypes")
+    @Override
 	public void valueChanged(ListSelectionEvent event) {
 		if (!event.getValueIsAdjusting()) { 
 			JList list = (JList) event.getSource();
@@ -59,7 +88,8 @@ public class ProcessingResultListener implements ListSelectionListener, ListData
 		
 	}
 
-	@Override
+	@SuppressWarnings("rawtypes")
+    @Override
 	public void intervalAdded(ListDataEvent event) {
 		Object object = event.getSource();
 		if (object instanceof DefaultListModel) {
@@ -70,7 +100,8 @@ public class ProcessingResultListener implements ListSelectionListener, ListData
 		}
 	}
 
-	@Override
+	@SuppressWarnings("rawtypes")
+    @Override
 	public void intervalRemoved(ListDataEvent event) {
 		Object object = event.getSource();
 		if (object instanceof DefaultListModel) {

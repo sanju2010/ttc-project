@@ -1,21 +1,48 @@
-// Copyright © 2013 Dictanova SAS
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ * 
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 package eu.project.ttc.tools.indexer;
 
-import eu.project.ttc.tools.commons.ToolView;
-import org.apache.uima.jcas.JCas;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.net.URL;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.ImageIcon;
+import javax.swing.JEditorPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+
+import org.apache.uima.jcas.JCas;
+
+import eu.project.ttc.tools.commons.ToolView;
 
 /**
  * Main view of the Indexer tool.
  *
  * @author Fabien Poulard <fpoulard@dictanova.com>
  */
+@SuppressWarnings("serial")
 public class IndexerView extends JTabbedPane implements ToolView, IndexerBinding {
 
     private final ConfigPanelBasic compBConfig;
@@ -124,6 +151,7 @@ public class IndexerView extends JTabbedPane implements ToolView, IndexerBinding
     public void runStarts() {
         compResults.clearBanker();
         compResults.setEnabled(false);
+        System.gc(); // FIXME this is hardcore
     }
 
     @Override
@@ -218,26 +246,47 @@ public class IndexerView extends JTabbedPane implements ToolView, IndexerBinding
     }
 
     @Override
-    public void setVariantDetection(boolean variantDetection) {
-        compVConfig.setVariantDetection(variantDetection);
+    public void setGraphicalVariantDetection(boolean variantDetection) {
+        compVConfig.setGraphicalVariantDetection(variantDetection);
     }
     @Override
-    public Boolean isVariantDetection() {
-        return compVConfig.isVariantDetection();
+    public Boolean isGraphicalVariantDetection() {
+        return compVConfig.isGraphicalVariantDetection();
     }
     @Override
-    public void addVariantDetectionChangeListener(PropertyChangeListener listener) {
-        addPropertyChangeListener(PRM.VARIANTDETECTION.getProperty(), listener);
+    public void addGraphicalVariantDetectionChangeListener(PropertyChangeListener listener) {
+        addPropertyChangeListener(PRM.GRPHVARIANTDETECTION.getProperty(), listener);
     }
     @Override
-    public void setVariantDetectionError(Throwable e) {
-        compVConfig.setVariantDetectionError(e);
+    public void setGraphicalVariantDetectionError(Throwable e) {
+        compVConfig.setGraphicalVariantDetectionError(e);
     }
     @Override
-    public void unsetVariantDetectionError() {
-        compVConfig.unsetVariantDetectionError();
+    public void unsetGraphicalVariantDetectionError() {
+        compVConfig.unsetGraphicalVariantDetectionError();
     }
 
+    @Override
+    public void setSyntacticVariantDetection(boolean variantDetection) {
+        compVConfig.setSyntacticVariantDetection(variantDetection);
+    }
+    @Override
+    public Boolean isSyntacticVariantDetection() {
+        return compVConfig.isSyntacticVariantDetection();
+    }
+    @Override
+    public void addSyntacticVariantDetectionChangeListener(PropertyChangeListener listener) {
+        addPropertyChangeListener(PRM.SYNTVARIANTDETECTION.getProperty(), listener);
+    }
+    @Override
+    public void setSyntacticVariantDetectionError(Throwable e) {
+        compVConfig.setSyntacticVariantDetectionError(e);
+    }
+    @Override
+    public void unsetSyntacticVariantDetectionError() {
+        compVConfig.unsetSyntacticVariantDetectionError();
+    }
+    
     @Override
     public void setEditDistanceClass(String editDistanceClass) {
         compVConfig.setEditDistanceClass(editDistanceClass);

@@ -21,11 +21,6 @@ package eu.project.ttc.tools.cli;
 import java.io.File;
 import java.util.Properties;
 
-import javax.swing.SwingUtilities;
-
-import eu.project.ttc.tools.aligner.AlignerBinding;
-import eu.project.ttc.tools.aligner.AlignerModel;
-import eu.project.ttc.tools.commons.InputSource;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
@@ -33,9 +28,11 @@ import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
-
-import eu.project.ttc.tools.TermSuiteRunner;
 import org.apache.uima.util.Level;
+
+import eu.project.ttc.tools.TermSuiteCLIRunner;
+import eu.project.ttc.tools.aligner.AlignerBinding;
+import eu.project.ttc.tools.commons.InputSource;
 
 /**
  * Command line interface for the Aligner engines.
@@ -48,7 +45,7 @@ public class TermSuiteAlignerCLI {
 	private static final String PREFERENCES_FILE_NAME = "AlignerCLI.properties";
 
 	/** Short usage description of the CLI */
-	private static final String USAGE = "java [-DconfigFile=<file>] -Xms1g -Xmx2g -cp ttc-term-suite-1.3.jar eu.project.ttc.tools.cli.TermSuiteAlignerCLI";
+	private static final String USAGE = "java [-DconfigFile=<file>] -Xms1g -Xmx2g -cp ttc-term-suite-1.5.jar eu.project.ttc.tools.cli.TermSuiteAlignerCLI";
 
 	/// Parameter names
 	/** Name of the parameter that must be set to the output dir path */
@@ -186,7 +183,14 @@ public class TermSuiteAlignerCLI {
 					P_OUTPUT_DIR, true, "Directory",
 					TermSuiteCLIUtils.isNull(storedProps, P_OUTPUT_DIR)));
 		
-				
+			// Default values if necessary
+            TermSuiteCLIUtils.setToValueIfNotExists(storedProps,
+                    P_METHOD_COMPOSITIONAL, "false");
+            TermSuiteCLIUtils.setToValueIfNotExists(storedProps,
+                    P_METHOD_DISTRIBUTIONAL, "false");
+            TermSuiteCLIUtils.setToValueIfNotExists(storedProps,
+                    P_METHOD_SEMIDISTRIBUTIONAL, "false");
+            
 			try {
 				// Parse and set CL options
 				CommandLine line = parser.parse(options, args, false);
@@ -204,6 +208,10 @@ public class TermSuiteAlignerCLI {
 						storedProps.setProperty(optionKey, myOption.getValue());
 				}
 
+                // Check options that are required if other options are present
+                if (!anyIsTrue(storedProps, P_METHOD_COMPOSITIONAL, P_METHOD_DISTRIBUTIONAL, P_METHOD_SEMIDISTRIBUTIONAL))
+                    throw new ParseException("Missing required parameter, at least one alignment method is necesssary.");
+                
 				// Save props for next run
 				TermSuiteCLIUtils.saveToUserHome(PREFERENCES_FILE_NAME, storedProps);
 
@@ -212,17 +220,14 @@ public class TermSuiteAlignerCLI {
 						.getAlignerAEDescription(storedProps.getProperty(TermSuiteCLIUtils.P_LANGUAGE));
 				TermSuiteCLIUtils.setConfigurationParameters(description, storedProps);
 
-                // FIXME
-				TermSuiteRunner runner = new TermSuiteRunner(description,
+				TermSuiteCLIRunner runner = new TermSuiteCLIRunner(description,
 						storedProps.getProperty(TermSuiteCLIUtils.P_INPUT_DIR),
 						InputSource.InputSourceTypes.TXT,
 						storedProps.getProperty(TermSuiteCLIUtils.P_LANGUAGE),
 						storedProps.getProperty(TermSuiteCLIUtils.P_ENCODING));
 
 				// Run
-				runner.execute();
-				if (!SwingUtilities.isEventDispatchThread())
-					runner.get();
+				runner.run();
 
 			} catch (ParseException e) {
 				TermSuiteCLIUtils.printUsage(e, USAGE, options); 
@@ -232,5 +237,12 @@ public class TermSuiteAlignerCLI {
             UIMAFramework.getLogger().log(Level.SEVERE, e.getMessage());
 		}
 	}
+
+    private static boolean anyIsTrue(Properties storedProps, String... opts) {
+        for (String o : opts)
+            if ("true".equals(storedProps.getProperty(o)))
+                return true;
+        return false;
+    }
 
 }

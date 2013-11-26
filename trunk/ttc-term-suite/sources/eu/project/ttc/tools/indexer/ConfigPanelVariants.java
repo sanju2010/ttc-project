@@ -1,4 +1,21 @@
-// Copyright © 2013 Dictanova SAS
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ * 
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 package eu.project.ttc.tools.indexer;
 
 import java.awt.BorderLayout;
@@ -30,11 +47,13 @@ import javax.swing.event.ChangeListener;
  *
  * @author Fabien Poulard <fpoulard@dictanova.com>
  */
+@SuppressWarnings("serial")
 public class ConfigPanelVariants extends JPanel {
 
     protected final static String LBL_FLEXIONNALVARIANTS = "Detect flexionnal variants";
-    protected final static String LBL_GRAPHICALVARIANTS  = "Detect complex term mispellings";
-    protected final static String LBL_MISPELLINGVARIANTS = "Extended variant detection";
+    protected final static String LBL_MWTGRAPHICALVARIANTS  = "Detect complex term mispellings";
+    protected final static String LBL_SYNTACTICVARIANTS  = "Detect syntactic variants";
+    protected final static String LBL_SWTGRAPHICALVARIANTS = "Detect simple term mispellings";
 
     // Flexional variants parameter
     private JLabel lblFlexionnalVariants;
@@ -42,14 +61,19 @@ public class ConfigPanelVariants extends JPanel {
     private JEditorPane epFlexionnalVariants;
 
     // Ignore diacritics parameter
-    private JLabel lblGraphicalVariants;
-    private JCheckBox cbGraphicalVariants;
-    private JEditorPane epGraphicalVariants;
+    private JLabel lblMWTGraphicalVariants;
+    private JCheckBox cbMWTGraphicalVariants;
+    private JEditorPane epMWTGraphicalVariants;
 
-    // Variant detection parameter
-    private JLabel lblMispellingVariants;
-    private JCheckBox cbMispellingVariants;
-    private JEditorPane epMispellingVariants;
+    // Syntactic MWT variants
+    private JLabel lblMWTSyntacticVariants;
+    private JCheckBox cbMWTSyntacticVariants;
+    private JEditorPane epMWTSyntacticVariants;
+    
+    // Simple term mispellings
+    private JLabel lblSWTGraphicalVariants;
+    private JCheckBox cbSWTGraphicalVariants;
+    private JEditorPane epSWTGraphicalVariants;
 
     // Edit distance class parameter
     private JLabel lblEditDistanceClass;
@@ -76,11 +100,12 @@ public class ConfigPanelVariants extends JPanel {
         int pWidth = (int) getPreferredSize().getWidth() / 2;
         createFlexionnalVariantsComponents(pWidth);
         createIgnoreDiacriticsComponents(pWidth);
-        createVariantDetectionComponents(pWidth);
+        createGraphicalVariantDetectionComponents(pWidth);
+        createSyntacticVariantDetectionComponents(pWidth);
         createEditDistanceClassComponents(pWidth);
         createEditDistanceThresholdComponents(pWidth);
         createEditDistanceNgramsComponents(pWidth);
-        toggleVariantDetectionParameters(cbMispellingVariants.isSelected());
+        toggleVariantDetectionParameters(cbSWTGraphicalVariants.isSelected());
         
         // Layout the components
         layoutComponents();
@@ -114,16 +139,22 @@ public class ConfigPanelVariants extends JPanel {
                                 .addComponent(epFlexionnalVariants))
                         // Ignore diacritics parameter
                         .addGroup(cfgLayout.createSequentialGroup()
-                                .addComponent(cbGraphicalVariants)
-                                .addComponent(lblGraphicalVariants)
+                                .addComponent(cbMWTGraphicalVariants)
+                                .addComponent(lblMWTGraphicalVariants)
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(epGraphicalVariants))
-                                // Variant detection parameter
+                                .addComponent(epMWTGraphicalVariants))
+                                // Graphical Variant detection parameter
                         .addGroup(cfgLayout.createSequentialGroup()
-                                .addComponent(cbMispellingVariants)
-                                .addComponent(lblMispellingVariants)
+                                .addComponent(cbSWTGraphicalVariants)
+                                .addComponent(lblSWTGraphicalVariants)
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(epMispellingVariants))
+                                .addComponent(epSWTGraphicalVariants))
+                        // Syntactic Variant detection parameter
+                        .addGroup(cfgLayout.createSequentialGroup()
+                                .addComponent(cbMWTSyntacticVariants)
+                                .addComponent(lblMWTSyntacticVariants)
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(epMWTSyntacticVariants))
                                 // Edit distance class parameter
                         .addGroup(cfgLayout.createSequentialGroup()
                                 .addGroup(cfgLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -147,10 +178,10 @@ public class ConfigPanelVariants extends JPanel {
                                 .addComponent(epEditDistanceNgrams))
                         // Ignore diacritics parameter
                         .addGroup(cfgLayout.createSequentialGroup()
-                                  .addComponent(cbGraphicalVariants)
-                                  .addComponent(lblGraphicalVariants)
+                                  .addComponent(cbMWTGraphicalVariants)
+                                  .addComponent(lblMWTGraphicalVariants)
                                   .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                  .addComponent(epGraphicalVariants))
+                                  .addComponent(epMWTGraphicalVariants))
 
         );
 
@@ -166,14 +197,23 @@ public class ConfigPanelVariants extends JPanel {
                                 .addComponent(lblFlexionnalVariants)
                                 .addComponent(epFlexionnalVariants))
                         .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                        // Variant detection parameter
+                        // Syntactic Variant detection parameter
                         .addGroup(cfgLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
-                                .addComponent(cbMispellingVariants,
+                                .addComponent(cbMWTSyntacticVariants,
                                         GroupLayout.DEFAULT_SIZE,
                                         GroupLayout.PREFERRED_SIZE,
                                         GroupLayout.PREFERRED_SIZE)
-                                .addComponent(lblMispellingVariants)
-                                .addComponent(epMispellingVariants))
+                                .addComponent(lblMWTSyntacticVariants)
+                                .addComponent(epMWTSyntacticVariants))
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                        // Graphical Variant detection parameter
+                        .addGroup(cfgLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
+                                .addComponent(cbSWTGraphicalVariants,
+                                        GroupLayout.DEFAULT_SIZE,
+                                        GroupLayout.PREFERRED_SIZE,
+                                        GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblSWTGraphicalVariants)
+                                .addComponent(epSWTGraphicalVariants))
                         .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                         // Edit distance class parameter
                         .addGroup(cfgLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -210,12 +250,12 @@ public class ConfigPanelVariants extends JPanel {
                         .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                         // Ignore diacritics parameter
                         .addGroup(cfgLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
-                                .addComponent(cbGraphicalVariants,
+                                .addComponent(cbMWTGraphicalVariants,
                                         GroupLayout.DEFAULT_SIZE,
                                         GroupLayout.PREFERRED_SIZE,
                                         GroupLayout.PREFERRED_SIZE)
-                                .addComponent(lblGraphicalVariants)
-                                .addComponent(epGraphicalVariants))
+                                .addComponent(lblMWTGraphicalVariants)
+                                .addComponent(epMWTGraphicalVariants))
                         .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
         );
 
@@ -255,70 +295,104 @@ public class ConfigPanelVariants extends JPanel {
      */
     public void createIgnoreDiacriticsComponents(int preferredWidth) {
         // Label
-        lblGraphicalVariants = new JLabel("<html><b>"+LBL_GRAPHICALVARIANTS+"</b></html>");
-        lblGraphicalVariants.setPreferredSize(new Dimension(
-                (int) lblGraphicalVariants.getPreferredSize().getHeight(),
+        lblMWTGraphicalVariants = new JLabel("<html><b>"+LBL_MWTGRAPHICALVARIANTS+"</b></html>");
+        lblMWTGraphicalVariants.setPreferredSize(new Dimension(
+                (int) lblMWTGraphicalVariants.getPreferredSize().getHeight(),
                 preferredWidth ));
 
         // Checkbox as it is a boolean
-        cbGraphicalVariants = new JCheckBox();
-        cbGraphicalVariants.addActionListener(new ActionListener() {
+        cbMWTGraphicalVariants = new JCheckBox();
+        cbMWTGraphicalVariants.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Detected a ignore diacritics change, fire property change.");
                 firePropertyChange(IndexerBinding.PRM.IGNOREDIACRITICS.getProperty(),
-                        !cbGraphicalVariants.isSelected(), cbGraphicalVariants.isSelected());
+                        !cbMWTGraphicalVariants.isSelected(), cbMWTGraphicalVariants.isSelected());
             }
         });
 
         // Editor pane to display help
-        epGraphicalVariants = new JEditorPane();
-        epGraphicalVariants.setEditable(false);
-        epGraphicalVariants.setOpaque(false);
-        epGraphicalVariants.setPreferredSize(new Dimension(
-                (int) epGraphicalVariants.getPreferredSize().getHeight(),
+        epMWTGraphicalVariants = new JEditorPane();
+        epMWTGraphicalVariants.setEditable(false);
+        epMWTGraphicalVariants.setOpaque(false);
+        epMWTGraphicalVariants.setPreferredSize(new Dimension(
+                (int) epMWTGraphicalVariants.getPreferredSize().getHeight(),
                 preferredWidth));
         try {
-            URL res = getClass().getResource("/eu/project/ttc/gui/texts/indexer/param.graphicalvariants.html");
-            epGraphicalVariants.setPage(res);
+            URL res = getClass().getResource("/eu/project/ttc/gui/texts/indexer/param.ignorediacritics.html");
+            epMWTGraphicalVariants.setPage(res);
         } catch (IOException e){} // No help
     }
 
     /**
-     * Create the components related to the variant detection parameter.
+     * Create the components related to the swt graphical detection parameter.
      */
-    public void createVariantDetectionComponents(int preferredWidth) {
+    public void createGraphicalVariantDetectionComponents(int preferredWidth) {
         // Label
-        lblMispellingVariants = new JLabel("<html><b>"+LBL_MISPELLINGVARIANTS+"</b></html>");
-        lblMispellingVariants.setPreferredSize(new Dimension(
-                (int) lblMispellingVariants.getPreferredSize().getHeight(),
+        lblSWTGraphicalVariants = new JLabel("<html><b>"+LBL_SWTGRAPHICALVARIANTS+"</b></html>");
+        lblSWTGraphicalVariants.setPreferredSize(new Dimension(
+                (int) lblSWTGraphicalVariants.getPreferredSize().getHeight(),
                 preferredWidth ));
 
         // Checkbox as it is a boolean
-        cbMispellingVariants = new JCheckBox();
-        cbMispellingVariants.addActionListener(new ActionListener() {
+        cbSWTGraphicalVariants = new JCheckBox();
+        cbSWTGraphicalVariants.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Detected a variant detection change, fire property change.");
-                firePropertyChange(IndexerBinding.PRM.VARIANTDETECTION.getProperty(),
-                        !cbMispellingVariants.isSelected(), cbMispellingVariants.isSelected());
-                toggleVariantDetectionParameters(cbMispellingVariants.isSelected());
+                System.out.println("Detected a graphical variant detection change, fire property change.");
+                firePropertyChange(IndexerBinding.PRM.GRPHVARIANTDETECTION.getProperty(),
+                        !cbSWTGraphicalVariants.isSelected(), cbSWTGraphicalVariants.isSelected());
+                toggleVariantDetectionParameters(cbSWTGraphicalVariants.isSelected());
             }
         });
         
         // Editor pane to display help
-        epMispellingVariants = new JEditorPane();
-        epMispellingVariants.setEditable(false);
-        epMispellingVariants.setOpaque(false);
-        epMispellingVariants.setPreferredSize(new Dimension(
-                (int) epMispellingVariants.getPreferredSize().getHeight(),
+        epSWTGraphicalVariants = new JEditorPane();
+        epSWTGraphicalVariants.setEditable(false);
+        epSWTGraphicalVariants.setOpaque(false);
+        epSWTGraphicalVariants.setPreferredSize(new Dimension(
+                (int) epSWTGraphicalVariants.getPreferredSize().getHeight(),
                 preferredWidth));
         try {
-            URL res = getClass().getResource("/eu/project/ttc/gui/texts/indexer/param.mispellingvariants.html");
-            epMispellingVariants.setPage(res);
+            URL res = getClass().getResource("/eu/project/ttc/gui/texts/indexer/param.graphicalvariant.html");
+            epSWTGraphicalVariants.setPage(res);
         } catch (IOException e){} // No help
     }
 
+    /**
+     * Create the components related to the syntactic variant detection parameter.
+     */
+    public void createSyntacticVariantDetectionComponents(int preferredWidth) {
+        // Label
+        lblMWTSyntacticVariants = new JLabel("<html><b>"+LBL_SYNTACTICVARIANTS+"</b></html>");
+        lblMWTSyntacticVariants.setPreferredSize(new Dimension(
+                (int) lblMWTSyntacticVariants.getPreferredSize().getHeight(),
+                preferredWidth ));
+
+        // Checkbox as it is a boolean
+        cbMWTSyntacticVariants = new JCheckBox();
+        cbMWTSyntacticVariants.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Detected a syntactic variant detection change, fire property change.");
+                firePropertyChange(IndexerBinding.PRM.SYNTVARIANTDETECTION.getProperty(),
+                        !cbMWTSyntacticVariants.isSelected(), cbMWTSyntacticVariants.isSelected());
+            }
+        });
+        
+        // Editor pane to display help
+        epMWTSyntacticVariants = new JEditorPane();
+        epMWTSyntacticVariants.setEditable(false);
+        epMWTSyntacticVariants.setOpaque(false);
+        epMWTSyntacticVariants.setPreferredSize(new Dimension(
+                (int) epMWTSyntacticVariants.getPreferredSize().getHeight(),
+                preferredWidth));
+        try {
+            URL res = getClass().getResource("/eu/project/ttc/gui/texts/indexer/param.syntacticvariant.html");
+            epMWTSyntacticVariants.setPage(res);
+        } catch (IOException e){} // No help
+    }
+    
     /**
      * Method responsible for enabling or disabling the variant detection
      * parameters depending or whether or not the variant detection is
@@ -350,12 +424,12 @@ public class ConfigPanelVariants extends JPanel {
         epEditDistanceNgrams.setEnabled(variantDetectionEnabled);
         epEditDistanceNgrams.setVisible(variantDetectionEnabled);
         // Toggle ignore diactritics
-        lblGraphicalVariants.setEnabled(variantDetectionEnabled);
-        lblGraphicalVariants.setVisible(variantDetectionEnabled);
-        cbGraphicalVariants.setEnabled(variantDetectionEnabled);
-        cbGraphicalVariants.setVisible(variantDetectionEnabled);
-        epGraphicalVariants.setEnabled(variantDetectionEnabled);
-        epGraphicalVariants.setVisible(variantDetectionEnabled);
+        lblMWTGraphicalVariants.setEnabled(variantDetectionEnabled);
+        lblMWTGraphicalVariants.setVisible(variantDetectionEnabled);
+        cbMWTGraphicalVariants.setEnabled(variantDetectionEnabled);
+        cbMWTGraphicalVariants.setVisible(variantDetectionEnabled);
+        epMWTGraphicalVariants.setEnabled(variantDetectionEnabled);
+        epMWTGraphicalVariants.setVisible(variantDetectionEnabled);
     }
 
     /**
@@ -478,40 +552,58 @@ public class ConfigPanelVariants extends JPanel {
     ////////////////////////////////////////////////////////////////////// ACCESSORS
 
     public void setIgnoreDiacritics(boolean ignoreDiacritics) {
-        cbGraphicalVariants.setSelected(ignoreDiacritics);
+        cbMWTGraphicalVariants.setSelected(ignoreDiacritics);
     }
 
     public void setIgnoreDiacriticsError(Throwable e) {
-        lblGraphicalVariants.setText("<html><b>"+LBL_GRAPHICALVARIANTS+"</b><br/><p style=\"color: red; font-size: small\">"
+        lblMWTGraphicalVariants.setText("<html><b>"+LBL_MWTGRAPHICALVARIANTS+"</b><br/><p style=\"color: red; font-size: small\">"
                 + e.getMessage() + "</p></html>");
     }
     public void unsetIgnoreDiacriticsError() {
-        lblGraphicalVariants.setText("<html><b>"+LBL_GRAPHICALVARIANTS+"</b></html>");
+        lblMWTGraphicalVariants.setText("<html><b>"+LBL_MWTGRAPHICALVARIANTS+"</b></html>");
     }
 
     public boolean isIgnoreDiacritics() {
-        return cbGraphicalVariants.isSelected();
+        return cbMWTGraphicalVariants.isSelected();
     }
 
-    public void setVariantDetection(boolean variantDetection) {
-        if (variantDetection != cbMispellingVariants.isSelected()) {
-            cbMispellingVariants.setSelected(variantDetection);
+    public void setGraphicalVariantDetection(boolean variantDetection) {
+        if (variantDetection != cbSWTGraphicalVariants.isSelected()) {
+            cbSWTGraphicalVariants.setSelected(variantDetection);
             toggleVariantDetectionParameters(variantDetection);
         }
     }
 
-    public void setVariantDetectionError(Throwable e) {
-        lblMispellingVariants.setText("<html><b>"+LBL_MISPELLINGVARIANTS+"</b><br/><p style=\"color: red; font-size: small\">"
+    public void setGraphicalVariantDetectionError(Throwable e) {
+        lblSWTGraphicalVariants.setText("<html><b>"+LBL_SWTGRAPHICALVARIANTS+"</b><br/><p style=\"color: red; font-size: small\">"
                 + e.getMessage() + "</p></html>");
     }
-    public void unsetVariantDetectionError() {
-        lblMispellingVariants.setText("<html><b>"+LBL_MISPELLINGVARIANTS+"</b></html>");
+    public void unsetGraphicalVariantDetectionError() {
+        lblSWTGraphicalVariants.setText("<html><b>"+LBL_SWTGRAPHICALVARIANTS+"</b></html>");
     }
 
-    public boolean isVariantDetection() {
-        return cbMispellingVariants.isSelected();
+    public boolean isSyntacticVariantDetection() {
+        return cbMWTSyntacticVariants.isSelected();
     }
 
+    public void setSyntacticVariantDetection(boolean variantDetection) {
+        if (variantDetection != cbMWTSyntacticVariants.isSelected()) {
+            cbMWTSyntacticVariants.setSelected(variantDetection);
+        }
+    }
+
+    public void setSyntacticVariantDetectionError(Throwable e) {
+        lblMWTSyntacticVariants.setText("<html><b>"+LBL_SYNTACTICVARIANTS+"</b><br/><p style=\"color: red; font-size: small\">"
+                + e.getMessage() + "</p></html>");
+    }
+    public void unsetSyntacticVariantDetectionError() {
+        lblMWTSyntacticVariants.setText("<html><b>"+LBL_SYNTACTICVARIANTS+"</b></html>");
+    }
+
+    public boolean isGraphicalVariantDetection() {
+        return cbSWTGraphicalVariants.isSelected();
+    }
+    
     public void setEditDistanceClass(String className) {
         for(int i=0 ; i < cbEditDistanceClass.getItemCount() ; i++) {
             ClassItem item = (ClassItem) cbEditDistanceClass.getItemAt(i);
