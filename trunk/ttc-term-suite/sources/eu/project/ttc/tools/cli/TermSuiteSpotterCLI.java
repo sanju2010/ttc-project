@@ -54,9 +54,12 @@ public class TermSuiteSpotterCLI {
 	/** Name of the parameter that must be set to the output directory */
 	public static final String P_OUTPUT_DIR = "Directory";
 	
-	/** Name of the parameter that must be set to the target language */
+	/** Name of the parameter that must be set to the tt dir */
 	public static final String P_TREETAGGER_HOME_DIRECTORY = SpotterModel.P_TREETAGGER_HOME_DIRECTORY;
 	
+	/** Name of the parameter that must be set to enable tsv output */
+    public static final String P_ENABLE_TSV = SpotterModel.P_ENABLE_TSV_OUTPUT;
+    
 	/**
 	 * Application entry point
 	 * 
@@ -104,6 +107,7 @@ public class TermSuiteSpotterCLI {
 			options.addOption(TermSuiteCLIUtils.createOption(null,
 					P_TREETAGGER_HOME_DIRECTORY, true, "TreeTagger home directory", 
 					TermSuiteCLIUtils.isNull(storedProps, P_TREETAGGER_HOME_DIRECTORY)));
+			options.addOption(TermSuiteCLIUtils.createOption(null, P_ENABLE_TSV, false, "Enable tsv output", false));
 
 			try {
 				// Parse and set CL options

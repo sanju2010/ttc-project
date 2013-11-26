@@ -27,6 +27,9 @@
     <delegateAnalysisEngine key="LatvianTreeTagger">
       <import name="eu.project.ttc.latvian.engines.spotter.LatvianTreeTagger"/>
     </delegateAnalysisEngine>
+  <delegateAnalysisEngine key="SpotterTSVWriter">
+      <import name="eu.project.ttc.all.engines.spotter.SpotterTSVWriter"/>
+    </delegateAnalysisEngine>
   </delegateAnalysisEngineSpecifiers>
   <flowController key="FixedFlowController">
     <import name="org.apache.uima.flow.FixedFlowController"/>
@@ -53,6 +56,16 @@
         <mandatory>true</mandatory>
         <overrides>
           <parameter>Writer/Directory</parameter>
+        <parameter>SpotterTSVWriter/Directory</parameter>
+        </overrides>
+      </configurationParameter>
+      <configurationParameter>
+        <name>EnableTSVOutput</name>
+        <type>Boolean</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>SpotterTSVWriter/isEnabled</parameter>
         </overrides>
       </configurationParameter>
       <configurationParameter>
@@ -91,6 +104,12 @@
           <string>drop</string>
         </value>
       </nameValuePair>
+    <nameValuePair>
+        <name>EnableTSVOutput</name>
+        <value>
+          <boolean>false</boolean>
+        </value>
+      </nameValuePair>
     </configurationParameterSettings>
     <flowConstraints>
       <fixedFlow>
@@ -102,6 +121,7 @@
         <node>LatvianFilter</node>
         <node>Contextualizer</node>
         <node>Writer</node>
+      <node>SpotterTSVWriter</node>
       </fixedFlow>
     </flowConstraints>
     <typePriorities/>

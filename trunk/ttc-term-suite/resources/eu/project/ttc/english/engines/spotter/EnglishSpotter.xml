@@ -56,6 +56,15 @@
           <parameter>SpotterTSVWriter/Directory</parameter>
         </overrides>
       </configurationParameter>
+      <configurationParameter>
+        <name>EnableTSVOutput</name>
+        <type>Boolean</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+        <overrides>
+          <parameter>SpotterTSVWriter/isEnabled</parameter>
+        </overrides>
+      </configurationParameter>
     </configurationParameters>
     <configurationParameterSettings>
       <nameValuePair>
@@ -70,6 +79,12 @@
           <string>/tmp</string>
         </value>
       </nameValuePair>
+    <nameValuePair>
+        <name>EnableTSVOutput</name>
+        <value>
+          <boolean>false</boolean>
+        </value>
+      </nameValuePair>
     </configurationParameterSettings>
     <flowConstraints>
       <fixedFlow>
@@ -78,10 +93,10 @@
         <node>EnglishNormalizer</node>
         <node>EnglishStemmer</node>
         <node>EnglishTermSpotter</node>
-        <node>SpotterTSVWriter</node>
         <node>EnglishFilter</node>
         <node>Contextualizer</node>
         <node>Writer</node>
+        <node>SpotterTSVWriter</node>
       </fixedFlow>
     </flowConstraints>
     <typePriorities/>

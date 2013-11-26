@@ -134,12 +134,10 @@ public class ConfigPanel extends JPanel {
                         )
                         // Enable TSV parameter
                         .addGroup(cfgLayout.createSequentialGroup()
-                                .addGroup(cfgLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                        .addComponent(lblTSV)
-                                        .addComponent(cbTSV))
+                                .addComponent(cbTSV)
+                                .addComponent(lblTSV)
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(epTSV)
-                        )
+                                .addComponent(epTSV))
                         // TreeTagger directory parameter
                         .addGroup(cfgLayout.createSequentialGroup()
                                 .addGroup(cfgLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -182,13 +180,14 @@ public class ConfigPanel extends JPanel {
                                 .addComponent(epOutDirectory)
                         )
                         // Enable tsv
-                        .addGroup(cfgLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                .addGroup(cfgLayout.createSequentialGroup()
-                                        .addComponent(lblTSV)
-                                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(cbTSV))
-                                .addComponent(epTSV)
-                        )
+                        .addGroup(cfgLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
+                                .addComponent(cbTSV,
+                                        GroupLayout.DEFAULT_SIZE,
+                                        GroupLayout.PREFERRED_SIZE,
+                                        GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblTSV)
+                                .addComponent(epTSV))
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                                 // TreeTagger directory parameter
                         .addGroup(cfgLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                 .addGroup(cfgLayout.createSequentialGroup()
@@ -351,7 +350,7 @@ public class ConfigPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 System.out
                         .println("Detected a TSV change, fire property change.");
-                firePropertyChange(IndexerBinding.PRM.TSV.getProperty(),
+                firePropertyChange(SpotterBinding.PRM.ENABLETSV.getProperty(),
                         !cbTSV.isSelected(), cbTSV.isSelected());
             }
         });
