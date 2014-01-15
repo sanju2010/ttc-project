@@ -36,7 +36,9 @@ public class TermSuiteVersion {
     public static final String SUMMARY =
             "This tool provides 3 tools for processing terminology extraction "
             + "and terminology alignment from comparable corpora.\n"
+            + "It deals with single-word terms (SWT) and multi-word terms (SWT)\n"
             + "It has been developed within the European TTC project (see http://www.ttc-project.eu/).";
+
     /** License */
     public static final String LICENSE =
             "This software is distributed under the Apache Licence version 2.\n"

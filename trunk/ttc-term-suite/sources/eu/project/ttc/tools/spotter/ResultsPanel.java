@@ -81,7 +81,8 @@ public class ResultsPanel extends JPanel {
         toolbarGUI.setLayout(new BoxLayout(toolbarGUI, BoxLayout.LINE_AXIS));
         toolbarGUI.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 
-        JLabel lbl = new JLabel("You can visualize the result of the processing below...");
+        JLabel lbl = new JLabel("<html>You can visualise the results of the processing below.<br/>\n" +
+                "You can also load old processed files: Locate the mouse above the Results panel; Press the right mouse button, a load menu will appear. Choose a directory that contains xmi files.</html>");
         toolbarGUI.add(lbl);
     }
 

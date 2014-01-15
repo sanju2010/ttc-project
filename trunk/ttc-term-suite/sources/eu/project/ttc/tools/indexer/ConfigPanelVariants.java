@@ -50,10 +50,10 @@ import javax.swing.event.ChangeListener;
 @SuppressWarnings("serial")
 public class ConfigPanelVariants extends JPanel {
 
-    protected final static String LBL_FLEXIONNALVARIANTS = "Detect flexionnal variants";
-    protected final static String LBL_MWTGRAPHICALVARIANTS  = "Detect complex term mispellings";
-    protected final static String LBL_SYNTACTICVARIANTS  = "Detect syntactic variants";
-    protected final static String LBL_SWTGRAPHICALVARIANTS = "Detect simple term mispellings";
+    protected final static String LBL_FLEXIONNALVARIANTS = "Inflectional variants";
+    protected final static String LBL_MWTGRAPHICALVARIANTS  = "MWT misspellings";
+    protected final static String LBL_SYNTACTICVARIANTS  = "Syntactic variants";
+    protected final static String LBL_SWTGRAPHICALVARIANTS = "SWT misspellings";
 
     // Flexional variants parameter
     private JLabel lblFlexionnalVariants;

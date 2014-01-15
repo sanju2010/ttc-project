@@ -60,7 +60,7 @@ public class ConfigPanelAdvanced extends JPanel {
     private static final String LBL_DISTRIBUTIONAL = "Distributional method";
     private static final String LBL_SEMIDISTRIBUTIONAL = "Semidistributional method";
     private static final String LBL_MAXCANDIDATES = "Max number of translation candidates";
-    private static final String LBL_SIMILARITY = "Similarity distance";
+    private static final String LBL_SIMILARITY = "Similarity score";
 
     // Compositional method parameter
     private JLabel lblCompositional;

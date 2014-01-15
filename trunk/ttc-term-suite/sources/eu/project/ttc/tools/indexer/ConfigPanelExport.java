@@ -50,15 +50,15 @@ import javax.swing.event.ChangeListener;
 public class ConfigPanelExport extends JPanel {
 
     protected final static String LBL_TSV = "Export in TSV format";
-    protected final static String LBL_KEEPVERBS = "Add verbs and adverbs to terminology";
-    protected final static String LBL_OCCURRENCETLD = "Occurrence threshold";
-    protected final static String LBL_FILTERRULE = "Filter and Sort terms by";
-    protected final static String LBL_FREQUENCYTLD_OCC = "Minimal number of occurrences";
+    protected final static String LBL_KEEPVERBS = "Keep verbs and adverbs as SWT candidates";
+    protected final static String LBL_OCCURRENCETLD = "Occurrence threshold (XMI files)";
+    protected final static String LBL_FILTERRULE = "Filtering and Sorting terms (TBX and TSV files)";
+    protected final static String LBL_FREQUENCYTLD_OCC = "Occurrence threshold";
     protected static final String LBL_FREQUENCYTLD_FREQ = "Frequency threshold";
-    protected static final String LBL_FREQUENCYTLD_SPEC = "Specificity threshold";
-    protected final static String LBL_FILTERINGTLD_TOPOCC = "Number of terms to be exported";
-    protected final static String LBL_FILTERINGTLD_TOPFREQ = "Number of terms to be exported";
-    protected final static String LBL_FILTERINGTLD_TOPSPEC = "Number of terms to be exported";
+    protected static final String LBL_FREQUENCYTLD_SPEC = "Domain specificity threshold";
+    protected final static String LBL_FILTERINGTLD_TOPOCC = "Number of terms";
+    protected final static String LBL_FILTERINGTLD_TOPFREQ = "Number of terms";
+    protected final static String LBL_FILTERINGTLD_TOPSPEC = "Number of terms";
 
     // TSV export parameter
     private JLabel lblTSV;

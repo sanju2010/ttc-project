@@ -73,7 +73,7 @@ public class ResultsPanel extends JPanel {
         toolbarGUI = new JPanel();
         toolbarGUI.setLayout(new FlowLayout());
 
-        toolbarGUI.add(new JLabel("You can visualize the result of the processing below..."));
+        toolbarGUI.add(new JLabel("<html>You can visualise the results by loading the language-terminology.xmi file.<br/>Press the right mouse button, a load menu will appear. Choose a language-terminology.xmi file.</html>"));
     }
 
     public void addCasToBanker(JCas jCas) {

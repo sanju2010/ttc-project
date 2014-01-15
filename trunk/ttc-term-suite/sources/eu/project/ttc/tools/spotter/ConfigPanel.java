@@ -56,7 +56,7 @@ public class ConfigPanel extends JPanel {
     private static final String LBL_INPUT = "Input Directory";
     private static final String LBL_LANGUAGE = "Language";
     private static final String LBL_OUTPUT = "Output Directory";
-    private static final String LBL_TTG = "TreeTagger Home Directory";
+    private static final String LBL_TTG = "TreeTagger Directory";
     private final static String LBL_TSV = "Export in TSV format";
 
 
