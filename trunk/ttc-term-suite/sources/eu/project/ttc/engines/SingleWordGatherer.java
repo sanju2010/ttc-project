@@ -18,15 +18,10 @@
  */
 package eu.project.ttc.engines;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-
+import eu.project.ttc.metrics.EditDistance;
 import eu.project.ttc.tools.indexer.IndexerBinding;
+import eu.project.ttc.tools.utils.MultiWordAsSimpleGatherer;
+import eu.project.ttc.types.SingleWordTermAnnotation;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
@@ -39,11 +34,9 @@ import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Level;
-
 import uima.sandbox.mapper.resources.Mapping;
-import eu.project.ttc.metrics.EditDistance;
-import eu.project.ttc.tools.utils.MultiWordAsSimpleGatherer;
-import eu.project.ttc.types.SingleWordTermAnnotation;
+
+import java.util.*;
 
 public class SingleWordGatherer extends JCasAnnotator_ImplBase {
 
@@ -177,6 +170,7 @@ public class SingleWordGatherer extends JCasAnnotator_ImplBase {
 		}
 	}
 
+    // TODO : move to external db
 	private void index(JCas cas) {
 		Set<SingleWordTermAnnotation> remove = new HashSet<SingleWordTermAnnotation>();
 		AnnotationIndex<Annotation> index = cas
@@ -251,6 +245,7 @@ public class SingleWordGatherer extends JCasAnnotator_ImplBase {
 					}
 				}
 			}
+            System.gc(); // Aggressive memory collection
 		}
 	}
 

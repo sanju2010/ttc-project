@@ -18,13 +18,8 @@
  */
 package eu.project.ttc.tools.utils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-
+import eu.project.ttc.metrics.DiacriticInsensitiveLevenshtein;
+import eu.project.ttc.types.MultiWordTermAnnotation;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.text.AnnotationIndex;
@@ -32,10 +27,9 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.util.Level;
-
 import uima.sandbox.mapper.resources.Mapping;
-import eu.project.ttc.metrics.DiacriticInsensitiveLevenshtein;
-import eu.project.ttc.types.MultiWordTermAnnotation;
+
+import java.util.*;
 
 /**
  * Gathers multiword terms by considering them as a single word, without
@@ -58,6 +52,7 @@ public class MultiWordAsSimpleGatherer {
 		this.gatherLoop(aJCas, threshold);
 	}
 
+    // TODO : Move to external db
 	private void index(JCas aJCas, Mapping mapping) {
 		HashSet<MultiWordTermAnnotation> remove = new HashSet<MultiWordTermAnnotation>();
 		AnnotationIndex<Annotation> index = aJCas
@@ -142,6 +137,7 @@ public class MultiWordAsSimpleGatherer {
 					}
 				}
 			}
+            System.gc();
 		}
 	}
 

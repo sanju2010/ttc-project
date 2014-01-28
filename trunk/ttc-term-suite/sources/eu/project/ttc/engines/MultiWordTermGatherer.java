@@ -18,15 +18,10 @@
  */
 package eu.project.ttc.engines;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-
+import eu.project.ttc.types.MultiWordTermAnnotation;
+import eu.project.ttc.types.SingleWordTermAnnotation;
+import eu.project.ttc.types.TermAnnotation;
+import eu.project.ttc.types.TermComponentAnnotation;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
@@ -37,14 +32,11 @@ import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Level;
-
-import eu.project.ttc.types.MultiWordTermAnnotation;
-import eu.project.ttc.types.SingleWordTermAnnotation;
-import eu.project.ttc.types.TermAnnotation;
-import eu.project.ttc.types.TermComponentAnnotation;
 import org.tartarus.snowball.models.PorterStemmer;
 import uima.sandbox.catcher.resources.Rule;
 import uima.sandbox.catcher.resources.RuleSystem;
+
+import java.util.*;
 
 public class MultiWordTermGatherer extends JCasAnnotator_ImplBase {
 	
@@ -370,7 +362,7 @@ public class MultiWordTermGatherer extends JCasAnnotator_ImplBase {
 		this.getContext().getLogger().log(Level.INFO, "Rule-based gathering over " + this.getAnnotations().size() + " term classes");
 		for (String key : this.getAnnotations().keySet()) {
 			List<TermAnnotation> list = this.getAnnotations().get(key);
-			this.getContext().getLogger().log(Level.FINE, "Rule-based gathering over the '" + key + "' term class of size " + list.size());			
+			this.getContext().getLogger().log(list.size() > 4 ? Level.INFO : Level.FINE, "Rule-based gathering over the '" + key + "' term class of size " + list.size());
 			for (int i = 0; i < list.size(); i++) {
 				for (int j = 0; j < list.size(); j++) {
 					if (i == j) {
