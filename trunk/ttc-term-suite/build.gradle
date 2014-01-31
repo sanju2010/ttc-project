@@ -23,7 +23,12 @@ dependencies {
     prepare libraries.uimaj_tools // jcasgen
     runtime 'org.annolab.tt4j:org.annolab.tt4j:1.1.1' // FIXME why necessary ?
     compile 'org.apache.uima:uimafit-core:2.0.0'
-    
+
+    compile 'com.google.guava:guava:16.0'
+
+    // Temporary storage
+    compile 'berkeleydb:je:3.2.76'
+
 	// Projects
 	compile project(':uima-catcher')
 	compile project(':uima-tree-tagger-wrapper')

@@ -18,11 +18,19 @@
  */
 package eu.project.ttc.resources;
 
+import com.sleepycat.je.Environment;
 import eu.project.ttc.types.SingleWordTermAnnotation;
+import org.apache.uima.resource.ResourceInitializationException;
 
-public class SimpleTermFrequency extends AbstractMemBasedTermFrequency<SingleWordTermAnnotation> {
+/**
+ * A berkely db based TermFrequency storage for single word term annotations
+ */
+public class BdbSimpleTermFrequency extends AbstractBdbTermFrequency<SingleWordTermAnnotation> {
 
-    @Override
+    public BdbSimpleTermFrequency(Environment environment) throws ResourceInitializationException {
+        super("STermFrequencies", environment);
+    }
+
     public void addEntry(SingleWordTermAnnotation annotation) {
         addGeneric(annotation);
     }

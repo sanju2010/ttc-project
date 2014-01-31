@@ -18,11 +18,11 @@
  */
 package eu.project.ttc.resources;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import eu.project.ttc.models.Component;
+import eu.project.ttc.types.MultiWordTermAnnotation;
+import eu.project.ttc.types.TermComponentAnnotation;
+import eu.project.ttc.types.WordAnnotation;
+import org.apache.commons.lang.mutable.MutableInt;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.cas.FSIterator;
@@ -31,23 +31,14 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.util.Level;
 
-import eu.project.ttc.models.Component;
-import eu.project.ttc.types.MultiWordTermAnnotation;
-import eu.project.ttc.types.TermComponentAnnotation;
-import eu.project.ttc.types.WordAnnotation;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-public class ComplexTermFrequency extends SimpleTermFrequency {
+public class ComplexTermFrequency extends AbstractMemBasedTermFrequency<MultiWordTermAnnotation> {
 
-	public ComplexTermFrequency() {
-		super();
-		this.setComponents();
-	}
-
-	private Map<String, List<Component>> components;
-
-	private void setComponents() {
-		this.components = new HashMap<String, List<Component>>();
-	}
+    private Map<String, List<Component>> components = new HashMap<String, List<Component>>();
 
 	public Map<String, List<Component>> getComponents() {
 		return this.components;
@@ -67,7 +58,7 @@ public class ComplexTermFrequency extends SimpleTermFrequency {
 	}
 
 	private void addForm(MultiWordTermAnnotation annotation,
-			Map<String, Integer> forms) {
+			Map<String, MutableInt> forms) {
 		String coveredText = annotation.getCoveredText().toLowerCase()
 				.replaceAll("\\s+", " ");
 		int size = annotation.getComponents().size();
@@ -87,26 +78,29 @@ public class ComplexTermFrequency extends SimpleTermFrequency {
 
 		String formText = (coveredText.length() < form.length()) ? coveredText
 				: form.toString();
-		Integer formFreq = forms.get(formText);
-		forms.put(formText, formFreq == null ? 1 : formFreq + 1);
+        if (!forms.containsKey(formText))
+            forms.put(formText, new MutableInt(0));
+        MutableInt formFreq = forms.get(formText);
+		formFreq.increment();
 	}
 
 	private void add(MultiWordTermAnnotation annotation, String term) {
-		Integer frequency = this.getFrequencies().get(term);
-		int freq = frequency == null ? 1 : frequency.intValue() + 1;
-		this.getFrequencies().put(term, new Integer(freq));
-		this.getCategories().put(term, annotation.getCategory());
-		Map<String, Integer> forms = this.getForms().get(term);
+        if (!frequencies.containsKey(term))
+            frequencies.put(term, new MutableInt(0));
+        MutableInt frequency = frequencies.get(term);
+		frequency.increment();
+		categories.put(term, annotation.getCategory());
+		Map<String, MutableInt> forms = this.forms.get(term);
 		if (forms == null) {
-			forms = new HashMap<String, Integer>();
-			this.getForms().put(term, forms);
+			forms = new HashMap<String, MutableInt>();
+			this.forms.put(term, forms);
 		}
 		this.addForm(annotation, forms);
 	}
 
 	private String add(MultiWordTermAnnotation annotation) {
 		if (annotation.getComponents() == null) {
-			return super.add(annotation);
+			return addGeneric(annotation);
 		} else {
 			int size = annotation.getComponents().size();
 			StringBuilder builder = new StringBuilder();
@@ -170,4 +164,11 @@ public class ComplexTermFrequency extends SimpleTermFrequency {
 		}
 	}
 
+    @Override
+    public void close() {
+        super.close();
+        for(List<Component> compo : components.values())
+            compo.clear();
+        components.clear();
+    }
 }

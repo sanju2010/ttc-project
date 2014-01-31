@@ -18,21 +18,13 @@
  */
 package eu.project.ttc.engines;
 
-import java.io.File;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.TreeSet;
-
+import eu.project.ttc.metrics.SimilarityDistance;
+import eu.project.ttc.models.Context;
+import eu.project.ttc.resources.Dictionary;
+import eu.project.ttc.resources.Terminology;
+import eu.project.ttc.tools.aligner.AlignerBinding;
+import eu.project.ttc.tools.utils.*;
+import eu.project.ttc.types.*;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
@@ -45,21 +37,10 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Level;
 
-import eu.project.ttc.metrics.SimilarityDistance;
-import eu.project.ttc.models.Context;
-import eu.project.ttc.resources.Dictionary;
-import eu.project.ttc.resources.Terminology;
-import eu.project.ttc.tools.aligner.AlignerBinding;
-import eu.project.ttc.tools.utils.InMemoryMWTIndex;
-import eu.project.ttc.tools.utils.PermutationTree;
-import eu.project.ttc.tools.utils.TranslationList;
-import eu.project.ttc.tools.utils.TranslationListTBXWriter;
-import eu.project.ttc.tools.utils.TranslationListTSVWriter;
-import eu.project.ttc.types.MultiWordTermAnnotation;
-import eu.project.ttc.types.SingleWordTermAnnotation;
-import eu.project.ttc.types.TermAnnotation;
-import eu.project.ttc.types.TermComponentAnnotation;
-import eu.project.ttc.types.TranslationCandidateAnnotation;
+import java.io.File;
+import java.io.InputStream;
+import java.util.*;
+import java.util.Map.Entry;
 
 public class TermAligner extends JCasAnnotator_ImplBase {
 
@@ -393,9 +374,9 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 
 	private void shrink(Context context) {
 		Set<String> filter = dictionary.get().keySet();
-		for (String term : context.getCoOccurrences().keySet()) {
+		for (String term : context.getCoocurringTerms()) {
 			if (!filter.contains(term)) {
-				context.getCoOccurrences().remove(term);
+				context.removeCoterm(term);
 			}
 		}
 	}
@@ -482,9 +463,8 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 
 	private Context transfer(String sourceTerm, Context sourceContext) {
 		Context termContext = new Context();
-		for (String sourceCoTerm : sourceContext.getCoOccurrences().keySet()) {
-			Double sourceCoOcc = sourceContext.getCoOccurrences().get(
-					sourceCoTerm);
+		for (String sourceCoTerm : sourceContext.getCoocurringTerms()) {
+			double sourceCoOcc = sourceContext.getOccurrences(sourceCoTerm);
 			Set<String> resultTerms = null;
 			if (!sourceTerm.equals(sourceCoTerm)) {
 				resultTerms = dictionary.get().get(sourceCoTerm);
@@ -530,8 +510,8 @@ public class TermAligner extends JCasAnnotator_ImplBase {
 			} else {
 				TermAnnotation annot = targetTerminology.get(targetTerm);
 				double score = similarityDistance.getValue(
-						termContext.getCoOccurrences(),
-						targetContext.getCoOccurrences());
+						termContext.getOccurrenceVector(),
+						targetContext.getOccurrenceVector());
                 // FIXME is it normal that annot can be null here ?
 				if ((annot!=null) && !Double.isInfinite(score) && !Double.isNaN(score)) {
 					if (InMemoryMWTIndex

@@ -18,31 +18,15 @@
  */
 package eu.project.ttc.engines;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.math.RoundingMode;
-import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-
+import eu.project.ttc.tools.indexer.IndexerBinding;
+import eu.project.ttc.tools.utils.IndexerTSVBuilder;
+import eu.project.ttc.tools.utils.TermPredicate;
+import eu.project.ttc.tools.utils.TermPredicates;
+import eu.project.ttc.tools.utils.TermPredicates.ListBasedTermPredicate;
+import eu.project.ttc.types.FormAnnotation;
+import eu.project.ttc.types.MultiWordTermAnnotation;
+import eu.project.ttc.types.SingleWordTermAnnotation;
+import eu.project.ttc.types.TermAnnotation;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
@@ -58,15 +42,21 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-import eu.project.ttc.tools.indexer.IndexerBinding;
-import eu.project.ttc.tools.utils.IndexerTSVBuilder;
-import eu.project.ttc.tools.utils.TermPredicate;
-import eu.project.ttc.tools.utils.TermPredicates;
-import eu.project.ttc.tools.utils.TermPredicates.ListBasedTermPredicate;
-import eu.project.ttc.types.FormAnnotation;
-import eu.project.ttc.types.MultiWordTermAnnotation;
-import eu.project.ttc.types.SingleWordTermAnnotation;
-import eu.project.ttc.types.TermAnnotation;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.math.RoundingMode;
+import java.text.NumberFormat;
+import java.util.*;
 
 public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 
@@ -623,7 +613,7 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 		Element descrip = document.createElement("descrip");
 		lang.appendChild(descrip);
 		descrip.setAttribute("type", "termBase");
-		descrip.setAttribute("target", target);
+		descrip.setAttribute("target", "#"+target);
 		if (value != null) {
 			descrip.setTextContent(value.toString());
 		}
@@ -634,7 +624,7 @@ public class TermBaseXchanger extends JCasAnnotator_ImplBase {
 		Element descrip = document.createElement("descrip");
 		lang.appendChild(descrip);
 		descrip.setAttribute("type", "termVariant");
-		descrip.setAttribute("target", target);
+		descrip.setAttribute("target", "#"+target);
 		if (value != null) {
 			descrip.setTextContent(value.toString());
 		}

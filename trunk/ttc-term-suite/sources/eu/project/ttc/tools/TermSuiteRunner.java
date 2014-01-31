@@ -18,17 +18,9 @@
  */
 package eu.project.ttc.tools;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.ArrayList;
-
-import javax.swing.SwingWorker;
-
+import eu.project.ttc.tools.commons.InputSource.InputSourceTypes;
+import eu.project.ttc.tools.commons.InvalidTermSuiteConfiguration;
+import eu.project.ttc.tools.commons.ToolController;
 import org.apache.commons.io.FileUtils;
 import org.apache.uima.UIMAFramework;
 import org.apache.uima.analysis_engine.AnalysisEngine;
@@ -47,9 +39,11 @@ import org.apache.uima.util.JCasPool;
 import org.apache.uima.util.Level;
 import org.apache.uima.util.XMLInputSource;
 
-import eu.project.ttc.tools.commons.InputSource.InputSourceTypes;
-import eu.project.ttc.tools.commons.InvalidTermSuiteConfiguration;
-import eu.project.ttc.tools.commons.ToolController;
+import javax.swing.*;
+import java.io.*;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.ArrayList;
 
 
 public class TermSuiteRunner extends SwingWorker<Void, Void> {
@@ -121,9 +115,9 @@ public class TermSuiteRunner extends SwingWorker<Void, Void> {
 	private void initAnalysisEngine() throws ResourceInitializationException {
 		if (analysisEngine != null)
 		    analysisEngine.destroy();
-	    int threads = Runtime.getRuntime().availableProcessors();
-		this.analysisEngine = UIMAFramework.produceAnalysisEngine(this.description, threads, 0);
-		this.pool = new JCasPool(threads, this.analysisEngine);
+	    //int threads = Runtime.getRuntime().availableProcessors();
+		this.analysisEngine = UIMAFramework.produceAnalysisEngine(this.description, 1, 0);
+		this.pool = new JCasPool(1, this.analysisEngine);
 	}
 
 	private void setDescription(AnalysisEngineDescription description, ConfigurationParameterSettings settings) {
