@@ -68,48 +68,5 @@
       <outputsNewCASes>true</outputsNewCASes>
     </operationalProperties>
   </analysisEngineMetaData>
-  <externalResourceDependencies>
-    <externalResourceDependency>
-      <key>SimpleTermFrequency</key>
-      <description/>
-      <interfaceName>eu.project.ttc.resources.SimpleTermFrequency</interfaceName>
-      <optional>false</optional>
-    </externalResourceDependency>
-    <externalResourceDependency>
-      <key>ComplexTermFrequency</key>
-      <description/>
-      <interfaceName>eu.project.ttc.resources.ComplexTermFrequency</interfaceName>
-      <optional>false</optional>
-    </externalResourceDependency>
-  </externalResourceDependencies>
-  <resourceManagerConfiguration>
-    <externalResources>
-      <externalResource>
-        <name>SimpleTermFrequencyResource</name>
-        <description/>
-        <fileResourceSpecifier>
-          <fileUrl>eu/project/ttc/resources/SimpleTermFrequency.class</fileUrl>
-        </fileResourceSpecifier>
-        <implementationName>eu.project.ttc.resources.SimpleTermFrequency</implementationName>
-      </externalResource>
-      <externalResource>
-        <name>ComplexTermFrequency</name>
-        <description/>
-        <fileResourceSpecifier>
-          <fileUrl>eu/project/ttc/resources/ComplexTermFrequency.class</fileUrl>
-        </fileResourceSpecifier>
-        <implementationName>eu.project.ttc.resources.ComplexTermFrequency</implementationName>
-      </externalResource>
-    </externalResources>
-    <externalResourceBindings>
-      <externalResourceBinding>
-        <key>SimpleTermFrequency</key>
-        <resourceName>SimpleTermFrequencyResource</resourceName>
-      </externalResourceBinding>
-      <externalResourceBinding>
-        <key>ComplexTermFrequency</key>
-        <resourceName>ComplexTermFrequency</resourceName>
-      </externalResourceBinding>
-    </externalResourceBindings>
-  </resourceManagerConfiguration>
+  <resourceManagerConfiguration/>
 </analysisEngineDescription>
