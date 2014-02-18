@@ -101,9 +101,9 @@ public class TermIndexer extends Indexer {
     public void collectionProcessComplete() throws AnalysisEngineProcessException {
         super.collectionProcessComplete();
         try {
-            environ.close();
             singleWordTermFrequency.close();
             multiWordTermFrequency.close();
+            environ.close();
         } catch (DatabaseException e) {
             throw new AnalysisEngineProcessException(e);
         }

@@ -54,11 +54,15 @@ public abstract class AbstractBdbTermFrequency<T extends TermAnnotation> impleme
 
     @Override
     public String getCategory(String term) {
+        if(!allow(term))
+            return "null";
         return getStrValue("\0" + term + "\0-\0cat\0");
     }
 
     @Override
     public int getTermFrequency(String term) {
+        if(!allow(term))
+            return 0;
         try {
             return getIntValue(fromString(term));
         } catch (DatabaseException e) {
@@ -68,6 +72,8 @@ public abstract class AbstractBdbTermFrequency<T extends TermAnnotation> impleme
 
     @Override
     public int getFormFrequency(String term, String form) {
+        if(!allow(term))
+            return 0;
         try {
             return getIntValue(fromString("[" + term + "-" + form + "]"));
         } catch (DatabaseException e) {
@@ -128,6 +134,9 @@ public abstract class AbstractBdbTermFrequency<T extends TermAnnotation> impleme
 
     @Override
     public Set<String> getForms(String entry) {
+        if (!allow(entry))
+            return Collections.emptySet();
+
         Cursor cursor = null;
         try {
             cursor = database.openCursor(null, null);
