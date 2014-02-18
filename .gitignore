@@ -4,12 +4,21 @@ build/
 
 // Maven
 target/
+bin/
+out/
 
 // Idea
 *.ipr
 *.iws
 *.iml
+.idea
+atlassian-ide-plugin.xml
 
 // Eclipse
 .project
 .classpath
+classes/
+
+# Misc
+*.log
+*~
