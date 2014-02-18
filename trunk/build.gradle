@@ -4,7 +4,7 @@ allprojects {
 	apply plugin: 'java'
 
 	group = 'eu.project.ttc'
-	version = '1.5-SNAPSHOT'
+	version = '1.5'
 
 	project.ext.organization = 'LINA TALN CNRS UMR 6241 - Université de Nantes'
 	project.ext.name = 'TTC TermSuite'
@@ -12,8 +12,8 @@ allprojects {
 	project.ext.license = 'Apache 2'
 	project.ext.licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
 
-	sourceCompatibility = 1.6
-	targetCompatibility = 1.6
+	sourceCompatibility = 1.7
+	targetCompatibility = 1.7
     [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
     configurations {
